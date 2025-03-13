@@ -1,0 +1,3 @@
+Exportar al repositorio: mysqldump -h ip_servidor -u usuario_bd -p base_de_datos > archivo.sql
+
+Importar al repositorio: mysql -u usuario_mysql -p base_de_datos < archivo.sql
