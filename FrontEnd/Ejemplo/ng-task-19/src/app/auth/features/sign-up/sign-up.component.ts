@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { errorMail, seRequiere } from '../../validadores/validadores';
 import { AuthService } from '../../data-access/auth.service';
 import { toast } from 'ngx-sonner';
+import { Router, RouterLink } from '@angular/router';
 
 interface FormSignUp {
   email: FormControl<string | null>;
@@ -12,7 +13,7 @@ interface FormSignUp {
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './sign-up.component.html'
 })
 export default class SignUpComponent {
@@ -25,6 +26,7 @@ export default class SignUpComponent {
   }
   private _formBuilder = inject(FormBuilder);
   private _authService = inject(AuthService);
+  private _router = inject(Router);
 
   form = this._formBuilder.group({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
@@ -42,9 +44,10 @@ export default class SignUpComponent {
     await this._authService.registrarse({email, contrasenia})
 
       toast.success('Usuario creado correctamente')
-      console.log("Hola")
+      this._router.navigateByUrl('tareas');
     } catch (error) {
-      toast.error('Ha ocurrido un error')
+      console.log(this.form.value.email)
+      toast.error('Ha ocurrido un error');
     }
   }
 }

@@ -9,6 +9,5 @@ import { NgxSonnerToaster } from 'ngx-sonner'
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  //protected readonly toast = toast;
   title = 'ng-task-19';
 }

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 
 export interface Usuario{
@@ -14,5 +14,9 @@ private _auth = inject(Auth)
 
 registrarse(usuario: Usuario){
   return createUserWithEmailAndPassword(this._auth, usuario.email, usuario.contrasenia)
+}
+
+iniciarSesión(usuario: Usuario){
+  return signInWithEmailAndPassword(this._auth, usuario.email, usuario.contrasenia)
 }
 }
