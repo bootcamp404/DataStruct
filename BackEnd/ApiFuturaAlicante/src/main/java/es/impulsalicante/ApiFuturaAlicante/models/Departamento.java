@@ -3,14 +3,18 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Getter
+@AllArgsConstructor @RequiredArgsConstructor
+@ToString
 public class Departamento {
-    private int id;
+    @Id
+    private Integer id;
+    @Setter
     private String nombre;
 
-    public int getId() {
+    /*public int getId() {
         return id;
     }
 
@@ -26,5 +30,5 @@ public class Departamento {
     public Departamento(int id, String nombre){
         this.id = id;
         this.nombre = nombre;
-    }
+    }*/
 }
