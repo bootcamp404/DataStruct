@@ -1,5 +1,8 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import lombok.Getter;
+
+@Getter
 public class Empleados {
 
     private String dni;
@@ -27,26 +30,6 @@ public class Empleados {
 
     public void setTelefono(int telefono) {
         this.telefono = telefono;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public String getDni() {
-        return dni;
     }
 
     public Empleados (String dni, String nombre, String apellidos, String email, int telefono){

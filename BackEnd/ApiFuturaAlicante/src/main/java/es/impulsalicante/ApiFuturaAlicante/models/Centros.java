@@ -1,5 +1,9 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+
+import lombok.Getter;
+
+@Getter
 public class Centros {
     private int id_centro;
     private String nombre;
@@ -16,21 +20,10 @@ public class Centros {
         this.direccion = direccion;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public int getId_centro() {
-        return id_centro;
-    }
-
     public Centros (int id_centro, String nombre, String direccion){
         this.id_centro = id_centro;
         this.nombre = nombre;
         this.direccion = direccion;
     }
+
 }
