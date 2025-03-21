@@ -1,6 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Departamento;
+import es.impulsalicante.ApiFuturaAlicante.services.DepartamentoServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,29 +15,32 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("departamentos")
 public class DepartamentosController {
-    //lista provisional de departamentos (se cambiará en un futuro por el acceso a BD)
-    private List<Departamento> departamentos = new ArrayList<>(Arrays.asList(
-            new Departamento(1, "formación"),
-            new Departamento(2, "administración"),
-            new Departamento(3, "marketing"),
-            new Departamento(4, "empleo")
-    ));
 
-    //motodos provisionales para practicar
+    DepartamentoServiceImpl servicio = new DepartamentoServiceImpl();
+
+    //GET
     @GetMapping
-    public ResponseEntity<List<Departamento>> getDepartamentos(){
-        return ResponseEntity.ok(departamentos);
+    public ResponseEntity<?> getDepartamentos(){
+        return ResponseEntity.ok(servicio.getDepartamentos());
     }
+
+    //GET by id
     @GetMapping("{id}")
     public ResponseEntity<?> getDepartamentoById(@PathVariable int id){
-        for(Departamento d : departamentos){
-            if(d.getId() == id){
-                return ResponseEntity.ok(d);
-            }
+
+        Departamento dep = servicio.getDepartamentoById(id);
+        if(id < 1){
+            return ResponseEntity.badRequest().body("El id no es correcto.");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el departamento con id: " + id);
+        else if(dep != null){
+            return ResponseEntity.ok(dep);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado un departamento con id: "+ id);
+        }
     }
 
+    //POST
     @PostMapping
     public ResponseEntity<String> postDepartamento(@RequestBody Departamento dep){
         if(dep.getId() > 0 || dep.getNombre().isEmpty()){

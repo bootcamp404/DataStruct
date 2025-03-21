@@ -7,8 +7,8 @@ import java.util.List;
 public interface DepartamentoService {
     public List<Departamento> getDepartamentos();
     public Departamento getDepartamentoById(int id);
-    public void postDepartamento(Departamento dep);
-    public void putDepartamento(Departamento dep);
-    public void patchDepartamento(Departamento dep);
-    public void deleteDepartamento(int id);
+    public Departamento postDepartamento(Departamento dep);
+    public Departamento putDepartamento(Departamento dep);
+    public Departamento patchDepartamento(Departamento dep);
+    public Departamento deleteDepartamento(int id);
 }
