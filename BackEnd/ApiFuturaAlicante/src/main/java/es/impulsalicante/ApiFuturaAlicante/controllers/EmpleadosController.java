@@ -5,14 +5,10 @@ import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
 import es.impulsalicante.ApiFuturaAlicante.service.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/empleados")
