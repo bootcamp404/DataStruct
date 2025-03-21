@@ -1,6 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 
 @Getter
@@ -8,6 +9,16 @@ public class Centros {
     private int id_centro;
     private String nombre;
     private String direccion;
+
+
+    // Relación uno a uno con Territorio
+    @OneToOne(mappedBy = "centro")
+    private Territorio territorio;
+
+    // Relación uno a uno con Sede
+    @OneToOne(mappedBy = "centro")
+    private Sede sede;
+
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
