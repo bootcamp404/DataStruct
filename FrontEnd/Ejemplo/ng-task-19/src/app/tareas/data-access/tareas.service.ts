@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Observable, ObservableInput } from 'rxjs';
 export interface Tareas{
   id:string;
   titulo: string,
