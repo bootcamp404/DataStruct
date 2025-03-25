@@ -2,7 +2,7 @@ package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 
 import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
-import es.impulsalicante.ApiFuturaAlicante.service.*;
+import es.impulsalicante.ApiFuturaAlicante.services.EmpleadosService;
 import org.springframework.web.bind.annotation.*;
 
 

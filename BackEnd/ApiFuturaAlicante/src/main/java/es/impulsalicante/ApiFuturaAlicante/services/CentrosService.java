@@ -1,4 +1,4 @@
-package es.impulsalicante.ApiFuturaAlicante.service;
+package es.impulsalicante.ApiFuturaAlicante.services;
 
 
 import es.impulsalicante.ApiFuturaAlicante.models.Centros;

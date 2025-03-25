@@ -1,7 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Centros;
-import es.impulsalicante.ApiFuturaAlicante.service.CentrosService;
+import es.impulsalicante.ApiFuturaAlicante.services.CentrosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
