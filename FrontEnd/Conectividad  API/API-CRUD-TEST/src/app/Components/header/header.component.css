@@ -1,0 +1,16 @@
+.header{
+    background-color: rgb(155, 255, 24);
+    color: white;
+    text-align: center;
+    padding: 10px;
+
+    .nav-list{
+        display: flex;
+        justify-content: space-around;
+        
+        .link{
+            color: withe;
+            text-decoration: none;
+        }
+    }
+}

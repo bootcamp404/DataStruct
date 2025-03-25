@@ -1,0 +1,30 @@
+<app-header></app-header>
+
+<div class="py-5"> 
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        Edit student
+      </div>
+      @if (this.loading != true) {
+      <div class="card-body">
+        <form>
+          <div class="mb-3">
+            <label for="" class="form-label">Name</label>
+            <input type="text" [(ngModel)]="this.student.title" name="title" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3">
+              <label for="" class="form-label">Email</label>
+              <input type="text" [(ngModel)]="this.student.body" name="body" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+              <label for="" class="form-label">Number</label>
+              <input type="number" [(ngModel)]="this.student.number" name="number" class="form-control" id="exampleInputPassword1">
+            </div>
+          <button type="submit" (click)="updateStudentData(this.studentId)" class="btn btn-primary">Submit</button>
+      </form>
+      </div>
+    }
+    </div>
+  </div>  
+</div>
