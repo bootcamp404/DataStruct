@@ -16,7 +16,7 @@ public class Proyecto {
 
     private String objetivo;
 
-    private Date fecha_ini;
+    private Date fecha_inicio;
 
     private Date fecha_fin;
 
@@ -49,12 +49,12 @@ public class Proyecto {
         this.objetivo = objetivo;
     }
 
-    public Date getFecha_ini() {
-        return fecha_ini;
+    public Date getFecha_inicio() {
+        return fecha_inicio;
     }
 
-    public void setFecha_ini(Date fecha_ini) {
-        this.fecha_ini = fecha_ini;
+    public void setFecha_inicio(Date fecha_inicio) {
+        this.fecha_inicio = fecha_inicio;
     }
 
     public Date getFecha_fin() {
