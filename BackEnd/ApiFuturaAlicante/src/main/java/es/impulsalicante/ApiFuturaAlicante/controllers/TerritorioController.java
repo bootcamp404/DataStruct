@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/territorios")
+@RequestMapping("/api/territorio")
 public class TerritorioController {
 
     @Autowired
