@@ -1,15 +1,20 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-public class Territorio {
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-    private int id_centro;
-    private int id_proyecto;
+@Entity
+@Table(name = "Territorio")
+@Getter
+@Setter
+@PrimaryKeyJoinColumn(name = "id_centro")
+public class Territorio extends Centros {
+
+    @ManyToOne
+    @JoinColumn(name = "id_proyecto", nullable = false)
+    private Proyecto proyecto;
+
+    @Column(nullable = false)
     private boolean es_vivero_empresarial;
-
-    public Territorio (int id_centro, int id_proyecto, boolean es_vivero_empresarial){
-        this.id_centro = id_centro;
-        this.id_proyecto = id_proyecto;
-        this.es_vivero_empresarial = false;
-    }
-
 }

@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/centros")
-public class CentrosController {
+public class CentroController {
 
     @Autowired
     private CentrosService centrosService;
@@ -19,23 +20,23 @@ public class CentrosController {
         return centrosService.getAllCentros();
     }
 
-    @GetMapping("/{id_centro}")
-    public Centros getCentroByID(@PathVariable int id_centro) {
-        return centrosService.getCentrosByID(id_centro);
+    @GetMapping("/{id}")
+    public Optional<Centros> getCentroById(@PathVariable String id) {
+        return centrosService.getCentroById(id);
     }
 
     @PostMapping
-    public Centros createCentros(@RequestBody Centros centro) {
-        return centrosService.createCentros(centro);
+    public Centros createCentro(@RequestBody Centros centro) {
+        return centrosService.createCentro(centro);
     }
 
-    @PutMapping("/{id_centro}")
-    public Centros updateCentros(@PathVariable int id_centro, @RequestBody Centros centro) {
-        return centrosService.updateCentros(id_centro, centro);
+    @PutMapping("/{id}")
+    public Centros updateCentro(@PathVariable String id, @RequestBody Centros centro) {
+        return centrosService.updateCentro(id, centro);
     }
 
-    @DeleteMapping("/{id_centro}")
-    public void deleteCentros(@PathVariable int id_centro) {
-        centrosService.deleteCentros(id_centro);
+    @DeleteMapping("/{id}")
+    public void deleteCentro(@PathVariable String id) {
+        centrosService.deleteCentro(id);
     }
 }

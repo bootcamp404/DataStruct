@@ -1,12 +1,11 @@
 package es.impulsalicante.ApiFuturaAlicante.services;
 
-
 import es.impulsalicante.ApiFuturaAlicante.models.Centros;
 import es.impulsalicante.ApiFuturaAlicante.repository.CentrosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CentrosService {
@@ -18,20 +17,20 @@ public class CentrosService {
         return centroRepository.findAll();
     }
 
-    public Centros getCentrosByID(int id_centro) {
-        return centroRepository.findById(String.valueOf(id_centro)).orElse(null);
+    public Optional<Centros> getCentroById(String id) {
+        return centroRepository.findById(id);
     }
 
-    public Centros createCentros(Centros centro) {
+    public Centros createCentro(Centros centro) {
         return centroRepository.save(centro);
     }
 
-    public Centros updateCentros(int id_centro, Centros centro) {
-        centro.setId_centro(id_centro);
+    public Centros updateCentro(String id, Centros centro) {
+        centro.setId_centro(id);
         return centroRepository.save(centro);
     }
 
-    public void deleteCentros(int id_centro) {
-        centroRepository.deleteById(String.valueOf(id_centro));
+    public void deleteCentro(String id) {
+        centroRepository.deleteById(id);
     }
 }
