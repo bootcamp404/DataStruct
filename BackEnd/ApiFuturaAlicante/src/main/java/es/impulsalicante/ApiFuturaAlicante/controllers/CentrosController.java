@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/centros")
-public class CentroController {
+@RequestMapping("/api/centro")
+public class CentrosController {
 
     @Autowired
     private CentrosService centrosService;
