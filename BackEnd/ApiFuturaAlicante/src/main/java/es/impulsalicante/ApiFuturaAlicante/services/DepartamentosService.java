@@ -23,7 +23,7 @@ public class DepartamentosService{
     }
 
     //GET by id
-    public Departamento getDepartamentoById(int id){
+    public Departamento getDepartamentoById(String id){
         return repo_departamentos.findById(id).get();
     }
 
@@ -42,7 +42,7 @@ public class DepartamentosService{
     }
 
     //DELETE
-    public void deleteDepartamento(int id) {
+    public void deleteDepartamento(String id) {
         Departamento dep = repo_departamentos.findById(id).get();
         repo_departamentos.delete(dep);
     }
