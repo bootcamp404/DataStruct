@@ -8,32 +8,30 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-<<<<<<< HEAD
+
 public class DepartamentosService {
-=======
-public class DepartamentosService{
->>>>>>> b912c6e70e819727d5f630e1ef30f1ba8be29bf8
+
 
     @Autowired
     private DepartamentosRepository repo_departamentos;
 
     //GET
-    public List<Departamento> getDepartamentos(){
+    public List<Departamento> getDepartamentos() {
         return repo_departamentos.findAll();
     }
 
     //GET by id
-    public Departamento getDepartamentoById(int id){
+    public Departamento getDepartamentoById(String id) {
         return repo_departamentos.findById(id).get();
     }
 
     //POST
-    public void postDepartamento(Departamento dep){
+    public void postDepartamento(Departamento dep) {
         repo_departamentos.save(dep);
     }
 
     //PUT
-    public Departamento putDepartamento(Departamento dep){
+    public Departamento putDepartamento(Departamento dep) {
         Departamento dep_mod = repo_departamentos.findById(dep.getId()).get();
 
         dep_mod.setNombre(dep.getNombre());
@@ -42,12 +40,8 @@ public class DepartamentosService{
     }
 
     //DELETE
-    public void deleteDepartamento(int id) {
+    public void deleteDepartamento(String id) {
         Departamento dep = repo_departamentos.findById(id).get();
         repo_departamentos.delete(dep);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b912c6e70e819727d5f630e1ef30f1ba8be29bf8

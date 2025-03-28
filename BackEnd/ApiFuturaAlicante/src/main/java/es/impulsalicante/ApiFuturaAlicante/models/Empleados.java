@@ -1,14 +1,25 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 
+
+@Entity
+@Table(name = "empleado")
 @Getter
 public class Empleados {
-
+    @Id
     private String dni;
+    @Column
     private String nombre;
+    @Column
     private String apellidos;
+    @Column
     private int telefono;
+    @Column
     private String email;
 
 
