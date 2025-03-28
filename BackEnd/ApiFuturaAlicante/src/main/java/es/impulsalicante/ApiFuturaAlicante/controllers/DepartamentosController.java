@@ -1,88 +1,107 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Departamento;
-import es.impulsalicante.ApiFuturaAlicante.services.DepartamentoService;
-import es.impulsalicante.ApiFuturaAlicante.services.DepartamentoServiceImpl;
+import es.impulsalicante.ApiFuturaAlicante.services.DepartamentosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("departamentos")
 public class DepartamentosController {
 
-    //Instancia de clase
+    //Inyección dependencia
     @Autowired
-    private DepartamentoService servicio;
+    private DepartamentosService servicio;
 
     //GET
     @GetMapping
     public ResponseEntity<?> getDepartamentos(){
-        return ResponseEntity.ok(servicio.getDepartamentos());
+        try{
+            //OK
+            return ResponseEntity.ok(servicio.getDepartamentos());
+        }
+        //Error no contemplado
+        catch (Exception e){
+            return ResponseEntity.badRequest()
+                    .body("Error no contemplado: " + e.getMessage());
+        }
     }
 
     //GET by id
     @GetMapping("{id}")
     public ResponseEntity<?> getDepartamentoById(@PathVariable int id){
-
-        Departamento dep = servicio.getDepartamentoById(id);
-        if(id < 1){
-            return ResponseEntity.badRequest().body("El id del departamento no es correcto.");
+        if(id >= 1){
+            try{
+                Departamento dep = servicio.getDepartamentoById(id);
+                //OK
+                return ResponseEntity.ok(dep);
+            } catch (Exception e) {
+                //404
+                if(e instanceof NoSuchElementException){
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("No se ha encontrado un departamento con id: " + id);
+                }
+                //Error no contemplado
+                else{
+                    return ResponseEntity.badRequest().body("Error no contemplado: " + e.toString());
+                }
+            }
         }
-        else if(dep != null){
-            return ResponseEntity.ok(dep);
-        }
+        //Id incorrecto
         else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado un departamento con id: "+ id);
+            return ResponseEntity.badRequest().body("El id del departamento es incorrecto.");
         }
     }
 
     //POST
     @PostMapping
-    public ResponseEntity<String> postDepartamento(@RequestBody Departamento dep){
-        if(dep.getId() > 0 || dep.getNombre().isEmpty()){
-            Departamento dep_creado = servicio.postDepartamento(dep);
-
-            if(dep_creado == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al añadir en la BD.");
+    public ResponseEntity<?> postDepartamento(@RequestBody Departamento dep){
+        if(dep.getId() >= 1){
+            try{
+                servicio.postDepartamento(dep);
+                //Creado
+                return ResponseEntity.status(HttpStatus.CREATED).body(dep);
             }
-            else{
-                URI location = ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(dep.getId())
-                        .toUri();
-
-                return ResponseEntity.created(location).build();
+            //Error no contemplado
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error al conectar con la BD.");
             }
         }
+        //Id incorrecto
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El id del departamento no es correcto.");
+            return ResponseEntity.badRequest().body("El id del departamento es incorrecto.");
         }
     }
 
     //PUT
     @PutMapping
-    public ResponseEntity<?> putDepartamento(@RequestBody Departamento dep_mod){
-        if(dep_mod.getId() > 0 || dep_mod.getNombre().isEmpty()){
-            Departamento dep = servicio.putDepartamento(dep_mod);
-
-            if(dep != null){
-                return ResponseEntity.ok(dep);
+    public ResponseEntity<?> putDepartamento(@RequestBody Departamento dep){
+        if(dep.getId() > 0){
+            try{
+                Departamento dep_mod = servicio.putDepartamento(dep);
+                //OK
+                return ResponseEntity.ok(dep_mod);
             }
-            else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado el departamento con id: " + dep_mod.getId());
+            catch(Exception e){
+                //404
+                if(e instanceof NoSuchElementException){
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("No se ha encontrado el departamento con id: " + dep.getId());
+                }
+                //Error no contemplado
+                else{
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Error no contemplado: " + e.toString());
+                }
             }
         }
+        //Id no correcta
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El id del departamento no es correcto.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El id del departamento es incorrecto.");
         }
     }
 
@@ -90,17 +109,26 @@ public class DepartamentosController {
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteDepartamento(@PathVariable int id){
         if(id > 0){
-            Departamento dep_del = servicio.deleteDepartamento(id);
-
-            if(dep_del != null){
+            try{
+                servicio.deleteDepartamento(id);
+                //OK
                 return ResponseEntity.noContent().build();
-            }
-            else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el departamento con id: " + id);
+            } catch (Exception e) {
+                //404
+                if(e instanceof NoSuchElementException){
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("No se encontró el departamento con id: " + id);
+                }
+                //Error no contemplado
+                else{
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Error no contemplado: " + e.getMessage());
+                }
             }
         }
+        //Id incorrecto
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El id del departamento no es correcto.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El id del departamento es incorrecto.");
         }
     }
 }
