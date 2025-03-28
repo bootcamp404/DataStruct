@@ -11,4 +11,5 @@ public class Departamento {
     private final Integer id;
     @Setter
     private String nombre;
+
 }

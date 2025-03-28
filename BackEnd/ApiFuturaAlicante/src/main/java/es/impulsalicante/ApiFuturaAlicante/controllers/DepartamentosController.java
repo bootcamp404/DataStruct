@@ -2,7 +2,6 @@ package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Departamento;
 import es.impulsalicante.ApiFuturaAlicante.services.DepartamentoService;
-import es.impulsalicante.ApiFuturaAlicante.services.DepartamentoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("departamentos")
