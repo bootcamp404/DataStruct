@@ -16,4 +16,20 @@ public class Departamento {
     @Setter
     private String nombre;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Departamento (Integer id, String nombre){
+        this.id = id;
+        this.nombre = nombre;
+    }
 }
