@@ -1,14 +1,17 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-public class Sede {
-    @OneToMany
-    private int id_centro;
-    private int id_departamento;
+@Entity
+@Table(name = "Sede")
+@Getter
+@Setter
+@PrimaryKeyJoinColumn(name = "id_centro")
+public class Sede extends Centros {
 
-    public Sede(int id_centro, int id_departamento){
-        this.id_centro = id_centro;
-        this.id_departamento = id_departamento;
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_departamento", nullable = false)
+    private Departamento departamento;
 }
