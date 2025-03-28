@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+<<<<<<< HEAD
 public class DepartamentosService {
+=======
+public class DepartamentosService{
+>>>>>>> b912c6e70e819727d5f630e1ef30f1ba8be29bf8
 
     @Autowired
     private DepartamentosRepository repo_departamentos;
@@ -42,4 +46,8 @@ public class DepartamentosService {
         Departamento dep = repo_departamentos.findById(id).get();
         repo_departamentos.delete(dep);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> b912c6e70e819727d5f630e1ef30f1ba8be29bf8
