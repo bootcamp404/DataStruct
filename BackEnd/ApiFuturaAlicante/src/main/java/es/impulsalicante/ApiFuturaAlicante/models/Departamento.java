@@ -1,20 +1,31 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
-@Getter
-@AllArgsConstructor @RequiredArgsConstructor
-@ToString
+@Entity
+@Table(name = "departamento")
+<<<<<<< HEAD
+@Getter @RequiredArgsConstructor @ToString @EqualsAndHashCode
+=======
+@Getter @RequiredArgsConstructor @AllArgsConstructor @ToString @EqualsAndHashCode
+>>>>>>> b912c6e70e819727d5f630e1ef30f1ba8be29bf8
 public class Departamento {
     @Id
-    private Integer id;
+    @Column(name = "id_departamento")
+    private final Integer id;
+<<<<<<< HEAD
+    @Column
     @Setter
+=======
+    @Column @Setter
+>>>>>>> b912c6e70e819727d5f630e1ef30f1ba8be29bf8
     private String nombre;
 
-    /*public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -26,9 +37,8 @@ public class Departamento {
         this.nombre = nombre;
     }
 
-    //Constructor
-    public Departamento(int id, String nombre){
+    public Departamento (Integer id, String nombre){
         this.id = id;
         this.nombre = nombre;
-    }*/
+    }
 }

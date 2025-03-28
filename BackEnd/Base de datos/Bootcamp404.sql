@@ -60,8 +60,8 @@ CREATE TABLE `actividad_valoracion_participante` (
   KEY `id_valoracion` (`id_valoracion`),
   KEY `id_participante` (`id_participante`),
   CONSTRAINT `actividad_valoracion_participante_ibfk_1` FOREIGN KEY (`id_actividad`) REFERENCES `actividad` (`id_actividad`) ON DELETE CASCADE,
-  CONSTRAINT `actividad_valoracion_participante_ibfk_2` FOREIGN KEY (`id_valoracion`) REFERENCES `valoraciones` (`id_valoracion`) ON DELETE CASCADE,
-  CONSTRAINT `actividad_valoracion_participante_ibfk_3` FOREIGN KEY (`id_participante`) REFERENCES `participantes` (`id_participante`) ON DELETE CASCADE
+  CONSTRAINT `actividad_valoracion_participante_ibfk_2` FOREIGN KEY (`id_valoracion`) REFERENCES `valoracion` (`id_valoracion`) ON DELETE CASCADE,
+  CONSTRAINT `actividad_valoracion_participante_ibfk_3` FOREIGN KEY (`id_participante`) REFERENCES `participante` (`id_participante`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -108,9 +108,9 @@ DROP TABLE IF EXISTS `centro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `centro` (
-  `id_centro` varchar(20) NOT NULL,
+  `id_centro` varchar(255) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `direccion` varchar(355) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
   PRIMARY KEY (`id_centro`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -160,6 +160,7 @@ DROP TABLE IF EXISTS `departamento`;
 CREATE TABLE `departamento` (
   `id_departamento` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
+  `id` int NOT NULL,
   PRIMARY KEY (`id_departamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -174,13 +175,13 @@ LOCK TABLES `departamento` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `empleados`
+-- Table structure for table `empleado`
 --
 
-DROP TABLE IF EXISTS `empleados`;
+DROP TABLE IF EXISTS `empleado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `empleados` (
+CREATE TABLE `empleado` (
   `dni` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `apellidos` varchar(255) DEFAULT NULL,
@@ -190,17 +191,17 @@ CREATE TABLE `empleados` (
   PRIMARY KEY (`dni`),
   UNIQUE KEY `email` (`email`),
   KEY `id_departamento` (`id_departamento`),
-  CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`) ON DELETE CASCADE
+  CONSTRAINT `empleado_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `empleados`
+-- Dumping data for table `empleado`
 --
 
-LOCK TABLES `empleados` WRITE;
-/*!40000 ALTER TABLE `empleados` DISABLE KEYS */;
-/*!40000 ALTER TABLE `empleados` ENABLE KEYS */;
+LOCK TABLES `empleado` WRITE;
+/*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -227,13 +228,13 @@ LOCK TABLES `estado_subvencion` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `participantes`
+-- Table structure for table `participante`
 --
 
-DROP TABLE IF EXISTS `participantes`;
+DROP TABLE IF EXISTS `participante`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `participantes` (
+CREATE TABLE `participante` (
   `id_participante` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `apellidos` varchar(255) DEFAULT NULL,
@@ -245,12 +246,12 @@ CREATE TABLE `participantes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `participantes`
+-- Dumping data for table `participante`
 --
 
-LOCK TABLES `participantes` WRITE;
-/*!40000 ALTER TABLE `participantes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `participantes` ENABLE KEYS */;
+LOCK TABLES `participante` WRITE;
+/*!40000 ALTER TABLE `participante` DISABLE KEYS */;
+/*!40000 ALTER TABLE `participante` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -263,13 +264,13 @@ DROP TABLE IF EXISTS `proyecto`;
 CREATE TABLE `proyecto` (
   `id_proyecto` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `objetivo` text,
+  `objetivo` varchar(255) DEFAULT NULL,
   `fecha_ini` date DEFAULT NULL,
-  `fecha_fin` date DEFAULT NULL,
-  `id_departamento` varchar(20) NOT NULL,
+  `fecha_fin` datetime(6) DEFAULT NULL,
+  `id_departamento` int NOT NULL,
+  `fecha_inicio` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id_proyecto`),
-  KEY `id_departamento` (`id_departamento`),
-  CONSTRAINT `proyecto_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`) ON DELETE CASCADE
+  KEY `id_departamento` (`id_departamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -290,7 +291,7 @@ DROP TABLE IF EXISTS `sede`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sede` (
-  `id_centro` varchar(20) NOT NULL,
+  `id_centro` varchar(255) NOT NULL,
   `id_departamento` varchar(20) NOT NULL,
   PRIMARY KEY (`id_centro`),
   KEY `id_departamento` (`id_departamento`),
@@ -349,7 +350,7 @@ CREATE TABLE `territorio` (
   `es_vivero_empresarial` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_centro`),
   KEY `id_proyecto` (`id_proyecto`),
-  CONSTRAINT `territorio_ibfk_1` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE,
+  CONSTRAINT `territorio_ibfk_1` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`),
   CONSTRAINT `territorio_ibfk_2` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id_proyecto`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -390,28 +391,28 @@ LOCK TABLES `tipo_contrato` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `valoraciones`
+-- Table structure for table `valoracion`
 --
 
-DROP TABLE IF EXISTS `valoraciones`;
+DROP TABLE IF EXISTS `valoracion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `valoraciones` (
+CREATE TABLE `valoracion` (
   `id_valoracion` varchar(20) NOT NULL,
   `estrellas` int DEFAULT NULL,
   `observaciones` text,
   PRIMARY KEY (`id_valoracion`),
-  CONSTRAINT `valoraciones_chk_1` CHECK ((`estrellas` between 1 and 5))
+  CONSTRAINT `valoracion_chk_1` CHECK ((`estrellas` between 1 and 5))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `valoraciones`
+-- Dumping data for table `valoracion`
 --
 
-LOCK TABLES `valoraciones` WRITE;
-/*!40000 ALTER TABLE `valoraciones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `valoraciones` ENABLE KEYS */;
+LOCK TABLES `valoracion` WRITE;
+/*!40000 ALTER TABLE `valoracion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `valoracion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -423,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-20 11:25:16
+-- Dump completed on 2025-03-28 11:38:37
