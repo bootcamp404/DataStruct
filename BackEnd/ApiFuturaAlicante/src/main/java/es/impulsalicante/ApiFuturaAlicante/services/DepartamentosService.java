@@ -14,31 +14,33 @@ public class DepartamentosService {
     private DepartamentosRepository repo_departamentos;
 
     //GET
-    public List<Departamento> getDepartamentos() {
+    public List<Departamento> obtenerDepartamentos() {
         return repo_departamentos.findAll();
     }
 
     //GET by id
-    public Departamento getDepartamentoById(String id) {
+    public Departamento obtenerDepartamentoPorId(String id) {
         return repo_departamentos.findById(id).get();
     }
 
     //POST
-    public void postDepartamento(Departamento dep) {
+    public void crearDepartamento(Departamento dep) {
         repo_departamentos.save(dep);
     }
 
     //PUT
-    public Departamento putDepartamento(Departamento dep) {
+    public Departamento editarDepartamento(Departamento dep) {
         Departamento dep_mod = repo_departamentos.findById(dep.getId()).get();
 
         dep_mod.setNombre(dep.getNombre());
+
+        repo_departamentos.save(dep_mod);
 
         return dep_mod;
     }
 
     //DELETE
-    public void deleteDepartamento(String id) {
+    public void eliminarDepartamento(String id) {
         Departamento dep = repo_departamentos.findById(id).get();
         repo_departamentos.delete(dep);
     }

@@ -22,7 +22,7 @@ public class DepartamentosController {
     public ResponseEntity<?> getDepartamentos(){
         try{
             //OK
-            return ResponseEntity.ok(servicio.getDepartamentos());
+            return ResponseEntity.ok(servicio.obtenerDepartamentos());
         }
         //Error no contemplado
         catch (Exception e){
@@ -32,10 +32,10 @@ public class DepartamentosController {
     }
 
     //GET by id
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getDepartamentoById(@PathVariable String id){
         try{
-            Departamento dep = servicio.getDepartamentoById(id);
+            Departamento dep = servicio.obtenerDepartamentoPorId(id);
             //OK
             return ResponseEntity.ok(dep);
         } catch (Exception e) {
@@ -55,13 +55,13 @@ public class DepartamentosController {
     @PostMapping
     public ResponseEntity<?> postDepartamento(@RequestBody Departamento dep){
         try{
-            servicio.postDepartamento(dep);
+            servicio.crearDepartamento(dep);
             //Creado
             return ResponseEntity.status(HttpStatus.CREATED).body(dep);
         }
         //Error no contemplado
         catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al conectar con la BD.");
+            return ResponseEntity.badRequest().body("Error no contemplado: " + e.toString());
         }
     }
 
@@ -69,7 +69,7 @@ public class DepartamentosController {
     @PutMapping
     public ResponseEntity<?> putDepartamento(@RequestBody Departamento dep){
         try{
-            Departamento dep_mod = servicio.putDepartamento(dep);
+            Departamento dep_mod = servicio.editarDepartamento(dep);
             //OK
             return ResponseEntity.ok(dep_mod);
         }
@@ -88,10 +88,10 @@ public class DepartamentosController {
     }
 
     //DELETE
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDepartamento(@PathVariable String id){
         try{
-            servicio.deleteDepartamento(id);
+            servicio.eliminarDepartamento(id);
             //OK
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
