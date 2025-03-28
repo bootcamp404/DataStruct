@@ -8,16 +8,11 @@ import lombok.*;
 
 @Entity
 @Table(name = "departamento")
-@Getter @ToString @EqualsAndHashCode
+@Getter @ToString @EqualsAndHashCode @NoArgsConstructor @AllArgsConstructor
 public class Departamento {
     @Id
     @Column(name = "id_departamento")
-    private final String id;
+    private String id;
     @Column @Setter
     private String nombre;
-
-    public Departamento(String id, String nombre) {
-        this.nombre = nombre;
-        this.id = id;
-    }
 }
