@@ -8,7 +8,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "departamento")
-@Getter @RequiredArgsConstructor @AllArgsConstructor @ToString @EqualsAndHashCode
+@Getter @RequiredArgsConstructor @ToString @EqualsAndHashCode
 public class Departamento {
     @Id
     private final Integer id;
