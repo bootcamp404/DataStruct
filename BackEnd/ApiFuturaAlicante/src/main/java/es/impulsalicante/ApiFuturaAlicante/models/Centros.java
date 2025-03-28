@@ -18,4 +18,10 @@ public class Centros {
 
     @Column(nullable = false)
     private String direccion;
+
+    public void setId_centro(String id_centro) {
+        this.id_centro = id_centro;
+    }
+
 }
+

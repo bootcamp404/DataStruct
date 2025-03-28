@@ -108,9 +108,9 @@ DROP TABLE IF EXISTS `centro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `centro` (
-  `id_centro` varchar(20) NOT NULL,
+  `id_centro` varchar(255) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `direccion` varchar(355) NOT NULL,
+  `direccion` varchar(255) NOT NULL,
   PRIMARY KEY (`id_centro`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -160,6 +160,7 @@ DROP TABLE IF EXISTS `departamento`;
 CREATE TABLE `departamento` (
   `id_departamento` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
+  `id` int NOT NULL,
   PRIMARY KEY (`id_departamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -263,13 +264,13 @@ DROP TABLE IF EXISTS `proyecto`;
 CREATE TABLE `proyecto` (
   `id_proyecto` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `objetivo` text,
+  `objetivo` varchar(255) DEFAULT NULL,
   `fecha_ini` date DEFAULT NULL,
-  `fecha_fin` date DEFAULT NULL,
-  `id_departamento` varchar(20) NOT NULL,
+  `fecha_fin` datetime(6) DEFAULT NULL,
+  `id_departamento` int NOT NULL,
+  `fecha_inicio` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id_proyecto`),
-  KEY `id_departamento` (`id_departamento`),
-  CONSTRAINT `proyecto_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`) ON DELETE CASCADE
+  KEY `id_departamento` (`id_departamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -290,7 +291,7 @@ DROP TABLE IF EXISTS `sede`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sede` (
-  `id_centro` varchar(20) NOT NULL,
+  `id_centro` varchar(255) NOT NULL,
   `id_departamento` varchar(20) NOT NULL,
   PRIMARY KEY (`id_centro`),
   KEY `id_departamento` (`id_departamento`),
@@ -349,7 +350,7 @@ CREATE TABLE `territorio` (
   `es_vivero_empresarial` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_centro`),
   KEY `id_proyecto` (`id_proyecto`),
-  CONSTRAINT `territorio_ibfk_1` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`) ON DELETE CASCADE,
+  CONSTRAINT `territorio_ibfk_1` FOREIGN KEY (`id_centro`) REFERENCES `centro` (`id_centro`),
   CONSTRAINT `territorio_ibfk_2` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id_proyecto`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -423,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-25 11:15:21
+-- Dump completed on 2025-03-28 11:38:37
