@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CrearTareas, TareasService } from '../../data-access/tareas.service';
 import { toast } from 'ngx-sonner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tareas-form',
@@ -12,6 +13,7 @@ import { toast } from 'ngx-sonner';
 export default class TareasFormComponent {
   private _formbuilder = inject(FormBuilder);
   private _tareasservice = inject(TareasService);
+  private _router = inject(Router);
 
   cargando = signal(false);
 
@@ -31,7 +33,8 @@ export default class TareasFormComponent {
       };
       await this._tareasservice.crear(tarea)
 
-      toast.success('Tarea creada correctamente.')
+      toast.success('Tarea creada correctamente.')      
+      this._router.navigateByUrl('/tareas')
     } catch (error) {
       toast.success('Ha ocurrido un problema.')
     }
