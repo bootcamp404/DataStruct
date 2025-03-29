@@ -4,6 +4,8 @@ import { errorMail, seRequiere } from '../../validadores/validadores';
 import { AuthService } from '../../data-access/auth.service';
 import { toast } from 'ngx-sonner';
 import { Router, RouterLink } from '@angular/router';
+import { GoogleComponent } from '../../ui/google/google.component';
+import { FacebookComponent } from '../../ui/facebook/facebook.component';
 
 interface FormSignUp {
   email: FormControl<string | null>;
@@ -13,7 +15,7 @@ interface FormSignUp {
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent],
   templateUrl: './sign-up.component.html'
 })
 export default class SignUpComponent {
@@ -47,7 +49,25 @@ export default class SignUpComponent {
       this._router.navigateByUrl('tareas');
     } catch (error) {
       console.log(this.form.value.email)
-      toast.error('Ha ocurrido un error');
+      toast.error('Ha ocurrido un error.');
+    }
+  }
+  async iniciarSesionConGoogle(){
+    try {
+      await this._authService.iniciarSesionGoogle();
+      toast.success('Bienvenido.');
+      this._router.navigateByUrl('tareas');
+    } catch (error) {
+      toast.error('Ha ocurrido un error.')
+    }
+  }
+  async iniciarSesionConFacebook(){
+    try {
+      await this._authService.iniciarSesionFacebook();
+      toast.success('Bienvenido.');
+      this._router.navigateByUrl('tareas');
+    } catch (error) {
+
     }
   }
 }

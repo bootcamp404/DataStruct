@@ -1,8 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { idToken } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
-import { Observable, ObservableInput } from 'rxjs';
+import { catchError, Observable, ObservableInput, tap, throwError } from 'rxjs';
 export interface Tareas{
   id:string;
   titulo: string,
@@ -21,7 +21,17 @@ private _firestore = inject(Firestore);
 
 private _coleccion = collection(this._firestore, path)
 
-conseguirTarea = toSignal(collectionData(this._coleccion, {idField: 'id'}) as Observable<Tareas[]>, {initialValue: []})
+cargando = signal<boolean>(true)
+conseguirTarea = toSignal((collectionData(this._coleccion, {idField: 'id'}) as Observable<Tareas[]>).pipe(
+  tap(() =>{
+    this.cargando.set(false)
+  }),
+  catchError((error) => {
+    this.cargando.set(false);
+    return throwError(() => error)
+  })
+)
+, {initialValue: []})
 
 crear(tarea: CrearTareas){
     return addDoc(this._coleccion, tarea)

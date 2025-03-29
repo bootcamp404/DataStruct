@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import { AuthService } from '../../data-access/auth.service';
 import { errorMail, seRequiere } from '../../validadores/validadores';
+import { GoogleComponent } from '../../ui/google/google.component';
+import { FacebookComponent } from '../../ui/facebook/facebook.component';
 
 export interface FormSignIn{
   email: FormControl<string | null>;
@@ -13,7 +15,7 @@ export interface FormSignIn{
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent],
   templateUrl: './sign-in.component.html',
   styles: ``
 })
@@ -28,7 +30,7 @@ export default class SignInComponent {
     emailRequerido(){
       return errorMail(this.form)
     }
-    
+
   form = this._formBuilder.group<FormSignIn> ({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
     contrasenia: this._formBuilder.control('', Validators.required),
@@ -48,6 +50,15 @@ export default class SignInComponent {
       this._router.navigateByUrl('tareas');
     } catch (error) {
       toast.error('Ha ocurrido un error');
+    }
+  }
+  async iniciarSesionConGoogle(){
+    try {
+      await this._authService.iniciarSesionGoogle();
+      toast.success('Bienvenido')
+      this._router.navigateByUrl('tareas');
+    } catch (error) {
+      toast.error('Ha ocurrido un error.')
     }
   }
 }

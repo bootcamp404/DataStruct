@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from '@angular/fire/auth';
 
 
 export interface Usuario{
@@ -18,5 +18,15 @@ registrarse(usuario: Usuario){
 
 iniciarSesión(usuario: Usuario){
   return signInWithEmailAndPassword(this._auth, usuario.email, usuario.contrasenia)
+}
+iniciarSesionGoogle(){
+  const google = new GoogleAuthProvider
+
+  return signInWithPopup(this._auth, google)
+}
+iniciarSesionFacebook(){
+const facebook = new FacebookAuthProvider
+
+return signInWithPopup(this._auth, facebook)
 }
 }
