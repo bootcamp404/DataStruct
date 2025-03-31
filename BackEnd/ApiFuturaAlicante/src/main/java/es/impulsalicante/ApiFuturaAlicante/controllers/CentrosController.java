@@ -33,7 +33,7 @@ public class CentrosController {
         if (centros.isPresent()) {
             return ResponseEntity.ok(centros.get());
         } else {
-            return ResponseEntity.status(404).body("Proyecto con ID " + id + " no encontrado.");
+            return ResponseEntity.status(404).body("Centro con ID " + id + " no encontrado.");
         }
     }
 
