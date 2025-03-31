@@ -61,4 +61,13 @@ export default class SignInComponent {
       toast.error('Ha ocurrido un error.')
     }
   }
+  async iniciarSesionConFacebook(){
+    try {
+      await this._authService.iniciarSesionFacebook();
+      toast.success('Bienvenido')
+      this._router.navigateByUrl('tareas')
+    } catch (error) {
+      toast.error('Ha ocurrido un error.')
+    }
+  }
 }
