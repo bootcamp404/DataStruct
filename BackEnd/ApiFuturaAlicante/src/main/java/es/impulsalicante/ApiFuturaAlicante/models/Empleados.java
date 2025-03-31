@@ -1,9 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 
@@ -22,9 +20,42 @@ public class Empleados {
     @Column
     private String email;
 
+    @ManyToOne
+    @JoinColumn(name = "id_departamento", nullable = false)
+    private Departamento departamento;
+
+
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setDni(String dni) {
@@ -43,11 +74,16 @@ public class Empleados {
         this.telefono = telefono;
     }
 
-    public Empleados (String dni, String nombre, String apellidos, String email, int telefono){
+    public Empleados (String dni, String nombre, String apellidos, String email, int telefono, Departamento departamento){
         this.dni = dni;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
         this.telefono = telefono;
+        this.departamento = departamento;
+    }
+
+    public Empleados ( ) {
+
     }
 }

@@ -3,6 +3,7 @@ package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
 import es.impulsalicante.ApiFuturaAlicante.services.EmpleadosService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +40,17 @@ public class EmpleadosController {
 
     @PostMapping
     public ResponseEntity<?> createEmpleado(@RequestBody Empleados empleado) {
-        return ResponseEntity.ok(empleadoService.createEmpleado(empleado));
+        try{
+            Empleados nuevoEmpleado = empleadoService.createEmpleado(empleado);
+            return ResponseEntity.ok(nuevoEmpleado);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: " + e.toString());
+
+        }
     }
 
-    @PutMapping
+    @PutMapping("/{dni}")
     public ResponseEntity<?> updateEmpleado(@PathVariable String dni, @RequestBody Empleados empleado) {
         return ResponseEntity.ok(empleadoService.updateEmpleado(dni, empleado));
     }

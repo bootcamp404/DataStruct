@@ -1,10 +1,11 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 
 @Entity
 @Table(name = "departamento")
@@ -15,6 +16,10 @@ public class Departamento {
     private String id;
     @Column @Setter
     private String nombre;
+
+    @OneToMany(mappedBy = "departamento")
+    private List<Empleados> empleados;
+
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -32,7 +37,6 @@ public class Departamento {
         this.id = id;
         this.nombre = nombre;
     }
-
 
     public Departamento( ) {
     }
