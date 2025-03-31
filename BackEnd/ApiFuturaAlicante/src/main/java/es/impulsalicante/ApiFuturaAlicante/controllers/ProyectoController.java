@@ -1,5 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
+import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
 import es.impulsalicante.ApiFuturaAlicante.models.Proyecto;
 import es.impulsalicante.ApiFuturaAlicante.services.ProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,14 @@ public class ProyectoController {
     private ProyectoService proyectoService;
 
     @GetMapping
-    public ResponseEntity<List<Proyecto>> getAllProyectos() {
-        List<Proyecto> proyectos = proyectoService.getAllProyectos();
-        if (proyectos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<?> getAllProyectos() {
+        try{
+            return ResponseEntity.ok(proyectoService.getAllProyectos());
         }
-        return ResponseEntity.ok(proyectos);
+        catch (Exception e){
+            return ResponseEntity.badRequest()
+                    .body("Error no contemplado: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -36,9 +39,15 @@ public class ProyectoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createProyecto(@RequestBody Proyecto proyecto) {
-        Proyecto nuevoProyecto = proyectoService.createProyecto(proyecto);
-        return ResponseEntity.ok("Proyecto creado con éxito. ID: " + nuevoProyecto.getId_proyecto());
+    public ResponseEntity<?> createProyecto(@RequestBody Proyecto proyecto) {
+        try{
+            Proyecto nuevoProyecto = proyectoService.createProyecto(proyecto);
+            return ResponseEntity.ok(nuevoProyecto);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: " + e.toString());
+
+        }
     }
 
     @PutMapping("/{id}")

@@ -14,17 +14,18 @@ public class Proyecto {
     @Column(nullable = false)
     private String nombre;
 
+    @Column
     private String objetivo;
 
+    @Column
     private Date fecha_inicio;
-
+    @Column
     private Date fecha_fin;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
     private Departamento departamento;
 
-    // 🔹 Getters y Setters
     public String getId_proyecto() {
         return id_proyecto;
     }
@@ -65,11 +66,23 @@ public class Proyecto {
         this.fecha_fin = fecha_fin;
     }
 
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
     public Departamento getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(Departamento departamento) {
+
+
+    public Proyecto (String id_proyecto,String nombre, String objetivo, Date fecha_inicio, Date fecha_fin, Departamento departamento) {
+        this.id_proyecto = id_proyecto;
+        this.nombre = nombre;
+        this.objetivo = objetivo;
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_fin = fecha_fin;
         this.departamento = departamento;
     }
+
+    public Proyecto ( ) { }
 }
