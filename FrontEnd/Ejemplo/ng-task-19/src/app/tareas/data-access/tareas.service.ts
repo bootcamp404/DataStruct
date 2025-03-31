@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { idToken } from '@angular/fire/auth';
-import { Firestore, collection, addDoc, collectionData, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, updateDoc, doc } from '@angular/fire/firestore';
 import { catchError, Observable, ObservableInput, tap, throwError } from 'rxjs';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
 export interface Tareas{
@@ -47,11 +47,11 @@ crear(tarea: CrearTareas){
     })
   }
 }
+update(tarea: CrearTareas, id:string) {
+  const docRef = doc(this._collection, id);
+    return updateDoc(docRef, {
+      ...tarea,
+      userId: this._authState.currentUser?.uid,
+    });
+  }
 
-actualizar(tarea: CrearTareas, id:string){
-  const docRef = doc(this._coleccion, id)
-  return updateDoc(this._coleccion, {
-    ...tarea,
-    idUsuario: this._authState.usuarioActual?.uid
-  })
-}
