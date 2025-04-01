@@ -21,10 +21,11 @@ public class Contrato {
     private TipoContrato tipo_contrato;
 
     //CONSTRUCTORES
-    public Contrato(String id, Double importe, Departamento departamento) {
+    public Contrato(String id, Double importe, Departamento departamento, TipoContrato tipo_contrato) {
         this.id = id;
         this.importe = importe;
         this.departamento = departamento;
+        this.tipo_contrato = tipo_contrato;
     }
 
     public Contrato(){
