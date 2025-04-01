@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Tareas, CrearTareas, TareasService } from '../../data-access/tareas.service';
 import { toast } from 'ngx-sonner';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrl: './task-form.component.scss',
   providers: [TareasService],
 })
-export default class TaskFormComponent implements AfterViewInit{
+export default class TaskFormComponent{
   private _formBuilder = inject(FormBuilder);
   private _taskService = inject(TareasService);
   private _router = inject(Router);
@@ -22,14 +22,10 @@ export default class TaskFormComponent implements AfterViewInit{
   idTarea = input.required<string>();
 
   form = this._formBuilder.group({
-    title: this._formBuilder.control('', Validators.required),
-    completed: this._formBuilder.control(false, Validators.required),
+    titulo: this._formBuilder.control('', Validators.required),
+    completado: this._formBuilder.control(false, Validators.required),
   });
-  ngAfterViewInit() {
-    effect(()=> {
-      console.log(this.idTarea());
-    })
-  }
+
   constructor() {
     effect(() => {
       const id = this.idTarea();
@@ -44,10 +40,10 @@ export default class TaskFormComponent implements AfterViewInit{
 
     try {
       this.loading.set(true);
-      const { title, completed } = this.form.value;
+      const { titulo, completado } = this.form.value;
       const tarea: CrearTareas = {
-        titulo: title || '',
-        completado: !!completed,
+        titulo: titulo || '',
+        completado: !!completado,
       };
 
       const id = this.idTarea();
@@ -70,10 +66,10 @@ export default class TaskFormComponent implements AfterViewInit{
   async conseguirTarea(id: string) {
     const taskSnapshot = await this._taskService.conseguirTarea(id);
 
-    if (!taskSnapshot.exists()) return;
+    if(!taskSnapshot.exists()) return;
 
-    const task = taskSnapshot.data() as Task;
+    const tarea = taskSnapshot.data() as Tareas;
 
-    this.form.patchValue(task);
+    this.form.patchValue(tarea);
   }
 }

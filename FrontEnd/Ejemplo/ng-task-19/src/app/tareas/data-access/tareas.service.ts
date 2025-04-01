@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { idToken } from '@angular/fire/auth';
-import { Firestore, collection, addDoc, collectionData, updateDoc, doc } from '@angular/fire/firestore';
-import { catchError, Observable, ObservableInput, tap, throwError } from 'rxjs';
+import { Firestore, collection, addDoc, collectionData, updateDoc, doc, query, where, getDoc } from '@angular/fire/firestore';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
 export interface Tareas{
   id:string;
@@ -19,17 +19,16 @@ const path = 'tareas';
 })
 export class TareasService {
 private _firestore = inject(Firestore);
-private _authservice = inject(AuthStateService);
 private _authState = inject(AuthStateService);
 private _coleccion = collection(this._firestore, path);
+private _query = query(
+  this._coleccion,
+  where('userId', '==', this._authState.usuarioActual?.uid)
+);
 
 cargando = signal<boolean>(true)
 
-constructor(){
-this._authservice.usuarioActual
-}
-
-conseguirTarea = toSignal((collectionData(this._coleccion, {idField: 'id'}) as Observable<Tareas[]>).pipe(
+conseguirTareas = toSignal((collectionData(this._query, {idField: 'id'}) as Observable<Tareas[]>).pipe(
   tap(() =>{
     this.cargando.set(false)
   }),
@@ -40,18 +39,24 @@ conseguirTarea = toSignal((collectionData(this._coleccion, {idField: 'id'}) as O
 )
 , {initialValue: []})
 
+constructor(){
+  this._authState.usuarioActual
+}
+conseguirTarea(id: string) {
+  const docRef = doc(this._coleccion, id);
+  return getDoc(docRef);
+}
 crear(tarea: CrearTareas){
     return addDoc(this._coleccion, {
       ...tarea,
       idUsuario: this._authState.usuarioActual?.uid
     })
   }
+actualizar(tarea: CrearTareas, id:string) {
+    const docRef = doc(this._coleccion, id);
+      return updateDoc(docRef, {
+        ...tarea,
+        userId: this._authState.usuarioActual?.uid,
+      });
+    }
 }
-update(tarea: CrearTareas, id:string) {
-  const docRef = doc(this._collection, id);
-    return updateDoc(docRef, {
-      ...tarea,
-      userId: this._authState.currentUser?.uid,
-    });
-  }
-
