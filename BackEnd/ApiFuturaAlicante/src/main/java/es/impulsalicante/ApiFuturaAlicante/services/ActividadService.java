@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -24,13 +25,13 @@ public class ActividadService {
     }
 
     //GET by id
-    public Actividad getActividadByID(String id) {
-        return actividadRepository.findById(id).get();
+    public Optional<Actividad> getActividadByID(String id) {
+        return actividadRepository.findById(id);
     }
 
     //POST
-    public void postActividad(Actividad actividad) {
-        actividadRepository.save(actividad);
+    public Actividad createActividad(Actividad actividad) {
+        return actividadRepository.save(actividad);
     }
 
     //PUT

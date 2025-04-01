@@ -1,10 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Actividad;
-import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
-import es.impulsalicante.ApiFuturaAlicante.models.Proyecto;
 import es.impulsalicante.ApiFuturaAlicante.services.ActividadService;
-import es.impulsalicante.ApiFuturaAlicante.services.ProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,10 +38,10 @@ public class ActividadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProyecto(@RequestBody Proyecto proyecto) {
+    public ResponseEntity<?> createActividad(@RequestBody Actividad actividad) {
         try{
-            Proyecto nuevoProyecto = proyectoService.createProyecto(proyecto);
-            return ResponseEntity.ok(nuevoProyecto);
+            Actividad nuevaActividad = actividadService.createActividad(actividad);
+            return ResponseEntity.ok(nuevaActividad);
 
         }catch (Exception e){
             return ResponseEntity.badRequest().body("Error: " + e.toString());
@@ -53,24 +50,24 @@ public class ActividadController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProyecto(@PathVariable String id, @RequestBody Proyecto proyecto) {
-        Optional<Proyecto> existingProyecto = proyectoService.getProyectoById(id);
-        if (existingProyecto.isPresent()) {
-            proyectoService.updateProyecto(id, proyecto);
-            return ResponseEntity.ok("Proyecto con ID " + id + " actualizado correctamente.");
+    public ResponseEntity<String> updateActividad(@PathVariable String id, @RequestBody Actividad actividad) {
+        Optional<Actividad> existingActividad = actividadService.getActividadByID(id);
+        if (existingActividad.isPresent()) {
+            actividadService.updateActividad(id, actividad);
+            return ResponseEntity.ok("Actividad con ID " + id + " actualizada correctamente.");
         } else {
-            return ResponseEntity.status(404).body("No se pudo actualizar. Proyecto con ID " + id + " no encontrado.");
+            return ResponseEntity.status(404).body("No se pudo actualizar. Actividad con ID " + id + " no encontrada.");
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProyecto(@PathVariable String id) {
-        Optional<Proyecto> existingProyecto = proyectoService.getProyectoById(id);
-        if (existingProyecto.isPresent()) {
-            proyectoService.deleteProyecto(id);
-            return ResponseEntity.ok("Proyecto con ID " + id + " eliminado correctamente.");
+    public ResponseEntity<String> deleteActividad(@PathVariable String id) {
+        Optional<Actividad> existingActividad = actividadService.getActividadByID(id);
+        if (existingActividad.isPresent()) {
+            actividadService.deleteActividad(id);
+            return ResponseEntity.ok("Actividad con ID " + id + " eliminada correctamente.");
         } else {
-            return ResponseEntity.status(404).body("No se pudo eliminar. Proyecto con ID " + id + " no encontrado.");
+            return ResponseEntity.status(404).body("No se pudo eliminar. Actividad con ID " + id + " no encontrada.");
         }
     }
 }

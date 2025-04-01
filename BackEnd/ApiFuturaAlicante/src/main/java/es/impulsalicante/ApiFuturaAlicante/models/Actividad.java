@@ -16,9 +16,9 @@ public class Actividad {
 
     @Column
     private String descripcion;
-    @Column
+    @Column(name = "fecha_ini")
     private Date fecha_inicio;
-    @Column
+    @Column(name = "fecha_fin")
     private Date fecha_fin;
     @Column
     private int num_participantes;
