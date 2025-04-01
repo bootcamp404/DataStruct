@@ -10,4 +10,10 @@ import { RouterLink } from '@angular/router';
 })
 export class TablaComponent {
 tareas = input.required<Tareas[]>();
+
+constructor(){
+  effect(() => {
+    console.log(this.tareas)
+  })
+}
 }
