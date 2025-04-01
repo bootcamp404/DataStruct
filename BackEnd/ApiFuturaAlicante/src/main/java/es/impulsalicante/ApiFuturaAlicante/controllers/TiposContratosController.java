@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("tipos contratos")
+@RequestMapping("tipos-contratos")
 public class TiposContratosController {
     @Autowired
     private TiposContratosService servicio;

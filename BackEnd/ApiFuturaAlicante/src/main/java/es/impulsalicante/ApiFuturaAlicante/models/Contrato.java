@@ -1,9 +1,12 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "contrato")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Contrato {
     //PROPIEDADES
     @Id
@@ -21,10 +24,11 @@ public class Contrato {
     private TipoContrato tipo_contrato;
 
     //CONSTRUCTORES
-    public Contrato(String id, Double importe, Departamento departamento) {
+    public Contrato(String id, Double importe, Departamento departamento, TipoContrato tipo_contrato) {
         this.id = id;
         this.importe = importe;
         this.departamento = departamento;
+        this.tipo_contrato = tipo_contrato;
     }
 
     public Contrato(){
