@@ -29,7 +29,7 @@ public class Actividad {
     @JoinColumn(name = "id_departamento", nullable = false)
     private Departamento departamento;
 
-    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ActividadValoracionParticipante> valoracionesParticipantes;
 

@@ -25,7 +25,7 @@ public class Participante {
     @Column
     private int telefono;
 
-    @OneToMany(mappedBy = "participante", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "participante", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ActividadValoracionParticipante> actividadesValoraciones;
 

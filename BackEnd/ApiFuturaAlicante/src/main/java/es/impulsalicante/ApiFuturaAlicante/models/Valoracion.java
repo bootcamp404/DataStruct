@@ -17,8 +17,7 @@ public class Valoracion {
     @Column
     private String observaciones;
 
-    // Relación con ActividadValoracionParticipante
-    @OneToMany(mappedBy = "valoracion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "valoracion", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ActividadValoracionParticipante> actividadesParticipantes;
 
