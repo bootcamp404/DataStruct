@@ -1,7 +1,7 @@
 <section class="mx-auto max-w-screen-sm px-4">
     <form class="space-y-4 md:space-y-10" action="#" [formGroup]="formulario" (ngSubmit) = "submit()">
         <div>
-            <label for="Titulo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Titulo</label>
+            <label for="Titulo" class="block mb-2 text-sm font-medium text-emerald-950 dark:text-blue-700">Titulo</label>
             <input type="Titulo" name="Titulo" id="Titulo" formControlName="Titulo"
             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
              dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">
@@ -11,9 +11,9 @@
              @if (emailRequerido()) {
               <small class="text-red-500">El correo debe ser válido</small>
              } -->
-             
+
         </div>
-        
+
     <div>
         <label class="inline-flex items-center cursor-pointer">
         <input formControlName="Completado" type="checkbox" value="" class="sr-only peer">

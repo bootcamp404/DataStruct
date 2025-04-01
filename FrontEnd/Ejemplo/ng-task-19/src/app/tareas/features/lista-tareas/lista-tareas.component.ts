@@ -10,5 +10,5 @@ import { TareasService } from '../../data-access/tareas.service';
   styles: ``
 })
 export default class ListaTareasComponent {
-tareas = inject(TareasService).conseguirTareas
+  tareas = inject(TareasService);
 }

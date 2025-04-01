@@ -10,7 +10,7 @@ export default [
         loadComponent: () =>import('./tareas-form/tareas-form.component')
     },
     {
-        path:'editar/:id',
+        path:'editar/:idTarea',
         loadComponent: () =>import('./tareas-form/tareas-form.component')
     }
 
