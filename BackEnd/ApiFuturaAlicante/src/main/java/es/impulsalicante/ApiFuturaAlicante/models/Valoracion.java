@@ -1,6 +1,9 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 
 @Entity
@@ -14,6 +17,11 @@ public class Valoracion {
     @Column
     private String observaciones;
 
+    // Relación con ActividadValoracionParticipante
+    @OneToMany(mappedBy = "valoracion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ActividadValoracionParticipante> actividadesParticipantes;
+
     public void setId(String id) {
         this.id = id;
     }
@@ -24,6 +32,14 @@ public class Valoracion {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public void setActividadesParticipantes(List<ActividadValoracionParticipante> actividadesParticipantes) {
+        this.actividadesParticipantes = actividadesParticipantes;
+    }
+
+    public List<ActividadValoracionParticipante> getActividadesParticipantes() {
+        return actividadesParticipantes;
     }
 
     public String getId() {

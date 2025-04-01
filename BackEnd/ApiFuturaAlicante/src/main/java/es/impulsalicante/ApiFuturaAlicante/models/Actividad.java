@@ -1,8 +1,10 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -26,6 +28,10 @@ public class Actividad {
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
     private Departamento departamento;
+
+    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ActividadValoracionParticipante> valoracionesParticipantes;
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -53,6 +59,14 @@ public class Actividad {
 
     public void setNum_participantes(int num_participantes) {
         this.num_participantes = num_participantes;
+    }
+
+    public void setValoracionesParticipantes(List<ActividadValoracionParticipante> valoracionesParticipantes) {
+        this.valoracionesParticipantes = valoracionesParticipantes;
+    }
+
+    public List<ActividadValoracionParticipante> getValoracionesParticipantes() {
+        return valoracionesParticipantes;
     }
 
     public String getNombre() {
