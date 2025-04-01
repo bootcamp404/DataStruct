@@ -11,7 +11,8 @@ import lombok.Setter;
 @Setter
 public class Centros {
     @Id
-    private String id_centro;
+    @Column(name = "id_centro")
+    private String id;
 
     @Column(nullable = false)
     private String nombre;
@@ -19,9 +20,37 @@ public class Centros {
     @Column(nullable = false)
     private String direccion;
 
-    public void setId_centro(String id_centro) {
-        this.id_centro = id_centro;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Centros (String id, String nombre, String direccion){
+        this.id = id;
+        this.nombre = nombre;
+        this.direccion = direccion;
+    }
+
+    public Centros( ){ }
 
 }
 

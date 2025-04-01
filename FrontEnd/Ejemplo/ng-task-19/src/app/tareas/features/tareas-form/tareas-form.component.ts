@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   selector: 'app-task-form',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './task-form.component.html',
-  styleUrl: './task-form.component.scss',
+  templateUrl: './tareas-form.component.html',
+  styleUrl: './tareas-form.component.scss',
   providers: [TareasService],
 })
 export default class TaskFormComponent{
@@ -17,7 +17,7 @@ export default class TaskFormComponent{
   private _taskService = inject(TareasService);
   private _router = inject(Router);
 
-  loading = signal(false);
+  cargando = signal(false);
 
   idTarea = input.required<string>();
 
@@ -39,7 +39,7 @@ export default class TaskFormComponent{
     if (this.form.invalid) return;
 
     try {
-      this.loading.set(true);
+      this.cargando.set(true);
       const { titulo, completado } = this.form.value;
       const tarea: CrearTareas = {
         titulo: titulo || '',
@@ -59,7 +59,7 @@ export default class TaskFormComponent{
     } catch (error) {
       toast.success('Ocurrió un problema.');
     } finally {
-      this.loading.set(false);
+      this.cargando.set(false);
     }
   }
 

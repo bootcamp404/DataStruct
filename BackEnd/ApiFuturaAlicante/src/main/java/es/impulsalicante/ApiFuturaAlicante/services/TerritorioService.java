@@ -26,7 +26,7 @@ public class TerritorioService {
     }
 
     public Territorio updateTerritorio(String id, Territorio territorio) {
-        territorio.setId_centro(id);
+        territorio.setId(id);
         return territorioRepository.save(territorio);
     }
 
