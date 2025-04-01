@@ -1,6 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.services;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Proyecto;
+import es.impulsalicante.ApiFuturaAlicante.repository.DepartamentosRepository;
 import es.impulsalicante.ApiFuturaAlicante.repository.ProyectoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import java.util.Optional;
 @Service
 public class ProyectoService {
 
+    @Autowired
+    private DepartamentosRepository departamentoRepository;
     @Autowired
     private ProyectoRepository proyectoRepository;
 

@@ -42,6 +42,7 @@ CREATE TABLE `actividad` (
 
 LOCK TABLES `actividad` WRITE;
 /*!40000 ALTER TABLE `actividad` DISABLE KEYS */;
+INSERT INTO `actividad` VALUES ('A001','Taller Cultural','Un taller para fomentar la innovación.','2024-06-01','2024-06-30',30,'RRHH'),('A002','Taller de Ingenieria','Un taller para aprender.','2024-06-10','2024-06-25',30,'RRHH');
 /*!40000 ALTER TABLE `actividad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,6 +72,7 @@ CREATE TABLE `actividad_valoracion_participante` (
 
 LOCK TABLES `actividad_valoracion_participante` WRITE;
 /*!40000 ALTER TABLE `actividad_valoracion_participante` DISABLE KEYS */;
+INSERT INTO `actividad_valoracion_participante` VALUES ('A001','V003','P003');
 /*!40000 ALTER TABLE `actividad_valoracion_participante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,6 +123,7 @@ CREATE TABLE `centro` (
 
 LOCK TABLES `centro` WRITE;
 /*!40000 ALTER TABLE `centro` DISABLE KEYS */;
+INSERT INTO `centro` VALUES ('4','Sede PEPE','Calle Ficticia 123, Alicante'),('C2','Centro Sur','Avenida de Ejemplo 456, Alicante'),('C3','Centro Este','Plaza de la Ciudad 789, Alicante'),('T1','Territorio 1','Calle Falsa 123');
 /*!40000 ALTER TABLE `centro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +163,6 @@ DROP TABLE IF EXISTS `departamento`;
 CREATE TABLE `departamento` (
   `id_departamento` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `id` int NOT NULL,
   PRIMARY KEY (`id_departamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -171,6 +173,7 @@ CREATE TABLE `departamento` (
 
 LOCK TABLES `departamento` WRITE;
 /*!40000 ALTER TABLE `departamento` DISABLE KEYS */;
+INSERT INTO `departamento` VALUES ('RRHH','Recursos Humanos');
 /*!40000 ALTER TABLE `departamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,6 +204,7 @@ CREATE TABLE `empleado` (
 
 LOCK TABLES `empleado` WRITE;
 /*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
+INSERT INTO `empleado` VALUES ('45612378M','BBB','AAA','111222333','pepe.aaa@example.com','RRHH'),('78912345K','Quentin','Tarantino','444555666','quentin.t@example.com','RRHH'),('87654321Z','Pepe','Viyuela','987654321','pepe.viyuela@example.com','RRHH');
 /*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,6 +228,7 @@ CREATE TABLE `estado_subvencion` (
 
 LOCK TABLES `estado_subvencion` WRITE;
 /*!40000 ALTER TABLE `estado_subvencion` DISABLE KEYS */;
+INSERT INTO `estado_subvencion` VALUES ('E001','Pendiente'),('E002','Aprobada'),('E003','Rechazada'),('E004','En proceso'),('E005','Finalizada'),('E006','Cancelada');
 /*!40000 ALTER TABLE `estado_subvencion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,6 +256,7 @@ CREATE TABLE `participante` (
 
 LOCK TABLES `participante` WRITE;
 /*!40000 ALTER TABLE `participante` DISABLE KEYS */;
+INSERT INTO `participante` VALUES ('P003','Pepe','García','pepe.ejemplo@gmail.com','123456789');
 /*!40000 ALTER TABLE `participante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +273,7 @@ CREATE TABLE `proyecto` (
   `objetivo` varchar(255) DEFAULT NULL,
   `fecha_ini` date DEFAULT NULL,
   `fecha_fin` datetime(6) DEFAULT NULL,
-  `id_departamento` int NOT NULL,
+  `id_departamento` varchar(10) NOT NULL,
   `fecha_inicio` datetime(6) DEFAULT NULL,
   PRIMARY KEY (`id_proyecto`),
   KEY `id_departamento` (`id_departamento`)
@@ -280,6 +286,7 @@ CREATE TABLE `proyecto` (
 
 LOCK TABLES `proyecto` WRITE;
 /*!40000 ALTER TABLE `proyecto` DISABLE KEYS */;
+INSERT INTO `proyecto` VALUES ('P1','Proyecto A','Desarrollar una nueva página web',NULL,'2024-06-15 00:00:00.000000','RRHH','2024-03-15 00:00:00.000000');
 /*!40000 ALTER TABLE `proyecto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,6 +313,7 @@ CREATE TABLE `sede` (
 
 LOCK TABLES `sede` WRITE;
 /*!40000 ALTER TABLE `sede` DISABLE KEYS */;
+INSERT INTO `sede` VALUES ('4','RRHH');
 /*!40000 ALTER TABLE `sede` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,6 +342,7 @@ CREATE TABLE `subvencion` (
 
 LOCK TABLES `subvencion` WRITE;
 /*!40000 ALTER TABLE `subvencion` DISABLE KEYS */;
+INSERT INTO `subvencion` VALUES ('S001','Entidad pepe',5000.00,'E001'),('S002','Comunidad Valenciana',5000.00,'E002'),('S003','Fundación La Caixa',20000.00,'E003'),('S004','Gobierno de España',15000.00,'E004'),('S005','Universidad de Alicante',12000.00,'E005'),('S006','Ayuntamiento de Alicante',8000.00,'E006');
 /*!40000 ALTER TABLE `subvencion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,6 +370,7 @@ CREATE TABLE `territorio` (
 
 LOCK TABLES `territorio` WRITE;
 /*!40000 ALTER TABLE `territorio` DISABLE KEYS */;
+INSERT INTO `territorio` VALUES ('T1','P1',1);
 /*!40000 ALTER TABLE `territorio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,6 +422,7 @@ CREATE TABLE `valoracion` (
 
 LOCK TABLES `valoracion` WRITE;
 /*!40000 ALTER TABLE `valoracion` DISABLE KEYS */;
+INSERT INTO `valoracion` VALUES ('V002',4,'Un taller para fomentar la innovación en empresas. Muy recomendado'),('V003',4,'Un taller muy bueno.');
 /*!40000 ALTER TABLE `valoracion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -424,4 +435,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-28 11:38:37
+-- Dump completed on 2025-04-01 13:25:30

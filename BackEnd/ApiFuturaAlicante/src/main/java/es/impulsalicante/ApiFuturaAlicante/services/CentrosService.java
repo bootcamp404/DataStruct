@@ -26,7 +26,7 @@ public class CentrosService {
     }
 
     public Centros updateCentro(String id, Centros centro) {
-        centro.setId_centro(id);
+        centro.setId(id);
         return centroRepository.save(centro);
     }
 

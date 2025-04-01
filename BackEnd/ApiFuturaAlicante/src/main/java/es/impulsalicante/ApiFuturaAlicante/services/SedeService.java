@@ -26,7 +26,7 @@ public class SedeService {
     }
 
     public Sede updateSede(String id, Sede sede) {
-        sede.setId_centro(id);
+        sede.setId(id);
         return sedeRepository.save(sede);
     }
 
