@@ -57,7 +57,7 @@ export default class TaskFormComponent{
       toast.success(`Tarea ${id ? 'actualizada' : 'creada'}  correctamente.`);
       this._router.navigateByUrl('/tasks');
     } catch (error) {
-      toast.success('Ocurrio un problema.');
+      toast.success('Ocurrió un problema.');
     } finally {
       this.loading.set(false);
     }

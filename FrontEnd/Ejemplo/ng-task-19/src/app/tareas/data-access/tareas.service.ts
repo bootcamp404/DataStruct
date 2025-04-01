@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { idToken } from '@angular/fire/auth';
 import { Firestore, collection, addDoc, collectionData, updateDoc, doc, query, where, getDoc } from '@angular/fire/firestore';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, ObservableInput, tap, throwError } from 'rxjs';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
 export interface Tareas{
   id:string;
@@ -60,3 +60,5 @@ actualizar(tarea: CrearTareas, id:string) {
       });
     }
 }
+
+
