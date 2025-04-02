@@ -1,14 +1,10 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "Centro")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter
-@Setter
 public class Centros {
     @Id
     @Column(name = "id_centro")
