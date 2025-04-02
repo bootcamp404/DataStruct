@@ -25,12 +25,24 @@ public class Departamento {
         this.nombre = nombre;
     }
 
+    public void setEmpleados(List<Empleados> empleados) {
+        this.empleados = empleados;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
     public String getId() {
         return id;
+    }
+
+    public List<Empleados> getEmpleados() {
+        return empleados;
     }
 
     public Departamento (String id, String nombre){
