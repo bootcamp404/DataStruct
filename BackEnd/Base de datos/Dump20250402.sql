@@ -138,7 +138,8 @@ CREATE TABLE `contrato` (
   `id_contrato` varchar(20) NOT NULL,
   `importe_adjudicacion` decimal(10,2) NOT NULL,
   `id_departamento` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_contrato`),
+  `id_tipo_contrato` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_contrato`,`id_tipo_contrato`),
   KEY `id_departamento` (`id_departamento`),
   CONSTRAINT `contrato_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -384,10 +385,7 @@ DROP TABLE IF EXISTS `tipo_contrato`;
 CREATE TABLE `tipo_contrato` (
   `id_tipo_contrato` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `id_contrato` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id_tipo_contrato`),
-  KEY `id_contrato` (`id_contrato`),
-  CONSTRAINT `tipo_contrato_ibfk_1` FOREIGN KEY (`id_contrato`) REFERENCES `contrato` (`id_contrato`) ON DELETE CASCADE
+  PRIMARY KEY (`id_tipo_contrato`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -397,7 +395,35 @@ CREATE TABLE `tipo_contrato` (
 
 LOCK TABLES `tipo_contrato` WRITE;
 /*!40000 ALTER TABLE `tipo_contrato` DISABLE KEYS */;
+INSERT INTO `tipo_contrato` VALUES ('T001','Contratado');
 /*!40000 ALTER TABLE `tipo_contrato` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios` (
+  `dni` varchar(9) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `apellidos` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `telefono` varchar(45) DEFAULT NULL,
+  `NIF` varchar(9) NOT NULL,
+  PRIMARY KEY (`dni`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -435,4 +461,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-01 13:25:30
+-- Dump completed on 2025-04-02 10:11:41
