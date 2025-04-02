@@ -22,14 +22,14 @@ public class Usuario {
     private String telefono;
     @Column(name = "nif")
     @NotBlank(message = "El NIF de la empresa es obligatorio")
-    private String nif_empresa;
+    private String nif;
     @Column
     private String contrasenya;
 
     //CONSTRUCTOR
-    public Usuario(String dni, String nif_empresa, String telefono, String email, String apellidos, String nombre, String contrasenya) {
+    public Usuario(String dni, String nif, String telefono, String email, String apellidos, String nombre, String contrasenya) {
         this.dni = dni;
-        this.nif_empresa = nif_empresa;
+        this.nif = nif;
         this.telefono = telefono;
         this.email = email;
         this.apellidos = apellidos;
@@ -49,8 +49,8 @@ public class Usuario {
         this.contrasenya = contrasenya;
     }
 
-    public String getNif_empresa() {
-        return nif_empresa;
+    public String getNif() {
+        return nif;
     }
 
     public String getTelefono() {
