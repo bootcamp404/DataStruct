@@ -411,6 +411,7 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(45) NOT NULL,
   `apellidos` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
+  `contraseña` varchar(45) NOT NULL,
   `telefono` varchar(45) DEFAULT NULL,
   `NIF` varchar(9) NOT NULL,
   PRIMARY KEY (`dni`)
@@ -461,4 +462,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02 10:11:41
+-- Dump completed on 2025-04-02 10:28:00
