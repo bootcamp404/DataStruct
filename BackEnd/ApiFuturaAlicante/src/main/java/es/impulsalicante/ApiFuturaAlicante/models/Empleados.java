@@ -1,13 +1,9 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-
 
 @Entity
 @Table(name = "empleado")
-@Getter
 public class Empleados {
     @Id
     private String dni;
