@@ -1,5 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +19,7 @@ public class Departamento {
     private String nombre;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonIgnore
     private List<Empleados> empleados;
 
 
