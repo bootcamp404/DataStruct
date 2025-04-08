@@ -10,6 +10,7 @@ import { FacebookComponent } from '../../ui/facebook/facebook.component';
 interface FormSignUp {
   email: FormControl<string | null>;
   contrasenia: FormControl<string | null>;
+  confirmarcontrasenia: FormControl<string | null>;
 }
 
 @Component({
@@ -20,7 +21,7 @@ interface FormSignUp {
 })
 export default class SignUpComponent {
 
-  esRequerido(campo: 'email' | 'contrasenia'){
+  esRequerido(campo: 'email' | 'contrasenia' | 'confirmarcontrasenia'){
     return seRequiere(campo, this.form)
   }
   emailRequerido(){
@@ -33,11 +34,15 @@ export default class SignUpComponent {
   form = this._formBuilder.group({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
     contrasenia: this._formBuilder.control('', Validators.required),
+    confirmarcontrasenia: this._formBuilder.control('', Validators.required)
   })
 
   async submit() {
     try {
-    if(this.form.invalid) return;
+    if(this.form.invalid){
+      toast.error('Ha ocurrido un error.');
+      return;
+    };
 
     const { email, contrasenia} = this.form.value
 
@@ -46,9 +51,8 @@ export default class SignUpComponent {
     await this._authService.registrarse({email, contrasenia})
 
       toast.success('Usuario creado correctamente')
-      this._router.navigateByUrl('tareas');
+      //this._router.navigateByUrl('tareas');
     } catch (error) {
-      console.log(this.form.value.email)
       toast.error('Ha ocurrido un error.');
     }
   }
@@ -56,7 +60,7 @@ export default class SignUpComponent {
     try {
       await this._authService.iniciarSesionGoogle();
       toast.success('Bienvenido.');
-      this._router.navigateByUrl('tareas');
+      //this._router.navigateByUrl('tareas');
     } catch (error) {
       toast.error('Ha ocurrido un error.')
     }
@@ -65,9 +69,9 @@ export default class SignUpComponent {
     try {
       await this._authService.iniciarSesionFacebook();
       toast.success('Bienvenido.');
-      this._router.navigateByUrl('tareas');
+      //this._router.navigateByUrl('tareas');
     } catch (error) {
-
+      toast.error('Ha ocurrido un error.')
     }
   }
 }

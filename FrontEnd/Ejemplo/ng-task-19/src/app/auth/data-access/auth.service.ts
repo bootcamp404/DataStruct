@@ -6,6 +6,11 @@ export interface Usuario{
   email: string;
   contrasenia: string;
 }
+export interface UsuarioRegistro{
+  email: string;
+  contrasenia: string;
+  confirmarcontrasenia: string;
+}
 @Injectable({
   providedIn: 'root'
 })
