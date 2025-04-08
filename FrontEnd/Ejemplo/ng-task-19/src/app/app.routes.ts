@@ -11,10 +11,9 @@ export const routes: Routes = [
     canActivateChild: [privateGuard()],
     path: 'tareas',
     loadComponent: () => import('./compartido/interfaz/layout.component'),
-    loadChildren: () => import('./tareas/features/tareas.routes')
    },
    {
     path:'**',
-    redirectTo: '/tareas'
+    redirectTo: '/auth/sign-in'
    }
 ];

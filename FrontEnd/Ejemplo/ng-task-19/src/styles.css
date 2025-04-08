@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
-body{
-    @apply bg-gray-900;
-}
-
 :root{
     color-scheme: dark light;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
