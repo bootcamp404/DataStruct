@@ -22,6 +22,11 @@ export class CrearParticipanteComponent {
     telefono: ''
   };
 
+  // Funcion para que vuelva a la pagina/ruta main
+  volver(): void {
+    this.router.navigate(['']);
+  }
+
   loading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
