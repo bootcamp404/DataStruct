@@ -41,6 +41,7 @@ export class EditarParticipanteComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // Te muestra el participante a editar
   private loadParticipante(id: string): void {
     this.participanteService.getParticipante(id)
       .pipe(

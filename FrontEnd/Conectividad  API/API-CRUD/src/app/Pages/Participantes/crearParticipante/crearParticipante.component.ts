@@ -4,10 +4,11 @@ import { finalize, Subject, takeUntil } from 'rxjs';
 import { ParticipanteService } from '../../../Servicios/participante.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-crear',
-  imports: [ FormsModule ],
+  imports: [ FormsModule, CommonModule ],
   templateUrl: './crearParticipante.component.html',
   styleUrl: './crearParticipante.component.css'
 })
@@ -56,10 +57,8 @@ export class CrearParticipanteComponent {
       next: (res) => {
         console.log('Participante creado:', res);
         this.successMessage = 'Participante creado correctamente';
-        setTimeout(() => {
-          this.limpiarFormulario();
-          this.router.navigate(['']);
-        }, 1500);
+        this.limpiarFormulario();
+        this.router.navigate(['']);
       },
       error: (err) => {
         console.error('Error al crear:', err);

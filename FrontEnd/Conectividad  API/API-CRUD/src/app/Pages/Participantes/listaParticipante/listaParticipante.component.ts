@@ -21,6 +21,7 @@ export class ListaParticipanteComponent implements OnInit, OnDestroy {
     this.getParticipantesList();
   }
 
+  // Maneja  la limpieza de subscripciones y evita memory leaks.
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -44,24 +45,23 @@ export class ListaParticipanteComponent implements OnInit, OnDestroy {
   }
 
   eliminarParticipante(id: string | number): void {
-    // Optimista: Eliminar primero de la UI
     const index = this.participantes.findIndex(p => p.id === id);
     if (index === -1) return;
-    
+   
     const participanteEliminado = this.participantes[index];
     this.participantes = this.participantes.filter(p => p.id !== id);
-    
+   
     // Luego confirmar con el servidor
     this.participantesService.eliminarParticipante(id)
       .pipe(takeUntil(this.destroy$))
+      // Subscribe sirve para poder acceder a los datos de la API
       .subscribe({
+        next: () => {
+          console.log('Eliminación exitosa');
+        },
         error: (err) => {
           console.error('Error al eliminar:', err);
-          // Revertir si falla
-          this.participantes = [...this.participantes];
-          if (index >= 0) {
-            this.participantes.splice(index, 0, participanteEliminado);
-          }
+          this.getParticipantesList();
         }
       });
   }
