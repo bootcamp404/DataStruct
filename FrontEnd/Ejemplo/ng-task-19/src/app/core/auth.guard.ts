@@ -7,7 +7,6 @@ import { map } from 'rxjs';
 
 export const privateGuard = (): CanActivateFn => {
     return () => {
-
         const router =  inject(Router);
         const authEstados = inject(AuthStateService);
 

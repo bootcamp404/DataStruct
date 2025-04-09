@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { privateGuard, publicGuard } from './core/auth.guard';
+import { VerificacionComponent } from './auth/verificacion/verificacion.component';
 
 export const routes: Routes = [
    {
@@ -15,5 +16,9 @@ export const routes: Routes = [
    {
     path:'**',
     redirectTo: '/auth/sign-in'
+   },
+   {
+      path: 'verificacion',
+      component: VerificacionComponent
    }
 ];

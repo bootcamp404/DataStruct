@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from '@angular/fire/auth';
-
+import {sendEmailVerification} from '@angular/fire/auth';
 
 export interface Usuario{
   email: string;
@@ -33,5 +33,5 @@ iniciarSesionFacebook(){
 const facebook = new FacebookAuthProvider
 
 return signInWithPopup(this._auth, facebook)
-}
+  }
 }
