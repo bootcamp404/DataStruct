@@ -28,8 +28,8 @@ public class TiposContratosService {
     }
 
     //PUT
-    public TipoContrato EditarTipoContrato(TipoContrato tipo_contrato){
-        TipoContrato tipo_contrato_mod = repositorio.findById(tipo_contrato.getId()).get();
+    public TipoContrato EditarTipoContrato(String id, TipoContrato tipo_contrato){
+        TipoContrato tipo_contrato_mod = repositorio.findById(id).get();
 
         tipo_contrato_mod.setNombre(tipo_contrato.getNombre());
         tipo_contrato_mod.setContratos(tipo_contrato.getContratos());

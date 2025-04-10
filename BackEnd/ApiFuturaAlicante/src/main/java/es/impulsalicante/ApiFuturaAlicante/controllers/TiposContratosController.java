@@ -62,11 +62,11 @@ public class TiposContratosController {
     }
 
     //PUT
-    @PutMapping
-    public ResponseEntity<?> putTipoContrato(@RequestBody TipoContrato tipo_contrato){
+    @PutMapping("{id}")
+    public ResponseEntity<?> putTipoContrato(@PathVariable String id, @RequestBody TipoContrato tipo_contrato){
         try{
             //OK
-            return ResponseEntity.ok(servicio.EditarTipoContrato(tipo_contrato));
+            return ResponseEntity.ok(servicio.EditarTipoContrato(id, tipo_contrato));
         }
         catch (Exception e) {
             //404

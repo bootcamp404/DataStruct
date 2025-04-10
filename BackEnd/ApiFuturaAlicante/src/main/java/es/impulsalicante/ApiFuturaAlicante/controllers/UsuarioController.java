@@ -64,10 +64,10 @@ public class UsuarioController {
     }
 
     //PUT
-    @PutMapping
-    public ResponseEntity<?> putUsuario(@RequestBody Usuario user){
+    @PutMapping("{id}")
+    public ResponseEntity<?> putUsuario(@PathVariable String id, @RequestBody Usuario user){
         try{
-            Usuario user_mod = servicio.editarUsuario(user);
+            Usuario user_mod = servicio.editarUsuario(id, user);
             //OK
             return ResponseEntity.ok(user_mod);
         }

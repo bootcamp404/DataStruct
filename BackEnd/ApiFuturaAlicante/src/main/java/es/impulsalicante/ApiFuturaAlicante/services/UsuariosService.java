@@ -28,8 +28,8 @@ public class UsuariosService {
     }
 
     //PUT
-    public Usuario editarUsuario(Usuario user) {
-        Usuario user_mod = repositorio.findById(user.getDni()).get();
+    public Usuario editarUsuario(String id, Usuario user) {
+        Usuario user_mod = repositorio.findById(id).get();
 
         user_mod.setNombre(user.getNombre());
         user_mod.setApellidos(user.getApellidos());
