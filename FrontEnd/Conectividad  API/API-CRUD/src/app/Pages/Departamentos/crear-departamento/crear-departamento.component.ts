@@ -1,50 +1,46 @@
 import { Component } from '@angular/core';
-import { Participante } from '../../../Modelos/Participante';
+import { Departamento } from '../../../Modelos/Departamento';
 import { finalize, Subject, takeUntil } from 'rxjs';
-import { ParticipanteService } from '../../../Servicios/participante.service';
 import { Router } from '@angular/router';
+import { DepartamentoService } from '../../../Servicios/departamento.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-crear',
+  selector: 'app-crear-departamento',
   imports: [ FormsModule, CommonModule ],
-  templateUrl: './crearParticipante.component.html',
-  styleUrl: './crearParticipante.component.css'
+  templateUrl: './crear-departamento.component.html',
+  styleUrl: './crear-departamento.component.css'
 })
-export class CrearParticipanteComponent {
-  // Modelo de participante
-  participante: Participante = {
-    id: '',
-    nombre: '',
-    apellidos: '',
-    email: '',
-    telefono: ''
-  };
+export class CrearDepartamentoComponent {
 
-  // Funcion para que vuelva a la pagina/ruta main
-  volver(): void {
-    this.router.navigate(['']);
-  }
+  departamento: Departamento = {
+    id: '',
+    nombre: ''
+  };
 
   loading = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
-  private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();  
 
   constructor(
-    private participanteService: ParticipanteService,
+    private departamentoService: DepartamentoService,
     private router: Router
   ) {}
+
+  volver(): void {
+    this.router.navigate(['/']);
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  crearDataParticipante(): void {
+  crearDataDepartamento(): void {
     // Validación básica
-    if (!this.participante.nombre?.trim()) {
+    if (!this.departamento.nombre?.trim()) {
       this.errorMessage = 'El nombre es obligatorio';
       return;
     }
@@ -53,32 +49,29 @@ export class CrearParticipanteComponent {
     this.errorMessage = null;
     this.successMessage = null;
 
-    this.participanteService.crearParticipante(this.participante)
+    this.departamentoService.crearDepartamento(this.departamento)
     .pipe(
       takeUntil(this.destroy$),
       finalize(() => this.loading = false)
     )
     .subscribe({
       next: (res) => {
-        console.log('Participante creado:', res);
-        this.successMessage = 'Participante creado correctamente';
+        console.log('Departamento creado:', res);
+        this.successMessage = 'Departamento creado correctamente';
         this.limpiarFormulario();
         this.router.navigate(['']);
       },
       error: (err) => {
         console.error('Error al crear:', err);
-        this.errorMessage = 'Error al crear el participante';
+        this.errorMessage = 'Error al crear el departamento';
       }
     });
   }
 
   limpiarFormulario(): void {
-    this.participante = {
+    this.departamento = {
       id: '',
-      nombre: '',
-      apellidos: '',
-      email: '',
-      telefono: ''
+      nombre: ''
     };
     this.successMessage = null;
     this.errorMessage = null;

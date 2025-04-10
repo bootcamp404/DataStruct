@@ -39,9 +39,9 @@ export class ParticipanteService {
     return this.httpClient.put<Participante>(`${this.baseURL}/${id}`, participante)
       .pipe(
         tap(participanteActualizado => {
-          const index = this.participantes.findIndex(p => p.id === id);
-          if (index !== -1) {
-            this.participantes[index] = participanteActualizado;
+          const indice = this.participantes.findIndex(p => p.id === id);
+          if (indice !== -1) {
+            this.participantes[indice] = participanteActualizado;
           }
         })
       );

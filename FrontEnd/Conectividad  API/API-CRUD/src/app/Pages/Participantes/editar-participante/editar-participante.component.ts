@@ -10,8 +10,8 @@ import { Subject, finalize, takeUntil } from 'rxjs';
   selector: 'app-editar',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './editarParticipante.component.html',
-  styleUrl: './editarParticipante.component.css'
+  templateUrl: './editar-participante.component.html',
+  styleUrl: './editar-participante.component.css'
 })
 export class EditarParticipanteComponent implements OnInit, OnDestroy {
   participante: Participante = {} as Participante;
@@ -28,12 +28,14 @@ export class EditarParticipanteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
+    // Si salta este error, lo mas seguro que sea culpa de nuestro codigo
     if (!id) {
-      this.errorMessage = 'ID de participante no proporcionado';
+      this.errorMessage = 'ID del participante no ha sido proporcionado';
       this.loading = false;
       return;
     }
-    this.loadParticipante(id);
+    this.cargarParticipante(id);
   }
 
   ngOnDestroy(): void {
@@ -42,21 +44,21 @@ export class EditarParticipanteComponent implements OnInit, OnDestroy {
   }
 
   // Te muestra el participante a editar
-  private loadParticipante(id: string): void {
+  private cargarParticipante(id: string): void {
     this.participanteService.getParticipante(id)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.loading = false)
-      )
-      .subscribe({
-        next: (res) => {
-          this.participante = res;
-        },
-        error: (err) => {
-          this.errorMessage = 'Error al cargar participante';
-          console.error('Error al cargar:', err);
-        }
-      });
+    .pipe(
+      takeUntil(this.destroy$),
+      finalize(() => this.loading = false)
+    )
+    .subscribe({
+      next: (res) => {
+        this.participante = res;
+      },
+      error: (err) => {
+        this.errorMessage = 'Error al cargar el participante';
+        console.error('Error al cargar:', err);
+      }
+    });
   }
 
   actualizarParticipante(): void {
@@ -67,20 +69,20 @@ export class EditarParticipanteComponent implements OnInit, OnDestroy {
     this.successMessage = null;
     
     this.participanteService.actualizarParticipante(this.participante.id, this.participante)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.loading = false)
-      )
-      .subscribe({
-        next: () => {
-          this.successMessage = 'Participante actualizado correctamente';
-          this.router.navigate(['']);
-        },
-        error: (err) => {
-          this.errorMessage = 'Error al actualizar participante';
-          console.error('Error al actualizar:', err);
-          this.router.navigate(['']);
-        }
-      });
+    .pipe(
+      takeUntil(this.destroy$),
+      finalize(() => this.loading = false)
+    )
+    .subscribe({
+      next: () => {
+        this.successMessage = 'Participante actualizado correctamente';
+        this.router.navigate(['/participantes']);
+      },
+      error: (err) => {
+        this.errorMessage = 'Error al actualizar el departamento';
+        console.error('Error al actualizar:', err);
+        this.router.navigate(['/participantes']);
+      }
+    });
   }
 }

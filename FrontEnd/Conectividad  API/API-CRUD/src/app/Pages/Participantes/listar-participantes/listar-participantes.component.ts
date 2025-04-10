@@ -7,8 +7,8 @@ import { Subject, finalize, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-lista',
   imports: [ RouterLink],
-  templateUrl: './listaParticipante.component.html',
-  styleUrl: './listaParticipante.component.css'
+  templateUrl: './listar-participantes.component.html',
+  styleUrl: './listar-participantes.component.css'
 })
 export class ListaParticipanteComponent implements OnInit, OnDestroy {
   participantes: Participante[] = [];
@@ -30,39 +30,42 @@ export class ListaParticipanteComponent implements OnInit, OnDestroy {
   getParticipantesList(): void {
     this.loading = true;
     this.participantesService.listaParticipantes()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.loading = false)
-      )
-      .subscribe({
-        next: (res) => {
-          this.participantes = res;
-        },
-        error: (err) => {
-          console.error('Error al cargar participantes:', err);
-        }
-      });
+    .pipe(
+      takeUntil(this.destroy$),
+      finalize(() => this.loading = false)
+    )
+    .subscribe({
+      next: (res) => {
+        this.participantes = res;
+      },
+      error: (err) => {
+        console.error('Error al cargar participantes:', err);
+      }
+    });
   }
 
   eliminarParticipante(id: string | number): void {
-    const index = this.participantes.findIndex(p => p.id === id);
-    if (index === -1) return;
+    const indice = this.participantes.findIndex(p => p.id === id);
+    if (indice === -1) return;
    
-    const participanteEliminado = this.participantes[index];
+    // Se almacena el participante eliminado por si se quiere implemantar
+    // una funcion para que recupere el último borrado
+    const participanteEliminado = this.participantes[indice];
+    
     this.participantes = this.participantes.filter(p => p.id !== id);
    
     // Luego confirmar con el servidor
     this.participantesService.eliminarParticipante(id)
-      .pipe(takeUntil(this.destroy$))
-      // Subscribe sirve para poder acceder a los datos de la API
-      .subscribe({
-        next: () => {
-          console.log('Eliminación exitosa');
-        },
-        error: (err) => {
-          console.error('Error al eliminar:', err);
-          this.getParticipantesList();
-        }
-      });
+    .pipe(takeUntil(this.destroy$))
+    // Subscribe sirve para poder acceder a los datos de la API
+    .subscribe({
+      next: () => {
+        console.log('Eliminación exitosa');
+      },
+      error: (err) => {
+        console.error('Error al eliminar:', err);
+        this.getParticipantesList();
+      }
+    });
   }
 }
