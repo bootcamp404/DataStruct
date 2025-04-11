@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from '@angular/fire/auth';
-import {sendEmailVerification} from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+  signInWithPopup, GoogleAuthProvider, FacebookAuthProvider} from '@angular/fire/auth';
+import { sendSignInLinkToEmail } from '@angular/fire/auth';
+
 
 export interface Usuario{
   email: string;

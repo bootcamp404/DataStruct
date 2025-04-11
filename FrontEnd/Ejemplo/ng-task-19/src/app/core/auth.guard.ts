@@ -13,9 +13,15 @@ export const privateGuard = (): CanActivateFn => {
         return authEstados.authEstado.pipe(
             map(estado => {
                 if (!estado) {
-                    router.navigateByUrl('/auth/sign-in');
+                    router.navigateByUrl('/verificacion');
                     return false;
                 }
+                 authEstados.refrescarUsuario();
+
+        if (!authEstados.usuarioActual?.emailVerified) {
+          router.navigateByUrl('/verifica-tu-correo');
+          return false;
+        }
                 return true;
             })
         );

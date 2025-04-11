@@ -1,13 +1,11 @@
-<div>
-    <div>
-        <h2>¡Gracias por registrarse!</h2>
-        <div>
-            <p>
-                Le hemos enviado un correo con un enlace de confirmación, revise su gmail y haga click en el enlace para confirmar.
-            </p>
-        </div>
-        <div>
-            <button>Reenviar confirmación de correo electrónico.</button>
-        </div>
-    </div>
-</div>
+<div class="container">
+    <h1>Verifica tu correo electrónico</h1>
+    <p>Hemos detectado que aún no verificaste tu cuenta. Por favor, revisa tu correo y haz clic en el enlace de confirmación.</p>
+  
+    <button (click)="reenviarCorreo()" [disabled]="cargando">
+      {{ cargando ? 'Enviando...' : 'Reenviar correo de verificación' }}
+    </button>
+  
+    <p class="mensaje">{{ mensaje }}</p>
+  </div>
+  

@@ -14,10 +14,6 @@ export const routes: Routes = [
     loadComponent: () => import('./compartido/interfaz/layout.component'),
    },
    {
-    path:'**',
-    redirectTo: '/auth/sign-in'
-   },
-   {
       path: 'verificacion',
       component: VerificacionComponent
    }
