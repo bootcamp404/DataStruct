@@ -66,10 +66,10 @@ public class DepartamentosController {
     }
 
     //PUT
-    @PutMapping
-    public ResponseEntity<?> putDepartamento(@RequestBody Departamento dep){
+    @PutMapping("{id}")
+    public ResponseEntity<?> putDepartamento(@PathVariable String id, @RequestBody Departamento dep){
         try{
-            Departamento dep_mod = servicio.putDepartamento(dep);
+            Departamento dep_mod = servicio.putDepartamento(id, dep);
             //OK
             return ResponseEntity.ok(dep_mod);
         }

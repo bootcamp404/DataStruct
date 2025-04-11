@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { Auth, authState, getAuth, signOut } from "@angular/fire/auth";
+import { Auth, authState, getAuth, signOut, sendEmailVerification, reload } from "@angular/fire/auth";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -18,4 +18,19 @@ export class AuthStateService{
     cerrarSesion(){
         return signOut(this._auth);
     }
+
+    enviarCorreoDeVerificacion(): Promise<void> {
+        const user = this.usuarioActual;
+        if (user && !user.emailVerified) {
+          return sendEmailVerification(user);
+        }
+        return Promise.resolve();
+      }
+      refrescarUsuario(): Promise<void> {
+        const user = this.usuarioActual;
+        if (user) {
+          return reload(user);
+        }
+        return Promise.resolve();
+      }
 }

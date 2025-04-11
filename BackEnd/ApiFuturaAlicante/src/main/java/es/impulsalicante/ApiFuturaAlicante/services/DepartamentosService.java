@@ -31,11 +31,12 @@ public class DepartamentosService {
     }
 
     //PUT
-    public Departamento putDepartamento(Departamento dep) {
-        Departamento dep_mod = repo_departamentos.findById(dep.getId()).get();
+    public Departamento putDepartamento(String id, Departamento dep) {
+        Departamento dep_mod = repo_departamentos.findById(id).get();
 
         dep_mod.setNombre(dep.getNombre());
 
+        repo_departamentos.save(dep_mod);
         return dep_mod;
     }
 

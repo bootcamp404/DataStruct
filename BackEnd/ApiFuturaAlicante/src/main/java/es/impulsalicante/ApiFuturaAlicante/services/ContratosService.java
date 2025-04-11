@@ -29,8 +29,8 @@ public class ContratosService {
     }
 
     //PUT
-    public Contrato EditarContrato(Contrato contrato){
-        Contrato contrato_mod = repositorio.findById(contrato.getId()).get();
+    public Contrato EditarContrato(String id, Contrato contrato){
+        Contrato contrato_mod = repositorio.findById(id).get();
 
         contrato_mod.setImporte(contrato.getImporte());
         contrato_mod.setDepartamento(contrato.getDepartamento());
