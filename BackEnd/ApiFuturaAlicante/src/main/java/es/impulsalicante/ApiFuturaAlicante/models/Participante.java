@@ -23,7 +23,7 @@ public class Participante {
     private String email;
 
     @Column
-    private int telefono;
+    private String telefono;
 
     @OneToMany(mappedBy = "participante", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -38,7 +38,7 @@ public class Participante {
         this.nombre = nombre;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -66,7 +66,7 @@ public class Participante {
         return nombre;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
