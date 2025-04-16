@@ -30,7 +30,7 @@ export default class SignInComponent {
     emailRequerido(){
       return errorMail(this.form)
     }
-
+  
   form = this._formBuilder.group<FormSignIn> ({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
     contrasenia: this._formBuilder.control('', Validators.required),
@@ -47,11 +47,7 @@ export default class SignInComponent {
     await this._authService.iniciarSesión({email, contrasenia})
 
       toast.success('Bienvenido')
-<<<<<<< HEAD
       this._router.navigateByUrl('/mainview');
-=======
-      //this._router.navigateByUrl('tareas');
->>>>>>> 5c7ba17cdefaba8b9b43a91b2a9d2fcda68ea2be
     } catch (error) {
       toast.error('Ha ocurrido un error');
     }

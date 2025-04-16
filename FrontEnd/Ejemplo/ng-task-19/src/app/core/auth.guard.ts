@@ -19,7 +19,7 @@ export const privateGuard = (): CanActivateFn => {
                  authEstados.refrescarUsuario();
 
         if (!authEstados.usuarioActual?.emailVerified) {
-          router.navigateByUrl('/verifica-tu-correo');
+          router.navigateByUrl('/verificacion');
           return false;
         }
                 return true;
@@ -36,11 +36,7 @@ export const publicGuard = (): CanActivateFn => {
         return authEstado.authEstado.pipe(
             map((estado) => {
                 if(estado){
-<<<<<<< HEAD
-                    router.navigateByUrl('/mainview');
-=======
-                    router.navigateByUrl('/auth/sign-in');
->>>>>>> 5c7ba17cdefaba8b9b43a91b2a9d2fcda68ea2be
+                    router.navigateByUrl('.//mainview');
                     return false;
                 }
                 return true;
