@@ -198,10 +198,42 @@ export class InformesComponent implements OnInit {
     window.print();
   }
 
-  compartirInforme(): void {
-    // Aquí puedes implementar la funcionalidad para compartir
-    // Por ejemplo, mostrar un modal con opciones de compartir
-    alert('Función de compartir en desarrollo');
+  async compartirInforme(): Promise<void> {
+    console.log('🟡 compartirInforme() fue llamado');
+
+    this.estadisticasService.generarMemoriaAnual(this.year).subscribe({
+      next: async (data) => {
+        const blob = new Blob([data], { type: 'application/pdf' });
+        const file = new File([blob], `Memoria_Anual_${this.year}.pdf`, { type: 'application/pdf' });
+  
+        if (navigator.share && navigator.canShare?.({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: `Memoria Anual ${this.year}`,
+              text: 'Te comparto el informe anual en PDF.',
+              files: [file]
+            });
+            console.log('Compartido correctamente');
+          } catch (error) {
+            console.error('Error al compartir:', error);
+          }
+        } else {
+          // Fallback para escritorio: descarga directa
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `Memoria_Anual_${this.year}.pdf`;
+          link.click();
+          window.URL.revokeObjectURL(url);
+  
+          alert('Tu navegador no soporta compartir archivos. El informe se ha descargado en su lugar.');
+        }
+      },
+      error: (error) => {
+        console.error('Error al generar el informe para compartir:', error);
+      }
+    });
   }
+  
 
 }
