@@ -12,5 +12,9 @@ export const routes: Routes = [
       path: 'mainview',
       component: MainviewComponent,
       canActivate: [privateGuard()]
+    },
+    {
+      path: '**',
+      redirectTo: '/auth/sign-in'
     }
 ];

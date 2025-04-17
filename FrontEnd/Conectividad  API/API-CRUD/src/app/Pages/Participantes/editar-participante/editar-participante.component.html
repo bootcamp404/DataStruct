@@ -41,11 +41,10 @@
   }
 
   <!-- Formulario -->
-  @if (!loading && !errorMessage && participante) {
     <form #participanteForm="ngForm" (ngSubmit)="actualizarParticipante()" class="space-y-4">
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">
-          Nombre
+          Nombre<span class="text-red-600">*</span>
         </label>
         <input 
           type="text" 
@@ -66,12 +65,12 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           [(ngModel)]="participante.apellidos" 
           name="apellidos" 
-          required>
+          >
       </div>
 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-          Email
+          Email<span class="text-red-600">*</span>
         </label>
         <input 
           type="email" 
@@ -84,7 +83,7 @@
 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="telefono">
-          Teléfono
+          Teléfono<span class="text-red-600">*</span>
         </label>
         <input 
           type="tel" 
@@ -110,17 +109,5 @@
         </button>
       </div>
     </form>
-  }
-
-  <!-- Mensaje si no se encuentra el participante -->
-  @if (!loading && !errorMessage && !participante) {
-    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded">
-      <div class="flex items-center">
-        <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-        <span>No se encontró el participante</span>
-      </div>
-    </div>
-  }
+  
 </div>
