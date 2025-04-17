@@ -28,24 +28,24 @@ export class ParticipanteService {
 
   crearParticipante(participante: Participante): Observable<Participante> {
     return this.httpClient.post<Participante>(this.baseURL, participante)
-      .pipe(
-        tap(nuevoParticipante => {
-          this.participantes.push(nuevoParticipante);
-        })
-      );  
-    }
+    .pipe(
+      tap(nuevoParticipante => {
+        this.participantes.push(nuevoParticipante);
+      })
+    );  
+  }
 
   actualizarParticipante(id: string, participante: Participante): Observable<Participante> {
     return this.httpClient.put<Participante>(`${this.baseURL}/${id}`, participante)
-      .pipe(
-        tap(participanteActualizado => {
-          const indice = this.participantes.findIndex(p => p.id === id);
-          if (indice !== -1) {
-            this.participantes[indice] = participanteActualizado;
-          }
-        })
-      );
-    }
+    .pipe(
+      tap(participanteActualizado => {
+        const indice = this.participantes.findIndex(p => p.id === id);
+        if (indice !== -1) {
+          this.participantes[indice] = participanteActualizado;
+        }
+      })
+    );
+  }
 
   eliminarParticipante(id: any): Observable<Participante> {
     return this.httpClient.delete<Participante>(`${this.baseURL}/${id}`)

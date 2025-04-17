@@ -3,5 +3,5 @@ export interface Participante{
     nombre: string
     apellidos: string
     email: string
-    telefono: string
+    telefono: string | null
 }
