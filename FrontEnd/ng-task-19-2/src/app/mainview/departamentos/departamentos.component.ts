@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Departamento {
   id: string;
@@ -14,7 +15,7 @@ interface Departamento {
 @Component({
   selector: 'app-departamentos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './departamentos.component.html',
 })
 export class DepartamentosComponent {
