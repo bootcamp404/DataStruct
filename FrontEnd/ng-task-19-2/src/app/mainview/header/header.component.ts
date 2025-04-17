@@ -6,6 +6,8 @@ import { NgZone } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 
+export class SharedModule { }
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
