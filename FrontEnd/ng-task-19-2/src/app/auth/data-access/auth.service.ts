@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut } from '@angular/fire/auth';
-
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 export interface Usuario{
   email: string;
@@ -12,6 +12,7 @@ export interface Usuario{
 export class AuthService {
   
 private _auth = inject(Auth)
+constructor(private router: Router) { }
 
 
 
@@ -37,7 +38,32 @@ logout() {
   return signOut(this._auth)
 }
 
-getCurrentUser() {
-  return this._auth.currentUser;
+getCurrentUser(): Promise<User| null> {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = this._auth.onAuthStateChanged(user => {
+      unsubscribe(); 
+      resolve(user);
+    }, reject);
+  });
+}
+
+updateUser(usuario: any): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const user = this._auth.currentUser;
+    if (user) {
+      updateProfile(user, {
+        displayName: usuario.nombre, // Actualiza el nombre
+        // photoURL: usuario.photoURL, // Actualiza la foto si la tienes
+      })
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    } else {
+      reject('Usuario no autenticado');
+    }
+  });
 }
 }

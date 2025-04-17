@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ContentComponent } from './content/content.component';
 import { DepartamentosComponent } from './departamentos/departamentos.component';
 import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +14,7 @@ import { FeaturesComponent } from "./features/features.component";
   templateUrl: './mainview.component.html',
   styleUrls: ['./mainview.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, HeaderComponent]
+  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, ContentComponent]
 })
 export class MainviewComponent implements OnInit {
   currentLanguage = 'Castellano';
