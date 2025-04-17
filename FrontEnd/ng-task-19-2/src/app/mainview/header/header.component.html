@@ -11,9 +11,10 @@
     <!-- Enlaces de navegación -->
     <nav>
       <ul class="navbar">
-        <li><a href="/formularios">Formularios</a></li>
-        <li><a href="/departamentos">Departamentos</a></li>
-        <li><a href="/informes">Informes</a></li>
+        <li><a routerLink="/mainview">Inicio</a></li>
+        <li><a routerLink="/formularios">Formularios</a></li>
+        <li><a routerLink="/departaments">Departamentos</a></li>
+        <li><a routerLink="/informes">Informes</a></li>
       </ul>
     </nav>
   </div>
@@ -57,7 +58,7 @@
       </button>
 
       <div *ngIf="isProfileMenuOpen" class="profile-menu">
-        <a href="/perfil">Mi Perfil</a>
+        <a routerLink="/perfil">Mi Perfil</a>
         <a href="/configuracion">Configuración</a>
         <div class="border-t border-gray-100"></div>
         <button (click)="onLogoutClick()" class="logout-btn">Cerrar Sesión</button>

@@ -1,0 +1,121 @@
+<div class="main-dep">
+<div class="w-full min-h-screen px-4 py-6">
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Departamentos</h1>
+      <p class="text-gray-600">Explora y gestiona los departamentos de tu organización</p>
+    </div>
+    <button (click)="crearDepartamento()" class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      Nuevo departamento
+    </button>
+  </div>
+
+  <!-- Búsqueda -->
+  <div class="mb-6">
+    <div class="relative">
+      <input
+        type="text"
+        placeholder="Buscar departamentos..."
+        (input)="buscarDepartamentos($event)"
+        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+      />
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Selector de vista -->
+  <div class="bg-gray-100 rounded-lg inline-flex p-1 mb-6">
+    <button 
+      [ngClass]="{'bg-white shadow-sm': vistaActual === 'cuadricula'}"
+      (click)="cambiarVista('cuadricula')" 
+      class="px-4 py-2 rounded-md text-sm font-medium"
+    >
+      Cuadrícula
+    </button>
+    <button 
+      [ngClass]="{'bg-white shadow-sm': vistaActual === 'lista'}"
+      (click)="cambiarVista('lista')" 
+      class="px-4 py-2 rounded-md text-sm font-medium"
+    >
+      Lista
+    </button>
+  </div>
+
+  <!-- Vista de cuadrícula -->
+  <div *ngIf="vistaActual === 'cuadricula'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div 
+      *ngFor="let dept of departments"
+      class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-md transition-shadow"
+    >
+      <div class="flex items-center mb-4">
+        <div [ngClass]="dept.bgColorClass" class="w-10 h-10 rounded-full flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="dept.iconColorClass" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="dept.icon" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-lg font-semibold text-gray-800">{{ dept.name }}</h3>
+          <p class="text-sm text-gray-600">{{ dept.description }}</p>
+        </div>
+      </div>
+      <button
+    (click)="verDepartamento(dept.id)"
+    [ngClass]="[dept.buttonBgClass, dept.buttonHoverClass]"
+    class="mt-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 py-2 font-semibold"
+>
+    Ver departamento
+</button>
+    </div>
+  </div>
+
+  <!-- Vista de lista -->
+  <div *ngIf="vistaActual === 'lista'" class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departamento</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+          <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let dept of departments" class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+              <div [ngClass]="dept.bgColorClass" class="w-8 h-8 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="dept.iconColorClass" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="dept.icon" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <div class="text-sm font-medium text-gray-900">{{ dept.name }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-900">{{ dept.description }}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <button 
+              (click)="verDepartamento(dept.id)" 
+              class="inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Ver
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>

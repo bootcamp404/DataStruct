@@ -1,0 +1,153 @@
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Informes y Memoria Anual</h1>
+        <p class="text-gray-600">Visualiza, analiza y exporta datos de formularios para la memoria anual</p>
+      </div>
+      <div class="flex space-x-2">
+        <button class="px-4 py-2 border border-gray-300 rounded-md flex items-center text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Imprimir
+        </button>
+        <button class="px-4 py-2 border border-gray-300 rounded-md flex items-center text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+          Compartir
+        </button>
+        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Generar memoria anual
+        </button>
+      </div>
+    </div>
+  
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold mb-1">Formularios</h2>
+        <p class="text-gray-500 text-sm mb-2">Total de formularios</p>
+        <p class="text-4xl font-bold">{{estadisticas.totalFormularios}}</p>
+      </div>
+  
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold mb-1">Respuestas</h2>
+        <p class="text-gray-500 text-sm mb-2">Total de respuestas</p>
+        <p class="text-4xl font-bold">{{estadisticas.totalRespuestas}}</p>
+      </div>
+  
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-lg font-semibold mb-1">Periodo</h2>
+        <p class="text-gray-500 text-sm mb-2">Año seleccionado</p>
+        <div class="flex items-center">
+          <p class="text-4xl font-bold mr-4">{{year}}</p>
+          <div class="relative">
+            <select 
+              [value]="year"
+              (change)="cambiarAnio(year)"
+              class="appearance-none bg-white border border-gray-300 rounded-md px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option [value]="2024">2024</option>
+              <option [value]="2023">2023</option>
+              <option [value]="2022">2022</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="mb-8 border-b border-gray-200">
+      <nav class="flex -mb-px">
+        <button 
+          (click)="cambiarTab('resumen')" 
+          class="mr-8 py-4 px-1 border-b-2 font-medium text-sm"
+          [class.border-blue-500]="activeTab === 'resumen'"
+          [class.text-blue-600]="activeTab === 'resumen'"
+          [class.border-transparent]="activeTab !== 'resumen'"
+          [class.text-gray-500]="activeTab !== 'resumen'"
+          [class.hover:text-gray-700]="activeTab !== 'resumen'"
+          [class.hover:border-gray-300]="activeTab !== 'resumen'"
+        >
+          Resumen
+        </button>
+        <button 
+          (click)="cambiarTab('formularios')" 
+          class="mr-8 py-4 px-1 border-b-2 font-medium text-sm"
+          [class.border-blue-500]="activeTab === 'formularios'"
+          [class.text-blue-600]="activeTab === 'formularios'"
+          [class.border-transparent]="activeTab !== 'formularios'"
+          [class.text-gray-500]="activeTab !== 'formularios'"
+          [class.hover:text-gray-700]="activeTab !== 'formularios'"
+          [class.hover:border-gray-300]="activeTab !== 'formularios'"
+        >
+          Formularios
+        </button>
+        <button 
+          (click)="cambiarTab('departamentos')" 
+          class="mr-8 py-4 px-1 border-b-2 font-medium text-sm"
+          [class.border-blue-500]="activeTab === 'departamentos'"
+          [class.text-blue-600]="activeTab === 'departamentos'"
+          [class.border-transparent]="activeTab !== 'departamentos'"
+          [class.text-gray-500]="activeTab !== 'departamentos'"
+          [class.hover:text-gray-700]="activeTab !== 'departamentos'"
+          [class.hover:border-gray-300]="activeTab !== 'departamentos'"
+        >
+          Departamentos
+        </button>
+        <button 
+          (click)="cambiarTab('memoriaAnual')" 
+          class="mr-8 py-4 px-1 border-b-2 font-medium text-sm"
+          [class.border-blue-500]="activeTab === 'memoriaAnual'"
+          [class.text-blue-600]="activeTab === 'memoriaAnual'"
+          [class.border-transparent]="activeTab !== 'memoriaAnual'"
+          [class.text-gray-500]="activeTab !== 'memoriaAnual'"
+          [class.hover:text-gray-700]="activeTab !== 'memoriaAnual'"
+          [class.hover:border-gray-300]="activeTab !== 'memoriaAnual'"
+        >
+          Memoria Anual
+        </button>
+      </nav>
+    </div>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-lg shadow">
+        <div class="p-6">
+          <h2 class="text-lg font-semibold mb-1">Respuestas por formulario</h2>
+          <p class="text-gray-500 text-sm mb-6">Distribución de respuestas</p>
+          
+          <div class="flex justify-center items-center h-64">
+            <div class="text-gray-400 flex flex-col items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <p>Gráfico de respuestas por formulario</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="bg-white rounded-lg shadow">
+        <div class="p-6">
+          <h2 class="text-lg font-semibold mb-1">Actividad mensual</h2>
+          <p class="text-gray-500 text-sm mb-6">Respuestas por mes</p>
+          
+          <div class="flex justify-center items-center h-64">
+            <div class="text-gray-400 flex flex-col items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p>Gráfico de actividad mensual</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

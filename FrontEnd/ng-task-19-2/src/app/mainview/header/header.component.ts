@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component,  ViewEncapsulation  } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/data-access/auth.service'; 
 import { CommonModule } from '@angular/common';
 import { NgZone } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
@@ -10,7 +11,8 @@ import { NgZone } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  encapsulation: ViewEncapsulation.None,
+  imports: [CommonModule, RouterModule]
 })
 export class HeaderComponent {
   searchTerm: string = '';
