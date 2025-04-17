@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 
+export class SharedModule { }
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

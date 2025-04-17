@@ -161,3 +161,9 @@
 .logo-text:hover {
   color: #000; 
 }
+
+@media print {
+  .no-imprimir {
+    display: none !important;
+  }
+}

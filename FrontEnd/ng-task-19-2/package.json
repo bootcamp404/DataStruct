@@ -21,6 +21,8 @@
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
     "@tailwindcss/postcss": "^4.0.14",
+    "chart.js": "^4.4.9",
+    "ng2-charts": "^8.0.0",
     "ngx-sonner": "^3.0.0",
     "ngx-toastr": "^19.0.0",
     "postcss": "^8.5.3",
