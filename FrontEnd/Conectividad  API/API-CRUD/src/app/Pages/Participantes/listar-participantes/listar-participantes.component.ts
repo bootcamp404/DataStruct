@@ -62,8 +62,7 @@ export class ListaParticipanteComponent implements OnInit, OnDestroy {
       next: () => {
         console.log('Eliminación exitosa');
       },
-      error: (err) => {
-        console.error('Error al eliminar:', err);
+      error: () => {
         this.getParticipantesList();
       }
     });
