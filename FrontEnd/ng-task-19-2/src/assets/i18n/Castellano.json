@@ -1,0 +1,67 @@
+{
+  "FEATURES": {
+    "TITLE": "Características Principales",
+    "DESCRIPTION": "Descubre todas las herramientas que tenemos para simplificar la gestión de tus formularios empresariales.",
+    "ITEMS": {
+      "CUSTOM_FORMS": {
+        "TITLE": "Formularios Personalizados",
+        "DESC": "Crea formularios adaptados a las necesidades específicas de cada departamento."
+      },
+      "DEPARTMENT_ORGANIZATION": {
+        "TITLE": "Organización Departamental",
+        "DESC": "Gestiona formularios por departamentos para una mejor organización y seguimiento."
+      },
+      "EXPORT_PDF": {
+        "TITLE": "Exportación a PDF",
+        "DESC": "Exporta formularios e informes en formato PDF para compartir o archivar."
+      },
+      "ADVANCED_ANALYTICS": {
+        "TITLE": "Análisis Avanzado",
+        "DESC": "Visualiza datos y tendencias con gráficos interactivos y paneles personalizables."
+      },
+      "TEAM_COLLABORATION": {
+        "TITLE": "Colaboración en Equipo",
+        "DESC": "Trabaja en conjunto con diferentes roles y permisos para cada miembro del equipo."
+      },
+      "PROCESS_AUTOMATION": {
+        "TITLE": "Automatización de Procesos",
+        "DESC": "Automatiza flujos de trabajo con aprobaciones y notificaciones."
+      },
+        "MAINVIEW": {
+          "FOOTER_COPYRIGHT": "© 2025 ImpulsAlicante - Todos los derechos reservados"
+        }
+    },
+      "DEPARTAMENTOS": {
+        "TITULO": "Departamentos",
+        "DESCRIPCION": "Selecciona un departamento para acceder a sus formularios.",
+        "RRHH": {
+          "NOMBRE": "Recursos Humanos",
+          "ICONO": "rrhh.png",
+          "DESCRIPCION": "Gestión de empleados y contrataciones",
+          "FORMULARIOS": ["Empleados", "Contratos"],
+          "COLOR_CLASE": "text-pink-500"
+        },
+        "EMP": {
+          "NOMBRE": "Empleo y Formación",
+          "ICONO": "empleo.png",
+          "DESCRIPCION": "Gestión de proyectos y seguimiento",
+          "FORMULARIOS": ["Proyectos", "Tareas"],
+          "COLOR_CLASE": "text-green-600"
+        },
+        "JUR": {
+          "NOMBRE": "Jurídico Administrativo",
+          "ICONO": "legal.png",
+          "DESCRIPCION": "Documentos administrativos y contratos",
+          "FORMULARIOS": ["Facturas", "Presupuestos"],
+          "COLOR_CLASE": "text-orange-500"
+        },
+        "MRK": {
+          "NOMBRE": "Marketing y Comunicación",
+          "ICONO": "marketing.png",
+          "DESCRIPCION": "Gestión de comunicación y campañas de marketing",
+          "FORMULARIOS": ["Informes", "Objetivos"],
+          "COLOR_CLASE": "text-blue-600"
+        }
+      }
+    }
+  }
