@@ -111,7 +111,7 @@ option {
       padding: 1rem !important;
     }
   }
-  
+
   .fade-in {
     animation: fadeIn 0.5s ease-in;
   }
@@ -153,3 +153,5 @@ option {
     --chart-warning: rgba(245, 158, 11, 0.7);
     --chart-danger: rgba(239, 68, 68, 0.7);
   }
+
+

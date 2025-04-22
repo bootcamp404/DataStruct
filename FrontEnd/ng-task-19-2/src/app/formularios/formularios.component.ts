@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from "../mainview/header/header.component";
 
 interface Formulario {
   id: number;
@@ -15,7 +16,7 @@ interface Formulario {
 @Component({
   selector: 'app-formularios',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './formularios.component.html',
   styleUrls: ['./formularios.component.css']
 })

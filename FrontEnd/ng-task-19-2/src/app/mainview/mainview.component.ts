@@ -7,6 +7,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
 import { FeaturesComponent } from "./features/features.component";
+import { HeaderComponent } from "./header/header.component";
 
 
 @Component({
@@ -14,7 +15,7 @@ import { FeaturesComponent } from "./features/features.component";
   templateUrl: './mainview.component.html',
   styleUrls: ['./mainview.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, ContentComponent]
+  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, ContentComponent, HeaderComponent]
 })
 export class MainviewComponent implements OnInit {
   currentLanguage = 'Castellano';

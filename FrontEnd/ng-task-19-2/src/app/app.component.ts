@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgxSonnerToaster } from 'ngx-sonner'
-import { HeaderComponent } from "./mainview/header/header.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgxSonnerToaster, HeaderComponent],
+  imports: [RouterOutlet, NgxSonnerToaster],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

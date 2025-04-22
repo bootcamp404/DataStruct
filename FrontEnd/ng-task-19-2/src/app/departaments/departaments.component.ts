@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from "../mainview/header/header.component";
 
 interface Department {
   id: number;
@@ -17,7 +18,7 @@ interface Department {
 @Component({
   selector: 'app-departaments',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './departaments.component.html',
   styleUrls: ['./departaments.component.css']
 })

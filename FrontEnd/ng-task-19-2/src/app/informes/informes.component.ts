@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EstadisticasService } from '../services/estadisticas.service';
 import { Chart, registerables } from 'chart.js';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from "../mainview/header/header.component";
 
 Chart.register(...registerables);
 
@@ -10,7 +11,7 @@ Chart.register(...registerables);
   selector: 'app-informes',
   templateUrl: './informes.component.html',
   styleUrls: ['./informes.component.css'],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HeaderComponent],
   standalone: true
 })
 

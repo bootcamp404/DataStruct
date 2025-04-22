@@ -135,6 +135,11 @@
     font-size: 0.9rem;
     color: #666666;
 }
+.language-btn, 
+button.language-btn, 
+.controls .language-btn {
+    color: white !important;
+}
 
 .search-button {
     padding: 0.5rem;
