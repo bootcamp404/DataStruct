@@ -32,7 +32,8 @@ export const routes: Routes = [
   },
   {
     path: 'informes',
-    component: InformesComponent
+    loadComponent: () => import('./informes/informes.component').then(m => m.InformesComponent),
+    canActivate: [privateGuard()], 
   },
   {
     path: '**',

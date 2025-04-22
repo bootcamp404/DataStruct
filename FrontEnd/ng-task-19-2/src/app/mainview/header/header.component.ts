@@ -1,10 +1,13 @@
 import { Component,  ViewEncapsulation  } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/data-access/auth.service'; 
+import { AuthService } from '../../auth/data-access/auth.service';
 import { CommonModule } from '@angular/common';
 import { NgZone } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
+
+export class SharedModule { }
 
 @Component({
   selector: 'app-header',
@@ -22,14 +25,15 @@ export class HeaderComponent {
     email: '' as string | null,
     displayName: '' as string | null,
   }
-  
 
-  
+
+
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private translate: TranslateService
   ) {}
 
   currentLanguage: string = 'Castellano';
@@ -65,6 +69,7 @@ closeDropdownOnClickOutside(event: MouseEvent): void {
 changeLanguage(language: string): void {
   this.currentLanguage = language;
   this.showLanguageDropdown = false;
+  this.translate.use(language);
   console.log(`Idioma cambiado a: ${language}`);
   // Aquí puedes emitir un evento o guardar la preferencia si hace falta
 }
@@ -78,7 +83,7 @@ changeLanguage(language: string): void {
    closeMenus(): void {
     this.isProfileMenuOpen = false;
   }
-  
+
 
   // Lógica para manejar los botones
   onLanguageClick() {
@@ -101,13 +106,13 @@ changeLanguage(language: string): void {
     console.log(`Buscando: ${input.value}`);
     // Implementar lógica de búsqueda
   }
-  
-  
+
+
   // Método para cambiar tema (claro/oscuro)
   toggleTheme(): void {
     console.log('Cambiando tema...');
     // Implementar cambio de tema
   }
 
-  
+
 }

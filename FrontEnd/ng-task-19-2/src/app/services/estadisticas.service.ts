@@ -1,170 +1,91 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadisticasService {
-  private apiUrl = '/api'; // Ajusta esto a tu API base
-  
+  private apiUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   /**
-   * Obtiene todas las estadísticas necesarias para el dashboard
+   * Obtiene las estadísticas para un año específico
+   * @param year Año para el cual obtener estadísticas
    */
   obtenerEstadisticas(year: number): Observable<any> {
-    // Hacemos múltiples peticiones en paralelo y combinamos resultados
-    return forkJoin({
-      formularios: this.obtenerFormularios(),
-      respuestas: this.obtenerRespuestas(year),
-      departamentos: this.obtenerDepartamentos()
+    return this.http.get<any>(`${this.apiUrl}/estadisticas?year=${year}`).pipe(
+      map(response => {
+        // Asegurarse de que los datos tengan el formato correcto
+        return {
+          totalFormularios: response.totalFormularios || 0,
+          totalRespuestas: response.totalRespuestas || 0,
+          respuestasPorMes: response.respuestasPorMes || Array(12).fill(0),
+          respuestasPorFormulario: response.respuestasPorFormulario || [],
+          nombresFormularios: response.nombresFormularios || [],
+          respuestasPorDepartamento: response.respuestasPorDepartamento || [],
+          nombresDepartamentos: response.nombresDepartamentos || []
+        };
+      }),
+      catchError(error => {
+        console.error('Error obteniendo estadísticas:', error);
+        // Devolver datos vacíos en caso de error
+        return of({
+          totalFormularios: 0,
+          totalRespuestas: 0,
+          respuestasPorMes: Array(12).fill(0),
+          respuestasPorFormulario: [],
+          nombresFormularios: [],
+          respuestasPorDepartamento: [],
+          nombresDepartamentos: []
+        });
+      })
+    );
+  }
+
+  /**
+   * Genera la memoria anual como PDF
+   * @param year Año para el cual generar la memoria
+   */
+  generarMemoriaAnual(year: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/memoria-anual/${year}`, {
+      responseType: 'blob'
     }).pipe(
-      map(results => this.calcularEstadisticas(results, year)),
       catchError(error => {
-        console.error('Error al obtener estadísticas:', error);
-        return of(this.getEstadisticasVacias());
+        console.error('Error generando memoria anual:', error);
+        throw error;
       })
     );
   }
 
   /**
-   * Obtiene la lista de formularios
+   * Opcional: Obtener datos de un formulario específico
+   * @param formId ID del formulario
+   * @param year Año para filtrar los datos
    */
-  private obtenerFormularios(): Observable<any[]> {
-    // Ajusta la URL según tu API
-    return this.http.get<any[]>(`${this.apiUrl}/formularios`).pipe(
+  obtenerDatosFormulario(formId: string, year: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/formularios/${formId}/estadisticas?year=${year}`).pipe(
       catchError(error => {
-        console.error('Error al obtener formularios:', error);
-        return of([]);
+        console.error(`Error obteniendo datos del formulario ${formId}:`, error);
+        return of({});
       })
     );
   }
 
   /**
-   * Obtiene las respuestas filtradas por año
+   * Opcional: Obtener datos de un departamento específico
+   * @param deptId ID del departamento
+   * @param year Año para filtrar los datos
    */
-  private obtenerRespuestas(year: number): Observable<any[]> {
-    // Ajusta la URL según tu API
-    return this.http.get<any[]>(`${this.apiUrl}/respuestas?year=${year}`).pipe(
+  obtenerDatosDepartamento(deptId: string, year: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/departamentos/${deptId}/estadisticas?year=${year}`).pipe(
       catchError(error => {
-        console.error('Error al obtener respuestas:', error);
-        return of([]);
+        console.error(`Error obteniendo datos del departamento ${deptId}:`, error);
+        return of({});
       })
     );
-  }
-
-  /**
-   * Obtiene la lista de departamentos
-   */
-  private obtenerDepartamentos(): Observable<any[]> {
-    // Ajusta la URL según tu API
-    return this.http.get<any[]>(`${this.apiUrl}/departamentos`).pipe(
-      catchError(error => {
-        console.error('Error al obtener departamentos:', error);
-        return of([]);
-      })
-    );
-  }
-
-  /**
-   * Calcula todas las estadísticas necesarias
-   */
-  private calcularEstadisticas(data: any, year: number): any {
-    const { formularios, respuestas, departamentos } = data;
-    
-    // Calcular estadísticas básicas
-    const totalFormularios = formularios.length;
-    const totalRespuestas = respuestas.length;
-    
-    // Calcular respuestas por mes
-    const respuestasPorMes = this.calcularRespuestasPorMes(respuestas);
-    
-    // Calcular respuestas por formulario
-    const respuestasPorFormulario = this.calcularRespuestasPorFormulario(respuestas, formularios);
-    
-    // Calcular respuestas por departamento
-    const respuestasPorDepartamento = this.calcularRespuestasPorDepartamento(respuestas, departamentos);
-    
-    return {
-      totalFormularios,
-      totalRespuestas,
-      respuestasPorMes,
-      respuestasPorFormulario: respuestasPorFormulario.conteos,
-      nombresFormularios: respuestasPorFormulario.nombres,
-      respuestasPorDepartamento: respuestasPorDepartamento.conteos,
-      nombresDepartamentos: respuestasPorDepartamento.nombres
-    };
-  }
-
-  /**
-   * Calcula respuestas por mes para el año seleccionado
-   */
-  private calcularRespuestasPorMes(respuestas: any[]): number[] {
-    // Inicializar array de 12 meses con ceros
-    const meses = Array(12).fill(0);
-    
-    // Contar respuestas por mes
-    respuestas.forEach(respuesta => {
-      const fecha = new Date(respuesta.fechaCreacion);
-      const mes = fecha.getMonth(); // 0-11
-      meses[mes]++;
-    });
-    
-    return meses;
-  }
-
-  /**
-   * Calcula respuestas por formulario
-   */
-  private calcularRespuestasPorFormulario(respuestas: any[], formularios: any[]): any {
-    const conteos = Array(formularios.length).fill(0);
-    const nombres = formularios.map(f => f.titulo || f.nombre);
-    
-    // Contar respuestas por formulario
-    respuestas.forEach(respuesta => {
-      const formularioId = respuesta.formularioId;
-      const index = formularios.findIndex(f => f.id === formularioId);
-      if (index !== -1) {
-        conteos[index]++;
-      }
-    });
-    
-    return { conteos, nombres };
-  }
-
-  /**
-   * Calcula respuestas por departamento
-   */
-  private calcularRespuestasPorDepartamento(respuestas: any[], departamentos: any[]): any {
-    const conteos = Array(departamentos.length).fill(0);
-    const nombres = departamentos.map(d => d.nombre);
-    
-    // Contar respuestas por departamento
-    respuestas.forEach(respuesta => {
-      const deptoId = respuesta.departamentoId;
-      const index = departamentos.findIndex(d => d.id === deptoId);
-      if (index !== -1) {
-        conteos[index]++;
-      }
-    });
-    
-    return { conteos, nombres };
-  }
-
-  /**
-   * Devuelve objeto con estadísticas vacías
-   */
-  private getEstadisticasVacias(): any {
-    return {
-      totalFormularios: 0,
-      totalRespuestas: 0,
-      respuestasPorMes: Array(12).fill(0),
-      respuestasPorFormulario: [],
-      nombresFormularios: [],
-      respuestasPorDepartamento: [],
-      nombresDepartamentos: []
-    };
   }
 }

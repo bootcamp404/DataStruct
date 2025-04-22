@@ -7,20 +7,20 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
 import { FeaturesComponent } from "./features/features.component";
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mainview',
   templateUrl: './mainview.component.html',
   styleUrls: ['./mainview.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, ContentComponent]
+  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, ContentComponent, TranslateModule]
 })
 export class MainviewComponent implements OnInit {
   currentLanguage = 'Castellano';
   searchControl = new FormControl('');
   showLanguageDropdown = false; // Nueva propiedad para controlar el dropdown
-  
+
 
   constructor(
     private router: Router,
@@ -70,6 +70,6 @@ export class MainviewComponent implements OnInit {
       this.authService.logout().then(() => {
       this.router.navigate(['/auth/sign-in']);
    });
-    
+
   }
 }
