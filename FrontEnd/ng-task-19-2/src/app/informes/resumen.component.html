@@ -1,0 +1,10 @@
+<div *ngIf="resumen">
+    <h2 class="text-xl font-bold">Memoria Anual {{ resumen.anio }}</h2>
+    <p>Presupuesto Total: {{ resumen.presupuestoTotal | currency:'EUR' }}</p>
+    <p>Ejecutado: {{ resumen.presupuestoEjecutado | currency:'EUR' }}</p>
+    <p>Porcentaje de Ejecución: {{ resumen.porcentajeEjecucion }}%</p>
+    <p>Personas Orientadas: {{ resumen.personasOrientadas }}</p>
+    <p>Actividades de Formación: {{ resumen.actividadesFormacion }}</p>
+    <p>Participantes: {{ resumen.participantesFormacion }}</p>
+  </div>
+  

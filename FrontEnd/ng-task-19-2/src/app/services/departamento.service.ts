@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
+<<<<<<< HEAD
 import { Department } from '../modelos/departamento';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+=======
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Department {
+  id: number;
+  nombre: string;
+  description: string;
+}
+>>>>>>> dad23b5fa5042b0972907991275e94c9f238435b
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartamentoService {
+<<<<<<< HEAD
   baseUrl: string = 'http://localhost:8080/alicanteFutura/api/v1/departamentos';
   departamentos: Department[] = []
 
@@ -46,5 +58,13 @@ export class DepartamentoService {
 
   eliminarDepartamento(id: any): Observable<Department> {
     return this.httpClient.delete<Department>(`${this.baseUrl}/${id}`)
+=======
+  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1/departamentos'; 
+
+  constructor(private http: HttpClient) {}
+
+  getDepartamentos(): Observable<Department[]> {
+    return this.http.get<Department[]>(this.baseUrl);
+>>>>>>> dad23b5fa5042b0972907991275e94c9f238435b
   }
 }
