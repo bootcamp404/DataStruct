@@ -1,0 +1,177 @@
+<form 
+  [formGroup]="departmentForm" 
+  (ngSubmit)="onSubmit()" 
+  class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md"
+  id="departmentForm"
+>
+  <h2 class="text-2xl font-bold mb-6 text-gray-800" id="formTitle">
+    @if (department) {
+      Editar Departamento ID: {{ department.id }}
+    } @else {
+      Crear Nuevo Departamento
+    }
+  </h2>
+
+  <!-- Campo ID -->
+  <div class="mb-4">
+    <label for="departmentId" class="block text-sm font-medium text-gray-700 mb-1">ID del Departamento</label>
+    <input
+      id="departmentId"
+      type="text"
+      formControlName="id"
+      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      [class.border-red-300]="departmentForm.get('id')?.invalid && departmentForm.get('id')?.touched"
+      aria-describedby="idError"
+    >
+    @if (departmentForm.get('id')?.invalid && departmentForm.get('id')?.touched) {
+      <div id="idError" class="text-red-500 text-sm mt-1">
+        @if (departmentForm.get('id')?.errors?.['required']) {
+          <span>El ID es requerido</span>
+        }
+        @if (departmentForm.get('id')?.errors?.['minlength']) {
+          <span>El ID debe contener al menos 3 caracteres</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Nombre -->
+  <div class="mb-4">
+    <label for="departmentName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Departamento</label>
+    <input
+      id="departmentName"
+      type="text"
+      formControlName="name"
+      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      [class.border-red-300]="departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched"
+    >
+    @if (departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched) {
+      <div id="nameError" class="text-red-500 text-sm mt-1">
+        @if (departmentForm.get('name')?.errors?.['required']) {
+          <span>El nombre es requerido</span>
+        }
+        @if (departmentForm.get('name')?.errors?.['minlength']) {
+          <span>Debe tener al menos 3 caracteres</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Descripción -->
+  <div class="mb-4">
+    <label for="departmentDescription" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+    <textarea
+      id="departmentDescription"
+      formControlName="description"
+      rows="3"
+      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      [class.border-red-300]="departmentForm.get('description')?.invalid && departmentForm.get('description')?.touched"
+    ></textarea>
+    @if (departmentForm.get('description')?.invalid && departmentForm.get('description')?.touched) {
+      <div id="descriptionError" class="text-red-500 text-sm mt-1">
+        @if (departmentForm.get('description')?.errors?.['required']) {
+          <span>La descripción es requerida</span>
+        }
+        @if (departmentForm.get('description')?.errors?.['minlength']) {
+          <span>Debe tener al menos 10 caracteres</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Icono (SVG Path) -->
+  <div class="mb-4">
+    <label for="departmentIcon" class="block text-sm font-medium text-gray-700 mb-1">Icono (SVG Path)</label>
+    <input
+      id="departmentIcon"
+      type="text"
+      formControlName="icon"
+      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      aria-describedby="iconError iconPreview"
+    >
+  </div>
+
+  <!-- Selector de Color -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2" id="colorLabel">Esquema de Color</label>
+    <div class="grid grid-cols-4 gap-3 sm:grid-cols-7" aria-labelledby="colorLabel">
+      @for (color of colorOptions; track color.id) {
+        <div class="flex items-center">
+          <input
+            name="colorOption"
+            type="radio"
+            [id]="color.id"
+            [value]="color.value"
+            (change)="updateColorClasses(color.value)"
+            class="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+            [checked]="departmentForm.get('iconColorClass')?.value.includes(color.value)"
+          >
+          <label [for]="color.id" class="ml-2 block text-sm font-medium text-gray-700">
+            {{ color.label }}
+          </label>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Vista previa del departamento -->
+  <!-- <div 
+    class="mb-6 p-4 rounded-lg" 
+    [class]="departmentForm.get('bgColorClass')?.value"
+    id="departmentPreview"
+  >
+    <h3 class="text-lg font-semibold mb-2" [class]="departmentForm.get('textColorClass')?.value">Vista Previa</h3>
+    <div class="flex items-center mb-3">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-8 h-8 mr-3"
+        [class]="departmentForm.get('iconColorClass')?.value"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="departmentForm.get('icon')?.value" />
+      </svg>
+      <span class="text-lg font-medium" [class]="departmentForm.get('textColorClass')?.value">
+        {{ departmentForm.get('name')?.value || 'Nombre del Departamento' }}
+      </span>
+    </div>
+    <p class="text-sm" [class]="departmentForm.get('textColorClass')?.value">
+      {{ departmentForm.get('description')?.value || 'Descripción del departamento...' }}
+    </p>
+    <button
+      type="button"
+      class="mt-3 px-4 py-2 rounded-md text-white font-medium"
+      [class]="departmentForm.get('buttonBgClass')?.value + ' ' + departmentForm.get('buttonHoverClass')?.value"
+      id="previewButton"
+    >
+      Botón de ejemplo
+    </button>
+  </div> -->
+
+  <!-- Botones -->
+  <div class="flex justify-end space-x-3">
+    <button
+      type="button"
+      class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      id="cancelButton"
+      (click)="cancel.emit()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      id="submitButton"
+      [disabled]="departmentForm.invalid"
+      [class.opacity-50]="departmentForm.invalid"
+    >
+      @if (department) {
+        Actualizar
+      } @else {
+        Crear
+      }
+    </button>
+  </div>
+</form>

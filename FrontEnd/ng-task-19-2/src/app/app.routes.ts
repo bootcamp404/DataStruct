@@ -6,6 +6,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { FormulariosComponent } from './formularios/formularios.component';
 import { DepartamentsComponent } from './departaments/departaments.component';
 import { InformesComponent } from './informes/informes.component';
+import { DepartamentFormComponent } from './departaments/departament-form/departament-form.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,10 @@ export const routes: Routes = [
     path: 'mainview',
     component: MainviewComponent,
     canActivate: [privateGuard()],
+  },
+  {
+    path: 'departaments/departments',
+    component: DepartamentFormComponent
   },
   {
     path: 'perfil',

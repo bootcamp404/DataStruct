@@ -44,7 +44,4 @@ export class DepartamentoService {
   eliminarDepartamento(id: any): Observable<Departamento> {
     return this.httpClient.delete<Departamento>(`${this.baseUrl}/${id}`)
   }
-
-  // Acordarse de añadir verificador a la hora de crear un departamento
-  // que no pueda tener un id repetido
 }
