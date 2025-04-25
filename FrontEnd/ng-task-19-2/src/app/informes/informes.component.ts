@@ -4,6 +4,9 @@ import { EstadisticasService } from '../services/estadisticas.service';
 import { Chart, registerables } from 'chart.js';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from "../mainview/header/header.component";
+import { Router } from '@angular/router'; 
+import { MemoriaService } from '../services/memoria.service';
+
 
 Chart.register(...registerables);
 
@@ -42,7 +45,10 @@ export class InformesComponent implements OnInit {
 
   aniosDisponibles = [2025, 2024, 2023, 2022];
 
-  constructor(private estadisticasService: EstadisticasService) { }
+  constructor(
+    private estadisticasService: EstadisticasService, 
+    private memoriaService: MemoriaService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.cargarEstadisticas();
@@ -82,6 +88,10 @@ export class InformesComponent implements OnInit {
     }
   }
 
+  irAlResumenMemoria(): void {
+      this.router.navigate(['/informes/resumen'], { queryParams: { year: this.year } });
+
+  }
   cambiarAnio(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const anio = parseInt(selectElement.value, 10);
@@ -176,11 +186,9 @@ export class InformesComponent implements OnInit {
     });
   }
 
-  exportarMemoriaAnual(): void {
-    // Implementar la generación y descarga del documento de memoria anual
-    this.estadisticasService.generarMemoriaAnual(this.year).subscribe({
+  generarMemoriaAnual(): void {
+    this.memoriaService.generarMemoriaAnual(this.year).subscribe({
       next: (data) => {
-        // Crear un enlace temporal para la descarga del archivo
         const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -194,6 +202,7 @@ export class InformesComponent implements OnInit {
       }
     });
   }
+  
 
   imprimirPagina(): void {
     window.print();

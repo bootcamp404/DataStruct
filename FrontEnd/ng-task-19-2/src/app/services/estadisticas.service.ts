@@ -50,7 +50,7 @@ export class EstadisticasService {
    * Genera la memoria anual como PDF
    * @param year Año para el cual generar la memoria
    */
-  generarMemoriaAnual(year: number): Observable<any> {
+  generarMemoriaAnual(year: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/memoria-anual/${year}`, {
       responseType: 'blob'
     }).pipe(

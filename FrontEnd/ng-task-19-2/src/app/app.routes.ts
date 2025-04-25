@@ -6,6 +6,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { FormulariosComponent } from './formularios/formularios.component';
 import { DepartamentsComponent } from './departaments/departaments.component';
 import { InformesComponent } from './informes/informes.component';
+import { ResumenComponent } from './informes/resumen.component';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,12 @@ export const routes: Routes = [
   {
     path: 'informes',
     loadComponent: () => import('./informes/informes.component').then(m => m.InformesComponent),
-    canActivate: [privateGuard()], 
+    canActivate: [privateGuard()]
+  },
+  {
+    path: 'informes/resumen',
+    loadComponent: () => import('./informes/resumen.component').then(m => m.ResumenComponent),
+    canActivate: [privateGuard()]
   },
   {
     path: '**',
