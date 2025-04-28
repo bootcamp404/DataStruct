@@ -36,32 +36,21 @@
         "DESCRIPCION": "Select a department to access its forms.",
         "RRHH": {
           "NOMBRE": "Human Resources",
-          "ICONO": "rrhh.png",
-          "DESCRIPCION": "Employee and recruitment management",
-          "FORMULARIOS": ["Employees", "Contracts"],
-          "COLOR_CLASE": "text-pink-500"
+          "DESCRIPCION": "Employee and hiring management"
         },
         "EMP": {
           "NOMBRE": "Employment and Training",
-          "ICONO": "empleo.png",
-          "DESCRIPCION": "Project management and monitoring",
-          "FORMULARIOS": ["Projects", "Tasks"],
-          "COLOR_CLASE": "text-green-600"
+          "DESCRIPCION": "Project management and tracking"
         },
         "JUR": {
           "NOMBRE": "Legal and Administrative",
-          "ICONO": "legal.png",
-          "DESCRIPCION": "Administrative documents and contracts",
-          "FORMULARIOS": ["Invoices", "Budgets"],
-          "COLOR_CLASE": "text-orange-500"
+          "DESCRIPCION": "Administrative documents and contracts"
         },
         "MRK": {
           "NOMBRE": "Marketing and Communication",
-          "ICONO": "marketing.png",
-          "DESCRIPCION": "Communication management and marketing campaigns",
-          "FORMULARIOS": ["Reports", "Objectives"],
-          "COLOR_CLASE": "text-blue-600"
-        }
+          "DESCRIPCION": "Communication management and marketing campaigns"
+        },
+        "ACCEDER": "Access"
       }
     }
   }

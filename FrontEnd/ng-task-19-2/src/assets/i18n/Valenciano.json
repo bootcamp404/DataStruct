@@ -31,37 +31,26 @@
         "FOOTER_COPYRIGHT": "© 2025 ImpulsAlicante - Tots els drets reservats"
       }
     },
-      "DEPARTAMENTOS": {
-        "TITULO": "Departaments",
-        "DESCRIPCION": "Selecciona un departament per accedir als seus formularis.",
-        "RRHH": {
-          "NOMBRE": "Recursos Humans",
-          "ICONO": "rrhh.png",
-          "DESCRIPCION": "Gestió d'empleats i contractacions",
-          "FORMULARIOS": ["Empleats", "Contractes"],
-          "COLOR_CLASE": "text-pink-500"
-        },
-        "EMP": {
-          "NOMBRE": "Ocupació i Formació",
-          "ICONO": "empleo.png",
-          "DESCRIPCION": "Gestió de projectes i seguiment",
-          "FORMULARIOS": ["Projectes", "Tasques"],
-          "COLOR_CLASE": "text-green-600"
-        },
-        "JUR": {
-          "NOMBRE": "Jurídic i Administratiu",
-          "ICONO": "legal.png",
-          "DESCRIPCION": "Documents administratius i contractes",
-          "FORMULARIOS": ["Factures", "Pressupostos"],
-          "COLOR_CLASE": "text-orange-500"
-        },
-        "MRK": {
-          "NOMBRE": "Màrqueting i Comunicació",
-          "ICONO": "marketing.png",
-          "DESCRIPCION": "Gestió de comunicació i campanyes de màrqueting",
-          "FORMULARIOS": ["Informes", "Objectius"],
-          "COLOR_CLASE": "text-blue-600"
-        }
-      }
+    "DEPARTAMENTOS": {
+      "TITULO": "Departaments",
+      "DESCRIPCION": "Selecciona un departament per accedir als seus formularis.",
+      "RRHH": {
+        "NOMBRE": "Recursos Humans",
+        "DESCRIPCION": "Gestió d'empleats i contractacions"
+      },
+      "EMP": {
+        "NOMBRE": "Empleo i Formació",
+        "DESCRIPCION": "Gestió de projectes i seguiment"
+      },
+      "JUR": {
+        "NOMBRE": "Jurídic Administratiu",
+        "DESCRIPCION": "Documents administratius i contractes"
+      },
+      "MRK": {
+        "NOMBRE": "Màrqueting i Comunicació",
+        "DESCRIPCION": "Gestió de comunicació i campanyes de màrqueting"
+      },
+      "ACCEDER": "Accedir"
     }
   }
+}
