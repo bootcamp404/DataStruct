@@ -2,11 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from "../mainview/header/header.component";
-<<<<<<< HEAD
 import { RouterLink } from '@angular/router';
-=======
 import { DepartamentoService, Department as ApiDepartment } from '../services/departamento.service';
->>>>>>> dad23b5fa5042b0972907991275e94c9f238435b
 
 interface Department extends ApiDepartment {
   icon: string;
@@ -32,7 +29,7 @@ export class DepartamentsComponent implements OnInit {
   constructor(private departamentoService: DepartamentoService) {}
 
   ngOnInit(): void {
-    this.departamentoService.getDepartamentos().subscribe({
+    this.departamentoService.listaDepartamentos().subscribe({
       next: (data) => {
         this.departments = data.map(dept => this.enriquecerDepartamento(dept));
       },
