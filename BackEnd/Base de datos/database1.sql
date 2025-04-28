@@ -60,9 +60,7 @@ CREATE TABLE `actividad_valoracion_participante` (
   PRIMARY KEY (`id_actividad`,`id_participante`),
   KEY `id_valoracion` (`id_valoracion`),
   KEY `id_participante` (`id_participante`),
-  CONSTRAINT `actividad_valoracion_participante_ibfk_1` FOREIGN KEY (`id_actividad`) REFERENCES `actividad` (`id_actividad`) ON DELETE CASCADE,
-  CONSTRAINT `actividad_valoracion_participante_ibfk_2` FOREIGN KEY (`id_valoracion`) REFERENCES `valoracion` (`id_valoracion`) ON DELETE CASCADE,
-  CONSTRAINT `actividad_valoracion_participante_ibfk_3` FOREIGN KEY (`id_participante`) REFERENCES `participante` (`id_participante`) ON DELETE CASCADE
+  CONSTRAINT `actividad_valoracion_participante_ibfk_1` FOREIGN KEY (`id_actividad`) REFERENCES `actividad` (`id_actividad`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -210,6 +208,36 @@ INSERT INTO `empleado` VALUES ('45612378M','BBB','AAA','111222333','pepe.aaa@exa
 UNLOCK TABLES;
 
 --
+-- Table structure for table `empresa`
+--
+
+DROP TABLE IF EXISTS `empresa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `empresa` (
+  `id_empresa` varchar(20) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `fecha_creacion` date DEFAULT NULL,
+  `id_departamento` varchar(20) NOT NULL,
+  `id_sector` int DEFAULT NULL,
+  PRIMARY KEY (`id_empresa`),
+  KEY `id_departamento` (`id_departamento`),
+  KEY `id_sector` (`id_sector`),
+  CONSTRAINT `empresa_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamento` (`id_departamento`) ON DELETE CASCADE,
+  CONSTRAINT `empresa_ibfk_2` FOREIGN KEY (`id_sector`) REFERENCES `sector_empresa` (`id_sector`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `empresa`
+--
+
+LOCK TABLES `empresa` WRITE;
+/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `estado_subvencion`
 --
 
@@ -218,7 +246,6 @@ DROP TABLE IF EXISTS `estado_subvencion`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estado_subvencion` (
   `id_estado_sub` varchar(20) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
   PRIMARY KEY (`id_estado_sub`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -229,7 +256,7 @@ CREATE TABLE `estado_subvencion` (
 
 LOCK TABLES `estado_subvencion` WRITE;
 /*!40000 ALTER TABLE `estado_subvencion` DISABLE KEYS */;
-INSERT INTO `estado_subvencion` VALUES ('E001','Pendiente'),('E002','Aprobada'),('E003','Rechazada'),('E004','En proceso'),('E005','Finalizada'),('E006','Cancelada');
+INSERT INTO `estado_subvencion` VALUES ('E001'),('E002'),('E003'),('E004'),('E005'),('E006');
 /*!40000 ALTER TABLE `estado_subvencion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,32 +297,32 @@ INSERT INTO `indicadores_anuales` VALUES (1,2025,'empleo',7360,199,54,99,1301,60
 UNLOCK TABLES;
 
 --
--- Table structure for table `participante`
+-- Table structure for table `kpis`
 --
 
-DROP TABLE IF EXISTS `participante`;
+DROP TABLE IF EXISTS `kpis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `participante` (
-  `id_participante` varchar(20) NOT NULL,
+CREATE TABLE `kpis` (
+  `id_kpi` varchar(20) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `apellidos` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id_participante`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `telefono_UNIQUE` (`telefono`)
+  `descripcion` text,
+  `valor_esperado` decimal(10,2) DEFAULT NULL,
+  `valor_actual` decimal(10,2) DEFAULT NULL,
+  `id_empresa` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_kpi`),
+  KEY `id_empresa` (`id_empresa`),
+  CONSTRAINT `kpis_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `participante`
+-- Dumping data for table `kpis`
 --
 
-LOCK TABLES `participante` WRITE;
-/*!40000 ALTER TABLE `participante` DISABLE KEYS */;
-INSERT INTO `participante` VALUES ('P003','Pepe','García','pepe.ejemplo@gmail.com','123456789');
-/*!40000 ALTER TABLE `participante` ENABLE KEYS */;
+LOCK TABLES `kpis` WRITE;
+/*!40000 ALTER TABLE `kpis` DISABLE KEYS */;
+/*!40000 ALTER TABLE `kpis` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -326,6 +353,29 @@ LOCK TABLES `proyecto` WRITE;
 /*!40000 ALTER TABLE `proyecto` DISABLE KEYS */;
 INSERT INTO `proyecto` VALUES ('P1','Proyecto A','Desarrollar una nueva página web',NULL,'2024-06-15 00:00:00.000000','RRHH','2024-03-15 00:00:00.000000');
 /*!40000 ALTER TABLE `proyecto` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sector_empresa`
+--
+
+DROP TABLE IF EXISTS `sector_empresa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sector_empresa` (
+  `id_sector` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_sector`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sector_empresa`
+--
+
+LOCK TABLES `sector_empresa` WRITE;
+/*!40000 ALTER TABLE `sector_empresa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sector_empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -367,8 +417,11 @@ CREATE TABLE `subvencion` (
   `entidad` varchar(255) NOT NULL,
   `importe` decimal(10,2) NOT NULL,
   `id_estado_sub` varchar(20) NOT NULL DEFAULT 'E001',
+  `id_proyecto` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id_subvencion`),
   KEY `id_estado_sub` (`id_estado_sub`),
+  KEY `fk_subvencion_proyecto` (`id_proyecto`),
+  CONSTRAINT `fk_subvencion_proyecto` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id_proyecto`),
   CONSTRAINT `subvencion_ibfk_1` FOREIGN KEY (`id_estado_sub`) REFERENCES `estado_subvencion` (`id_estado_sub`) ON DELETE RESTRICT,
   CONSTRAINT `subvencion_ibfk_2` FOREIGN KEY (`id_estado_sub`) REFERENCES `estado_subvencion` (`id_estado_sub`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -380,7 +433,7 @@ CREATE TABLE `subvencion` (
 
 LOCK TABLES `subvencion` WRITE;
 /*!40000 ALTER TABLE `subvencion` DISABLE KEYS */;
-INSERT INTO `subvencion` VALUES ('S001','Entidad pepe',5000.00,'E001'),('S002','Comunidad Valenciana',5000.00,'E002'),('S003','Fundación La Caixa',20000.00,'E003'),('S004','Gobierno de España',15000.00,'E004'),('S005','Universidad de Alicante',12000.00,'E005'),('S006','Ayuntamiento de Alicante',8000.00,'E006');
+INSERT INTO `subvencion` VALUES ('S001','Entidad pepe',5000.00,'E001',NULL),('S002','Comunidad Valenciana',5000.00,'E002',NULL),('S003','Fundación La Caixa',20000.00,'E003',NULL),('S004','Gobierno de España',15000.00,'E004',NULL),('S005','Universidad de Alicante',12000.00,'E005',NULL),('S006','Ayuntamiento de Alicante',8000.00,'E006',NULL);
 /*!40000 ALTER TABLE `subvencion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -444,14 +497,12 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
-  `dni` varchar(9) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `apellidos` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `contrasenya` varchar(45) NOT NULL,
   `telefono` varchar(45) DEFAULT NULL,
-  `NIF` varchar(9) NOT NULL,
-  PRIMARY KEY (`dni`),
+  PRIMARY KEY (`email`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `telefono_UNIQUE` (`telefono`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -465,32 +516,6 @@ LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `valoracion`
---
-
-DROP TABLE IF EXISTS `valoracion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `valoracion` (
-  `id_valoracion` varchar(20) NOT NULL,
-  `estrellas` int DEFAULT NULL,
-  `observaciones` text,
-  PRIMARY KEY (`id_valoracion`),
-  CONSTRAINT `valoracion_chk_1` CHECK ((`estrellas` between 1 and 5))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `valoracion`
---
-
-LOCK TABLES `valoracion` WRITE;
-/*!40000 ALTER TABLE `valoracion` DISABLE KEYS */;
-INSERT INTO `valoracion` VALUES ('V002',4,'Un taller para fomentar la innovación en empresas. Muy recomendado'),('V003',4,'Un taller muy bueno.');
-/*!40000 ALTER TABLE `valoracion` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -501,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-25 11:08:39
+-- Dump completed on 2025-04-28 13:11:10
