@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8080/api', 
+    apiUrl: 'http://localhost:8080/alicanteFutura/api/v1',
     apiKey: 'dev_api_key', 
     version: '1.0.0-dev',
     logging: true, // Activar logs detallados en desarrollo
