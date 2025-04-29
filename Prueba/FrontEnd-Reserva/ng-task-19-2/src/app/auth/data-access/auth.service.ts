@@ -23,7 +23,7 @@ export class AuthService {
   private _auth = inject(Auth);
   private _router = inject(Router);
 
-  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1/auth'; 
+  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1'; 
 
   constructor() {}
 
@@ -67,7 +67,7 @@ export class AuthService {
   async logout() {
     await signOut(this._auth);
     localStorage.removeItem('token');
-    this._router.navigate(['/login']);
+    this._router.navigate(['/auth/sign-in']);
   }
 
   // Guardar el token
