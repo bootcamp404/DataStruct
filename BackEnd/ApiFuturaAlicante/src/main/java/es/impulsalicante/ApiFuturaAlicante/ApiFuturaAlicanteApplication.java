@@ -21,8 +21,8 @@ public class ApiFuturaAlicanteApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("*") // Permite todos los orígenes (en desarrollo)
-						.allowedMethods("GET", "POST", "PUT", "DELETE");
+						.allowedOrigins("http://localhost:4200")
+						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
 			}
 		};
 	}
