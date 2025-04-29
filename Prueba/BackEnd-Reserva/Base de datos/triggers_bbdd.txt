@@ -1,0 +1,25 @@
+DELIMITER $$
+
+CREATE TRIGGER valid_departamento_marketing BEFORE INSERT ON Campanya_Marketing
+FOR EACH ROW
+BEGIN
+    IF NEW.id_departamento != 'MKT' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Solo el Departamento de Marketing puede crear campañas.';
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER valid_departamento_juridico BEFORE INSERT ON Contrato
+FOR EACH ROW
+BEGIN
+    IF NEW.id_departamento != 'JUR' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Solo el Departamento Jurídico puede crear contratos.';
+    END IF;
+END$$
+
+DELIMITER ;

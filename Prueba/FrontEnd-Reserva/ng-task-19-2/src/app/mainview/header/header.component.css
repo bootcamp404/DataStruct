@@ -1,0 +1,174 @@
+/* Estilo del botón de idioma */
+.language-btn {
+    background-color: #035398; 
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .language-btn:hover {
+    background-color: #06345b;
+  }
+  
+  .language-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+  }
+  
+  .language-dropdown a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #4b5563; /* Gris oscuro */
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .language-dropdown a:hover {
+    background-color: #f3f4f6; /* Gris claro en hover */
+  }
+  
+
+  /* Menú desplegable del perfil de usuario */
+.profile-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+  
+  .profile-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+  
+  .profile-menu a:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .user p {
+    color: #000;
+  }
+
+  /* Botón de cerrar sesión */
+  .logout-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    color: #4b5563;
+    font-size: 0.875rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    background-color: #f3f4f6;
+  }
+
+  /* Contenedor principal de la cabecera */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #f3f4f6;
+  }
+  
+  /* Contenedor de la navegación */
+  .navbar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  /* Contenedor de los controles (idioma, usuario, etc.) */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  /* Estilo para los enlaces de la barra de navegación */
+  .navbar a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+  }
+  
+  .navbar a:hover {
+    color: #035398; 
+  }
+
+  
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    background-color: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+    color: #666666;
+}
+.language-btn, 
+button.language-btn, 
+.controls .language-btn {
+    color: white !important;
+}
+
+.search-button {
+    padding: 0.5rem;
+    background-color: #035398;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #06345b;
+}
+
+.logo-text {
+  user-select: none;
+  cursor: default;
+  color: #000;
+  text-decoration: none;
+  pointer-events: none; 
+}
+
+.logo-text:hover {
+  color: #000; 
+}
+
+@media print {
+  .no-imprimir {
+    display: none !important;
+  }
+}
