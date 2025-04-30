@@ -1,0 +1,84 @@
+<app-header></app-header>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1>Panel Administrativo</h1>
+      <div class="create-group">
+        <button (click)="toggleDropdown()">Crear +</button>
+        <ul class="dropdown" [hidden]="!showDropdown">
+            <li (click)="navigateTo('departamentos/create')">Departamento</li>
+            <li (click)="navigateTo('documentos/create')">Documento</li>
+          </ul>
+          
+      </div>
+    </div>
+  
+    <!-- Sección de Departamentos -->
+    <div class="section">
+      <div class="section-header">
+        <h1>Departamentos</h1>
+        <a routerLink="/departamentos" class="see-more">Ver más ></a>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Recursos Humanos</h3>
+          <div class="card-actions">
+            <button>Editar</button>
+            <button style="background-color: #e62c2c;">Eliminar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Innovación</h3>
+          <div class="card-actions">
+            <button>Editar</button>
+            <button style="background-color: #e62c2c;">Eliminar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Promoción Económica</h3>
+          <div class="card-actions">
+            <button>Editar</button>
+            <button style="background-color: #e62c2c;">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Sección de Documentos -->
+    <div class="section">
+      <div class="section-header">
+        <h1>Documentos</h1>
+        <a routerLink="/documentos" class="see-more">Ver más ></a>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Plan Empleo 2025</h3>
+          <p>Documento estratégico de empleo.</p>
+          <small>Departamento: Recursos Humanos</small>
+          <div class="card-actions">
+            <button>Editar</button>
+            <button style="background-color: #e62c2c;">Eliminar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Guía Innovación</h3>
+          <p>Manual de buenas prácticas.</p>
+          <small>Departamento: Innovación</small>
+          <div class="card-actions">
+            <button>Editar</button>
+            <button style="background-color: #e62c2c;">Eliminar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Memoria Económica</h3>
+          <p>Resumen financiero del año.</p>
+          <small>Departamento: Económico</small>
+          <div class="card-actions">
+            <button>Editar</button>
+            <button style="background-color: #e62c2c;">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
