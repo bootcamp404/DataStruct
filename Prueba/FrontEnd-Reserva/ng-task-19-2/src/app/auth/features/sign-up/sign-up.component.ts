@@ -10,13 +10,13 @@ import { CommonModule } from '@angular/common';
 
 interface FormSignUp {
   email: FormControl<string | null>;
-  contrasenia: FormControl<string | null>;
-  confirmarContrasenia: FormControl<string | null>;
+  contrasenya: FormControl<string | null>;
+  confirmarContrasenya: FormControl<string | null>;
 }
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('contrasenia')?.value;
-  const confirmPassword = control.get('confirmarContrasenia')?.value;
+  const password = control.get('contrasenya')?.value;
+  const confirmPassword = control.get('confirmarContrasenya')?.value;
 
   return password && confirmPassword && password !== confirmPassword
     ? { passwordMismatch: true }
@@ -43,11 +43,11 @@ export default class SignUpComponent implements OnInit{
 
   form = this._formBuilder.group({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
-    contrasenia: this._formBuilder.control('', Validators.required),
-    confirmarContrasenia: this._formBuilder.control('', Validators.required)
+    contrasenya: this._formBuilder.control('', Validators.required),
+    confirmarContrasenya: this._formBuilder.control('', Validators.required)
   }, { validators: passwordMatchValidator });
 
-  esRequerido(campo: 'email' | 'contrasenia' | 'confirmarContrasenia') {
+  esRequerido(campo: 'email' | 'contrasenya' | 'confirmarContrasenya') {
     return seRequiere(campo, this.form);
   }
 
@@ -56,17 +56,17 @@ export default class SignUpComponent implements OnInit{
   }
 
   passwordNoCoincide() {
-    return this.form.errors?.['passwordMismatch'] && this.form.get('confirmarContrasenia')?.touched;
+    return this.form.errors?.['passwordMismatch'] && this.form.get('confirmarContrasenya')?.touched;
   }
 
   async submit() {
     try {
       if (this.form.invalid) return;
 
-      const { email, contrasenia } = this.form.value;
-      if (!email || !contrasenia) return;
+      const { email, contrasenya } = this.form.value;
+      if (!email || !contrasenya) return;
 
-      const response = await this._authService.registrarse({ email, contrasenia });
+      const response = await this._authService.registrarse({ email, contrasenya });
       this._authService.guardarToken(response.token);
 
       toast.success('Usuario creado correctamente');

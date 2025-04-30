@@ -6,7 +6,7 @@ import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOu
 
 export interface Usuario {
   email: string;
-  contrasenia: string;
+  contrasenya: string;
 }
 
 export interface AuthResponse {
@@ -32,7 +32,7 @@ export class AuthService {
     const response = await firstValueFrom(
       this._http.post<AuthResponse>(`${this.baseUrl}/register`, {
         email: usuario.email,
-        password: usuario.contrasenia
+        password: usuario.contrasenya
       })
     );
     return response;
@@ -43,7 +43,7 @@ export class AuthService {
     const response = await firstValueFrom(
       this._http.post<AuthResponse>(`${this.baseUrl}/login`, {
         email: usuario.email,
-        password: usuario.contrasenia
+        password: usuario.contrasenya
       })
     );
     return response;
