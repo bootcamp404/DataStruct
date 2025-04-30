@@ -22,6 +22,10 @@ public class Centros {
     @JoinColumn(name = "id_departamento")
     private Departamento departamento;
 
+    @ManyToOne
+    @JoinColumn(name = "id_proyecto")
+    private Proyecto proyecto;
+
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;

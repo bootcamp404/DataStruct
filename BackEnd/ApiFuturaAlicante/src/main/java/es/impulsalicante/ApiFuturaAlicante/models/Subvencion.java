@@ -22,6 +22,9 @@ public class Subvencion {
     @Column
     private Date fecha_creacion;
 
+    @ManyToOne
+    @JoinColumn(name = "id_proyecto")
+    private Proyecto proyecto;
 
     @ManyToOne
     @JoinColumn(name = "id_estado_sub", nullable = false)

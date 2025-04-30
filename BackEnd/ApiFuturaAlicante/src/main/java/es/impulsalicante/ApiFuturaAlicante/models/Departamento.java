@@ -23,6 +23,15 @@ public class Departamento {
     @OneToMany(mappedBy = "departamento")
     private List<Contrato> contratos;
 
+    @OneToMany(mappedBy = "departamento")
+    private List<Centros> centros;
+
+    @OneToMany(mappedBy = "departamento")
+    private List<Actividad> actividades;
+    
+    @OneToMany(mappedBy = "departamento")
+    private List<CampanyaMarketing> capanyasMarketing;
+
     //CONSTRUCTORES
     public Departamento (String id, String nombre){
         this.id = id;

@@ -2,6 +2,7 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Proyecto")
@@ -25,6 +26,12 @@ public class Proyecto {
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
     private Departamento departamento;
+
+    @OneToMany(mappedBy = "proyecto")
+    private List<Centros> centros;
+
+    @OneToMany(mappedBy = "proyecto")
+    private List<Subvencion> subvenciones;
 
     public String getId_proyecto() {
         return id_proyecto;
