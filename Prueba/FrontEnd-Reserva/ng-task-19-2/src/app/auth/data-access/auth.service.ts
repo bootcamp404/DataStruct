@@ -30,7 +30,7 @@ export class AuthService {
   // Registro usando TU API
   async registrarse(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      this._http.post<AuthResponse>(`${this.baseUrl}/register`, {
+      this._http.post<AuthResponse>(`${this.baseUrl}/usuarios`, {
         email: usuario.email,
         password: usuario.contrasenia
       })
@@ -41,7 +41,7 @@ export class AuthService {
   // Login usando TU API
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      this._http.post<AuthResponse>(`${this.baseUrl}/login`, {
+      this._http.post<AuthResponse>(`${this.baseUrl}/usuarios`, {
         email: usuario.email,
         password: usuario.contrasenia
       })
