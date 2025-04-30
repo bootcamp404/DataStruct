@@ -126,11 +126,83 @@ public class ResumenMemoriaService {
 
                 .append("</table>")
 
-                // Ayudas
-                .append("<div style='display: flex; justify-content: center; margin-top: 30px;'>")
+                // Ayudas (fuera de tabla)
+                .append("<div style='display: flex; justify-content: space-between; gap: 20px; margin-top: 30px;'>")
                 .append(bloqueAyuda("Ayudas concedidas a empresas", "3.944.170,34 €"))
                 .append(bloqueAyuda("Ayudas concedidas a entidades", datos.getImporteAyudas().toString() + " €"))
                 .append("</div>")
+                .append("</div>");
+
+
+        //1.2
+        html.append("<div style='page-break-before: always;'>")
+                .append("""
+<div style='page-break-before: always; font-family: Arial, sans-serif;'>
+  <div style='margin-bottom: 20px;'>
+    <div style='display: flex; align-items: center;'>
+      <div style='background-color: #004080; color: white; padding: 5px 10px; font-weight: bold; font-size: 14px; border-radius: 4px; margin-right: 10px;'>1.2</div>
+      <h2 style='color: #004080; margin: 0;'>QUÉ HACEMOS</h2>
+    </div>
+    <p style='margin-top: 15px; line-height: 1.6; font-size: 14px;'>
+      Desde su creación, en el año 2000, la <strong>Agencia Local de Desarrollo Económico y Social</strong> es la entidad gestora de las actuaciones y estrategias definidas en el
+      <strong>Pacto Territorial por el Empleo de la ciudad de Alicante</strong> y la encargada de poner en marcha políticas que impulsan la creación de empleo y el desarrollo socioeconómico del municipio.
+    </p>
+    <p style='line-height: 1.6; font-size: 14px;'>
+      Todas las actuaciones realizadas van encaminadas al desarrollo de las <strong>cuatro líneas estratégicas</strong> del Pacto Territorial:
+    </p>
+  </div>
+
+  <h3 style='color: #d4d9e1; font-size: 32px; margin-bottom: 10px;'>líneas estratégicas</h3>
+
+  <div style='display: flex; flex-wrap: wrap; gap: 10px; '>
+    <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+      <p style='font-weight: bold; color: #004080;'>1</p>
+      <p style='font-weight: bold;'>Apoyo activo al empleo con especial atención a colectivos vulnerables</p>
+      <ul style='margin-top: 5px; font-size: 13px;'>
+        <li>Orientación laboral</li>
+        <li>Formación para el empleo</li>
+        <li>Intermediación laboral</li>
+      </ul>
+    </div>
+    <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+      <p style='font-weight: bold; color: #004080;'>2</p>
+      <p style='font-weight: bold;'>Dinamización y diversificación de la economía del territorio</p>
+      <ul style='margin-top: 5px; font-size: 13px;'>
+        <li>Modernización del tejido productivo</li>
+        <li>Promoción del emprendimiento</li>
+        <li>Atracción de inversiones (ALIA)</li>
+      </ul>
+    </div>
+    <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+      <p style='font-weight: bold; color: #004080;'>3</p>
+      <p style='font-weight: bold;'>Transición del modelo productivo hacia la nueva economía</p>
+      <ul style='margin-top: 5px; font-size: 13px;'>
+        <li>Desarrollo tecnológico</li>
+        <li>Transformación digital</li>
+        <li>Innovación y emprendimiento – Alicante Futura</li>
+      </ul>
+    </div>
+    <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+      <p style='font-weight: bold; color: #004080;'>4</p>
+      <p style='font-weight: bold;'>Impulsar la colaboración público-privada y la planificación estratégica</p>
+      <ul style='margin-top: 5px; font-size: 13px;'>
+        <li>Entre administraciones públicas</li>
+        <li>Con entidades públicas y privadas</li>
+        <li>Mejora de los servicios al ciudadano</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style='color: #d4d9e1; font-size: 32px; margin-top: 30px;'>5 áreas</h3>
+  <div style='display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;'>
+    <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Empleo y Formación</div>
+    <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Promoción Económica</div>
+    <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento Jurídico Administrativo</div>
+    <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento Económico Financiero</div>
+    <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Marketing y Comunicación</div>
+  </div>
+</div>
+""")
 
                 .append("</div>");
 
@@ -245,12 +317,21 @@ public class ResumenMemoriaService {
 
     private String bloqueAyuda(String titulo, String valor) {
         return """
-        <div style='background-color: #004080; color: white; padding: 20px; margin: 10px; text-align: center; width: 250px;'>
-            <p style='margin: 0; font-weight: bold;'>%s</p>
-            <p style='font-size: 18px; font-weight: bold; margin-top: 10px;'>%s</p>
-        </div>
+    <div style='
+        background-color: #004080;
+        color: white;
+        width: 45%%;
+        text-align: center;
+        border-radius: 6px;
+        box-sizing: border-box;
+    '>
+        <p style='margin: 0; font-weight: bold;'>%s</p>
+        <p style='font-size: 18px; font-weight: bold; margin-top: 10px;'>%s</p>
+    </div>
     """.formatted(titulo, valor);
     }
+
+
 
     private String generarSeccionAnexos(int anio) {
         return """

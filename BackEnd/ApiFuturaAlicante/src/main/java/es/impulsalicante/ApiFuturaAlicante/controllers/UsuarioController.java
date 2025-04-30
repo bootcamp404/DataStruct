@@ -3,106 +3,70 @@ package es.impulsalicante.ApiFuturaAlicante.controllers;
 import es.impulsalicante.ApiFuturaAlicante.models.Usuario;
 import es.impulsalicante.ApiFuturaAlicante.services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("usuarios")
 public class UsuarioController {
-    @Autowired
-    private UsuariosService servicio;
 
-    //GET
+    @Autowired
+    private UsuariosService usuariosService;
+
     @GetMapping
-    public ResponseEntity<?> getUsuarios(){
+    public ResponseEntity<?> getAllUsuarios() {
         try{
-            //OK
-            return ResponseEntity.ok(servicio.obtenerUsuarios());
+            return ResponseEntity.ok(usuariosService.getAllUsuarios());
         }
-        //Error no contemplado
         catch (Exception e){
             return ResponseEntity.badRequest()
                     .body("Error no contemplado: " + e.getMessage());
         }
     }
 
-    //GET by id
-    @GetMapping("{dni}")
-    public ResponseEntity<?> getUsuarioById(@PathVariable String dni){
-        try{
-            Usuario user = servicio.obtenerUsuarioPorId(dni);
-            //OK
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            //404
-            if(e instanceof NoSuchElementException){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se ha encontrado un departamento con DNI: " + dni);
-            }
-            //Error no contemplado
-            else{
-                return ResponseEntity.badRequest().body("Error no contemplado: " + e.toString());
-            }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUsuarioById(@PathVariable String id) {
+        Optional<Usuario> usuario = usuariosService.getUsuarioById(id);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.status(404).body("Usuario con ID " + id + " no encontrado.");
         }
     }
 
-    //POST
     @PostMapping
-    public ResponseEntity<?> postUsuario(@RequestBody Usuario user){
+    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
         try{
-            servicio.crearUsuario(user);
-            //Creado
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
-        }
-        //Error no contemplado
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error no contemplado: " + e.toString());
+            Usuario nuevoUsuario = usuariosService.createUsuario(usuario);
+            return ResponseEntity.ok(nuevoUsuario);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: " + e.toString());
+
         }
     }
 
-    //PUT
-    @PutMapping("{id}")
-    public ResponseEntity<?> putUsuario(@PathVariable String id, @RequestBody Usuario user){
-        try{
-            Usuario user_mod = servicio.editarUsuario(id, user);
-            //OK
-            return ResponseEntity.ok(user_mod);
-        }
-        catch(Exception e){
-            //404
-            if(e instanceof NoSuchElementException){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se ha encontrado el departamento con DNI: " + user.getDni());
-            }
-            //Error no contemplado
-            else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Error no contemplado: " + e.toString());
-            }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUsuario(@PathVariable String id, @RequestBody Usuario usuario) {
+        Optional<Usuario> existingUsuario = usuariosService.getUsuarioById(id);
+        if (existingUsuario.isPresent()) {
+            usuariosService.updateUsuario(id, usuario);
+            return ResponseEntity.ok("Usuario con ID " + id + " actualizado correctamente.");
+        } else {
+            return ResponseEntity.status(404).body("No se pudo actualizar. Usuario con ID " + id + " no encontrado.");
         }
     }
 
-    //DELETE
-    @DeleteMapping("{dni}")
-    public ResponseEntity<?> deleteUsuario(@PathVariable String dni){
-        try{
-            servicio.eliminarUsuario(dni);
-            //OK
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            //404
-            if(e instanceof NoSuchElementException){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontró el departamento con DNI: " + dni);
-            }
-            //Error no contemplado
-            else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Error no contemplado: " + e.getMessage());
-            }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUsuario(@PathVariable String id) {
+        Optional<Usuario> existingUsuario = usuariosService.getUsuarioById(id);
+        if (existingUsuario.isPresent()) {
+            usuariosService.deleteUsuario(id);
+            return ResponseEntity.ok("Usuario con ID " + id + " eliminado correctamente.");
+        } else {
+            return ResponseEntity.status(404).body("No se pudo eliminar. Usuario con ID " + id + " no encontrado.");
         }
     }
 }

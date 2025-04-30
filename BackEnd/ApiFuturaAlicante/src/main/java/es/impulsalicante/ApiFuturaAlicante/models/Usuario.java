@@ -13,13 +13,17 @@ public class Usuario {
     @Id
     @Email(message = "Debe ingresar un email válido")
     private String email;
-    @Column @NotBlank(message = "El nombre es obligatorio")
+    @Column (nullable = true)
     private String nombre;
-    @Column @NotBlank(message = "Los apellidos son obligatorios")
+    @Column (nullable = true)
     private String apellidos;
-    @Column @Pattern(regexp = "\\d{9,12}", message = "El teléfono debe tener entre 9 y 12 dígitos")
+
+    @Column(nullable = true)
+    @Pattern(regexp = "\\d{9,12}", message = "El teléfono debe tener entre 9 y 12 dígitos")
     private String telefono;
+
     @Column
+    @NotBlank(message = "La contraseña es obligatoria")
     private String contrasenya;
 
     //CONSTRUCTOR
