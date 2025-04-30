@@ -4,13 +4,12 @@ import { MainviewComponent } from './mainview/mainview.component';
 import { privateGuard, publicGuard } from './core/auth.guard';
 import { PerfilComponent } from './perfil/perfil.component'; 
 import { FormulariosComponent } from './formularios/formularios.component';
-import { DepartamentsComponent } from './departaments/departaments.component';
 import { InformesComponent } from './informes/informes.component';
-<<<<<<< HEAD
 import { DepartamentFormComponent } from './departaments/departament-form/departament-form.component';
-=======
 import { ResumenComponent } from './informes/resumen.component';
->>>>>>> dad23b5fa5042b0972907991275e94c9f238435b
+import { DashboardComponent } from './auth/dashboard/dashboard.component';
+import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
+import { DepartamentsComponent } from './departaments/departaments.component'
 
 export const routes: Routes = [
   {
@@ -24,10 +23,6 @@ export const routes: Routes = [
     canActivate: [privateGuard()],
   },
   {
-    path: 'departaments/departments',
-    component: DepartamentFormComponent
-  },
-  {
     path: 'perfil',
     component: PerfilComponent
   },
@@ -35,9 +30,12 @@ export const routes: Routes = [
     path: 'formularios',
     component: FormulariosComponent
   },
-  {
-    path:'departaments',
-    component: DepartamentsComponent
+  { 
+    path: 'departamentos', 
+    children: [
+      { path: '', component: DepartamentsComponent },
+      { path: 'crear', component: DepartamentsComponent }
+    ]
   },
   {
     path: 'informes',
@@ -48,6 +46,10 @@ export const routes: Routes = [
     path: 'informes/resumen',
     loadComponent: () => import('./informes/resumen.component').then(m => m.ResumenComponent),
     canActivate: [privateGuard()]
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
     path: '**',
