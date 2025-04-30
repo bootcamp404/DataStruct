@@ -1,120 +1,213 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from "../mainview/header/header.component";
-import { RouterLink } from '@angular/router';
-import { DepartamentoService, Department as ApiDepartment } from '../services/departamento.service';
-
-interface Department extends ApiDepartment {
-  icon: string;
-  iconColorClass: string;
-  bgColorClass: string;
-  textColorClass: string;
-  buttonBgClass: string;
-  buttonHoverClass: string;
-}
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
+import { Departamento } from '../modelos/departamento';
+import { DepartamentoService } from '../services/departamento.service';
+import { DepartamentoValidaciones } from '../validaciones/departamento.validaciones';
 
 @Component({
-  selector: 'app-departaments',
+  selector: 'app-pagina-departamentos',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, RouterLink],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './departaments.component.html',
-  styleUrls: ['./departaments.component.css']
+  styleUrls: ['./departaments.component.css'],
+  host: {
+    ngSkipHydration: 'true'
+  }
 })
-export class DepartamentsComponent implements OnInit {
-  departments: Department[] = [];
-  vistaActual: 'cuadricula' | 'lista' = 'cuadricula';
-  searchTerm: string = '';
+export class DepartamentsComponent implements OnInit { 
+  formularioDepartamento: FormGroup;
+  formularioEdicion: FormGroup;
+  departamentos: Departamento[] = [];
+  selectedDepartamento: Departamento | null = null;
+  cargando = false;
+  cargandoLista = false;
+  enviado = false;
+  exito = false;
+  error = false;
+  errorLista = false;
+  mensajeError: string | null = null;
+  mensajeExito: string | null = null;
+  modo: 'lista' | 'crear' = 'lista';
+  eliminando = false;
+  mostrarModalEdicion = false;
+  editando = false;
 
-  constructor(private departamentoService: DepartamentoService) {}
+  constructor(
+    private fb: FormBuilder,
+    private departamentoService: DepartamentoService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.formularioDepartamento = this.fb.group({
+      id: [''],
+      nombre: ['']
+    });
 
-  ngOnInit(): void {
-    this.departamentoService.listaDepartamentos().subscribe({
-      next: (data) => {
-        this.departments = data.map(dept => this.enriquecerDepartamento(dept));
-      },
-      error: (err) => {
-        console.error('Error al cargar departamentos:', err);
+    this.formularioEdicion = this.fb.group({
+      id: [''],
+      nombre: ['']
+    });
+  }
+
+  ngOnInit() {
+    this.route.url.subscribe(segments => {
+      this.modo = segments[segments.length - 1]?.path === 'crear' ? 'crear' : 'lista';
+      if (this.modo === 'lista') {
+        this.cargarDepartamentos();
       }
     });
   }
 
-  cambiarVista(vista: 'cuadricula' | 'lista'): void {
-    this.vistaActual = vista;
-  }
-
-  verDepartamento(id: number): void {
-    console.log('Ver departamento', id);
-  }
-
-  crearDepartamento(): void {
-    console.log('Crear nuevo departamento');
-  }
-
-  buscarDepartamentos(event: Event): void {
-    this.searchTerm = (event.target as HTMLInputElement).value;
-  }
-
-  private enriquecerDepartamento(dept: ApiDepartment): Department {
-    const nombre = dept.nombre.toLowerCase();
-
-    type VisualStyle = {
-      icon: string;
-      iconColorClass: string;
-      bgColorClass: string;
-      textColorClass: string;
-    };
-    const estilos: Record<string, VisualStyle> = {
-      'recursos humanos': {
-        icon: 'M15.75 6a3.75 3.75 0 11-7.5 0...',
-        iconColorClass: 'text-blue-500',
-        bgColorClass: 'bg-blue-100',
-        textColorClass: 'text-blue-700'
+  cargarDepartamentos() {
+    this.cargandoLista = true;
+    this.departamentoService.obtenerDepartamentos().subscribe({
+      next: (departamentos) => {
+        this.departamentos = departamentos;
+        this.cargandoLista = false;
       },
-      'empleo formación': {
-        icon: 'M8.25 9.75L10.5 12 8.25 14.25...',
-        iconColorClass: 'text-green-500',
-        bgColorClass: 'bg-green-100',
-        textColorClass: 'text-green-700'
-      },
-      'promoción económica': {
-        icon: 'M2.25 12h2.25m8.25-9l4.5 16.5...',
-        iconColorClass: 'text-purple-500',
-        bgColorClass: 'bg-purple-100',
-        textColorClass: 'text-purple-700'
-      },
-      'marketing comunicación': {
-        icon: 'M2.25 12l8.954-8.955c.44-.439...',
-        iconColorClass: 'text-orange-500',
-        bgColorClass: 'bg-orange-100',
-        textColorClass: 'text-orange-700'
-      },
-      'jurídico administrativos': {
-        icon: 'M12 21v-2m0 2a2 2 0 01-2-2V7a2...',
-        iconColorClass: 'text-red-500',
-        bgColorClass: 'bg-red-100',
-        textColorClass: 'text-red-700'
-      },
-      'desarrollo local estratégico': {
-        icon: 'M3.75 13.5l10.5-11.25L12 10.5...',
-        iconColorClass: 'text-indigo-500',
-        bgColorClass: 'bg-indigo-100',
-        textColorClass: 'text-indigo-700'
+      error: (error) => {
+        console.error('Error al cargar departamentos:', error);
+        this.errorLista = true;
+        this.cargandoLista = false;
       }
-    };
-
-    const visual = estilos[nombre] || {
-      icon: '',
-      iconColorClass: 'text-gray-500',
-      bgColorClass: 'bg-gray-100',
-      textColorClass: 'text-gray-700'
-    };
-
-    return {
-      ...dept,
-      ...visual,
-      buttonBgClass: 'bg-custom-blue',
-      buttonHoverClass: 'hover:bg-custom-blue-hover'
-    };
+    });
   }
-}
+
+  selectDepartamento(departamento: Departamento) {
+    this.selectedDepartamento = departamento;
+  }
+
+  async enviarFormulario() {
+    this.enviado = true;
+    this.mensajeError = '';
+
+    // Validar el formulario
+    const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
+      this.formularioDepartamento,
+      this.departamentos
+    );
+
+    if (!resultadoValidacion.valido) {
+      this.error = true;
+      this.mensajeError = resultadoValidacion.errores.join('\n');
+      return;
+    }
+
+    try {
+      this.cargando = true;
+      const departamento = this.formularioDepartamento.value;
+
+      await firstValueFrom(
+        this.departamentoService.crearDepartamento(departamento)
+      );
+      
+      this.exito = true;
+      this.formularioDepartamento.reset();
+      
+      // Redirigir a la lista después de 2 segundos
+      this.router.navigate(['/departamentos']);
+    } catch (error: any) {
+      console.error('Error al crear departamento:', error);
+      this.error = true;
+      
+      if (error.message === 'Ya existe un departamento con ese ID') {
+        this.mensajeError = 'Ya existe un departamento con ese ID. Por favor, use un ID diferente.';
+      } else {
+        this.mensajeError = 'Error al crear el departamento. Por favor, intente más tarde.';
+      }
+      
+      setTimeout(() => {
+        this.error = false;
+        this.mensajeError = '';
+      }, 3000);
+    } finally {
+      this.cargando = false;
+    }
+  }
+
+  abrirModalEdicion(departamento: Departamento) {
+    this.selectedDepartamento = departamento;
+    this.formularioEdicion.patchValue({
+      id: departamento.id,
+      nombre: departamento.nombre
+    });
+    this.mostrarModalEdicion = true;
+  }
+
+  cerrarModalEdicion() {
+    this.mostrarModalEdicion = false;
+    this.selectedDepartamento = null;
+    this.formularioEdicion.reset();
+  }
+
+  async guardarEdicion() {
+    if (!this.selectedDepartamento) return;
+
+    this.editando = true;
+    this.mensajeError = null;
+
+    try {
+      const departamentoActualizado = this.formularioEdicion.value;
+      
+      // Validar el formulario excluyendo el departamento actual
+      const departamentosSinActual = this.departamentos.filter(d => d.id !== this.selectedDepartamento?.id);
+      const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
+        this.formularioEdicion,
+        departamentosSinActual
+      );
+
+      if (!resultadoValidacion.valido) {
+        this.error = true;
+        this.mensajeError = resultadoValidacion.errores.join('\n');
+        return;
+      }
+
+      const response = await firstValueFrom(
+        this.departamentoService.actualizarDepartamento(this.selectedDepartamento.id, departamentoActualizado)
+      );
+
+      // Si el status es 200, consideramos la actualización exitosa
+      if (response.status === 200) {
+        this.mensajeExito = 'Departamento actualizado con éxito';
+        this.cargarDepartamentos();
+        this.cerrarModalEdicion();
+        
+        // Redirigir a la página principal de listar
+        this.router.navigate(['/departamentos']);
+      } else {
+        throw new Error('Error al actualizar el departamento');
+      }
+    } catch (error: any) {
+      // Si el error es de tipo HttpErrorResponse y el status es 200, consideramos la actualización exitosa
+      if (error.status === 200) {
+        this.mensajeExito = 'Departamento actualizado con éxito';
+        this.cargarDepartamentos();
+        this.cerrarModalEdicion();
+        this.router.navigate(['/departamentos']);
+      } else {
+        this.mensajeError = error?.message || 'Error al actualizar el departamento';
+      }
+    } finally {
+      this.editando = false;
+    }
+  }
+
+  async eliminarDepartamento(id: string) {
+    if (this.eliminando) return;
+    
+    this.eliminando = true;
+    try {
+      await firstValueFrom(this.departamentoService.eliminarDepartamento(id));
+      this.cargarDepartamentos();
+    } catch (error) {
+      console.error('Error al eliminar departamento:', error);
+      this.error = true;
+      this.mensajeError = 'Error al eliminar el departamento';
+    } finally {
+      this.eliminando = false;
+    }
+  }
+} 

@@ -1,177 +1,181 @@
-<form 
-  [formGroup]="departmentForm" 
-  (ngSubmit)="onSubmit()" 
-  class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md"
-  id="departmentForm"
->
-  <h2 class="text-2xl font-bold mb-6 text-gray-800" id="formTitle">
-    @if (department) {
-      Editar Departamento ID: {{ department.id }}
-    } @else {
-      Crear Nuevo Departamento
-    }
-  </h2>
+<div class="max-w-7xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+  <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Gestión de Departamentos</h1>
+  
+  <nav class="flex gap-4 mb-8 p-4 bg-gray-100 rounded-lg">
+    <a [routerLink]="['/departamentos']" 
+       [class.active]="modo === 'lista'"
+       class="flex-1 px-6 py-3 text-center rounded-lg border-2 transition-all duration-300 ease-in-out flex items-center justify-center
+              {{ modo === 'lista' ? 'bg-blue-600 text-white border-blue-600 font-semibold' : 'bg-white text-gray-700 border-gray-200 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300' }}">
+      Lista de Departamentos
+    </a>
+    <a [routerLink]="['/departamentos', 'crear']" 
+       [class.active]="modo === 'crear'"
+       class="flex-1 px-6 py-3 text-center rounded-lg border-2 transition-all duration-300 ease-in-out flex items-center justify-center
+              {{ modo === 'crear' ? 'bg-blue-600 text-white border-blue-600 font-semibold' : 'bg-white text-gray-700 border-gray-200 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300' }}">
+      Crear Departamento
+    </a>
+  </nav>
 
-  <!-- Campo ID -->
-  <div class="mb-4">
-    <label for="departmentId" class="block text-sm font-medium text-gray-700 mb-1">ID del Departamento</label>
-    <input
-      id="departmentId"
-      type="text"
-      formControlName="id"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [class.border-red-300]="departmentForm.get('id')?.invalid && departmentForm.get('id')?.touched"
-      aria-describedby="idError"
-    >
-    @if (departmentForm.get('id')?.invalid && departmentForm.get('id')?.touched) {
-      <div id="idError" class="text-red-500 text-sm mt-1">
-        @if (departmentForm.get('id')?.errors?.['required']) {
-          <span>El ID es requerido</span>
-        }
-        @if (departmentForm.get('id')?.errors?.['minlength']) {
-          <span>El ID debe contener al menos 3 caracteres</span>
-        }
-      </div>
-    }
-  </div>
-
-  <!-- Nombre -->
-  <div class="mb-4">
-    <label for="departmentName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Departamento</label>
-    <input
-      id="departmentName"
-      type="text"
-      formControlName="name"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [class.border-red-300]="departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched"
-    >
-    @if (departmentForm.get('name')?.invalid && departmentForm.get('name')?.touched) {
-      <div id="nameError" class="text-red-500 text-sm mt-1">
-        @if (departmentForm.get('name')?.errors?.['required']) {
-          <span>El nombre es requerido</span>
-        }
-        @if (departmentForm.get('name')?.errors?.['minlength']) {
-          <span>Debe tener al menos 3 caracteres</span>
-        }
-      </div>
-    }
-  </div>
-
-  <!-- Descripción -->
-  <div class="mb-4">
-    <label for="departmentDescription" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-    <textarea
-      id="departmentDescription"
-      formControlName="description"
-      rows="3"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [class.border-red-300]="departmentForm.get('description')?.invalid && departmentForm.get('description')?.touched"
-    ></textarea>
-    @if (departmentForm.get('description')?.invalid && departmentForm.get('description')?.touched) {
-      <div id="descriptionError" class="text-red-500 text-sm mt-1">
-        @if (departmentForm.get('description')?.errors?.['required']) {
-          <span>La descripción es requerida</span>
-        }
-        @if (departmentForm.get('description')?.errors?.['minlength']) {
-          <span>Debe tener al menos 10 caracteres</span>
-        }
-      </div>
-    }
-  </div>
-
-  <!-- Icono (SVG Path) -->
-  <div class="mb-4">
-    <label for="departmentIcon" class="block text-sm font-medium text-gray-700 mb-1">Icono (SVG Path)</label>
-    <input
-      id="departmentIcon"
-      type="text"
-      formControlName="icon"
-      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      aria-describedby="iconError iconPreview"
-    >
-  </div>
-
-  <!-- Selector de Color -->
-  <div class="mb-6">
-    <label class="block text-sm font-medium text-gray-700 mb-2" id="colorLabel">Esquema de Color</label>
-    <div class="grid grid-cols-4 gap-3 sm:grid-cols-7" aria-labelledby="colorLabel">
-      @for (color of colorOptions; track color.id) {
-        <div class="flex items-center">
-          <input
-            name="colorOption"
-            type="radio"
-            [id]="color.id"
-            [value]="color.value"
-            (change)="updateColorClasses(color.value)"
-            class="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-            [checked]="departmentForm.get('iconColorClass')?.value.includes(color.value)"
-          >
-          <label [for]="color.id" class="ml-2 block text-sm font-medium text-gray-700">
-            {{ color.label }}
+  <!-- Formulario para crear un departamento -->
+  @if (modo === 'crear') {
+    <div class="mb-12">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center flex items-center justify-center">Nuevo Departamento</h2>
+      <form [formGroup]="formularioDepartamento" (ngSubmit)="enviarFormulario()" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div class="flex flex-col gap-2">
+          <label for="id" class="font-medium text-gray-700 flex items-center">
+            <i class="fas fa-id-card text-blue-500 mr-2"></i>ID Departamento
           </label>
+          <input type="text" id="id" formControlName="id" 
+                 class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                 [class.border-red-500]="error && mensajeError?.includes('ID')"
+                 placeholder="">
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="nombre" class="font-medium text-gray-700 flex items-center">
+            <i class="fas fa-building text-blue-500 mr-2"></i>Nombre
+          </label>
+          <input type="text" id="nombre" formControlName="nombre" 
+                 class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                 [class.border-red-500]="error && mensajeError?.includes('nombre')"
+                 placeholder="">
+        </div>
+
+        <div class="col-span-2 flex justify-center">
+          <button type="submit" 
+                  class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                  [disabled]="cargando">
+            <i class="fas fa-save"></i>
+            {{ cargando ? 'Enviando...' : 'Registrar Departamento' }}
+          </button>
+        </div>
+
+        @if (error) {
+          <div class="col-span-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm">
+            {{ mensajeError }}
+          </div>
+        }
+
+        @if (exito) {
+          <div class="col-span-2 bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg text-center shadow-sm">
+            ¡Departamento registrado correctamente!
+          </div>
+        }
+      </form>
+    </div>
+  } @else {
+    <div>      
+      @if (cargandoLista) {
+        <div class="text-center py-8 text-gray-600 flex flex-col items-center gap-2">
+          <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
+          Cargando departamentos...
+        </div>
+      } @else {
+        <!-- Lista de departamentos -->
+        <div class="mt-2">
+          <h2 class="text-2xl font-semibold mb-6 text-center text-gray-700 flex items-center justify-center">Lista de Departamentos</h2>
+          <div class="overflow-x-auto">
+            <div class="overflow-x-auto shadow-sm rounded-lg border border-gray-200">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-green-300">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <i class="fas fa-id-card mr-2"></i>ID
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <i class="fas fa-building mr-2"></i>Nombre
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (departamento of departamentos; track departamento.id) {
+                    <tr (click)="selectDepartamento(departamento)" 
+                        [class.bg-blue-50]="selectedDepartamento?.id === departamento.id"
+                        class="hover:bg-gray-50 cursor-pointer transition-colors">
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ departamento.id }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ departamento.nombre }}</td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex gap-2">
+                        <button 
+                          (click)="abrirModalEdicion(departamento)"
+                          class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                          Editar
+                        </button>
+                        <button 
+                          (click)="eliminarDepartamento(departamento.id)"
+                          class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                          [disabled]="eliminando">
+                          {{ eliminando ? 'Eliminando...' : 'Eliminar' }}
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (errorLista) {
+        <div class="mt-4 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm flex items-center justify-center gap-2">
+          <i class="fas fa-exclamation-circle"></i>
+          Error al cargar los departamentos
         </div>
       }
     </div>
-  </div>
+  }
 
-  <!-- Vista previa del departamento -->
-  <!-- <div 
-    class="mb-6 p-4 rounded-lg" 
-    [class]="departmentForm.get('bgColorClass')?.value"
-    id="departmentPreview"
-  >
-    <h3 class="text-lg font-semibold mb-2" [class]="departmentForm.get('textColorClass')?.value">Vista Previa</h3>
-    <div class="flex items-center mb-3">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-8 h-8 mr-3"
-        [class]="departmentForm.get('iconColorClass')?.value"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="departmentForm.get('icon')?.value" />
-      </svg>
-      <span class="text-lg font-medium" [class]="departmentForm.get('textColorClass')?.value">
-        {{ departmentForm.get('name')?.value || 'Nombre del Departamento' }}
-      </span>
+  <!-- Modal de Edición -->
+  @if (mostrarModalEdicion) {
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Editar Departamento</h2>
+        
+        <form [formGroup]="formularioEdicion" (ngSubmit)="guardarEdicion()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="id" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-id-card text-blue-500 mr-2"></i>ID Departamento
+            </label>
+            <p class="text-gray-700">{{ formularioEdicion.get('id')?.value }}</p>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="nombre" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-building text-blue-500 mr-2"></i>Nombre
+            </label>
+            <input type="text" id="nombre" formControlName="nombre" 
+                   class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                   [class.border-red-500]="error && mensajeError?.includes('nombre')">
+          </div>
+
+          <div class="col-span-2 flex justify-center gap-4">
+            <button type="button" 
+                    (click)="cerrarModalEdicion()"
+                    class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              Cancelar
+            </button>
+            <button type="submit" 
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    [disabled]="editando">
+              {{ editando ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+
+          @if (error) {
+            <div class="col-span-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm">
+              {{ mensajeError }}
+            </div>
+          }
+
+          @if (mensajeExito) {
+            <div class="col-span-2 bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg text-center shadow-sm">
+              {{ mensajeExito }}
+            </div>
+          }
+        </form>
+      </div>
     </div>
-    <p class="text-sm" [class]="departmentForm.get('textColorClass')?.value">
-      {{ departmentForm.get('description')?.value || 'Descripción del departamento...' }}
-    </p>
-    <button
-      type="button"
-      class="mt-3 px-4 py-2 rounded-md text-white font-medium"
-      [class]="departmentForm.get('buttonBgClass')?.value + ' ' + departmentForm.get('buttonHoverClass')?.value"
-      id="previewButton"
-    >
-      Botón de ejemplo
-    </button>
-  </div> -->
-
-  <!-- Botones -->
-  <div class="flex justify-end space-x-3">
-    <button
-      type="button"
-      class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      id="cancelButton"
-      (click)="cancel.emit()"
-    >
-      Cancelar
-    </button>
-    <button
-      type="submit"
-      class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      id="submitButton"
-      [disabled]="departmentForm.invalid"
-      [class.opacity-50]="departmentForm.invalid"
-    >
-      @if (department) {
-        Actualizar
-      } @else {
-        Crear
-      }
-    </button>
-  </div>
-</form>
+  }
+</div> 

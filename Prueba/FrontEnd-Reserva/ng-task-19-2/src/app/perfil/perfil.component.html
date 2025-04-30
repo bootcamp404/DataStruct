@@ -1,0 +1,57 @@
+<div class="perfil-container">
+    <h2>Mi Perfil</h2>
+    
+    <div *ngIf="!mostrarFormularioEdicion" class="datos-perfil">
+      <div class="dato-perfil">
+        <strong>Nombre:</strong> 
+        <span>{{ usuarioActual?.displayName || 'No especificado' }}</span>
+      </div>
+      <div class="dato-perfil">
+        <strong>Apellidos:</strong> 
+        <span>{{ usuarioActual?.apellidos || 'No especificado' }}</span>
+      </div>
+      <div class="dato-perfil">
+        <strong>DNI:</strong> 
+        <span>{{ usuarioActual?.dni || 'No especificado' }}</span>
+      </div>
+      <div class="dato-perfil">
+        <strong>Email:</strong> 
+        <span>{{ usuarioActual?.email || 'No especificado' }}</span>
+      </div>
+      <div class="dato-perfil">
+        <strong>Teléfono:</strong> 
+        <span>{{ usuarioActual?.telefono || 'No especificado' }}</span>
+      </div>
+      
+      <button class="btn-primary" (click)="mostrarEditarPerfil()">Editar Perfil</button>
+    </div>
+    
+    <form *ngIf="mostrarFormularioEdicion" (ngSubmit)="guardarCambios()" class="formulario-edicion">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="usuario.nombre">
+      </div>
+      <div class="form-group">
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" [(ngModel)]="usuario.apellidos">
+      </div>
+      <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" [(ngModel)]="usuario.dni">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" [(ngModel)]="usuario.email" readonly>
+        <small>El email no se puede modificar</small>
+      </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" [(ngModel)]="usuario.telefono">
+      </div>
+      
+      <div class="botones-accion">
+        <button type="button" class="btn-secundario" (click)="cancelarEdicion()">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>

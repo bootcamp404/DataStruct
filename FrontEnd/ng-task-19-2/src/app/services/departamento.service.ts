@@ -1,51 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-
-export interface Department {
-  id: number;
-  nombre: string;
-  description: string;
-}
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
+import { Departamento } from '../modelos/departamento';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartamentoService {
-  baseUrl: string = 'http://localhost:8080/alicanteFutura/api/v1/departamentos';
-  departamentos: Department[] = []
+  private apiUrl = `${environment.apiUrl}/departamentos`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  listaDepartamentos(): Observable<Department[]>{
-    return this.httpClient.get<Department[]>(this.baseUrl)
-    .pipe(
-      tap(res => this.departamentos = res)
-    );
+  obtenerDepartamentos(): Observable<Departamento[]> {
+    return this.http.get<Departamento[]>(this.apiUrl);
   }
 
-  getDepartamento(id: any): Observable<Department> {
-    return this.httpClient.get<Department>(`${this.baseUrl}/${id}`)
+  eliminarDepartamento(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  crearDepartamento(departamento: Department): Observable<Department> {
-    return this.httpClient.post<Department>(this.baseUrl, departamento)
-    .pipe(
-      tap(nuevoDepartamento => {
-        this.departamentos.push(nuevoDepartamento);
-      })
-    );
+  crearDepartamento(departamento: Departamento): Observable<Departamento> {
+    return this.http.post<Departamento>(this.apiUrl, departamento);
   }
 
-  actualizarDepartamento(id: any, departamento: Department): Observable<Department> {
-    return this.httpClient.put<Department>(`${this.baseUrl}/${id}`, departamento)
-    .pipe(
-      tap(departamentoActualizado => {
-        const indice = this.departamentos.findIndex(p => p.id === id);
-        if(indice !== -1) {
-          this.departamentos[indice] = departamentoActualizado;
-        }
-      })
-    );  
-  } 
-}
+  actualizarDepartamento(id: string, departamento: Departamento): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+
+    return this.http.put(`${this.apiUrl}/${id}`, departamento, { headers, observe: 'response' })
+      .pipe(
+        catchError(error => {
+          return throwError(() => error);
+        })
+      );
+  }
+} 

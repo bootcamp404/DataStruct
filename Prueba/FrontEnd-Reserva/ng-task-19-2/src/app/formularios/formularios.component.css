@@ -1,0 +1,180 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.w-full.min-h-screen.px-4.py-6 {
+  background-color: white !important;
+  padding: 25px;
+}
+
+button:focus {
+  outline: none;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.hover\:shadow-md:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.transition-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+:host {
+  display: block;
+  color: #333;
+}
+
+:host ::ng-deep .container {
+  background-color: white !important;
+}
+
+:host ::ng-deep h1,
+:host ::ng-deep h2,
+:host ::ng-deep p,
+:host ::ng-deep span,
+:host ::ng-deep div {
+  color: #333 !important;
+}
+/* Make these selectors more specific and use !important for overriding */
+:host ::ng-deep .language-btn, 
+:host ::ng-deep button.language-btn, 
+:host ::ng-deep .controls .language-btn,
+:host ::ng-deep *[class*="language-btn"] {
+    color: white !important;
+    background-color: #035398 !important;
+}
+
+:host ::ng-deep .language-btn *, 
+:host ::ng-deep button.language-btn *,
+:host ::ng-deep .controls .language-btn * {
+    color: white !important;
+}
+
+/* Target span elements specifically inside language buttons */
+:host ::ng-deep .language-btn span,
+:host ::ng-deep button.language-btn span {
+    color: white !important;
+}
+:host ::ng-deep .bg-gray-100 {
+  background-color: #f3f4f6 !important;
+}
+
+:host ::ng-deep .bg-gray-50 {
+  background-color: #f9fafb !important;
+}
+
+:host ::ng-deep .bg-white {
+  background-color: #ffffff !important;
+}
+
+:host ::ng-deep .text-gray-800 {
+  color: #1f2937 !important;
+}
+
+:host ::ng-deep .text-gray-600 {
+  color: #4b5563 !important;
+}
+
+:host ::ng-deep .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+:host ::ng-deep .border-gray-200,
+:host ::ng-deep .border-gray-300 {
+  border-color: #e5e7eb !important;
+}
+
+:host ::ng-deep body {
+  background-color: white !important;
+  color: #333 !important;
+}
+
+:host ::ng-deep table,
+:host ::ng-deep thead,
+:host ::ng-deep tbody,
+:host ::ng-deep tr,
+:host ::ng-deep td,
+:host ::ng-deep th {
+  background-color: white !important;
+  border-color: #e5e7eb !important;
+}
+
+:host ::ng-deep .bg-gray-50 {
+  background-color: #f9fafb !important;
+}
+
+/* Cambiamos el color del botón "Crear formulario" */
+:host ::ng-deep .bg-blue-600 {
+  background-color: #035398 !important;
+}
+
+/* Cambiamos el color del botón "Crear formulario" al pasar el ratón */
+:host ::ng-deep .hover\:bg-blue-700:hover {
+  background-color: #06345b !important;
+}
+
+/* Cambiamos el color de los iconos de "Ver" en la vista de cuadrícula */
+:host ::ng-deep .inline-flex.items-center.px-3.py-1.bg-blue-600.text-white.rounded-md.hover\:bg-blue-700 {
+  background-color: #035398 !important;
+}
+
+:host ::ng-deep .inline-flex.items-center.px-3.py-1.bg-blue-600.text-white.rounded-md.hover\:bg-blue-700:hover {
+  background-color: #06345b !important;
+}
+
+:host ::ng-deep .text-blue-600 {
+  color: #035398 !important;
+}
+
+:host ::ng-deep .text-blue-600:hover {
+  color: #06345b !important;
+}
+
+:host ::ng-deep .hover\:bg-blue-50:hover {
+  background-color: rgba(3, 83, 152, 0.05) !important;
+}
+
+html.light body {
+  background-color: white;
+  color: black;
+}
+
+:host ::ng-deep app-root {
+  background-color: white !important;
+  color: black !important;
+}
+
+@media (max-width: 768px) {
+  .header, .navigation {
+    padding: 0.5rem 1rem;
+  }
+
+  .search-container {
+    width: 200px;
+  }
+
+  .departments-content {
+    justify-content: center;
+  }
+}
+
+.language-btn, 
+  button.language-btn, 
+  .controls .language-btn,
+  *[class*="language-btn"] {
+      color: white !important;
+  }
+  
+  .language-btn *, 
+  button.language-btn *,
+  .controls .language-btn * {
+      color: white !important;
+  }

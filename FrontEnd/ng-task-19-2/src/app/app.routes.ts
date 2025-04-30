@@ -4,11 +4,16 @@ import { MainviewComponent } from './mainview/mainview.component';
 import { privateGuard, publicGuard } from './core/auth.guard';
 import { PerfilComponent } from './perfil/perfil.component'; 
 import { FormulariosComponent } from './formularios/formularios.component';
-import { DepartamentsComponent } from './departaments/departaments.component';
 import { InformesComponent } from './informes/informes.component';
+<<<<<<< HEAD
 import { DepartamentFormComponent } from './departaments/departament-form/departament-form.component';
 import { ResumenComponent } from './informes/resumen.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
+=======
+import { ResumenComponent } from './informes/resumen.component';
+import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
+import { DepartamentsComponent } from './departaments/departaments.component'
+>>>>>>> 5baab78daff5f80e288247a6a43431dd5f457b94
 
 export const routes: Routes = [
   {
@@ -22,10 +27,6 @@ export const routes: Routes = [
     canActivate: [privateGuard()],
   },
   {
-    path: 'departaments/departments',
-    component: DepartamentFormComponent
-  },
-  {
     path: 'perfil',
     component: PerfilComponent
   },
@@ -33,9 +34,12 @@ export const routes: Routes = [
     path: 'formularios',
     component: FormulariosComponent
   },
-  {
-    path:'departaments',
-    component: DepartamentsComponent
+  { 
+    path: 'departamentos', 
+    children: [
+      { path: '', component: DepartamentsComponent },
+      { path: 'crear', component: DepartamentsComponent }
+    ]
   },
   {
     path: 'informes',
