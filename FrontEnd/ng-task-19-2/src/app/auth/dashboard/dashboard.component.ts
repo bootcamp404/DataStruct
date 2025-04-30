@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../../mainview/header/header.component";
+import { DepartamentsComponent } from '../../departaments/departaments.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, DepartamentsComponent],
 })
 export class DashboardComponent {
   showDropdown = false;
