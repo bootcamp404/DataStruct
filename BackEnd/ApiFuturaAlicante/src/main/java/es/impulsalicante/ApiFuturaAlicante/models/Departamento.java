@@ -28,7 +28,7 @@ public class Departamento {
 
     @OneToMany(mappedBy = "departamento")
     private List<Actividad> actividades;
-    
+
     @OneToMany(mappedBy = "departamento")
     private List<CampanyaMarketing> capanyasMarketing;
 
