@@ -6,7 +6,7 @@ import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOu
 
 export interface Usuario {
   email: string;
-  contrasenya: string;
+  contrasenia: string;
 }
 
 export interface AuthResponse {
@@ -23,7 +23,7 @@ export class AuthService {
   private _auth = inject(Auth);
   private _router = inject(Router);
 
-  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1'; 
+  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
   constructor() {}
 
@@ -32,7 +32,7 @@ export class AuthService {
     const response = await firstValueFrom(
       this._http.post<AuthResponse>(`${this.baseUrl}/register`, {
         email: usuario.email,
-        password: usuario.contrasenya
+        password: usuario.contrasenia
       })
     );
     return response;
@@ -43,7 +43,7 @@ export class AuthService {
     const response = await firstValueFrom(
       this._http.post<AuthResponse>(`${this.baseUrl}/login`, {
         email: usuario.email,
-        password: usuario.contrasenya
+        password: usuario.contrasenia
       })
     );
     return response;

@@ -9,7 +9,7 @@ import { FacebookComponent } from '../../ui/facebook/facebook.component';
 
 export interface FormSignIn{
   email: FormControl<string | null>;
-  contrasenya: FormControl<string | null>;
+  contrasenia: FormControl<string | null>;
 }
 
 @Component({
@@ -24,7 +24,7 @@ export default class SignInComponent {
   private _authService = inject(AuthService);
   private _router = inject(Router);
 
-  esRequerido(campo: 'email' | 'contrasenya'){
+  esRequerido(campo: 'email' | 'contrasenia'){
       return seRequiere(campo, this.form)
     }
     emailRequerido(){
@@ -33,26 +33,26 @@ export default class SignInComponent {
 
   form = this._formBuilder.group<FormSignIn> ({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
-    contrasenya: this._formBuilder.control('', Validators.required),
+    contrasenia: this._formBuilder.control('', Validators.required),
   })
 
   async submit() {
     try {
       if (this.form.invalid) return;
-  
-      const { email, contrasenya } = this.form.value;
-      if (!email || !contrasenya) return;
-  
-      const response = await this._authService.iniciarSesión({ email, contrasenya });
+
+      const { email, contrasenia } = this.form.value;
+      if (!email || !contrasenia) return;
+
+      const response = await this._authService.iniciarSesión({ email, contrasenia });
       this._authService.guardarToken(response.token);
-  
+
       toast.success('Bienvenido');
       this._router.navigateByUrl('/mainview');
     } catch (error) {
       toast.error('Correo o contraseña incorrectos');
     }
   }
-  
+
   async iniciarSesionConGoogle(){
     try {
       await this._authService.iniciarSesionGoogle();

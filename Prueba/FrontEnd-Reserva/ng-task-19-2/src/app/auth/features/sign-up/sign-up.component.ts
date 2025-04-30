@@ -6,17 +6,17 @@ import { toast } from 'ngx-sonner';
 import { Router, RouterLink } from '@angular/router';
 import { GoogleComponent } from '../../ui/google/google.component';
 import { FacebookComponent } from '../../ui/facebook/facebook.component';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 
 interface FormSignUp {
   email: FormControl<string | null>;
-  contrasenya: FormControl<string | null>;
-  confirmarContrasenya: FormControl<string | null>;
+  contrasenia: FormControl<string | null>;
+  confirmarContrasenia: FormControl<string | null>;
 }
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('contrasenya')?.value;
-  const confirmPassword = control.get('confirmarContrasenya')?.value;
+  const password = control.get('contrasenia')?.value;
+  const confirmPassword = control.get('confirmarContrasenia')?.value;
 
   return password && confirmPassword && password !== confirmPassword
     ? { passwordMismatch: true }
@@ -43,11 +43,11 @@ export default class SignUpComponent implements OnInit{
 
   form = this._formBuilder.group({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
-    contrasenya: this._formBuilder.control('', Validators.required),
-    confirmarContrasenya: this._formBuilder.control('', Validators.required)
+    contrasenia: this._formBuilder.control('', Validators.required),
+    confirmarContrasenia: this._formBuilder.control('', Validators.required)
   }, { validators: passwordMatchValidator });
 
-  esRequerido(campo: 'email' | 'contrasenya' | 'confirmarContrasenya') {
+  esRequerido(campo: 'email' | 'contrasenia' | 'confirmarContrasenia') {
     return seRequiere(campo, this.form);
   }
 
@@ -56,17 +56,17 @@ export default class SignUpComponent implements OnInit{
   }
 
   passwordNoCoincide() {
-    return this.form.errors?.['passwordMismatch'] && this.form.get('confirmarContrasenya')?.touched;
+    return this.form.errors?.['passwordMismatch'] && this.form.get('confirmarContrasenia')?.touched;
   }
 
   async submit() {
     try {
       if (this.form.invalid) return;
 
-      const { email, contrasenya } = this.form.value;
-      if (!email || !contrasenya) return;
+      const { email, contrasenia } = this.form.value;
+      if (!email || !contrasenia) return;
 
-      const response = await this._authService.registrarse({ email, contrasenya });
+      const response = await this._authService.registrarse({ email, contrasenia });
       this._authService.guardarToken(response.token);
 
       toast.success('Usuario creado correctamente');
