@@ -1,14 +1,10 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 
-import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
 import es.impulsalicante.ApiFuturaAlicante.services.EmpleadosService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

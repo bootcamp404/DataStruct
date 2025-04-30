@@ -1,8 +1,5 @@
 package es.impulsalicante.ApiFuturaAlicante.services;
 
-import es.impulsalicante.ApiFuturaAlicante.models.ActividadValoracionParticipante;
-import es.impulsalicante.ApiFuturaAlicante.models.ActividadValoracionParticipanteId;
-
 import es.impulsalicante.ApiFuturaAlicante.repository.ActividadValoracionParticipanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

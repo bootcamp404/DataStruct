@@ -21,7 +21,7 @@ public class Departamento {
     private String nombre;
 
     @OneToMany(mappedBy = "departamento")
-    private List<Empleados> empleados;
+    private List<Contrato> contratos;
 
     //CONSTRUCTORES
     public Departamento (String id, String nombre){
@@ -33,14 +33,6 @@ public class Departamento {
     }
 
     //GETTERS SETTERS
-
-    public List<Empleados> getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(List<Empleados> empleados) {
-        this.empleados = empleados;
-    }
 
     public String getNombre() {
         return nombre;

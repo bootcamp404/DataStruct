@@ -1,12 +1,10 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
-import es.impulsalicante.ApiFuturaAlicante.models.Valoracion;
 import es.impulsalicante.ApiFuturaAlicante.services.ValoracionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController

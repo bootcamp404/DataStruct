@@ -2,6 +2,8 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Centro")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -9,12 +11,17 @@ public class Centros {
     @Id
     @Column(name = "id_centro")
     private String id;
-
     @Column(nullable = false)
     private String nombre;
-
     @Column(nullable = false)
     private String direccion;
+    @Column
+    private Date fecha_creacion;
+
+    @ManyToOne
+    @JoinColumn(name = "id_departamento")
+    private Departamento departamento;
+
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
@@ -40,10 +47,19 @@ public class Centros {
         return id;
     }
 
-    public Centros (String id, String nombre, String direccion){
+    public Date getFecha_creacion() {
+        return fecha_creacion;
+    }
+
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
+    }
+
+    public Centros (String id, String nombre, String direccion, Date fecha_creacion){
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
+        this.fecha_creacion = fecha_creacion;
     }
 
     public Centros( ){ }

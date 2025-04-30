@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "contrato")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -14,6 +16,8 @@ public class Contrato {
     private String id;
     @Column(name = "importe_adjudicacion")
     private Double importe;
+    @Column
+    private Date fecha_creacion;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
@@ -24,11 +28,12 @@ public class Contrato {
     private TipoContrato tipo_contrato;
 
     //CONSTRUCTORES
-    public Contrato(String id, Double importe, Departamento departamento, TipoContrato tipo_contrato) {
+    public Contrato(String id, Double importe, Departamento departamento, Date fecha_creacion, TipoContrato tipo_contrato) {
         this.id = id;
         this.importe = importe;
         this.departamento = departamento;
         this.tipo_contrato = tipo_contrato;
+        this.fecha_creacion = fecha_creacion;
     }
 
     public Contrato(){
@@ -52,6 +57,9 @@ public class Contrato {
         return importe;
     }
 
+    public Date getFecha_creacion() {
+        return fecha_creacion;
+    }
 
     //SETTERS
     public void setImporte(Double importe) {
@@ -64,5 +72,9 @@ public class Contrato {
 
     public void setTipo_contrato(TipoContrato tipo_contrato) {
         this.tipo_contrato = tipo_contrato;
+    }
+
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 }

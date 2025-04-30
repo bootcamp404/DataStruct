@@ -1,6 +1,5 @@
 package es.impulsalicante.ApiFuturaAlicante.services;
 
-import es.impulsalicante.ApiFuturaAlicante.models.Territorio;
 import es.impulsalicante.ApiFuturaAlicante.repository.TerritorioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

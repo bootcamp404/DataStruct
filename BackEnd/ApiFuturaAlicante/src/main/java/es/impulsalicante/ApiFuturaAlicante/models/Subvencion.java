@@ -3,6 +3,8 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Subvencion")
 public class Subvencion {
@@ -16,6 +18,9 @@ public class Subvencion {
 
     @Column
     private int importe;
+
+    @Column
+    private Date fecha_creacion;
 
 
     @ManyToOne
@@ -47,6 +52,13 @@ public class Subvencion {
         return importe;
     }
 
+    public Date getFecha_creacion() {
+        return fecha_creacion;
+    }
+
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
+    }
 
     public void setEstadoSubvencion(EstadoSubvencion estadoSubvencion) {
         this.estadoSubvencion = estadoSubvencion;
@@ -56,11 +68,12 @@ public class Subvencion {
         return estadoSubvencion;
     }
 
-    public Subvencion (String id_subvencion, String entidad, int importe, EstadoSubvencion estadoSubvencion){
+    public Subvencion (String id_subvencion, String entidad, int importe, Date fecha_creacion, EstadoSubvencion estadoSubvencion){
         this.id_subvencion = id_subvencion;
         this.entidad = entidad;
         this.importe = importe;
         this.estadoSubvencion = estadoSubvencion;
+        this.fecha_creacion = fecha_creacion;
     }
      public Subvencion ( ) { }
 }

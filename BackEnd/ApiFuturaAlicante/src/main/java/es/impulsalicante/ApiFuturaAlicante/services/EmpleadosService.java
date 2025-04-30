@@ -2,7 +2,6 @@ package es.impulsalicante.ApiFuturaAlicante.services;
 
 
 import es.impulsalicante.ApiFuturaAlicante.models.Departamento;
-import es.impulsalicante.ApiFuturaAlicante.models.Empleados;
 import es.impulsalicante.ApiFuturaAlicante.repository.EmpleadosRepository;
 import es.impulsalicante.ApiFuturaAlicante.repository.DepartamentosRepository;
 import org.springframework.beans.factory.annotation.Autowired;

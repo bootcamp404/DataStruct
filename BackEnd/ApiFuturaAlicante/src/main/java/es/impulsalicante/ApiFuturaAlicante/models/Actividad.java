@@ -15,7 +15,6 @@ public class Actividad {
     private String id;
     @Column
     private String nombre;
-
     @Column
     private String descripcion;
     @Column(name = "fecha_ini")
@@ -24,14 +23,12 @@ public class Actividad {
     private Date fecha_fin;
     @Column
     private int num_participantes;
+    @Column
+    private int horas;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
     private Departamento departamento;
-
-    @OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<ActividadValoracionParticipante> valoracionesParticipantes;
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -61,12 +58,8 @@ public class Actividad {
         this.num_participantes = num_participantes;
     }
 
-    public void setValoracionesParticipantes(List<ActividadValoracionParticipante> valoracionesParticipantes) {
-        this.valoracionesParticipantes = valoracionesParticipantes;
-    }
-
-    public List<ActividadValoracionParticipante> getValoracionesParticipantes() {
-        return valoracionesParticipantes;
+    public void setHoras(int horas) {
+        this.horas = horas;
     }
 
     public String getNombre() {
@@ -97,7 +90,11 @@ public class Actividad {
         return num_participantes;
     }
 
-    public Actividad (String id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int num_participantes, Departamento departamento){
+    public int getHoras() {
+        return horas;
+    }
+
+    public Actividad (String id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int num_participantes, int horas, Departamento departamento){
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -105,6 +102,7 @@ public class Actividad {
         this.fecha_fin = fecha_fin;
         this.num_participantes = num_participantes;
         this.departamento = departamento;
+        this.horas = horas;
     }
 
     public Actividad () {}

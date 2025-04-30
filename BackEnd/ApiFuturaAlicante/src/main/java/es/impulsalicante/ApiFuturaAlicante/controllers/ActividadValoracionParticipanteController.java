@@ -1,6 +1,5 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
-import es.impulsalicante.ApiFuturaAlicante.models.ActividadValoracionParticipante;
 import es.impulsalicante.ApiFuturaAlicante.services.ActividadValoracionParticipanteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

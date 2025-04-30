@@ -3,6 +3,8 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 
 @Entity
 @Table(name = "campanya_marketing")
@@ -13,6 +15,9 @@ public class CampanyaMarketing {
 
     @Column
     private String nombre;
+
+    @Column
+    private Date fecha_creacion;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
@@ -43,10 +48,19 @@ public class CampanyaMarketing {
         return departamento;
     }
 
-    public CampanyaMarketing (String id, String nombre, Departamento departamento){
+    public Date getFecha_creacion() {
+        return fecha_creacion;
+    }
+
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
+    }
+
+    public CampanyaMarketing (String id, String nombre, Date fecha_creacion, Departamento departamento){
         this.id = id;
         this.nombre = nombre;
         this.departamento = departamento;
+        this.fecha_creacion = fecha_creacion;
     }
 
     public CampanyaMarketing () {}

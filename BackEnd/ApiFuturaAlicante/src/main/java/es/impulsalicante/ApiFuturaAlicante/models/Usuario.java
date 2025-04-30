@@ -11,25 +11,19 @@ import jakarta.validation.constraints.*;
 public class Usuario {
     //PROPIEDADES
     @Id
-    private String dni;
+    @Email(message = "Debe ingresar un email válido")
+    private String email;
     @Column @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
     @Column @NotBlank(message = "Los apellidos son obligatorios")
     private String apellidos;
-    @Column @Email(message = "Debe ingresar un email válido")
-    private String email;
     @Column @Pattern(regexp = "\\d{9,12}", message = "El teléfono debe tener entre 9 y 12 dígitos")
     private String telefono;
-    @Column(name = "nif")
-    @NotBlank(message = "El NIF de la empresa es obligatorio")
-    private String nif;
     @Column
     private String contrasenya;
 
     //CONSTRUCTOR
-    public Usuario(String dni, String nif, String telefono, String email, String apellidos, String nombre, String contrasenya) {
-        this.dni = dni;
-        this.nif = nif;
+    public Usuario(String telefono, String email, String apellidos, String nombre, String contrasenya) {
         this.telefono = telefono;
         this.email = email;
         this.apellidos = apellidos;
@@ -47,10 +41,6 @@ public class Usuario {
 
     public void setContrasenya(String contrasenya) {
         this.contrasenya = contrasenya;
-    }
-
-    public String getNif() {
-        return nif;
     }
 
     public String getTelefono() {
@@ -83,13 +73,5 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
     }
 }
