@@ -75,6 +75,7 @@ export class DepartamentsComponent implements OnInit {
       next: (departamentos) => {
         this.departamentos = departamentos;
         this.cargandoLista = false;
+        this.departamentoService.setDepartamentos(departamentos);
       },
       error: (error) => {
         console.error('Error al cargar departamentos:', error);
@@ -136,7 +137,7 @@ export class DepartamentsComponent implements OnInit {
         this.cerrarModalEdicion();
         
         // Redirigir a la página principal de listar
-        this.router.navigate(['/departamentos']);
+        this.router.navigate(['/dashboard']);
       } else {
         throw new Error('Error al actualizar el departamento');
       }
@@ -146,7 +147,7 @@ export class DepartamentsComponent implements OnInit {
         this.mensajeExito = 'Departamento actualizado con éxito';
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
-        this.router.navigate(['/departamentos']);
+        this.router.navigate(['/dashboard']);
       } else {
         this.mensajeError = error?.message || 'Error al actualizar el departamento';
       }

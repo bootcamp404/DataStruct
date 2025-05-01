@@ -30,13 +30,6 @@ export const routes: Routes = [
     path: 'formularios',
     component: FormulariosComponent
   },
-  { 
-    path: 'departamentos', 
-    children: [
-      { path: '', component: DepartamentsComponent },
-      { path: 'crear', component: DepartamentsComponent }
-    ]
-  },
   {
     path: 'informes',
     loadComponent: () => import('./informes/informes.component').then(m => m.InformesComponent),

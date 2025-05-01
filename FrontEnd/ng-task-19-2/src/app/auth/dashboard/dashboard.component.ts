@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from "../../mainview/header/header.component";
 import { DepartamentsComponent } from '../../departaments/departaments.component';
@@ -16,7 +16,7 @@ import { ActualizarService } from '../../services/actualizar.service';
   styleUrls: ['./dashboard.component.css'],
   imports: [HeaderComponent, DepartamentsComponent, CommonModule, ReactiveFormsModule],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   showDropdown = false;
   formularioDept: FormGroup;
   departamentos: Departamento[] = [];
@@ -48,6 +48,12 @@ export class DashboardComponent {
         nombre: ['', [Validators.required]]
       });
     }
+
+  ngOnInit(): void {
+    this.departamentoService.departamentos$.subscribe(depts => {
+      this.departamentos = depts;
+    });
+  }
 
   abrirModalCreacion() {
     // Resetear el formulario

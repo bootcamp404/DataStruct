@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 import { Departamento } from '../modelos/departamento';
 import { environment } from '../environments/environment';
 
@@ -9,6 +9,12 @@ import { environment } from '../environments/environment';
 })
 export class DepartamentoService {
   private apiUrl = `${environment.apiUrl}/departamentos`;
+  private departamentosSubject = new BehaviorSubject<Departamento[]>([]);
+  departamentos$ = this.departamentosSubject.asObservable();
+
+setDepartamentos(departamentos: Departamento[]) {
+  this.departamentosSubject.next(departamentos);
+}
 
   constructor(private http: HttpClient) {}
 
