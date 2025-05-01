@@ -2,10 +2,11 @@ import { Component, OnChanges, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Departamento } from '../modelos/departamento';
 import { DepartamentoService } from '../services/departamento.service';
 import { DepartamentoValidaciones } from '../validaciones/departamento.validaciones';
+import { ActualizarService } from '../services/actualizar.service';
 
 @Component({
   selector: 'app-pagina-departamentos',
@@ -34,11 +35,12 @@ export class DepartamentsComponent implements OnInit {
   eliminando = false;
   mostrarModalEdicion = false;
   editando = false;
+  private refreshSubscription: Subscription | null = null;
 
   constructor(
     private fb: FormBuilder,
     private departamentoService: DepartamentoService,
-    private route: ActivatedRoute,
+    private actualizarDepts: ActualizarService,
     private router: Router
   ) {
     this.formularioDepartamento = this.fb.group({
@@ -53,12 +55,18 @@ export class DepartamentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.url.subscribe(segments => {
-      this.modo = segments[segments.length - 1]?.path === 'crear' ? 'crear' : 'lista';
-      if (this.modo === 'lista') {
-        this.cargarDepartamentos();
-      }
+    this.cargarDepartamentos();
+    // Suscribirse al evento de actualización
+    this.refreshSubscription = this.actualizarDepts.actualizarDepartamentos$.subscribe(() => {
+      this.cargarDepartamentos();
     });
+  }
+
+  ngOnDestroy(){
+    // Cancelar la suscripción al destruir el componente para evitar memory leaks
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   cargarDepartamentos() {

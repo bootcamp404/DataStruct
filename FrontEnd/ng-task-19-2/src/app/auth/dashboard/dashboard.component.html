@@ -6,45 +6,77 @@
       <div class="create-group">
         <button (click)="toggleDropdown()">Crear +</button>
         <ul class="dropdown" [hidden]="!showDropdown">
-            <li (click)="navigateTo('departamentos/create')">Departamento</li>
-            <li (click)="navigateTo('documentos/create')">Documento</li>
-          </ul>
-          
+          <li (click)="abrirModalCreacion(); showDropdown = false;">Departamento</li>
+          <li (click)="navigateTo('documentos/create')">Documento</li>
+        </ul>          
       </div>
     </div>
+
+      <!-- Modal de Edición -->
+  @if (mostrarModalCreacion) {
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Crear Departamento</h2>
+        
+        <form [formGroup]="formularioDept" (ngSubmit)="guardarNuevo()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="id" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-id-card text-blue-500 mr-2"></i>ID Departamento
+            </label>
+            <input type="text" id="id" formControlName="id" 
+                   class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                   [class.border-red-500]="error && mensajeError?.includes('id')">     
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="nombre" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-building text-blue-500 mr-2"></i>Nombre
+            </label>
+            <input type="text" id="nombre" formControlName="nombre" 
+                   class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                   [class.border-red-500]="error && mensajeError?.includes('nombre')">
+          </div>
+
+          <div class="col-span-2 flex justify-center gap-4">
+            <button type="button" 
+                    (click)="cerrarModalCreacion()"
+                    class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              Cancelar
+            </button>
+            <button type="submit" 
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    [disabled]="creando">
+              {{ creando ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+          </div>
+
+          @if (error) {
+            <div class="col-span-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm">
+              {{ mensajeError }}
+            </div>
+          }
+
+          @if (mensajeExito) {
+            <div class="col-span-2 bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg text-center shadow-sm">
+              {{ mensajeExito }}
+            </div>
+          }
+        </form>
+      </div>
+    </div>
+  }
   
     <!-- Sección de Departamentos -->
     <div class="section">
       <div class="section-header">
-        <h1>Departamentos</h1>
+        <h2 class="text-2xl font-semibold mb-6 text-center text-gray-700 flex items-center justify-center">
+          Lista de Departamentos
+        </h2>       
         <a routerLink="/departamentos" class="see-more">Ver más ></a>
       </div>
-      <div class="card-grid">
-        <div class="card">
-          <h3>Recursos Humanos</h3>
-          <div class="card-actions">
-            <button>Editar</button>
-            <button style="background-color: #e62c2c;">Eliminar</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Innovación</h3>
-          <div class="card-actions">
-            <button>Editar</button>
-            <button style="background-color: #e62c2c;">Eliminar</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Promoción Económica</h3>
-          <div class="card-actions">
-            <button>Editar</button>
-            <button style="background-color: #e62c2c;">Eliminar</button>
-          </div>
-        </div>
         <div>
           <app-pagina-departamentos></app-pagina-departamentos>
         </div>
-      </div>
     </div>
   
     <!-- Sección de Documentos -->

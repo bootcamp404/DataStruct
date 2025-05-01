@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Departamento } from '../modelos/departamento';
 import { environment } from '../environments/environment';
@@ -20,10 +20,13 @@ export class DepartamentoService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  crearDepartamento(departamento: Departamento): Observable<Departamento> {
-    return this.http.post<Departamento>(this.apiUrl, departamento);
+  crearDepartamento(departamento: Departamento): Observable<HttpResponse<Departamento>> {
+    return this.http.post<Departamento>(
+      `${this.apiUrl}`, 
+      departamento, 
+      { observe: 'response' } // This makes Angular return the full response object
+    );
   }
-
   actualizarDepartamento(id: string, departamento: Departamento): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
