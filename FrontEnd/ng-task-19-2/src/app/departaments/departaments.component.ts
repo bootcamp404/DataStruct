@@ -88,54 +88,6 @@ export class DepartamentsComponent implements OnInit {
     this.selectedDepartamento = departamento;
   }
 
-  async enviarFormulario() {
-    this.enviado = true;
-    this.mensajeError = '';
-
-    // Validar el formulario
-    const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
-      this.formularioDepartamento,
-      this.departamentos
-    );
-
-    if (!resultadoValidacion.valido) {
-      this.error = true;
-      this.mensajeError = resultadoValidacion.errores.join('\n');
-      return;
-    }
-
-    try {
-      this.cargando = true;
-      const departamento = this.formularioDepartamento.value;
-
-      await firstValueFrom(
-        this.departamentoService.crearDepartamento(departamento)
-      );
-      
-      this.exito = true;
-      this.formularioDepartamento.reset();
-      
-      // Redirigir a la lista después de 2 segundos
-      this.router.navigate(['/departamentos']);
-    } catch (error: any) {
-      console.error('Error al crear departamento:', error);
-      this.error = true;
-      
-      if (error.message === 'Ya existe un departamento con ese ID') {
-        this.mensajeError = 'Ya existe un departamento con ese ID. Por favor, use un ID diferente.';
-      } else {
-        this.mensajeError = 'Error al crear el departamento. Por favor, intente más tarde.';
-      }
-      
-      setTimeout(() => {
-        this.error = false;
-        this.mensajeError = '';
-      }, 3000);
-    } finally {
-      this.cargando = false;
-    }
-  }
-
   abrirModalEdicion(departamento: Departamento) {
     this.selectedDepartamento = departamento;
     this.formularioEdicion.patchValue({
