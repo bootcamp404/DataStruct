@@ -1,0 +1,41 @@
+<p>test</p>
+
+  <div>      
+    @if (cargandoLista) {
+      <div class="text-center py-8 text-gray-600 flex flex-col items-center gap-2">
+        <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
+        Cargando departamentos...
+      </div>
+
+    } @else {
+      <!-- Lista de departamentos -->
+      <div class="mt-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          @for (proyecto of proyectos; track proyecto.id) {
+            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4">
+              <h2 class="text-lg font-semibold text-center" >{{ proyecto.nombre }}</h2>  
+              <br><br>            
+                <div class="flex gap-2 justify-center" >
+                <button 
+                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                  Editar
+                </button>
+                <button 
+                  class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                  [disabled]="eliminando">
+                  {{ eliminando ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              </div> 
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (errorLista) {
+      <div class="mt-4 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm flex items-center justify-center gap-2">
+        <i class="fas fa-exclamation-circle"></i>
+        Error al cargar los departamentos
+      </div>
+    }
+  </div>

@@ -6,13 +6,13 @@ import { Subject } from 'rxjs';
 })
 export class ActualizarService {
   // Subject para emitir eventos de actualización
-  private actualizarArchivoDepartamento = new Subject<void>();
+  private actualizarService = new Subject<void>();
   
   // Observable al que otros componentes pueden suscribirse
-  actualizarDepartamentos$ = this.actualizarArchivoDepartamento.asObservable();
+  actualizarPagina$ = this.actualizarService.asObservable();
   
-  // Método para notificar que se debe actualizar la lista de departamentos
-  refreshDepartamentos() {
-    this.actualizarArchivoDepartamento.next();
+  // Método para notificar que se debe actualizar la lista de pagina
+  refreshPagina() {
+    this.actualizarService.next();
   }
 }

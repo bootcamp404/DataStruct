@@ -8,7 +8,6 @@ import { InformesComponent } from './informes/informes.component';
 import { ResumenComponent } from './informes/resumen.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
-import { DepartamentsComponent } from './departaments/departaments.component'
 
 export const routes: Routes = [
   {

@@ -12,9 +12,9 @@ export class DepartamentoService {
   private departamentosSubject = new BehaviorSubject<Departamento[]>([]);
   departamentos$ = this.departamentosSubject.asObservable();
 
-setDepartamentos(departamentos: Departamento[]) {
-  this.departamentosSubject.next(departamentos);
-}
+  setDepartamentos(departamentos: Departamento[]) {
+    this.departamentosSubject.next(departamentos);
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -33,6 +33,7 @@ setDepartamentos(departamentos: Departamento[]) {
       { observe: 'response' } // This makes Angular return the full response object
     );
   }
+  
   actualizarDepartamento(id: string, departamento: Departamento): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

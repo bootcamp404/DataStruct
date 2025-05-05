@@ -19,18 +19,15 @@ import { ActualizarService } from '../services/actualizar.service';
   }
 })
 export class DepartamentsComponent implements OnInit { 
-  formularioDepartamento: FormGroup;
   formularioEdicion: FormGroup;
   departamentos: Departamento[] = [];
   selectedDepartamento: Departamento | null = null;
   cargando = false;
   cargandoLista = false;
   enviado = false;
-  exito = false;
   error = false;
   errorLista = false;
   mensajeError: string | null = null;
-  modo: 'lista' | 'crear' = 'lista';
   eliminando = false;
   mostrarModalEdicion = false;
   editando = false;
@@ -42,11 +39,6 @@ export class DepartamentsComponent implements OnInit {
     private actualizarDepts: ActualizarService,
     private router: Router
   ) {
-    this.formularioDepartamento = this.fb.group({
-      id: [''],
-      nombre: ['']
-    });
-
     this.formularioEdicion = this.fb.group({
       id: [''],
       nombre: ['']
@@ -56,7 +48,7 @@ export class DepartamentsComponent implements OnInit {
   ngOnInit() {
     this.cargarDepartamentos();
     // Suscribirse al evento de actualización
-    this.refreshSubscription = this.actualizarDepts.actualizarDepartamentos$.subscribe(() => {
+    this.refreshSubscription = this.actualizarDepts.actualizarPagina$.subscribe(() => {
       this.cargarDepartamentos();
     });
   }
