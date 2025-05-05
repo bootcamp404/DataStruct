@@ -30,7 +30,6 @@ export class DepartamentsComponent implements OnInit {
   error = false;
   errorLista = false;
   mensajeError: string | null = null;
-  mensajeExito: string | null = null;
   modo: 'lista' | 'crear' = 'lista';
   eliminando = false;
   mostrarModalEdicion = false;
@@ -132,7 +131,6 @@ export class DepartamentsComponent implements OnInit {
 
       // Si el status es 200, consideramos la actualización exitosa
       if (response.status === 200) {
-        this.mensajeExito = 'Departamento actualizado con éxito';
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
         
@@ -144,7 +142,6 @@ export class DepartamentsComponent implements OnInit {
     } catch (error: any) {
       // Si el error es de tipo HttpErrorResponse y el status es 200, consideramos la actualización exitosa
       if (error.status === 200) {
-        this.mensajeExito = 'Departamento actualizado con éxito';
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
         this.router.navigate(['/dashboard']);

@@ -27,7 +27,6 @@ export class DashboardComponent implements OnInit {
   mostrarModalCreacion = false;
   
   mensajeError: string | null = null;
-  mensajeExito: string | null = null;
 
   documentos = [
     {
@@ -104,7 +103,6 @@ export class DashboardComponent implements OnInit {
      
       // Si el status es 201 (created) o 200 (OK), consideramos la creación exitosa
       if (response.status === 201 || response.status === 200) {
-        this.mensajeExito = 'Departamento creado con éxito';
         this.cerrarModalCreacion();
        
         // Redirigir a la página principal de listar
@@ -115,7 +113,6 @@ export class DashboardComponent implements OnInit {
     } catch (error: any) {
       // Si el error es de tipo HttpErrorResponse y el status es 200/201, consideramos la creación exitosa
       if (error.status === 200 || error.status === 201) {
-        this.mensajeExito = 'Departamento creado con éxito';
         this.cerrarModalCreacion();
         this.router.navigate(['/dashboard']);
       } else {
