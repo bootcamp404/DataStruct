@@ -2,10 +2,11 @@ import { Component, OnChanges, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Departamento } from '../modelos/departamento';
 import { DepartamentoService } from '../services/departamento.service';
 import { DepartamentoValidaciones } from '../validaciones/departamento.validaciones';
+import { ActualizarService } from '../services/actualizar.service';
 
 @Component({
   selector: 'app-pagina-departamentos',
@@ -29,16 +30,16 @@ export class DepartamentsComponent implements OnInit {
   error = false;
   errorLista = false;
   mensajeError: string | null = null;
-  mensajeExito: string | null = null;
   modo: 'lista' | 'crear' = 'lista';
   eliminando = false;
   mostrarModalEdicion = false;
   editando = false;
+  private refreshSubscription: Subscription | null = null;
 
   constructor(
     private fb: FormBuilder,
     private departamentoService: DepartamentoService,
-    private route: ActivatedRoute,
+    private actualizarDepts: ActualizarService,
     private router: Router
   ) {
     this.formularioDepartamento = this.fb.group({
@@ -53,12 +54,18 @@ export class DepartamentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.url.subscribe(segments => {
-      this.modo = segments[segments.length - 1]?.path === 'crear' ? 'crear' : 'lista';
-      if (this.modo === 'lista') {
-        this.cargarDepartamentos();
-      }
+    this.cargarDepartamentos();
+    // Suscribirse al evento de actualización
+    this.refreshSubscription = this.actualizarDepts.actualizarDepartamentos$.subscribe(() => {
+      this.cargarDepartamentos();
     });
+  }
+
+  ngOnDestroy(){
+    // Cancelar la suscripción al destruir el componente para evitar memory leaks
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   cargarDepartamentos() {
@@ -67,6 +74,7 @@ export class DepartamentsComponent implements OnInit {
       next: (departamentos) => {
         this.departamentos = departamentos;
         this.cargandoLista = false;
+        this.departamentoService.setDepartamentos(departamentos);
       },
       error: (error) => {
         console.error('Error al cargar departamentos:', error);
@@ -78,54 +86,6 @@ export class DepartamentsComponent implements OnInit {
 
   selectDepartamento(departamento: Departamento) {
     this.selectedDepartamento = departamento;
-  }
-
-  async enviarFormulario() {
-    this.enviado = true;
-    this.mensajeError = '';
-
-    // Validar el formulario
-    const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
-      this.formularioDepartamento,
-      this.departamentos
-    );
-
-    if (!resultadoValidacion.valido) {
-      this.error = true;
-      this.mensajeError = resultadoValidacion.errores.join('\n');
-      return;
-    }
-
-    try {
-      this.cargando = true;
-      const departamento = this.formularioDepartamento.value;
-
-      await firstValueFrom(
-        this.departamentoService.crearDepartamento(departamento)
-      );
-      
-      this.exito = true;
-      this.formularioDepartamento.reset();
-      
-      // Redirigir a la lista después de 2 segundos
-      this.router.navigate(['/departamentos']);
-    } catch (error: any) {
-      console.error('Error al crear departamento:', error);
-      this.error = true;
-      
-      if (error.message === 'Ya existe un departamento con ese ID') {
-        this.mensajeError = 'Ya existe un departamento con ese ID. Por favor, use un ID diferente.';
-      } else {
-        this.mensajeError = 'Error al crear el departamento. Por favor, intente más tarde.';
-      }
-      
-      setTimeout(() => {
-        this.error = false;
-        this.mensajeError = '';
-      }, 3000);
-    } finally {
-      this.cargando = false;
-    }
   }
 
   abrirModalEdicion(departamento: Departamento) {
@@ -171,22 +131,20 @@ export class DepartamentsComponent implements OnInit {
 
       // Si el status es 200, consideramos la actualización exitosa
       if (response.status === 200) {
-        this.mensajeExito = 'Departamento actualizado con éxito';
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
         
         // Redirigir a la página principal de listar
-        this.router.navigate(['/departamentos']);
+        this.router.navigate(['/dashboard']);
       } else {
         throw new Error('Error al actualizar el departamento');
       }
     } catch (error: any) {
       // Si el error es de tipo HttpErrorResponse y el status es 200, consideramos la actualización exitosa
       if (error.status === 200) {
-        this.mensajeExito = 'Departamento actualizado con éxito';
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
-        this.router.navigate(['/departamentos']);
+        this.router.navigate(['/dashboard']);
       } else {
         this.mensajeError = error?.message || 'Error al actualizar el departamento';
       }

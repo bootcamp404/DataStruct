@@ -3,13 +3,7 @@ body {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     color: #333;
   }
-  
-  .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-  
+    
   /* Main Department Section */
   .main-dep {
     background-color: #f8fafc;

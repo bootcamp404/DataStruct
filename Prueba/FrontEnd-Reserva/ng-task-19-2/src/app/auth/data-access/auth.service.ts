@@ -32,7 +32,7 @@ export class AuthService {
     const response = await firstValueFrom(
       this._http.post<AuthResponse>(`${this.baseUrl}/usuarios`, {
         email: usuario.email,
-        password: usuario.contrasenia
+        contrasenya: usuario.contrasenia
       })
     );
     return response;
@@ -43,7 +43,7 @@ export class AuthService {
     const response = await firstValueFrom(
       this._http.post<AuthResponse>(`${this.baseUrl}/usuarios`, {
         email: usuario.email,
-        password: usuario.contrasenia
+        contrasenya: usuario.contrasenia
       })
     );
     return response;

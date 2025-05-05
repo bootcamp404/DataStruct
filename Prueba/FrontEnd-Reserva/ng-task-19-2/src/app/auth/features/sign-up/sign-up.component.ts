@@ -10,15 +10,15 @@ import { CommonModule } from '@angular/common';
 
 interface FormSignUp {
   email: FormControl<string | null>;
-  contrasenia: FormControl<string | null>;
+  contrasenya: FormControl<string | null>;
   confirmarContrasenia: FormControl<string | null>;
 }
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('contrasenia')?.value;
+  const contrasenya = control.get('contrasenia')?.value;
   const confirmPassword = control.get('confirmarContrasenia')?.value;
 
-  return password && confirmPassword && password !== confirmPassword
+  return contrasenya && confirmPassword && contrasenya !== confirmPassword
     ? { passwordMismatch: true }
     : null;
 }
