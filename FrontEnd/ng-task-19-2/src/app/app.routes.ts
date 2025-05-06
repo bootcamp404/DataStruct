@@ -8,6 +8,7 @@ import { InformesComponent } from './informes/informes.component';
 import { ResumenComponent } from './informes/resumen.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
+import { ProyectoComponent } from './formularios/proyecto/proyecto.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,10 @@ export const routes: Routes = [
     path: 'mainview',
     component: MainviewComponent,
     canActivate: [privateGuard()],
+  },
+  {
+    path: 'test',
+    component: ProyectoComponent,
   },
   {
     path: 'perfil',

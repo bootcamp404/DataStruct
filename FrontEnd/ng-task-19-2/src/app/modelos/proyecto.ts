@@ -1,5 +1,5 @@
 export interface Proyecto {
-    id: string;
+    id_proyecto: string;
     nombre: string;
     objetivo: string;
     fecha_ini: Date;

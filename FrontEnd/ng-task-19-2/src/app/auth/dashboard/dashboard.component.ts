@@ -29,15 +29,6 @@ export class DashboardComponent implements OnInit {
   
   mensajeError: string | null = null;
 
-  documentos = [
-    {
-      nombre: 'Plan de Empleo',
-      descripcion: 'Documento de estrategia laboral',
-      departamento: 'RRHH'
-    },
-    // Más documentos...
-  ];
-
   constructor(    
     private fb: FormBuilder,
     private departamentoService: DepartamentoService,
