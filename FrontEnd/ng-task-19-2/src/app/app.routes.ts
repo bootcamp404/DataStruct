@@ -9,6 +9,7 @@ import { ResumenComponent } from './informes/resumen.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
 import { ProyectoComponent } from './formularios/proyecto/proyecto.component';
+import { PlantillasComponent } from './componentes/plantillas/plantillas.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'test',
     component: ProyectoComponent,
+  },
+  {
+    path: 'plantillas',
+    component: PlantillasComponent,
   },
   {
     path: 'perfil',
