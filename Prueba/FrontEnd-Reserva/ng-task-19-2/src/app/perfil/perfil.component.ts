@@ -16,10 +16,10 @@ interface Usuario {
 
 @Component({
   selector: 'app-perfil',
-  standalone: true, 
+  standalone: true,
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css'],
-  imports: [CommonModule, FormsModule] 
+  imports: [CommonModule, FormsModule]
 })
 export class PerfilComponent implements OnInit {
   usuario: Usuario = {
@@ -32,7 +32,7 @@ export class PerfilComponent implements OnInit {
     cargo: ''
   };
 
-  mostrarFormularioEdicion = false; 
+  mostrarFormularioEdicion = false;
   usuarioActual: any;
   cargando = true;
   errorMsg = '';
@@ -47,6 +47,15 @@ export class PerfilComponent implements OnInit {
     this.cargando = true;
     this.authService.getCurrentUser().then(user => {
       this.usuarioActual = user;
+      this.usuario = { // Aquí asignas los datos a la propiedad 'usuario'
+        nombre: user.nombre,
+        apellidos: user.apellidos,
+        dni: user.dni,
+        email: user.email,
+        telefono: user.telefono,
+        departamento: user.departamento,
+        cargo: user.cargo
+      };
       this.cargando = false;
     }).catch(error => {
       this.errorMsg = 'Error al cargar los datos del usuario';
@@ -54,7 +63,7 @@ export class PerfilComponent implements OnInit {
       console.error('Error obteniendo usuario actual:', error);
     });
   }
- 
+
   mostrarEditarPerfil() {
     this.mostrarFormularioEdicion = true;
     this.usuario = {
@@ -72,11 +81,11 @@ export class PerfilComponent implements OnInit {
     this.mostrarFormularioEdicion = false;
   }
 
-  guardarCambios() {
+  gguardarCambios() {
     this.authService.updateUser(this.usuario)
       .then(() => {
         this.mostrarFormularioEdicion = false;
-        this.cargarDatosUsuario(); 
+        this.cargarDatosUsuario(); // Recarga los datos actualizados
       })
       .catch(error => {
         this.errorMsg = 'Error al guardar los cambios';

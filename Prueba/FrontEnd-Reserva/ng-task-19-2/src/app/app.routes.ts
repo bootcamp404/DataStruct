@@ -2,7 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainviewComponent } from './mainview/mainview.component';
 import { privateGuard, publicGuard } from './core/auth.guard';
-import { PerfilComponent } from './perfil/perfil.component'; 
+import { PerfilComponent } from './perfil/perfil.component';
 import { FormulariosComponent } from './formularios/formularios.component';
 import { DepartamentsComponent } from './departaments/departaments.component';
 import { InformesComponent } from './informes/informes.component';
@@ -56,4 +56,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { } 
+export class AppRoutingModule { }

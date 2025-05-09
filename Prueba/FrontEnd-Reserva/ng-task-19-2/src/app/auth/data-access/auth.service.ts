@@ -35,6 +35,7 @@ export class AuthService {
         contrasenya: usuario.contrasenia
       })
     );
+    this._router.navigate(['/mainview'])
     this.guardarToken(response.token)
     return response;
   }
@@ -50,6 +51,7 @@ export class AuthService {
     );
     this._router.navigate(['/mainview']);
     this.guardarToken(response.token)
+    localStorage.setItem('usuario', JSON.stringify(response.usuario));
     return response;
   }
 
@@ -85,14 +87,26 @@ export class AuthService {
   isLoggedIn(): boolean{
     return !!this.obtenerToken();
   }
-  getCurrentUser(): Promise<User | null> {
+  getCurrentUser(): Promise<any> {
     return new Promise((resolve, reject) => {
-      const unsubscribe = this._auth.onAuthStateChanged(user => {
-        unsubscribe();
-        resolve(user);
-      }, reject);
+      const token = this.obtenerToken();
+      if (!token) {
+        reject('Token no encontrado');
+        return;
+      }
+
+      // Realiza la llamada a la API para obtener los datos del usuario
+      this._http.get<any>(`${this.apiUrl}/perfil`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).subscribe(
+        response => resolve(response), // Si la respuesta es exitosa
+        error => reject(error) // Si hay error
+      );
     });
   }
+
 
   updateUser(usuario: any): Promise<void> {
     return new Promise((resolve, reject) => {
