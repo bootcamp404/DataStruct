@@ -27,10 +27,16 @@ public class Departamento {
     private List<Centros> centros;
 
     @OneToMany(mappedBy = "departamento")
+    private List<Proyecto> proyectos;
+
+    @OneToMany(mappedBy = "departamento")
     private List<Actividad> actividades;
 
     @OneToMany(mappedBy = "departamento")
     private List<CampanyaMarketing> capanyasMarketing;
+
+    @OneToMany(mappedBy = "departamento")
+    private List<Empresa> empresas;
 
     //CONSTRUCTORES
     public Departamento (String id, String nombre){

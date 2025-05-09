@@ -3,6 +3,7 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Empresa")
@@ -23,6 +24,9 @@ public class Empresa {
     @ManyToOne
     @JoinColumn(name = "id_sector")
     private SectorEmpresa sector;
+
+    @OneToMany(mappedBy = "empresa")
+    private List<Kpi> kpis;
 
     public Empresa() {}
 
