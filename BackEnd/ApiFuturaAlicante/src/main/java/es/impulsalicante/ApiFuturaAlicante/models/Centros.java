@@ -66,6 +66,10 @@ public class Centros {
         this.fecha_creacion = fecha_creacion;
     }
 
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
     public Centros( ){ }
 
 }

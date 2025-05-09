@@ -19,6 +19,7 @@ public class EstadoSubvencion {
         return id;
     }
 
+
     //Constructor
     public EstadoSubvencion (String id){
         this.id = id;

@@ -19,7 +19,7 @@ public class Proyecto {
     private String objetivo;
 
     @Column
-    private Date fecha_inicio;
+    private Date fecha_ini;
     @Column
     private Date fecha_fin;
 
@@ -32,6 +32,14 @@ public class Proyecto {
 
     @OneToMany(mappedBy = "proyecto")
     private List<Subvencion> subvenciones;
+
+    public List<Subvencion> getSubvenciones() {
+        return subvenciones;
+    }
+
+    public List<Centros> getCentros() {
+        return centros;
+    }
 
     public String getId_proyecto() {
         return id_proyecto;
@@ -57,12 +65,12 @@ public class Proyecto {
         this.objetivo = objetivo;
     }
 
-    public Date getFecha_inicio() {
-        return fecha_inicio;
+    public Date getFecha_ini() {
+        return fecha_ini;
     }
 
-    public void setFecha_inicio(Date fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+    public void setFecha_ini(Date fecha_ini) {
+        this.fecha_ini = fecha_ini;
     }
 
     public Date getFecha_fin() {
@@ -82,11 +90,11 @@ public class Proyecto {
 
 
 
-    public Proyecto (String id_proyecto,String nombre, String objetivo, Date fecha_inicio, Date fecha_fin, Departamento departamento) {
+    public Proyecto (String id_proyecto,String nombre, String objetivo, Date fecha_ini, Date fecha_fin, Departamento departamento) {
         this.id_proyecto = id_proyecto;
         this.nombre = nombre;
         this.objetivo = objetivo;
-        this.fecha_inicio = fecha_inicio;
+        this.fecha_ini = fecha_ini;
         this.fecha_fin = fecha_fin;
         this.departamento = departamento;
     }

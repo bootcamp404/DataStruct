@@ -26,7 +26,7 @@ public class KpiService {
     }
 
     public Kpi updateKpi(String id, Kpi kpi) {
-        kpi.setId(id);
+        kpi.setId_kpi(id);
         return kpiRepository.save(kpi);
     }
 

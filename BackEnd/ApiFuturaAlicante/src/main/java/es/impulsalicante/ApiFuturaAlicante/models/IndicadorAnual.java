@@ -2,32 +2,98 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "indicadores_anuales")
 public class IndicadorAnual {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private int anio;
+
+    @Column(nullable = false)
     private String departamento;
 
     private int personasAtendidas;
     private int contrataciones;
     private int empresasCreadas;
-
     private int actividadesFormacion;
     private int participantesFormacion;
     private int horasFormacion;
-
     private int asesoramientos;
-    private double ayudasEmpresas;
-    private double ayudasEntidades;
+    private Integer puestosTrabajo;
+    private BigDecimal ayudasEntidades;
+    private Integer ofertasEmpleo;
+    @Column
+    private int horasOrientacion;
+
+    private Integer altasDemandantes;
+    private Integer accionesOrientacion;
+    private Integer pildorasFormativas;
+
+
+    @Column(precision = 12, scale = 2)
+    private BigDecimal ayudasEmpresas;
+
+    @Column(precision = 12, scale = 2)
+
+
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+
+    public Integer getOfertasEmpleo() {
+        return ofertasEmpleo;
+    }
+
+    public int getHorasOrientacion() {
+        return horasOrientacion;
+    }
+
+    public void setHorasOrientacion(int horasOrientacion) {
+        this.horasOrientacion = horasOrientacion;
+    }
+    public void setOfertasEmpleo(Integer ofertasEmpleo) {
+        this.ofertasEmpleo = ofertasEmpleo;
+    }
+    public Integer getPuestosTrabajo() {
+        return puestosTrabajo;
+    }
+
+    public void setPuestosTrabajo(Integer puestosTrabajo) {
+        this.puestosTrabajo = puestosTrabajo;
+    }
+
+    public Integer getAltasDemandantes() {
+        return altasDemandantes;
+    }
+
+    public void setAltasDemandantes(Integer altasDemandantes) {
+        this.altasDemandantes = altasDemandantes;
+    }
+
+    public Integer getAccionesOrientacion() {
+        return accionesOrientacion;
+    }
+
+    public void setAccionesOrientacion(Integer accionesOrientacion) {
+        this.accionesOrientacion = accionesOrientacion;
+    }
+
+    public Integer getPildorasFormativas() {
+        return pildorasFormativas;
+    }
+
+    public void setPildorasFormativas(Integer pildorasFormativas) {
+        this.pildorasFormativas = pildorasFormativas;
+    }
 
     public int getAnio() {
         return anio;
@@ -41,11 +107,11 @@ public class IndicadorAnual {
         return contrataciones;
     }
 
-    public double getAyudasEmpresas() {
+    public BigDecimal getAyudasEmpresas() {
         return ayudasEmpresas;
     }
 
-    public double getAyudasEntidades() {
+    public BigDecimal getAyudasEntidades() {
         return ayudasEntidades;
     }
 
@@ -105,7 +171,7 @@ public class IndicadorAnual {
         this.contrataciones = contrataciones;
     }
 
-    public void setAyudasEmpresas(double ayudasEmpresas) {
+    public void setAyudasEmpresas(BigDecimal ayudasEmpresas) {
         this.ayudasEmpresas = ayudasEmpresas;
     }
 
@@ -113,7 +179,7 @@ public class IndicadorAnual {
         this.empresasCreadas = empresasCreadas;
     }
 
-    public void setAyudasEntidades(double ayudasEntidades) {
+    public void setAyudasEntidades(BigDecimal ayudasEntidades) {
         this.ayudasEntidades = ayudasEntidades;
     }
 

@@ -18,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'mainview',
     component: MainviewComponent,
-    canActivate: [privateGuard()],
+    //canActivate: [privateGuard()],
   },
   {
     path: 'departaments/departments',
