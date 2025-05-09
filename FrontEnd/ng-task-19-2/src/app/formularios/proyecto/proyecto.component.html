@@ -1,0 +1,130 @@
+<div class="max-w-[5000px] p-8 bg-white rounded-lg shadow-lg">
+  <div>      
+    @if (cargandoLista) {
+      <div class="text-center py-8 text-gray-600 flex flex-col items-center gap-2">
+        <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
+        Cargando proyectos...
+      </div>
+
+    } @else {
+      <!-- Lista de los proyectos -->
+      <div class="mt-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          @for (proyecto of proyectos; track proyecto.id_proyecto) {
+            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4">
+              <h2 class="text-lg font-semibold text-center" >{{ proyecto.nombre }}</h2>  
+              <br><br>            
+                <div class="flex gap-2 justify-center" >
+                <button 
+                  (click)="abrirModalEdicion(proyecto)"
+                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                  Editar
+                </button>
+                <button 
+                  class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                  [disabled]="eliminando">
+                  {{ eliminando ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              </div> 
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (errorLista) {
+      <div class="mt-4 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm flex items-center justify-center gap-2">
+        <i class="fas fa-exclamation-circle"></i>
+        Error al cargar los proyectos
+      </div>
+    }
+
+    <!-- Modal de Edición -->
+    @if (mostrarModalEdicion) {
+      <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+          <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Editar Proyecto</h2>
+    
+          <form [formGroup]="formularioEdicion" (ngSubmit)="guardarEdicion()"
+                class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+            <!-- ID solo lectura -->
+            <div class="flex flex-col gap-2 text-left md:col-span-2">
+              <label for="id" class="font-medium text-gray-700">ID Proyecto</label>
+              <p class="text-gray-700">{{ selectedProyecto?.id_proyecto }}</p>
+            </div>
+    
+            <!-- Nombre -->
+            <div class="flex flex-col gap-2">
+              <label for="nombre" class="font-medium text-gray-700 flex items-center">
+                <i class="fas fa-building text-blue-500 mr-2"></i>Nombre
+              </label>
+              <input type="text" id="nombre" formControlName="nombre"
+                     class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                     [class.border-red-500]="error && mensajeError?.includes('nombre')">
+            </div>
+    
+            <!-- Objetivo -->
+            <div class="flex flex-col gap-2">
+              <label for="objetivo" class="font-medium text-gray-700">Objetivo</label>
+              <textarea id="objetivo" formControlName="objetivo" rows="3"
+                        class="p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                        [class.border-red-500]="error && mensajeError?.includes('objetivo')"></textarea>
+            </div>
+    
+            <!-- Fecha Inicio -->
+            <div class="flex flex-col gap-2">
+              <label for="fecha_ini" class="font-medium text-gray-700">Fecha de Inicio</label>
+              <input type="date" id="fecha_ini" formControlName="fecha_ini"
+                     class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                     [class.border-red-500]="error && mensajeError?.includes('inicio')">
+            </div>
+    
+            <!-- Fecha Fin -->
+            <div class="flex flex-col gap-2">
+              <label for="fecha_fin" class="font-medium text-gray-700">Fecha de Finalización</label>
+              <input type="date" id="fecha_fin" formControlName="fecha_fin"
+                     class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                     [class.border-red-500]="error && mensajeError?.includes('fin')">
+            </div>
+    
+            <!-- Departamento -->
+            <!-- <div class="flex flex-col gap-2 md:col-span-2">
+              <label for="id_departamento" class="font-medium text-gray-700">Departamento</label>
+              <select id="id_departamento" formControlName="id_departamento"
+                      class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                      [class.border-red-500]="error && mensajeError?.includes('departamento')">
+                <option value="" disabled>Seleccione un departamento</option>
+                <option *ngFor="let depto of departamentos" [value]="depto.id">
+                  {{ depto.nombre }}
+                </option>
+              </select>
+            </div> -->
+    
+            <!-- Botones -->
+            <div class="col-span-2 flex justify-center gap-4">
+              <button type="button"
+                      (click)="cerrarModalEdicion()"
+                      class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                Cancelar
+              </button>
+              <button type="submit"
+                      class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      [disabled]="editando">
+                {{ editando ? 'Guardando...' : 'Guardar Cambios' }}
+              </button>
+            </div>
+    
+            <!-- Mensaje de error -->
+            @if (error) {
+              <div class="col-span-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm">
+                {{ mensajeError }}
+              </div>
+            }
+          </form>
+        </div>
+      </div>
+    }
+    
+  </div>
+</div>

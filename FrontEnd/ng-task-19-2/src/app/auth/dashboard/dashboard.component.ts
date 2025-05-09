@@ -9,12 +9,13 @@ import { DepartamentoValidaciones } from '../../validaciones/departamento.valida
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
+import { ProyectoComponent } from '../../formularios/proyecto/proyecto.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, DepartamentsComponent, CommonModule, ReactiveFormsModule],
+  imports: [HeaderComponent, DepartamentsComponent, CommonModule, ReactiveFormsModule, ProyectoComponent],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
@@ -27,15 +28,6 @@ export class DashboardComponent implements OnInit {
   mostrarModalCreacion = false;
   
   mensajeError: string | null = null;
-
-  documentos = [
-    {
-      nombre: 'Plan de Empleo',
-      descripcion: 'Documento de estrategia laboral',
-      departamento: 'RRHH'
-    },
-    // Más documentos...
-  ];
 
   constructor(    
     private fb: FormBuilder,
@@ -99,7 +91,7 @@ export class DashboardComponent implements OnInit {
         this.departamentoService.crearDepartamento(nuevoDepartamento)
       );
 
-      this.actualizarDepts.refreshDepartamentos();
+      this.actualizarDepts.refreshPagina();
      
       // Si el status es 201 (created) o 200 (OK), consideramos la creación exitosa
       if (response.status === 201 || response.status === 200) {

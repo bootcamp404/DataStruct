@@ -33,6 +33,7 @@ public class ContratosService {
         Contrato contrato_mod = repositorio.findById(id).get();
 
         contrato_mod.setImporte(contrato.getImporte());
+        contrato_mod.setFecha_creacion(contrato.getFecha_creacion());
         contrato_mod.setDepartamento(contrato.getDepartamento());
         contrato_mod.setTipo_contrato(contrato.getTipo_contrato());
 

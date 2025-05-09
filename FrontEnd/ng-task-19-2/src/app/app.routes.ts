@@ -8,7 +8,8 @@ import { InformesComponent } from './informes/informes.component';
 import { ResumenComponent } from './informes/resumen.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
-import { DepartamentsComponent } from './departaments/departaments.component'
+import { ProyectoComponent } from './formularios/proyecto/proyecto.component';
+import { PlantillasComponent } from './componentes/plantillas/plantillas.component';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,14 @@ export const routes: Routes = [
     path: 'mainview',
     component: MainviewComponent,
     canActivate: [privateGuard()],
+  },
+  {
+    path: 'test',
+    component: ProyectoComponent,
+  },
+  {
+    path: 'plantillas',
+    component: PlantillasComponent,
   },
   {
     path: 'perfil',
