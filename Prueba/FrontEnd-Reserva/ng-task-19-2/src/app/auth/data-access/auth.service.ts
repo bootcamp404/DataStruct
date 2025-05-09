@@ -35,7 +35,6 @@ export class AuthService {
         contrasenya: usuario.contrasenia
       })
     );
-    this._router.navigate(['/mainview']);
     this.guardarToken(response.token)
     return response;
   }
@@ -44,7 +43,7 @@ export class AuthService {
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
       // this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
-        this._http.post<AuthResponse>(`${this.apiUrl}/auth/login`, {
+        this._http.post<AuthResponse>(`${this.apiUrl}/login`, {
         email: usuario.email,
         contrasenya: usuario.contrasenia
       })
