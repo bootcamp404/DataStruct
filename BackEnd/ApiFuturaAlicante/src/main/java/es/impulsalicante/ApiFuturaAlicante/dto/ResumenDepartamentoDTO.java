@@ -1,9 +1,12 @@
 package es.impulsalicante.ApiFuturaAlicante.dto;
 
+import java.math.BigDecimal;
+
 public class ResumenDepartamentoDTO {
 
     private String id;
     private String nombre;
+
 
     private Integer personasAtendidas;
     private Integer altasDemandantes;
@@ -16,6 +19,20 @@ public class ResumenDepartamentoDTO {
     private Integer empresasApoyadas;
     private Integer nuevasEmpresas;
     private Integer sesionesAsesoramiento;
+
+    private int empresasCreadas;
+    private int asesoramientos;
+    private int contrataciones;
+
+    public void setEmpresasCreadas(int empresasCreadas) {
+        this.empresasCreadas = empresasCreadas;
+    }
+    public void setAsesoramientos(int asesoramientos) {
+        this.asesoramientos = asesoramientos;
+    }
+    public void setContrataciones(int contrataciones) {
+        this.contrataciones = contrataciones;
+    }
 
     // Getters y Setters
 
@@ -87,9 +104,10 @@ public class ResumenDepartamentoDTO {
         return empresasApoyadas;
     }
 
-    public void setEmpresasApoyadas(Integer empresasApoyadas) {
-        this.empresasApoyadas = empresasApoyadas;
+    public void setEmpresasApoyadas(BigDecimal empresasApoyadas) {
+        this.empresasApoyadas = empresasApoyadas != null ? empresasApoyadas.intValue() : null;
     }
+
 
     public Integer getNuevasEmpresas() {
         return nuevasEmpresas;

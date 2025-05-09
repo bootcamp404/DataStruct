@@ -11,20 +11,224 @@ public class ResumenMemoriaDTO {
     private BigDecimal presupuestoTotal;
     private BigDecimal presupuestoEjecutado;
     private Double porcentajeEjecucion;
+    private Integer altasDemandantes;
+    private Integer accionesOrientacion;
+    private Integer cursos;
+    private Integer pildorasFormativas;
 
     private Integer personasOrientadas;
     private Integer actividadesFormacion;
     private Integer participantesFormacion;
     private Integer contrataciones;
-    private Integer empresasCreadas;
     private Integer asesoramientos;
     private Integer ayudasEmpresas;
     private BigDecimal importeAyudas;
+    private List<ServicioDTO> servicios;
+
+    private Integer demandantesRegistrados;
+    private Integer inscripcionesOfertas;
+    private Integer perceptoresPrestacion;
+    private Integer colectivosVulnerables;
+
+    // Datos perfil demandantes
+    private Integer totalNuevosDemandantes;
+    private Integer mujeresMayores45;
+    private Integer mujeresEntre30y45;
+    private Integer mujeresMenores30;
+    private Integer hombresMayores45;
+    private Integer hombresEntre30y45;
+    private Integer hombresMenores30;
+    private BigDecimal horasOrientacion;
+    private BigDecimal horasFormacion;
+    private Integer ofertasEmpleo;
+    private Integer puestosTrabajo;
+    private BigDecimal importeAyudasEmpresas;
+
+    private int empresasCreadas;
+
 
     // Sub-resúmenes
     private List<ResumenDepartamentoDTO> resumenDepartamentos;
 
     // Getters y Setters
+
+    public int getEmpresasCreadas() {
+        return empresasCreadas;
+    }
+
+    public void setEmpresasCreadas(int empresasCreadas) {
+        this.empresasCreadas = empresasCreadas;
+    }
+
+    public Integer getColectivosVulnerables() {
+        return colectivosVulnerables;
+    }
+
+    public Integer getDemandantesRegistrados() {
+        return demandantesRegistrados;
+    }
+
+    public Integer getHombresEntre30y45() {
+        return hombresEntre30y45;
+    }
+
+    public Integer getHombresMayores45() {
+        return hombresMayores45;
+    }
+
+    public Integer getHombresMenores30() {
+        return hombresMenores30;
+    }
+
+    public Integer getInscripcionesOfertas() {
+        return inscripcionesOfertas;
+    }
+
+    public Integer getMujeresEntre30y45() {
+        return mujeresEntre30y45;
+    }
+
+    public Integer getMujeresMayores45() {
+        return mujeresMayores45;
+    }
+
+    public Integer getMujeresMenores30() {
+        return mujeresMenores30;
+    }
+
+    public Integer getPerceptoresPrestacion() {
+        return perceptoresPrestacion;
+    }
+
+    public Integer getTotalNuevosDemandantes() {
+        return totalNuevosDemandantes;
+    }
+
+    public void setColectivosVulnerables(Integer colectivosVulnerables) {
+        this.colectivosVulnerables = colectivosVulnerables;
+    }
+
+    public void setDemandantesRegistrados(Integer demandantesRegistrados) {
+        this.demandantesRegistrados = demandantesRegistrados;
+    }
+
+    public void setHombresEntre30y45(Integer hombresEntre30y45) {
+        this.hombresEntre30y45 = hombresEntre30y45;
+    }
+
+    public void setInscripcionesOfertas(Integer inscripcionesOfertas) {
+        this.inscripcionesOfertas = inscripcionesOfertas;
+    }
+
+    public void setHombresMayores45(Integer hombresMayores45) {
+        this.hombresMayores45 = hombresMayores45;
+    }
+
+    public void setHombresMenores30(Integer hombresMenores30) {
+        this.hombresMenores30 = hombresMenores30;
+    }
+
+    public void setMujeresMayores45(Integer mujeresMayores45) {
+        this.mujeresMayores45 = mujeresMayores45;
+    }
+
+    public void setMujeresEntre30y45(Integer mujeresEntre30y45) {
+        this.mujeresEntre30y45 = mujeresEntre30y45;
+    }
+
+    public void setMujeresMenores30(Integer mujeresMenores30) {
+        this.mujeresMenores30 = mujeresMenores30;
+    }
+
+    public void setPerceptoresPrestacion(Integer perceptoresPrestacion) {
+        this.perceptoresPrestacion = perceptoresPrestacion;
+    }
+
+    public void setTotalNuevosDemandantes(Integer totalNuevosDemandantes) {
+        this.totalNuevosDemandantes = totalNuevosDemandantes;
+    }
+
+    public BigDecimal getImporteAyudasEmpresas() {
+        return importeAyudasEmpresas;
+    }
+
+    public List<ServicioDTO> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(List<ServicioDTO> servicios) {
+        this.servicios = servicios;
+    }
+
+    public void setImporteAyudasEmpresas(BigDecimal importeAyudasEmpresas) {
+        this.importeAyudasEmpresas = importeAyudasEmpresas;
+    }
+
+
+
+
+    public Integer getPuestosTrabajo() {
+        return puestosTrabajo;
+    }
+
+    public BigDecimal getHorasFormacion() {
+        return horasFormacion;
+    }
+
+    public BigDecimal getHorasOrientacion() {
+        return horasOrientacion;
+    }
+
+    public Integer getOfertasEmpleo() {
+        return ofertasEmpleo;
+    }
+    public Integer getAltasDemandantes() {
+        return altasDemandantes;
+    }
+
+    public void setAltasDemandantes(Integer altasDemandantes) {
+        this.altasDemandantes = altasDemandantes;
+    }
+
+    public Integer getAccionesOrientacion() {
+        return accionesOrientacion;
+    }
+
+    public void setAccionesOrientacion(Integer accionesOrientacion) {
+        this.accionesOrientacion = accionesOrientacion;
+    }
+
+    public Integer getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(Integer cursos) {
+        this.cursos = cursos;
+    }
+
+    public Integer getPildorasFormativas() {
+        return pildorasFormativas;
+    }
+
+    public void setPildorasFormativas(Integer pildorasFormativas) {
+        this.pildorasFormativas = pildorasFormativas;
+    }
+
+    public void setPuestosTrabajo(Integer puestosTrabajo) {
+        this.puestosTrabajo = puestosTrabajo;
+    }
+
+    public void setHorasOrientacion(BigDecimal horasOrientacion) {
+        this.horasOrientacion = horasOrientacion;
+    }
+
+    public void setHorasFormacion(BigDecimal horasFormacion) {
+        this.horasFormacion = horasFormacion;
+    }
+
+    public void setOfertasEmpleo(Integer ofertasEmpleo) {
+        this.ofertasEmpleo = ofertasEmpleo;
+    }
 
     public Integer getAnio() {
         return anio;
@@ -90,13 +294,6 @@ public class ResumenMemoriaDTO {
         this.contrataciones = contrataciones;
     }
 
-    public Integer getEmpresasCreadas() {
-        return empresasCreadas;
-    }
-
-    public void setEmpresasCreadas(Integer empresasCreadas) {
-        this.empresasCreadas = empresasCreadas;
-    }
 
     public Integer getAsesoramientos() {
         return asesoramientos;

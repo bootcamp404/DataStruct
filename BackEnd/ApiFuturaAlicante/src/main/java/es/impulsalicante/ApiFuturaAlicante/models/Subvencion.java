@@ -22,6 +22,9 @@ public class Subvencion {
     @Column
     private Date fecha_creacion;
 
+    @Column(length = 1)
+    private String modalidad; // Valores esperados: "A", "B", "C"
+
     @ManyToOne
     @JoinColumn(name = "id_proyecto")
     private Proyecto proyecto;
@@ -37,6 +40,26 @@ public class Subvencion {
 
     public void setEntidad(String entidad) {
         this.entidad = entidad;
+    }
+
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public void setModalidad(String modalidad) {
+        this.modalidad = modalidad;
+    }
+
+    public void setId_subvencion(String id_subvencion) {
+        this.id_subvencion = id_subvencion;
+    }
+
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public String getModalidad() {
+        return modalidad;
     }
 
     public void setImporte(int importe) {

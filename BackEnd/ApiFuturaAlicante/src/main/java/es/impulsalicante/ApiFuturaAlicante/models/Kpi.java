@@ -1,9 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "kpis")
@@ -19,9 +17,20 @@ public class Kpi {
     @Column
     private Float valor_actual;
 
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_empresa", nullable = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Empresa empresa;
+
+
     //Getters y setters
     public String getId() {
         return id_kpi;
+    }
+
+    public void setId_kpi(String id_kpi) {
+        this.id_kpi = id_kpi;
     }
 
     public String getNombre() {

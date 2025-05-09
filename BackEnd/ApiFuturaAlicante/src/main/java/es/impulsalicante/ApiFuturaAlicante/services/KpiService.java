@@ -3,44 +3,34 @@ package es.impulsalicante.ApiFuturaAlicante.services;
 import es.impulsalicante.ApiFuturaAlicante.models.Kpi;
 import es.impulsalicante.ApiFuturaAlicante.repository.KpiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class KpiService {
+
     @Autowired
-    private KpiRepository repo;
+    private KpiRepository kpiRepository;
 
-    //GET
-    public List<Kpi> getKpis() {
-        return repo.findAll();
+    public List<Kpi> getAllKpi() {
+        return kpiRepository.findAll();
     }
 
-    //GET by id
-    public Kpi getKpiById(String id) {
-        return repo.findById(id).get();
+    public Optional<Kpi> getKpiById(String id) {
+        return kpiRepository.findById(id);
     }
 
-    //POST
-    public void postKpi(Kpi kpi) {
-        repo.save(kpi);
+    public Kpi createKpi(Kpi kpi) {
+        return kpiRepository.save(kpi);
     }
 
-    //PUT
-    public Kpi putKpi(String id, Kpi kpi) {
-        Kpi kpi_mod = repo.findById(id).get();
-
-        kpi_mod.setNombre(kpi.getNombre());
-        kpi_mod.setDescripcion(kpi.getDescripcion());
-        kpi_mod.setValor_esperado(kpi.getValor_esperado());
-        kpi_mod.setValor_actual(kpi.getValor_actual());
-
-        repo.save(kpi_mod);
-        return kpi_mod;
+    public Kpi updateKpi(String id, Kpi kpi) {
+        kpi.setId_kpi(id);
+        return kpiRepository.save(kpi);
     }
 
-    //DELETE
     public void deleteKpi(String id) {
-        Kpi kpi = repo.findById(id).get();
-        repo.delete(kpi);
+        kpiRepository.deleteById(id);
     }
 }

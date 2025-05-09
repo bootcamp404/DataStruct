@@ -24,11 +24,24 @@ public class Actividad {
     @Column
     private int num_participantes;
     @Column
-    private int horas;
+    private Integer horas;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
     private Departamento departamento;
+
+    @ManyToOne
+    @JoinColumn(name = "id_proyecto")
+    private Proyecto proyecto;
+
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
+    }
+
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -58,7 +71,7 @@ public class Actividad {
         this.num_participantes = num_participantes;
     }
 
-    public void setHoras(int horas) {
+    public void setHoras(Integer horas) {
         this.horas = horas;
     }
 
@@ -90,11 +103,11 @@ public class Actividad {
         return num_participantes;
     }
 
-    public int getHoras() {
+    public Integer getHoras() {
         return horas;
     }
 
-    public Actividad (String id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int num_participantes, int horas, Departamento departamento){
+    public Actividad (String id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int num_participantes, Integer horas, Departamento departamento){
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

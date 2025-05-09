@@ -26,7 +26,7 @@ public class ProyectoController {
         }
     }
 
-    @GetMapping("/{id}")
+
     public ResponseEntity<?> getProyectoById(@PathVariable String id) {
         Optional<Proyecto> proyecto = proyectoService.getProyectoById(id);
         if (proyecto.isPresent()) {

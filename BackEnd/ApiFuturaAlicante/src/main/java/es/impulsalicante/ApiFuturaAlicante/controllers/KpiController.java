@@ -1,108 +1,75 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
 import es.impulsalicante.ApiFuturaAlicante.models.Kpi;
+import es.impulsalicante.ApiFuturaAlicante.models.Proyecto;
 import es.impulsalicante.ApiFuturaAlicante.services.KpiService;
+import es.impulsalicante.ApiFuturaAlicante.services.ProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("kpis")
 public class KpiController {
-    @Autowired
-    private KpiService servicio;
 
-    //GET
+    @Autowired
+    private KpiService kpiService;
+
     @GetMapping
-    public ResponseEntity<?> getKpis(){
+    public ResponseEntity<?> getAllKpi() {
         try{
-            //OK
-            return ResponseEntity.ok(servicio.getKpis());
+            return ResponseEntity.ok(kpiService.getAllKpi());
         }
-        //Error no contemplado
         catch (Exception e){
             return ResponseEntity.badRequest()
                     .body("Error no contemplado: " + e.getMessage());
         }
     }
 
-    //GET by id
-    @GetMapping("{id}")
-    public ResponseEntity<?> getKpiById(@PathVariable String id){
-        try{
-            Kpi kpi = servicio.getKpiById(id);
-            //OK
-            return ResponseEntity.ok(kpi);
-        } catch (Exception e) {
-            //404
-            if(e instanceof NoSuchElementException){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se ha encontrado un departamento con id: " + id);
-            }
-            //Error no contemplado
-            else{
-                return ResponseEntity.badRequest().body("Error no contemplado: " + e.toString());
-            }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProyectoById(@PathVariable String id) {
+        Optional<Kpi> kpi = kpiService.getKpiById(id);
+        if (kpi.isPresent()) {
+            return ResponseEntity.ok(kpi.get());
+        } else {
+            return ResponseEntity.status(404).body("Proyecto con ID " + id + " no encontrado.");
         }
     }
 
-    //POST
     @PostMapping
-    public ResponseEntity<?> postKpi(@RequestBody Kpi kpi){
+    public ResponseEntity<?> createProyecto(@RequestBody Kpi kpi) {
         try{
-            servicio.postKpi(kpi);
-            //Creado
-            return ResponseEntity.status(HttpStatus.CREATED).body(kpi);
-        }
-        //Error no contemplado
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error no contemplado: " + e.toString());
+            Kpi nuevoKpi = kpiService.createKpi(kpi);
+            return ResponseEntity.ok(nuevoKpi);
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: " + e.toString());
+
         }
     }
 
-    //PUT
-    @PutMapping("{id}")
-    public ResponseEntity<?> putKpi(@PathVariable String id, @RequestBody Kpi kpi){
-        try{
-            Kpi kpi_mod = servicio.putKpi(id, kpi);
-            //OK
-            return ResponseEntity.ok(kpi_mod);
-        }
-        catch(Exception e){
-            //404
-            if(e instanceof NoSuchElementException){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se ha encontrado el departamento con id: " + kpi.getId());
-            }
-            //Error no contemplado
-            else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Error no contemplado: " + e.toString());
-            }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateKpi(@PathVariable String id, @RequestBody Kpi kpi) {
+        Optional<Kpi> existingKpi = kpiService.getKpiById(id);
+        if (existingKpi.isPresent()) {
+            kpiService.updateKpi(id, kpi);
+            return ResponseEntity.ok("KPI con ID " + id + " actualizado correctamente.");
+        } else {
+            return ResponseEntity.status(404).body("No se pudo actualizar. KPI con ID " + id + " no encontrado.");
         }
     }
 
-    //DELETE
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteKpi(@PathVariable String id){
-        try{
-            servicio.deleteKpi(id);
-            //OK
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            //404
-            if(e instanceof NoSuchElementException){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontró el departamento con id: " + id);
-            }
-            //Error no contemplado
-            else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Error no contemplado: " + e.getMessage());
-            }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteKpi(@PathVariable String id) {
+        Optional<Kpi> existingKpi = kpiService.getKpiById(id);
+        if (existingKpi.isPresent()) {
+            kpiService.deleteKpi(id);
+            return ResponseEntity.ok("KPI con ID " + id + " eliminado correctamente.");
+        } else {
+            return ResponseEntity.status(404).body("No se pudo eliminar. KPI con ID " + id + " no encontrado.");
         }
     }
 }

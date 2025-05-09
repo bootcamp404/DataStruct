@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("memoria")
 @CrossOrigin(origins = "*")
@@ -22,7 +24,7 @@ public class ResumenMemoriaController {
     }
 
     @GetMapping("/pdf/{anio}")
-    public ResponseEntity<byte[]> getResumenPdf(@PathVariable Integer anio) {
+    public ResponseEntity<byte[]> getResumenPdf(@PathVariable Integer anio) throws IOException {
         byte[] pdfBytes = resumenMemoriaService.generarPdf(anio);
 
         HttpHeaders headers = new HttpHeaders();
