@@ -23,29 +23,33 @@ export class AuthService {
   private _auth = inject(Auth);
   private _router = inject(Router);
 
-  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1';
+  private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
   constructor() {}
 
   // Registro usando TU API
   async registrarse(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      this._http.post<AuthResponse>(`${this.baseUrl}/usuarios`, {
+      this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
         email: usuario.email,
         contrasenya: usuario.contrasenia
       })
     );
+    this.guardarToken(response.token)
     return response;
   }
 
   // Login usando TU API
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      this._http.post<AuthResponse>(`${this.baseUrl}/usuarios`, {
+      // this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
+        this._http.post<AuthResponse>(`${this.apiUrl}/login`, {
         email: usuario.email,
         contrasenya: usuario.contrasenia
       })
     );
+    this._router.navigate(['/mainview']);
+    this.guardarToken(response.token)
     return response;
   }
 
@@ -78,7 +82,9 @@ export class AuthService {
   obtenerToken(): string | null {
     return localStorage.getItem('token');
   }
-
+  isLoggedIn(): boolean{
+    return !!this.obtenerToken();
+  }
   getCurrentUser(): Promise<User | null> {
     return new Promise((resolve, reject) => {
       const unsubscribe = this._auth.onAuthStateChanged(user => {
