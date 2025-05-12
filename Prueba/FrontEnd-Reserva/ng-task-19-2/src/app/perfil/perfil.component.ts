@@ -81,7 +81,7 @@ export class PerfilComponent implements OnInit {
     this.mostrarFormularioEdicion = false;
   }
 
-  gguardarCambios() {
+  guardarCambios() {
     this.authService.updateUser(this.usuario)
       .then(() => {
         this.mostrarFormularioEdicion = false;
