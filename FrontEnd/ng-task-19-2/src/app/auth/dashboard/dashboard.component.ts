@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from "../../mainview/header/header.component";
-import { DepartamentsComponent } from '../../departaments/departaments.component';
+import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DepartamentoService } from '../../services/departamento.service';
 import { Departamento } from '../../modelos/departamento';

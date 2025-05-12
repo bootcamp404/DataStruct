@@ -30,6 +30,10 @@ public class UsuariosService {
         return usuariosRepository.save(usuario);
     }
 
+    public Optional<Usuario> getUsuarioByEmail(String email) {
+        return usuariosRepository.findByEmail(email);
+    }
+
     public void deleteUsuario(String id) {
         usuariosRepository.deleteById(id);
     }
