@@ -44,7 +44,7 @@ export class AuthService {
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
       // this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
-        this._http.post<AuthResponse>(`${this.apiUrl}/login`, {
+        this._http.post<AuthResponse>(`${this.apiUrl}/usuarios/login`, {
         email: usuario.email,
         contrasenya: usuario.contrasenia
       })
