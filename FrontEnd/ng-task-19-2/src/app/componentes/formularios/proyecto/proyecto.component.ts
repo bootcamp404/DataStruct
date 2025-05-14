@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Proyecto } from '../../../modelos/proyecto';
 import { firstValueFrom, forkJoin, Subscription } from 'rxjs';
 import { ProyectoService } from '../../../services/proyecto.service';
@@ -44,13 +44,13 @@ export class ProyectoComponent implements OnInit {
     private router: Router
   ) {
     this.formularioEdicion = this.fb.group({
-      id: [''],
-      nombre: [''],
-      objetivo: [''],
-      fecha_ini: [],
-      fecha_fin: [],
-      id_departamento: ['']
+      nombre: ['', Validators.required],
+      objetivo: ['', Validators.required],
+      fecha_ini: ['', Validators.required],
+      fecha_fin: ['', Validators.required],
+      id_departamento: ['', Validators.required]  // usado en el <select>
     });
+
   }
 
   ngOnInit() {
@@ -98,7 +98,6 @@ export class ProyectoComponent implements OnInit {
     });
   }
 
-
   getNombreDepartamento(id_departamento: string): string {
     const depto = this.departamentos.find(d => d.id === id_departamento);
     return depto ? depto.nombre : 'Desconocido';
@@ -112,14 +111,16 @@ export class ProyectoComponent implements OnInit {
     this.selectedProyecto = proyecto;
 
     this.formularioEdicion.patchValue({
-      id: proyecto.id_proyecto,
       nombre: proyecto.nombre,
       objetivo: proyecto.objetivo,
       fecha_ini: proyecto.fecha_ini,
       fecha_fin: proyecto.fecha_fin,
+      id_departamento: proyecto.departamento?.id || ''
     });
+
     this.mostrarModalEdicion = true;
   }
+
 
   cerrarModalEdicion() {
     this.mostrarModalEdicion = false;
@@ -131,47 +132,43 @@ export class ProyectoComponent implements OnInit {
     if (!this.selectedProyecto) return;
 
     this.editando = true;
+    this.error = false;
     this.mensajeError = null;
 
     try {
-      const proyectoActualizado = this.formularioEdicion.value;
-      
-      // Validar el formulario excluyendo el proyecto actual
-      const proyectoSinActual = this.proyectos.filter(d => d.id_proyecto !== this.selectedProyecto?.id_proyecto);
-      const resultadoValidacion = ProyectoValidaciones.validarFormulario(
-        this.formularioEdicion,
-        proyectoSinActual
-      );
+      const formulario = this.formularioEdicion.value;
 
+      // Validaciones personalizadas si las tienes
+      const resultadoValidacion = ProyectoValidaciones.validarFormulario(this.formularioEdicion, this.proyectos.filter(p => p.id_proyecto !== this.selectedProyecto?.id_proyecto));
       if (!resultadoValidacion.valido) {
         this.error = true;
         this.mensajeError = resultadoValidacion.errores.join('\n');
         return;
       }
 
+      // Construcción del objeto Proyecto con el departamento como objeto anidado
+      const proyectoActualizado: Proyecto = {
+        id_proyecto: this.selectedProyecto.id_proyecto,
+        nombre: formulario.nombre,
+        objetivo: formulario.objetivo,
+        fecha_ini: formulario.fecha_ini,
+        fecha_fin: formulario.fecha_fin,
+        departamento: this.departamentos.find(d => d.id === formulario.id_departamento)!
+      };
+
       const response = await firstValueFrom(
-        this.proyectoService.actualizarProyecto(this.selectedProyecto.id_proyecto, proyectoActualizado)
+        this.proyectoService.actualizarProyecto(proyectoActualizado.id_proyecto, proyectoActualizado)
       );
 
-      // Si el status es 200, consideramos la actualización exitosa
       if (response.status === 200) {
         this.cargarDatosIniciales();
         this.cerrarModalEdicion();
-        
-        // Redirigir a la página principal de listar
         this.router.navigate(['/dashboard']);
       } else {
         throw new Error('Error al actualizar el proyecto');
       }
     } catch (error: any) {
-      // Si el error es de tipo HttpErrorResponse y el status es 200, consideramos la actualización exitosa
-      if (error.status === 200) {
-        this.cargarDatosIniciales();
-        this.cerrarModalEdicion();
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.mensajeError = error?.message || 'Error al actualizar el proyecto';
-      }
+      this.mensajeError = error?.message || 'Error al actualizar el proyecto';
     } finally {
       this.editando = false;
     }
