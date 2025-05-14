@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Proyecto } from '../../modelos/proyecto';
-import { firstValueFrom, Subscription } from 'rxjs';
-import { ProyectoService } from '../../services/proyecto.service';
-import { ActualizarService } from '../../services/actualizar.service';
+import { Proyecto } from '../../../modelos/proyecto';
+import { firstValueFrom, forkJoin, Subscription } from 'rxjs';
+import { ProyectoService } from '../../../services/proyecto.service';
+import { ActualizarService } from '../../../services/actualizar.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProyectoValidaciones } from '../../validaciones/proyecto.validaciones';
+import { ProyectoValidaciones } from '../../../validaciones/proyecto.validaciones';
+import { Departamento } from '../../../modelos/departamento';
+import { DepartamentoService } from '../../../services/departamento.service';
+
+interface ProyectoConDepartamento extends Proyecto {
+  nombre_departamento: string;
+}
 
 @Component({
   selector: 'app-proyecto',
@@ -16,7 +22,8 @@ import { ProyectoValidaciones } from '../../validaciones/proyecto.validaciones';
 })
 export class ProyectoComponent implements OnInit {
   formularioEdicion: FormGroup;
-  proyectos: Proyecto[] = [];
+  proyectos: ProyectoConDepartamento[] = [];
+  departamentos: Departamento[] = [];
   selectedProyecto: Proyecto | null = null;
   cargando = false;
   cargandoLista = false;
@@ -33,6 +40,7 @@ export class ProyectoComponent implements OnInit {
     private fb: FormBuilder,
     private proyectoService: ProyectoService,
     private actualizarPag: ActualizarService,
+    private departamentoService: DepartamentoService,
     private router: Router
   ) {
     this.formularioEdicion = this.fb.group({
@@ -46,10 +54,11 @@ export class ProyectoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cargarProyectos();
+    this.cargarDatosIniciales();
+
     // Suscribirse al evento de actualización
     this.refreshSubscription = this.actualizarPag.actualizarPagina$.subscribe(() => {
-      this.cargarProyectos();
+      this.cargarDatosIniciales();
     });
   }
 
@@ -60,21 +69,39 @@ export class ProyectoComponent implements OnInit {
     }
   }
 
-  cargarProyectos() {
+  cargarDatosIniciales() {
     this.cargandoLista = true;
-    this.proyectoService.obtenerProyectos().subscribe({
-      next: (proyectos) => {
-        this.proyectos = proyectos;
-        console.log('Proyectos recibidos:', proyectos); // Examina la estructura exacta
-        this.cargandoLista = false;
-        this.proyectoService.setProyectos(proyectos);
-      },
-      error: (error) => {
-        console.error('Error al cargar los proyectos:', error);
-        this.errorLista = true;
-        this.cargandoLista = false;
-      }
+
+    forkJoin({
+      proyectos: this.proyectoService.obtenerProyectos(),
+      departamentos: this.departamentoService.obtenerDepartamentos()
+      
+    }).subscribe({
+      next: ({ proyectos, departamentos }) => {
+        console.log('Proyectos completos recibidos:', proyectos);
+          this.departamentos = departamentos;
+          this.proyectos = proyectos.map(proyecto => {
+            const departamento = proyecto.departamento; // es un objeto
+            return {
+              ...proyecto,
+              nombre_departamento: departamento ? departamento.nombre : 'Desconocido'
+            } as ProyectoConDepartamento;
+          });
+          this.proyectoService.setProyectos(proyectos);
+          this.cargandoLista = false;
+        },
+        error: (error) => {
+          console.error('Error al cargar proyectos o departamentos:', error);
+          this.errorLista = true;
+          this.cargandoLista = false;
+        }
     });
+  }
+
+
+  getNombreDepartamento(id_departamento: string): string {
+    const depto = this.departamentos.find(d => d.id === id_departamento);
+    return depto ? depto.nombre : 'Desconocido';
   }
 
   selectProyecto(proyecto: Proyecto) {
@@ -90,11 +117,8 @@ export class ProyectoComponent implements OnInit {
       objetivo: proyecto.objetivo,
       fecha_ini: proyecto.fecha_ini,
       fecha_fin: proyecto.fecha_fin,
-      id_departamento: proyecto.id_departamento
     });
     this.mostrarModalEdicion = true;
-    console.log(this.selectedProyecto.id_proyecto)
-
   }
 
   cerrarModalEdicion() {
@@ -131,7 +155,7 @@ export class ProyectoComponent implements OnInit {
 
       // Si el status es 200, consideramos la actualización exitosa
       if (response.status === 200) {
-        this.cargarProyectos();
+        this.cargarDatosIniciales();
         this.cerrarModalEdicion();
         
         // Redirigir a la página principal de listar
@@ -142,7 +166,7 @@ export class ProyectoComponent implements OnInit {
     } catch (error: any) {
       // Si el error es de tipo HttpErrorResponse y el status es 200, consideramos la actualización exitosa
       if (error.status === 200) {
-        this.cargarProyectos();
+        this.cargarDatosIniciales();
         this.cerrarModalEdicion();
         this.router.navigate(['/dashboard']);
       } else {
