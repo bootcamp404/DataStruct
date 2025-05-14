@@ -1,15 +1,18 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "Proyecto")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_proyecto")
 public class Proyecto {
 
     @Id
-    @Column(length = 20)
+    @Column(name = "id_proyecto")
     private String id_proyecto;
 
     @Column(nullable = false)
