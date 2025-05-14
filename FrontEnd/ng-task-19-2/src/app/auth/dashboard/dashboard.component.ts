@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from "../../mainview/header/header.component";
-import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DepartamentoService } from '../../services/departamento.service';
 import { Departamento } from '../../modelos/departamento';
@@ -10,12 +9,13 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
 import { ProyectoComponent } from '../../formularios/proyecto/proyecto.component';
+import { DepartamentsComponent } from '../../componentes/plantillas/departaments/departaments.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, DepartamentsComponent, CommonModule, ReactiveFormsModule, ProyectoComponent],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
