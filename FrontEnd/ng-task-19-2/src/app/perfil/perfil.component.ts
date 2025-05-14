@@ -54,6 +54,10 @@ export class PerfilComponent implements OnInit {
       console.error('Error obteniendo usuario actual:', error);
     });
   }
+
+  volver(): void {
+    this.router.navigate(['/ruta-anterior']);
+  }
  
   mostrarEditarPerfil() {
     this.mostrarFormularioEdicion = true;
