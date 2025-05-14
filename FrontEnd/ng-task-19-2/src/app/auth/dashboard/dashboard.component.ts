@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
 import { ProyectoComponent } from '../../formularios/proyecto/proyecto.component';
-import { DepartamentsComponent } from '../../componentes/plantillas/departaments/departaments.component';
+import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
 
 @Component({
   selector: 'app-dashboard',

@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { firstValueFrom, Subscription } from 'rxjs';
-import { Departamento } from '../../../modelos/departamento';
-import { ActualizarService } from '../../../services/actualizar.service';
-import { DepartamentoService } from '../../../services/departamento.service';
-import { DepartamentoValidaciones } from '../../../validaciones/departamento.validaciones';
+import { Departamento } from '../../modelos/departamento';
+import { ActualizarService } from '../../services/actualizar.service';
+import { DepartamentoService } from '../../services/departamento.service';
+import { DepartamentoValidaciones } from '../../validaciones/departamento.validaciones';
 
 
 @Component({
