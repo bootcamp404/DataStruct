@@ -1,6 +1,8 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Empresa")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idEmpresa")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idEmpresa")
 public class Empresa {
 
     @Id
@@ -22,13 +24,16 @@ public class Empresa {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
+    @JsonManagedReference
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_sector")
+    @JsonManagedReference
     private SectorEmpresa sector;
 
     @OneToMany(mappedBy = "empresa")
+    @JsonBackReference
     private List<Kpi> kpis;
 
     public Empresa() {}

@@ -2,12 +2,13 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "kpis")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_kpi")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_kpi")
 public class Kpi {
     @Id
     private String id_kpi;
@@ -24,6 +25,7 @@ public class Kpi {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa", nullable = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonManagedReference
     private Empresa empresa;
 
 
