@@ -1,9 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.services;
 
-import es.impulsalicante.ApiFuturaAlicante.dto.CentroDTO;
-import es.impulsalicante.ApiFuturaAlicante.dto.ResumenMemoriaDTO;
-import es.impulsalicante.ApiFuturaAlicante.dto.ResumenDepartamentoDTO;
-import es.impulsalicante.ApiFuturaAlicante.dto.ServicioDTO;
+import es.impulsalicante.ApiFuturaAlicante.dto.*;
 import es.impulsalicante.ApiFuturaAlicante.models.*;
 import es.impulsalicante.ApiFuturaAlicante.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -595,6 +592,9 @@ public class ResumenMemoriaService {
 
 
 
+        //3.4
+        html.append(generarSeccion34AyudasEmpresas("D3"));
+
         html.append("</tbody></table></div>");
         html.append("</body></html>");
 
@@ -1040,6 +1040,68 @@ public class ResumenMemoriaService {
             return Base64.getEncoder().encodeToString(bytes);
         }
     }
+    private String generarSeccion34AyudasEmpresas(String idDepartamento) {
+        List<String> idsProyectos = proyectoRepository
+                .findByDepartamentoId(idDepartamento)
+                .stream()
+                .map(Proyecto::getId_proyecto)
+                .collect(Collectors.toList());
+
+        List<Subvencion> subvenciones = subvencionRepository.obtenerAyudasPorProyectos(idsProyectos);
+
+        int totalEmpresas = (int) subvenciones.stream()
+                .map(Subvencion::getEntidad)
+                .filter(Objects::nonNull)
+                .distinct()
+                .count();
+
+        BigDecimal totalImporte = subvenciones.stream()
+                .map(subv -> BigDecimal.valueOf(subv.getImporte()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        StringBuilder html = new StringBuilder();
+
+        html.append("""
+        <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+            <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>3.4</div>
+            <h2 style='color: #f15a24; margin: 15px 0 10px;'>Ayudas Económicas a Empresas de la Ciudad de Alicante</h2>
+            <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
+            <p><strong>Importe concedido:</strong> %s €</p>
+            <p><strong>Empresas beneficiarias:</strong> %d</p>
+            <table style='width:100%%; border-collapse: collapse; margin-top: 20px;'>
+                <thead>
+                    <tr style='background-color: #fbe1d2;'>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Entidad</th>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Importe</th>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Proyecto</th>
+                    </tr>
+                </thead>
+                <tbody>
+    """.formatted(totalImporte.toPlainString(), totalEmpresas));
+
+        for (Subvencion subv : subvenciones) {
+            html.append("""
+            <tr>
+                <td style='border: 1px solid #ddd; padding: 8px;'>%s</td>
+                <td style='border: 1px solid #ddd; padding: 8px;'>%d €</td>
+                <td style='border: 1px solid #ddd; padding: 8px;'>%s</td>
+            </tr>
+        """.formatted(
+                    safe(subv.getEntidad()),
+                    subv.getImporte(),
+                    subv.getProyecto() != null ? safe(subv.getProyecto().getNombre()) : "—"
+            ));
+        }
+
+        html.append("""
+                </tbody>
+            </table>
+        </div>
+    """);
+
+        return html.toString();
+    }
+
 
 
 

@@ -26,7 +26,6 @@ public class ProyectoController {
         }
     }
 
-
     public ResponseEntity<?> getProyectoById(@PathVariable String id) {
         Optional<Proyecto> proyecto = proyectoService.getProyectoById(id);
         if (proyecto.isPresent()) {
@@ -38,15 +37,14 @@ public class ProyectoController {
 
     @PostMapping
     public ResponseEntity<?> createProyecto(@RequestBody Proyecto proyecto) {
-        try{
+        try {
             Proyecto nuevoProyecto = proyectoService.createProyecto(proyecto);
             return ResponseEntity.ok(nuevoProyecto);
-
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.toString());
-
         }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProyecto(@PathVariable String id, @RequestBody Proyecto proyecto) {

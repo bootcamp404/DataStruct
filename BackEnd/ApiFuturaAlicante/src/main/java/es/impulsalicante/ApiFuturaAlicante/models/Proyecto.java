@@ -1,9 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -28,18 +25,23 @@ public class Proyecto {
     @Column
     private Date fecha_fin;
 
+
+
     @ManyToOne
-    @JoinColumn(name = "id_departamento", nullable = false)
-    @JsonManagedReference
+    @JoinColumn(name="id_departamento")
+    @JsonManagedReference("dep-proy")
     private Departamento departamento;
 
-    @OneToMany(mappedBy = "proyecto")
-    @JsonBackReference
+    @OneToMany(mappedBy="proyecto")
+    @JsonManagedReference("proy-centros")
     private List<Centros> centros;
 
-    @OneToMany(mappedBy = "proyecto")
-    @JsonBackReference
+    @OneToMany(mappedBy="proyecto")
+    @JsonManagedReference("proy-subv")
     private List<Subvencion> subvenciones;
+
+
+
 
     public List<Subvencion> getSubvenciones() {
         return subvenciones;

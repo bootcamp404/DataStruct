@@ -27,10 +27,9 @@ public class Departamento {
     @JsonBackReference
     private List<Centros> centros;
 
-    @OneToMany(mappedBy = "departamento")
-    @JsonBackReference
+    @OneToMany(mappedBy="departamento")
+    @JsonBackReference("dep-proy")
     private List<Proyecto> proyectos;
-
     @OneToMany(mappedBy = "departamento")
     @JsonBackReference
     private List<Actividad> actividades;
