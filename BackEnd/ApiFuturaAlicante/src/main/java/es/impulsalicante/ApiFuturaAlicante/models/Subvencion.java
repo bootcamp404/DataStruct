@@ -1,6 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -30,8 +31,8 @@ public class Subvencion {
     private String modalidad; // Valores esperados: "A", "B", "C"
 
     @ManyToOne
-    @JoinColumn(name = "id_proyecto")
-    @JsonManagedReference
+    @JoinColumn(name="id_proyecto")
+    @JsonBackReference("proy-subv")
     private Proyecto proyecto;
 
     @ManyToOne
