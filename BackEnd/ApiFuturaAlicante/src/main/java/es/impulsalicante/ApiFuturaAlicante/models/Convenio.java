@@ -20,18 +20,27 @@ public class Convenio {
     private Integer numeroParticipantes;
     private Integer numeroHoras;
 
-    private String lineasActuacion; // Ej: "Formación, Orientación"
+    @Column(columnDefinition = "TEXT")
+    private String lineasActuacion;
 
-    private String anexo; // ej. "Anexo 13"
+    @Column(columnDefinition = "TEXT")
+    private String observaciones;
 
-    @ManyToOne
-    @JoinColumn(name = "id_departamento")
-    private Departamento departamento;
+    private String anexo;
 
     private LocalDate fechaFirma;
     private LocalDate fechaFinVigencia;
 
-    private String observaciones;
+    private String cursos;
+    private String indicadores;
+    private String ambitosIntervencion;
+    private Integer participantesHombres;
+    private Integer participantesMujeres;
+    private String observacionesAdicionales;
+
+    @ManyToOne
+    @JoinColumn(name = "id_departamento")
+    private Departamento departamento;
 
 
     public void setId(String id) {
@@ -65,7 +74,23 @@ public class Convenio {
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
+    public String getCursos() { return cursos; }
+    public void setCursos(String cursos) { this.cursos = cursos; }
 
+    public String getIndicadores() { return indicadores; }
+    public void setIndicadores(String indicadores) { this.indicadores = indicadores; }
+
+    public String getAmbitosIntervencion() { return ambitosIntervencion; }
+    public void setAmbitosIntervencion(String ambitosIntervencion) { this.ambitosIntervencion = ambitosIntervencion; }
+
+    public Integer getParticipantesHombres() { return participantesHombres; }
+    public void setParticipantesHombres(Integer participantesHombres) { this.participantesHombres = participantesHombres; }
+
+    public Integer getParticipantesMujeres() { return participantesMujeres; }
+    public void setParticipantesMujeres(Integer participantesMujeres) { this.participantesMujeres = participantesMujeres; }
+
+    public String getObservacionesAdicionales() { return observacionesAdicionales; }
+    public void setObservacionesAdicionales(String observacionesAdicionales) { this.observacionesAdicionales = observacionesAdicionales; }
     public void setAnexo(String anexo) {
         this.anexo = anexo;
     }
