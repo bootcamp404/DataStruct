@@ -7,32 +7,32 @@ import { AuthService } from '../auth/data-access/auth.service';
 interface Usuario {
   nombre: string;
   apellidos: string;
-  dni: string;
+  // dni: string;
   email: string;
   telefono: string;
-  departamento?: string;
-  cargo?: string;
-}
+//   departamento?: string;
+//   cargo?: string;
+ }
 
 @Component({
   selector: 'app-perfil',
-  standalone: true, 
+  standalone: true,
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css'],
-  imports: [CommonModule, FormsModule] 
+  imports: [CommonModule, FormsModule]
 })
 export class PerfilComponent implements OnInit {
   usuario: Usuario = {
     nombre: '',
     apellidos: '',
-    dni: '',
+    // dni: '',
     email: '',
     telefono: '',
-    departamento: '',
-    cargo: ''
+    // departamento: '',
+    // cargo: ''
   };
 
-  mostrarFormularioEdicion = false; 
+  mostrarFormularioEdicion = false;
   usuarioActual: any;
   cargando = true;
   errorMsg = '';
@@ -48,39 +48,44 @@ export class PerfilComponent implements OnInit {
     this.authService.getCurrentUser().then(user => {
       this.usuarioActual = user;
       this.cargando = false;
+            console.log('Usuario recibido:', user);
     }).catch(error => {
       this.errorMsg = 'Error al cargar los datos del usuario';
       this.cargando = false;
       console.error('Error obteniendo usuario actual:', error);
     });
   }
+
+  volver(): void {
+    this.router.navigate(['/ruta-anterior']);
+  }
  
   mostrarEditarPerfil() {
-    this.mostrarFormularioEdicion = true;
-    this.usuario = {
-      nombre: this.usuarioActual?.displayName || '',
-      apellidos: this.usuarioActual?.apellidos || '',
-      dni: this.usuarioActual?.dni || '',
-      email: this.usuarioActual?.email || '',
-      telefono: this.usuarioActual?.telefono || '',
-      departamento: this.usuarioActual?.departamento || '',
-      cargo: this.usuarioActual?.cargo || ''
-    };
-  }
+  console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
+  this.mostrarFormularioEdicion = true;
+  this.usuario = {
+    nombre: this.usuarioActual?.nombre || '',
+    apellidos: this.usuarioActual?.apellidos || '',
+    email: this.usuarioActual?.email || '',
+    telefono: this.usuarioActual?.telefono || ''
+  };
+}
 
   cancelarEdicion() {
     this.mostrarFormularioEdicion = false;
   }
 
-  guardarCambios() {
-    this.authService.updateUser(this.usuario)
-      .then(() => {
-        this.mostrarFormularioEdicion = false;
-        this.cargarDatosUsuario(); 
-      })
-      .catch(error => {
-        this.errorMsg = 'Error al guardar los cambios';
-        console.error('Error al guardar datos:', error);
-      });
+guardarCambios() {
+  // 'usuario' ya incluye el email (campo readonly)
+  this.authService.updateUser(this.usuario)
+    .then(updated => {
+      this.mostrarFormularioEdicion = false;
+      // Recargamos datos para reflejar cambios
+      this.cargarDatosUsuario();
+    })
+    .catch(error => {
+      this.errorMsg = 'Error al guardar los cambios';
+      console.error('Error al guardar datos:', error);
+    });
   }
 }

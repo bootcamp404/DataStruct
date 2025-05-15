@@ -1,69 +1,155 @@
-import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut } from '@angular/fire/auth';
+import { AuthStateService } from '../../compartido/data-access/auth-state.service';
 
-export interface Usuario{
+export interface Usuario {
   email: string;
   contrasenia: string;
 }
+
+export interface AuthResponse {
+  email: string;
+  nombre: string;
+  apellidos: string;
+  telefono: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  
-private _auth = inject(Auth)
-constructor(private router: Router) { }
 
+  private _http   = inject(HttpClient);
+  private _router = inject(Router);
+  private _auth   = inject(Auth);
+  private _authStateService = inject(AuthStateService);
 
+  private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
-registrarse(usuario: Usuario){
-  return createUserWithEmailAndPassword(this._auth, usuario.email, usuario.contrasenia)
-}
+  constructor() {}
 
-iniciarSesión(usuario: Usuario){
-  return signInWithEmailAndPassword(this._auth, usuario.email, usuario.contrasenia)
-}
-iniciarSesionGoogle(){
-  const google = new GoogleAuthProvider
+  // Registro usando TU API
+  async registrarse(usuario: Usuario): Promise<AuthResponse> {
+    const response = await firstValueFrom(
+      this._http.post<AuthResponse>(
+        `${this.apiUrl}/usuarios`,
+        {
+          email: usuario.email,
+          contrasenya: usuario.contrasenia
+        }
+      )
+    );
+    localStorage.setItem('usuario', JSON.stringify(response));
+    this._authStateService.setAuthEstado(true);
+    this._router.navigate(['/mainview']);
+    return response;
+  }
 
-  return signInWithPopup(this._auth, google)
-}
-iniciarSesionFacebook(){
-  const facebook = new FacebookAuthProvider
+  // Login usando TU API
+  async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
+    const response = await firstValueFrom(
+      this._http.post<AuthResponse>(
+        `${this.apiUrl}/usuarios/login`,
+        {
+          email: usuario.email,
+          contrasenya: usuario.contrasenia
+        }
+      )
+    );
 
-  return signInWithPopup(this._auth, facebook)
-}
+    console.log('Respuesta del backend:', response);
 
-logout() {
-  return signOut(this._auth)
-}
+    localStorage.setItem('usuario', JSON.stringify(response));
+    this._authStateService.setAuthEstado(true);
+    this._router.navigate(['/mainview']);
+    return response;
+  }
 
-getCurrentUser(): Promise<User| null> {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = this._auth.onAuthStateChanged(user => {
-      unsubscribe(); 
-      resolve(user);
-    }, reject);
-  });
-}
+  // Login con Google (Firebase) — temporal
+  iniciarSesionGoogle(): Promise<void> {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(this._auth, provider)
+      .then(credential => {
+        const fbUser = credential.user;
+        // Construimos un objeto mínimo para tu perfil:
+        const usuario: AuthResponse = {
+          email: fbUser.email ?? '',
+          nombre: fbUser.displayName ?? '',
+          apellidos: '',
+          telefono: ''
+        };
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this._authStateService.setAuthEstado(true);
+        this._router.navigate(['/mainview']);
+      });
+  }
 
-updateUser(usuario: any): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const user = this._auth.currentUser;
-    if (user) {
-      updateProfile(user, {
-        displayName: usuario.nombre, // Actualiza el nombre
-        // photoURL: usuario.photoURL, // Actualiza la foto si la tienes
-      })
-        .then(() => {
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    } else {
-      reject('Usuario no autenticado');
-    }
-  });
-}
+  // Login con Facebook (Firebase) — temporal
+  iniciarSesionFacebook(): Promise<void> {
+    const provider = new FacebookAuthProvider();
+    return signInWithPopup(this._auth, provider)
+      .then(credential => {
+        const fbUser = credential.user;
+        const usuario: AuthResponse = {
+          email: fbUser.email ?? '',
+          nombre: fbUser.displayName ?? '',
+          apellidos: '',
+          telefono: ''
+        };
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this._authStateService.setAuthEstado(true);
+        this._router.navigate(['/mainview']);
+      });
+  }
+
+  // Cerrar sesión (limpia tanto Firebase como localStorage)
+  async logout() {
+    await signOut(this._auth);
+    localStorage.removeItem('usuario');
+    this._authStateService.setAuthEstado(false);
+    this._router.navigate(['/auth/sign-in']);
+  }
+
+  // Obtener usuario desde localStorage
+  getCurrentUser(): Promise<AuthResponse> {
+    return new Promise((resolve, reject) => {
+      const storedUser = localStorage.getItem('usuario');
+      if (!storedUser) {
+        reject('Usuario no encontrado en localStorage');
+        return;
+      }
+      try {
+        resolve(JSON.parse(storedUser));
+      } catch {
+        reject('Error parseando los datos del usuario');
+      }
+    });
+  }
+
+  // Actualizar perfil en backend y en localStorage
+  updateUser(usuario: {
+    email: string;
+    nombre: string;
+    apellidos: string;
+    telefono: string;
+  }): Promise<AuthResponse> {
+    const url = `${this.apiUrl}/usuarios/${encodeURIComponent(usuario.email)}`;
+    return firstValueFrom(
+      this._http.put<AuthResponse>(
+        url,
+        {
+          nombre:    usuario.nombre,
+          apellidos: usuario.apellidos,
+          telefono:  usuario.telefono
+        }
+      )
+    ).then(updatedUser => {
+      localStorage.setItem('usuario', JSON.stringify(updatedUser));
+      this._authStateService.setAuthEstado(true);
+      return updatedUser;
+    });
+  }
 }

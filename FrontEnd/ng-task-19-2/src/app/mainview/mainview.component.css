@@ -118,14 +118,7 @@
   }
   
   
-  /* Departments section styles */
-  .departments-header {
-    padding: 0.8rem 2rem;
-    background-color: #035398;
-    color: white;
-    font-weight: bold;
-  }
-  
+  /* Departments section styles */  
   .departments-content {
     padding: 1.5rem 2rem;
     background-color: #e0e0e0;

@@ -1,57 +1,147 @@
-<div class="perfil-container">
-    <h2>Mi Perfil</h2>
-    
-    <div *ngIf="!mostrarFormularioEdicion" class="datos-perfil">
-      <div class="dato-perfil">
-        <strong>Nombre:</strong> 
-        <span>{{ usuarioActual?.displayName || 'No especificado' }}</span>
+<div class="max-w-2xl mx-auto p-4">
+  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <!-- Cabecera con gradiente -->
+    <div class="bg-gradient-to-r from-green-300 to-teal-100 p-6 flex items-center gap-4">
+      <div class="bg-white p-2 rounded-full shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
       </div>
-      <div class="dato-perfil">
-        <strong>Apellidos:</strong> 
-        <span>{{ usuarioActual?.apellidos || 'No especificado' }}</span>
-      </div>
-      <div class="dato-perfil">
-        <strong>DNI:</strong> 
-        <span>{{ usuarioActual?.dni || 'No especificado' }}</span>
-      </div>
-      <div class="dato-perfil">
-        <strong>Email:</strong> 
-        <span>{{ usuarioActual?.email || 'No especificado' }}</span>
-      </div>
-      <div class="dato-perfil">
-        <strong>Teléfono:</strong> 
-        <span>{{ usuarioActual?.telefono || 'No especificado' }}</span>
-      </div>
-      
-      <button class="btn-primary" (click)="mostrarEditarPerfil()">Editar Perfil</button>
+      <h2 class="text-2xl font-bold text-gray-800">Mi Perfil</h2>
     </div>
     
-    <form *ngIf="mostrarFormularioEdicion" (ngSubmit)="guardarCambios()" class="formulario-edicion">
-      <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" [(ngModel)]="usuario.nombre">
+    <!-- Vista de datos -->
+    @if(!mostrarFormularioEdicion){
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-500">Nombre</h3>
+            <p class="text-lg text-black font-medium break-words">{{ usuarioActual?.nombre || 'No especificado' }}</p>
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-500">Apellidos</h3>
+            <p class="text-lg text-black font-medium break-words">{{ usuarioActual?.apellidos || 'No especificado' }}</p>
+          </div>
+          <!-- <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-500">DNI</h3>
+            <p class="text-lg text-black font-medium break-words">{{ usuarioActual?.dni || 'No especificado' }}</p>
+          </div> -->
+          <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-500">Email</h3>
+            <p class="text-lg text-black font-medium break-words">{{ usuarioActual?.email || 'No especificado' }}</p>
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-sm font-medium text-gray-500">Teléfono</h3>
+            <p class="text-lg text-black font-medium break-words">{{ usuarioActual?.telefono || 'No especificado' }}</p>
+          </div>
+        </div>
+        
+        <div class="flex justify-between pt-4">
+          <button 
+            (click)="volver()" 
+            class="mb-4 flex items-center px-3 py-2 font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver
+          </button>
+          <div>
+            <button 
+              (click)="mostrarEditarPerfil()" 
+              class="mb-4 flex items-center px-3 py-2 bg-teal-500 font-medium over:bg-teal-600 text-white rounded-md transition-colors duration-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+              Editar Perfil
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="apellidos">Apellidos:</label>
-        <input type="text" id="apellidos" name="apellidos" [(ngModel)]="usuario.apellidos">
-      </div>
-      <div class="form-group">
-        <label for="dni">DNI:</label>
-        <input type="text" id="dni" name="dni" [(ngModel)]="usuario.dni">
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" [(ngModel)]="usuario.email" readonly>
-        <small>El email no se puede modificar</small>
-      </div>
-      <div class="form-group">
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" [(ngModel)]="usuario.telefono">
-      </div>
-      
-      <div class="botones-accion">
-        <button type="button" class="btn-secundario" (click)="cancelarEdicion()">Cancelar</button>
-        <button type="submit" class="btn-primary">Guardar Cambios</button>
-      </div>
-    </form>
+    }
+    
+    <!-- Formulario de edición -->
+    @if(mostrarFormularioEdicion){
+      <form (ngSubmit)="guardarCambios()" class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:</label>
+            <input 
+              type="text" 
+              id="nombre" 
+              name="nombre" 
+              [(ngModel)]="usuario.nombre"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+          </div>
+          <div class="space-y-2">
+            <label for="apellidos" class="block text-sm font-medium text-gray-700">Apellidos:</label>
+            <input 
+              type="text" 
+              id="apellidos" 
+              name="apellidos" 
+              [(ngModel)]="usuario.apellidos"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+          </div>
+          <!-- <div class="space-y-2">
+            <label for="dni" class="block text-sm font-medium text-gray-700">DNI:</label>
+            <input 
+              type="text" 
+              id="dni" 
+              name="dni" 
+              [(ngModel)]="usuario.dni"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+          </div> -->
+          <div class="space-y-2">
+            <label for="email" class="block text-sm font-medium text-gray-700" disabled>Email:</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              [(ngModel)]="usuario.email" 
+              readonly
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+            <small class="text-xs text-gray-500">El email no puede ser modificado</small>
+          </div>
+          <div class="space-y-2">
+            <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+            <input 
+              type="tel" 
+              id="telefono" 
+              name="telefono" 
+              [(ngModel)]="usuario.telefono"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+          </div>
+        </div>
+        
+        <div class="flex justify-end space-x-4 pt-4">
+          <button 
+            type="button" 
+            (click)="cancelarEdicion()"
+            class="flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 rounded-md transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Cancelar
+          </button>
+          <button 
+            type="submit"
+            class="flex items-center px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-md transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Guardar Cambios
+          </button>
+        </div>
+      </form>
+    }
+
   </div>
+</div>

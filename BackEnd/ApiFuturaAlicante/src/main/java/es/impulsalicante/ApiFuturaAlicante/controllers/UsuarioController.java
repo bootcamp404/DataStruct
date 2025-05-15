@@ -3,6 +3,7 @@ package es.impulsalicante.ApiFuturaAlicante.controllers;
 import es.impulsalicante.ApiFuturaAlicante.models.Usuario;
 import es.impulsalicante.ApiFuturaAlicante.services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +68,20 @@ public class UsuarioController {
             return ResponseEntity.ok("Usuario con ID " + id + " eliminado correctamente.");
         } else {
             return ResponseEntity.status(404).body("No se pudo eliminar. Usuario con ID " + id + " no encontrado.");
+        }
+    }
+
+    // Nuevo endpoint de login
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario user) {
+        Optional<Usuario> foundUser = usuariosService.getUsuarioByEmail(user.getEmail());
+        if (foundUser.isPresent()
+                && foundUser.get().getContrasenya().equals(user.getContrasenya())) {
+            // En un entorno real se devolvería un token JWT o similar en lugar del usuario
+            return ResponseEntity.ok(foundUser.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Email o contraseña incorrectos.");
         }
     }
 }

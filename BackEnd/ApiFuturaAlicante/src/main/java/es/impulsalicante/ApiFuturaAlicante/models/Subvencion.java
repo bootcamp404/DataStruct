@@ -1,12 +1,16 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Subvencion")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_subvencion")
 public class Subvencion {
 
     @Id
@@ -27,10 +31,12 @@ public class Subvencion {
 
     @ManyToOne
     @JoinColumn(name = "id_proyecto")
+    @JsonManagedReference
     private Proyecto proyecto;
 
     @ManyToOne
     @JoinColumn(name = "id_estado_sub", nullable = false)
+    @JsonManagedReference
     private EstadoSubvencion estadoSubvencion;
 
 

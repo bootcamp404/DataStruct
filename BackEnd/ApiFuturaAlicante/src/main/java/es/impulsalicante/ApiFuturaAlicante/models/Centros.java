@@ -1,11 +1,15 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Centro")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_centro")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Centros {
     @Id
@@ -20,10 +24,12 @@ public class Centros {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
+    @JsonManagedReference
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_proyecto")
+    @JsonManagedReference
     private Proyecto proyecto;
 
 

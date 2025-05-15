@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "contrato")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Contrato {
     //PROPIEDADES
     @Id
@@ -21,10 +21,12 @@ public class Contrato {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
+    @JsonManagedReference
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_contrato")
+    @JsonManagedReference
     private TipoContrato tipo_contrato;
 
     //CONSTRUCTORES

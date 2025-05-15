@@ -1,8 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "departamento")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Departamento {
     //PROPIEDADES
     @Id
@@ -21,21 +20,27 @@ public class Departamento {
     private String nombre;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonBackReference
     private List<Contrato> contratos;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonBackReference
     private List<Centros> centros;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonBackReference
     private List<Proyecto> proyectos;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonBackReference
     private List<Actividad> actividades;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonBackReference
     private List<CampanyaMarketing> capanyasMarketing;
 
     @OneToMany(mappedBy = "departamento")
+    @JsonBackReference
     private List<Empresa> empresas;
 
     //CONSTRUCTORES

@@ -10,10 +10,10 @@
         <strong>Apellidos:</strong> 
         <span>{{ usuarioActual?.apellidos || 'No especificado' }}</span>
       </div>
-      <div class="dato-perfil">
+      <!-- <div class="dato-perfil">
         <strong>DNI:</strong> 
         <span>{{ usuarioActual?.dni || 'No especificado' }}</span>
-      </div>
+      </div> -->
       <div class="dato-perfil">
         <strong>Email:</strong> 
         <span>{{ usuarioActual?.email || 'No especificado' }}</span>
@@ -35,10 +35,10 @@
         <label for="apellidos">Apellidos:</label>
         <input type="text" id="apellidos" name="apellidos" [(ngModel)]="usuario.apellidos">
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="dni">DNI:</label>
         <input type="text" id="dni" name="dni" [(ngModel)]="usuario.dni">
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" [(ngModel)]="usuario.email" readonly>

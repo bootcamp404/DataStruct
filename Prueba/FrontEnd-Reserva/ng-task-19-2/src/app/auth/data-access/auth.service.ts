@@ -35,6 +35,7 @@ export class AuthService {
         contrasenya: usuario.contrasenia
       })
     );
+    this._router.navigate(['/mainview'])
     this.guardarToken(response.token)
     return response;
   }
@@ -42,14 +43,14 @@ export class AuthService {
   // Login usando TU API
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      // this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
-        this._http.post<AuthResponse>(`${this.apiUrl}/login`, {
+        this._http.post<AuthResponse>(`${this.apiUrl}/usuarios/login`, {
         email: usuario.email,
         contrasenya: usuario.contrasenia
       })
     );
     this._router.navigate(['/mainview']);
     this.guardarToken(response.token)
+    localStorage.setItem('usuario', JSON.stringify(response.usuario));
     return response;
   }
 
@@ -85,14 +86,16 @@ export class AuthService {
   isLoggedIn(): boolean{
     return !!this.obtenerToken();
   }
-  getCurrentUser(): Promise<User | null> {
+  getCurrentUser(): Promise<any> {
     return new Promise((resolve, reject) => {
-      const unsubscribe = this._auth.onAuthStateChanged(user => {
-        unsubscribe();
-        resolve(user);
-      }, reject);
+      const token = this.obtenerToken();
+      if (!token) {
+        reject('Token no encontrado');
+        return;
+      }
     });
   }
+
 
   updateUser(usuario: any): Promise<void> {
     return new Promise((resolve, reject) => {
