@@ -13,6 +13,7 @@ import java.io.*;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -108,6 +109,27 @@ public class ResumenMemoriaService {
         // Anexos
         html.append(generarSeccionAnexos(anio))
                 .append("<div style=\"page-break-after: always;\"></div>\n");
+
+        //1 Portada
+        html.append(String.format("""
+    <div style='page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <div style='background: linear-gradient(to right, #2D60FA 50%%, #2D60FA 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #004080; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #004080; padding: 4px 10px; display: inline-block;'>%s</div>
+            </div>
+        </div>
+        <div>
+            <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+        </div>
+    </div>
+    """,
+                "1", // número de sección
+                "AGENCIA LOCAL DE DESARROLLO\n" +
+                        " ECONÓMICO Y SOCIAL", // título del departamento
+                "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+        ));
 
         // Contenido general
         html.append("<div style='page-break-after: always;'>")
@@ -349,26 +371,24 @@ public class ResumenMemoriaService {
         html.append(generarSeccionCentros());
 
 
-        html.append("""
-<div style='page-break-before: always; page-break-after: always;
-            width:210mm; height:297mm; position:relative; font-family:Arial;'>
-   <!-- banda degradada -->
-   <div style='position:absolute; left:20mm; top:30mm;
-               width:30mm; height:200mm;
-               background: linear-gradient(#cde9ec, #156389);'></div>
-
-   <!-- número -->
-   <div style='position:absolute; left:70mm; top:140mm;
-               font-size:90pt; font-weight:bold; color:#274b6d;'>2</div>
-
-   <!-- título -->
-   <div style='position:absolute; left:70mm; top:180mm;
-               font-size:26pt; font-weight:700; line-height:1.1;
-               color:#156389; text-transform:uppercase;'>
-       Departamento<br/>de<br/>Empleo<br/>y&nbsp;Formación
-   </div>
-</div>
-""");
+        html.append(String.format("""
+    <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <div style='background: linear-gradient(to right, #7AFACF 50%%, #7AFACF 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #3CBEFA; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #3CBEFA; padding: 4px 10px; display: inline-block;'>%s</div>
+            </div>
+        </div>
+        <div>
+            <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+        </div>
+    </div>
+    """,
+                "2", // número de sección
+                "DEPARTAMENTO DE EMPLEO Y FORMACIÓN", // título del departamento
+                "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+        ));
 
         html.append("""
 <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
@@ -590,10 +610,38 @@ public class ResumenMemoriaService {
 //2.6.2
         html.append(generarSeccionConveniosNominativos());
 
+//2.7
+        html.append(generarSeccionOtros());
 
+//3
+        html.append(String.format("""
+    <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <div style='background: linear-gradient(to right, #f7931e 50%%, #ffbe78 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #f26522; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #f26522; padding: 4px 10px; display: inline-block;'>%s</div>
+            </div>
+        </div>
+        <div>
+            <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+        </div>
+    </div>
+    """,
+                "3", // número de sección
+                "PROMOCIÓN ECONÓMICA", // título del departamento
+                "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+        ));
+//3.1
+        html.append(generarSeccionDatosTotalesPromocionEconomica(anio));
 
-        //3.4
-        html.append(generarSeccion34AyudasEmpresas("D3"));
+//3.2
+        String htmlSeccion = generarSeccionProyectosYActividadesEmprendimiento(
+                proyectoRepository.findByDepartamentoAndKeyword("D3", "emprendimiento"),
+                actividadRepository.findByDepartamentoAndKeyword("D3", "emprendimiento")
+        );
+        html.append(htmlSeccion);
+
 
         //3.4
         html.append(generarSeccion34AyudasEmpresas("D3"));
@@ -692,10 +740,58 @@ public class ResumenMemoriaService {
             ));
         }
 
+
+
         html.append("</div>");
         return html.toString();
     }
 
+    private String generarSeccionProyectosYActividadesEmprendimiento(List<Proyecto> proyectos, List<Actividad> actividades) {
+        StringBuilder html = new StringBuilder();
+        int contadorSeccion = 1;
+
+        for (Proyecto proyecto : proyectos) {
+            String seccion = "3.2." + contadorSeccion++;
+            html.append("""
+            <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+              <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>%s</div>
+              <h2 style='color: #f15a24; margin: 15px 0 10px;'>%s</h2>
+              <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
+              <p><strong>Objetivo:</strong> %s</p>
+              <p><strong>Fecha inicio:</strong> %s</p>
+              <p><strong>Fecha fin:</strong> %s</p>
+            </div>
+        """.formatted(seccion,
+                    safe(proyecto.getNombre()),
+                    safe(proyecto.getObjetivo()),
+                    formatDate(proyecto.getFecha_ini()),
+                    formatDate(proyecto.getFecha_fin())));
+        }
+
+        for (Actividad actividad : actividades) {
+            String seccion = "3.2." + contadorSeccion++;
+            html.append("""
+            <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+              <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>%s</div>
+              <h2 style='color: #f15a24; margin: 15px 0 10px;'>%s</h2>
+              <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
+              <p><strong>Descripción:</strong> %s</p>
+              <p><strong>Participantes:</strong> %s</p>
+              <p><strong>Horas:</strong> %s</p>
+              <p><strong>Fecha inicio:</strong> %s</p>
+              <p><strong>Fecha fin:</strong> %s</p>
+            </div>
+        """.formatted(seccion,
+                    safe(actividad.getNombre()),
+                    safe(actividad.getDescripcion()),
+                    safe(actividad.getNum_participantes()),
+                    safe(actividad.getHoras()),
+                    formatDate(actividad.getFecha_inicio()),
+                    formatDate(actividad.getFecha_fin())));
+        }
+
+        return html.toString();
+    }
 
 
     private String generarDetalleSubvencionesPorModalidad() {
@@ -751,6 +847,7 @@ public class ResumenMemoriaService {
             </table>
         """, total.intValue()));
         }
+
 
         html.append("</div>");
         return html.toString();
@@ -875,38 +972,95 @@ public class ResumenMemoriaService {
 
         StringBuilder html = new StringBuilder();
 
-        html.append("""
-    <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
-        <h2 style='color:#008080;'>2.6.2 Convenios nominativos</h2>
-        <div style='display: flex; justify-content: space-between; margin-bottom: 20px;'>
-            <div><strong>Convenios:</strong> %d</div>
-            <div><strong>Financiación:</strong> %s €</div>
-        </div>
-    """.formatted(total, suma));
+        html.append(String.format("""
+        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+            <h2 style='color:#008080;'>2.6.2 Convenios nominativos</h2>
+            <div style='display: flex; justify-content: space-between; margin-bottom: 20px;'>
+                <div><strong>Convenios:</strong> %d</div>
+                <div><strong>Financiación:</strong> %s €</div>
+            </div>
+    """, total, suma));
 
         for (Convenio c : convenios) {
+            html.append("<div style='border:1px solid #ccc; padding:20px; margin-bottom:20px;'>");
+            html.append("<h3 style='color:#004080;'>").append(c.getEntidad()).append("</h3>");
+            html.append("<p><strong>Programa:</strong> ").append(c.getProgramaNombre()).append("</p>");
+            html.append("<p><strong>Importe:</strong> ").append(String.format("%.2f", c.getImporte())).append(" €</p>");
+            html.append("<p><strong>Actividades:</strong> ").append(Optional.ofNullable(c.getNumeroActividades()).orElse(0)).append("</p>");
+            html.append("<p><strong>Participantes:</strong> ").append(Optional.ofNullable(c.getNumeroParticipantes()).orElse(0)).append("</p>");
+            html.append("<p><strong>Horas:</strong> ").append(Optional.ofNullable(c.getNumeroHoras()).orElse(0)).append("</p>");
+
+            // Datos adicionales
+            html.append("<div style='margin-top:10px;'>");
+            if (c.getCursos() != null)
+                html.append("<p><strong>Cursos:</strong> ").append(c.getCursos()).append("</p>");
+            if (c.getAmbitosIntervencion() != null)
+                html.append("<p><strong>Ámbitos:</strong> ").append(c.getAmbitosIntervencion()).append("</p>");
+            if (c.getParticipantesHombres() != null || c.getParticipantesMujeres() != null)
+                html.append("<p><strong>Hombres:</strong> ")
+                        .append(safe(c.getParticipantesHombres()))
+                        .append(" / <strong>Mujeres:</strong> ")
+                        .append(safe(c.getParticipantesMujeres()))
+                        .append("</p>");
+            if (c.getIndicadores() != null)
+                html.append("<p><strong>Indicadores:</strong> ").append(c.getIndicadores()).append("</p>");
+            if (c.getObservacionesAdicionales() != null)
+                html.append("<p><strong>Notas:</strong> ").append(c.getObservacionesAdicionales()).append("</p>");
+            html.append("</div>");
+
+            html.append("</div>");
+        }
+
+        html.append("</div>");
+        return html.toString();
+    }
+
+    private String safe(Integer value) {
+        return value != null ? value.toString() : "-";
+    }
+
+
+    private String generarSeccionOtros() {
+        record EventoOtros(String titulo, String descripcion, String anexo, String imagenPath) {
+        }
+
+        List<EventoOtros> eventos = List.of(
+                new EventoOtros(
+                        "IV Feria de empleo y formación Zona Norte",
+                        "El 29 de marzo de 2023 se celebró la cuarta edición de la feria de empleo y formación, en horario de 9:30 a 13:30 horas. En ella participaron más de 27 organizaciones entre centros educativos, instituciones y servicios públicos. La feria contó con la asistencia de un amplio número de estudiantes de secundaria.",
+                        "Anexo 20: 4ª feria de empleo y formación Zona Norte.",
+                        "img/anexo20.jpg"
+                ),
+                new EventoOtros(
+                        "IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional",
+                        "El 24 de noviembre, la plaza del Ayuntamiento y el auditorio de Puerta Ferrisa acogieron el IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional. El evento reunió a 16 empresas y 18 asociaciones para exponer tanto ofertas de trabajo como las diversas propuestas de las entidades participantes.",
+                        "Anexo 21: Memoria IV Encuentro de Empleo dirigido a personas con diversidad funcional.",
+                        "img/anexo21.jpg"
+                )
+        );
+
+        StringBuilder html = new StringBuilder();
+        html.append("""
+                    <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                        <h2 style='color:#008080;'>2.7 OTROS</h2>
+                """);
+
+        int index = 1;
+        for (EventoOtros e : eventos) {
             html.append(String.format("""
-        <div style='border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9;'>
-            <h3 style='color: #004080;'>%s</h3>
-            <p><strong>Programa:</strong> %s</p>
-            <p><strong>Importe:</strong> %s €</p>
-            <p><strong>Líneas de actuación:</strong> %s</p>
-            <ul>
-                <li><strong>Actividades:</strong> %s</li>
-                <li><strong>Participantes:</strong> %s</li>
-                <li><strong>Horas:</strong> %s</li>
-            </ul>
-            <p><strong>Anexo:</strong> %s</p>
-        </div>
-        """,
-                    safe(c.getEntidad()),
-                    safe(c.getProgramaNombre()),
-                    safe(c.getImporte()),
-                    safe(c.getLineasActuacion()),
-                    safe(c.getNumeroActividades()),
-                    safe(c.getNumeroParticipantes()),
-                    safe(c.getNumeroHoras()),
-                    safe(c.getAnexo())));
+                        <div style='margin-bottom: 40px;'>
+                            <h3 style='color:#004080;'>2.7.%d %s</h3>
+                            <p>%s</p>
+                    """, index++, e.titulo(), e.descripcion()));
+
+            if (e.anexo() != null) {
+                html.append("<p><strong>" + e.anexo() + "</strong></p>");
+            }
+            if (e.imagenPath() != null) {
+                html.append("<img src='" + e.imagenPath() + "' style='width:100%%; margin-top:10px;' />");
+            }
+
+            html.append("</div>");
         }
 
         html.append("</div>");
@@ -914,7 +1068,7 @@ public class ResumenMemoriaService {
     }
 
 
-    private String generarSeccionActividadesFormacion() {
+        private String generarSeccionActividadesFormacion() {
         List<Actividad> actividadesFormacion = actividadRepository.findAll()
                 .stream()
                 .filter(a -> a.getDescripcion() != null && a.getDescripcion().toLowerCase().contains("formación"))
@@ -938,6 +1092,50 @@ public class ResumenMemoriaService {
         }
 
         html.append("</div></div>");
+        return html.toString();
+    }
+
+    private String generarSeccionDatosTotalesPromocionEconomica( int anio) {
+        String idDepartamento = "D3";
+        List<IndicadorAnual> indicadores = indicadoresAnualesRepository.findByAnioAndDepartamento(anio, idDepartamento);
+        if (indicadores.isEmpty()) return "";
+
+        IndicadorAnual datos = indicadores.get(0);
+
+        StringBuilder html = new StringBuilder();
+
+        html.append("""
+    <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+      <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>3.1</div>
+      <h2 style='color: #f15a24; margin: 15px 0 10px;'>DATOS TOTALES</h2>
+      <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
+
+      <h3>EMPRENDIMIENTO</h3>
+      <p><strong>%s</strong> asesoramientos</p>
+      <p><strong>%s</strong> Empresas creadas</p>
+
+      <h3 style='margin-top: 25px;'>FORMACIÓN</h3>
+      <p><strong>%s</strong> acciones formativas</p>
+      <p><strong>%s</strong> Participantes</p>
+      <p><strong>%s</strong> Horas</p>
+
+      <h3 style='margin-top: 25px;'>OTROS</h3>
+      <p><strong>%s</strong> Puestos de trabajo</p>
+      <p><strong>%s €</strong> Ayudas concedidas</p>
+      <p><strong>%s</strong> Ofertas de empleo</p>
+    </div>
+    """.formatted(
+                safe(datos.getAsesoramientos()),
+                safe(datos.getEmpresasCreadas()),
+                safe(datos.getActividadesFormacion()),
+                safe(datos.getParticipantesFormacion()),
+                safe(datos.getHorasFormacion()),
+                safe(datos.getPuestosTrabajo()),
+                safe(datos.getAyudasEmpresas()),
+                safe(datos.getOfertasEmpleo())
+        ));
+
+
         return html.toString();
     }
 
