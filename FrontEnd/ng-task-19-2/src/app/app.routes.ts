@@ -13,14 +13,14 @@ import { PlantillasComponent } from './componentes/plantillas/plantillas.compone
 
 export const routes: Routes = [
   {
-    canActivateChild: [publicGuard()],
+    // canActivateChild: [publicGuard()],
     path: 'auth',
     loadChildren: () => import('./auth/features/auth.routes')
   },
   {
     path: 'mainview',
     component: MainviewComponent,
-    canActivate: [privateGuard()],
+    // canActivate: [privateGuard()],
   },
   {
     path: 'test',
