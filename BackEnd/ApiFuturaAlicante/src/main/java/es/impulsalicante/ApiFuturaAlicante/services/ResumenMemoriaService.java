@@ -595,6 +595,9 @@ public class ResumenMemoriaService {
         //3.4
         html.append(generarSeccion34AyudasEmpresas("D3"));
 
+        //3.4
+        html.append(generarSeccion34AyudasEmpresas("D3"));
+
         html.append("</tbody></table></div>");
         html.append("</body></html>");
 
