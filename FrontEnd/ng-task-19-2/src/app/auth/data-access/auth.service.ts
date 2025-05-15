@@ -149,6 +149,7 @@ export class AuthService {
     ).then(updatedUser => {
       localStorage.setItem('usuario', JSON.stringify(updatedUser));
       this._authStateService.setAuthEstado(true);
+      
       return updatedUser;
     });
   }

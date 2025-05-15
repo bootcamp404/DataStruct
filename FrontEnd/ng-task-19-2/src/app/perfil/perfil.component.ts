@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface Usuario {
   nombre: string;
@@ -75,7 +76,7 @@ export class PerfilComponent implements OnInit {
     this.mostrarFormularioEdicion = false;
   }
 
-guardarCambios() {
+  guardarCambios() {
   // 'usuario' ya incluye el email (campo readonly)
   this.authService.updateUser(this.usuario)
     .then(updated => {
@@ -86,6 +87,17 @@ guardarCambios() {
     .catch(error => {
       this.errorMsg = 'Error al guardar los cambios';
       console.error('Error al guardar datos:', error);
+
+      if (error instanceof HttpErrorResponse) {
+        console.error('Detalles HTTP:', {
+          status: error.status,
+          message: error.message,
+          errorBody: error.error,
+          url: error.url
+        });
+      } else {
+        console.error('Error no HTTP:', error);
+      }
     });
   }
 }

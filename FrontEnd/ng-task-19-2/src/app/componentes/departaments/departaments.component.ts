@@ -161,4 +161,6 @@ export class DepartamentsComponent implements OnInit {
       this.eliminando = false;
     }
   }
+
+  
 } 
