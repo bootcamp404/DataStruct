@@ -56,13 +56,10 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
-=======
   volver(): void {
     this.router.navigate(['/ruta-anterior']);
   }
  
->>>>>>> 080a65654d002d361b8cacc37139f396c9f73899
   mostrarEditarPerfil() {
   console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
   this.mostrarFormularioEdicion = true;
@@ -78,15 +75,17 @@ export class PerfilComponent implements OnInit {
     this.mostrarFormularioEdicion = false;
   }
 
-  guardarCambios() {
-    this.authService.updateUser(this.usuario)
-      .then(() => {
-        this.mostrarFormularioEdicion = false;
-        this.cargarDatosUsuario();
-      })
-      .catch(error => {
-        this.errorMsg = 'Error al guardar los cambios';
-        console.error('Error al guardar datos:', error);
-      });
+guardarCambios() {
+  // 'usuario' ya incluye el email (campo readonly)
+  this.authService.updateUser(this.usuario)
+    .then(updated => {
+      this.mostrarFormularioEdicion = false;
+      // Recargamos datos para reflejar cambios
+      this.cargarDatosUsuario();
+    })
+    .catch(error => {
+      this.errorMsg = 'Error al guardar los cambios';
+      console.error('Error al guardar datos:', error);
+    });
   }
 }

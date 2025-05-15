@@ -1,21 +1,25 @@
-import { inject, Injectable } from "@angular/core";
-import { Auth, authState, getAuth, signOut } from "@angular/fire/auth";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-    providedIn:'root',
+  providedIn: 'root'
 })
+export class AuthStateService {
+  private authEstadoSubject = new BehaviorSubject<boolean>(false);
+  authEstado: Observable<boolean> = this.authEstadoSubject.asObservable();
 
-export class AuthStateService{
-    private _auth = inject(Auth);
+  constructor() {
+    // Verifica si hay token al cargar la app
+    const token = localStorage.getItem('token');
+    this.authEstadoSubject.next(!!token);
+  }
 
-    get authEstado(): Observable<any>{
-        return authState(this._auth)
-    }
-    get usuarioActual(){
-      return getAuth().currentUser;
-    }
-    cerrarSesion(){
-        return signOut(this._auth);
-    }
+  setAuthEstado(valor: boolean) {
+    this.authEstadoSubject.next(valor);
+  }
+
+  cerrarSesion() {
+    localStorage.removeItem('token');
+    this.authEstadoSubject.next(false);
+  }
 }

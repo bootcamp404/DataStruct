@@ -39,7 +39,7 @@ export class HeaderComponent {
     const currentUser = await this.authService.getCurrentUser();
     if (currentUser) {
       this.user.email = currentUser.email;
-      this.user.displayName = currentUser.displayName || '';
+      this.user.displayName = currentUser.nombre + ' ' + currentUser.apellidos;
     }
   }
 
