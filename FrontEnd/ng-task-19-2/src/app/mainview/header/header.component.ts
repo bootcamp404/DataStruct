@@ -36,10 +36,18 @@ export class HeaderComponent {
   ) {}
 
   async ngOnInit() {
-    const currentUser = await this.authService.getCurrentUser();
-    if (currentUser) {
-      this.user.email = currentUser.email;
-      this.user.displayName = currentUser.nombre + ' ' + currentUser.apellidos;
+      const currentUser = await this.authService.getCurrentUser();
+      if (currentUser) {
+        this.user.email = currentUser.email;
+
+          const nombre = currentUser.nombre?.trim();
+          const apellidos = currentUser.apellidos?.trim();
+
+      if (nombre && apellidos) {
+        this.user.displayName = `${nombre} ${apellidos}`;
+      } else {
+        this.user.displayName = null; // Forzar el uso del email
+      }
     }
   }
 

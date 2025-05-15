@@ -70,7 +70,7 @@ export default class SignUpComponent {
       await this._authService.registrarse({email, contrasenia});
 
       toast.success('Usuario creado correctamente');
-      this._router.navigateByUrl('tareas');
+      this._router.navigateByUrl('/mainview');
     } catch (error) {
       console.log(this.form.value.email);
       toast.error('Ha ocurrido un error.');
@@ -81,7 +81,7 @@ export default class SignUpComponent {
     try {
       await this._authService.iniciarSesionGoogle();
       toast.success('Bienvenido.');
-      this._router.navigateByUrl('tareas');
+      this._router.navigateByUrl('/mainview');
     } catch (error) {
       toast.error('Ha ocurrido un error.');
     }
@@ -91,7 +91,7 @@ export default class SignUpComponent {
     try {
       await this._authService.iniciarSesionFacebook();
       toast.success('Bienvenido.');
-      this._router.navigateByUrl('tareas');
+      this._router.navigateByUrl('/mainview');
     } catch (error) {
       toast.error('Ha ocurrido un error.');
     }

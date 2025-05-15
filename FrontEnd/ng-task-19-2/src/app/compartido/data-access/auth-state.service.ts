@@ -10,7 +10,7 @@ export class AuthStateService {
 
   constructor() {
     // Verifica si hay token al cargar la app
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('usuario');
     this.authEstadoSubject.next(!!token);
   }
 
@@ -19,7 +19,7 @@ export class AuthStateService {
   }
 
   cerrarSesion() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
     this.authEstadoSubject.next(false);
   }
 }
