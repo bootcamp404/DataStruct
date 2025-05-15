@@ -1,58 +1,58 @@
-<!-- Contenedor principal de la cabecera -->
-<div class="header-container">
-  <!-- Contenedor de la navegación -->
-  <div class="navbar">
-    <!-- Logo -->
-    <div class="logo" style="display: flex; align-items: center;">
-      <img src="assets/img/logo.jpg" alt="Logo ImpulsAlicante" class="w-10 h-10 mr-2">
-      <span class="logo-text font-bold text-xl">ImpulsAlicante</span>
-    </div>
-
-    <!-- Enlaces de navegación -->
-    <nav>
-      <ul class="navbar no-imprimir">
-        <li><a routerLink="/mainview">Inicio</a></li>
-        <li><a routerLink="/dashboard">Panel Administrativo</a></li>
-      </ul>
-    </nav>
+<!-- Encabezado -->
+<header class="flex items-center justify-between px-6 py-4 bg-white shadow-md w-full">
+  <!-- Logo + nombre -->
+  <div class="flex items-center space-x-2">
+    <img src="assets/img/logo.jpg" alt="Logo ImpulsAlicante" class="w-10 h-10">
+    <span class="text-xl text-black font-bold">ImpulsAlicante</span>
   </div>
 
-  <!-- Controles de usuario y idioma -->
-  <div class="controls no-imprimir">
-    <!-- Botón de idioma -->
+  <!-- Navegación principal -->
+  <nav class="hidden md:flex space-x-6 no-imprimir">
+    <a routerLink="/mainview" class="text-gray-700 hover:text-indigo-600 transition">Inicio</a>
+    <a routerLink="/dashboard" class="text-gray-700 hover:text-indigo-600 transition">Panel Administrativo</a>
+  </nav>
+
+  <!-- Controles de usuario -->
+  <div class="flex items-center space-x-4 no-imprimir">
+    <!-- Selector de idioma -->
     <div class="relative">
-      <button (click)="toggleLanguageDropdown($event)" class="language-btn">
-        <span>{{ currentLanguage }}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      <button (click)="toggleLanguageDropdown($event)" class="flex items-center px-3 py-1 text-sm border bg-sky-700 rounded-md">
+        <span class="text-white">{{ currentLanguage }}</span>
+        <svg class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
         </svg>
       </button>
 
-      <div *ngIf="showLanguageDropdown" class="language-dropdown">
-        <a (click)="changeLanguage('Castellano')">Castellano</a>
-        <a (click)="changeLanguage('Valenciano')">Valenciano</a>
-        <a (click)="changeLanguage('Ingles')">Ingles</a>
-      </div>
+      @if(showLanguageDropdown){
+        <div class="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white rounded-md shadow-md z-10 border border-gray-200 py-1">
+          <a (click)="changeLanguage('Castellano')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Castellano</a>
+          <a (click)="changeLanguage('Valenciano')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Valenciano</a>
+          <a (click)="changeLanguage('Ingles')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Inglés</a>
+        </div>
+      }
     </div>
 
-    <!-- Menú de usuario (con cerrar sesión) -->
-    <div class="relative no-imprimir">
-      <button (click)="toggleProfileMenu()" class="flex items-center space-x-1">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <!-- Menú de usuario -->
+    <div class="relative">
+      <button (click)="toggleProfileMenu($event)" class="flex items-center space-x-2 hover:bg-gray-100 px-2 py-1 rounded-md">
+        <svg class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 
+                10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <span class="font-medium truncate max-w-[150px] text-gray-600">{{ user.displayName || user.email }}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        <span class="text-sm font-medium max-w-[150px] truncate text-gray-600">{{ user.displayName || user.email }}</span>
+        <svg class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
         </svg>
       </button>
 
-      <div *ngIf="isProfileMenuOpen" class="profile-menu">
-        <a routerLink="/perfil">Mi Perfil</a>
-        <a href="/configuracion">Configuración</a>
-        <div class="border-t border-gray-100"></div>
-        <button (click)="onLogoutClick()" class="logout-btn">Cerrar Sesión</button>
-      </div>
+      @if(isProfileMenuOpen){
+        <div class="absolute right-0 mt-2 w-40 bg-white border rounded shadow-md z-10">
+          <a routerLink="/perfil" class="block px-4 py-2 text-black hover:bg-gray-100">Mi Perfil</a>
+          <div class="border-t border-gray-100"></div>
+          <button (click)="onLogoutClick()" class="w-full text-left px-4 py-2 text-black hover:bg-gray-100">Cerrar Sesión</button>
+        </div>
+      }
     </div>
   </div>
-</div>
+</header>

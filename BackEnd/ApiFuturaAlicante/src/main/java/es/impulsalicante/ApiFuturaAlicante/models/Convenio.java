@@ -1,6 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "convenio")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Convenio {
 
     @Id
@@ -29,6 +30,7 @@ public class Convenio {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
+    @JsonManagedReference
     private Departamento departamento;
 
     private LocalDate fechaFirma;

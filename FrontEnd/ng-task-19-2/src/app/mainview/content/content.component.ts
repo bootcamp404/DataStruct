@@ -8,6 +8,6 @@ import { Router } from '@angular/router';
 export class ContentComponent {
   constructor(private router:Router) {}
   irFormularios(){
-  this.router.navigate(['/formularios'])
-}
+    this.router.navigate(['/plantillas'])
+  }
 }

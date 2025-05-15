@@ -43,7 +43,6 @@ export class AuthService {
   // Login usando TU API
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      // this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
         this._http.post<AuthResponse>(`${this.apiUrl}/usuarios/login`, {
         email: usuario.email,
         contrasenya: usuario.contrasenia
@@ -94,16 +93,6 @@ export class AuthService {
         reject('Token no encontrado');
         return;
       }
-
-      // Realiza la llamada a la API para obtener los datos del usuario
-      this._http.get<any>(`${this.apiUrl}/perfil`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }).subscribe(
-        response => resolve(response), // Si la respuesta es exitosa
-        error => reject(error) // Si hay error
-      );
     });
   }
 

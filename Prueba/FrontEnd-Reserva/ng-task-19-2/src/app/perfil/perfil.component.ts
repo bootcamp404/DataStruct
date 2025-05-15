@@ -7,11 +7,11 @@ import { AuthService } from '../auth/data-access/auth.service';
 interface Usuario {
   nombre: string;
   apellidos: string;
-  dni: string;
+  // dni: string;
   email: string;
   telefono: string;
-  departamento?: string;
-  cargo?: string;
+  // departamento?: string;
+  // cargo?: string;
 }
 
 @Component({
@@ -25,11 +25,11 @@ export class PerfilComponent implements OnInit {
   usuario: Usuario = {
     nombre: '',
     apellidos: '',
-    dni: '',
+    // dni: '',
     email: '',
     telefono: '',
-    departamento: '',
-    cargo: ''
+    // departamento: '',
+    // cargo: ''
   };
 
   mostrarFormularioEdicion = false;
@@ -50,11 +50,11 @@ export class PerfilComponent implements OnInit {
       this.usuario = { // Aquí asignas los datos a la propiedad 'usuario'
         nombre: user.nombre,
         apellidos: user.apellidos,
-        dni: user.dni,
+        // dni: user.dni,
         email: user.email,
         telefono: user.telefono,
-        departamento: user.departamento,
-        cargo: user.cargo
+        // departamento: user.departamento,
+        // cargo: user.cargo
       };
       this.cargando = false;
     }).catch(error => {
@@ -69,11 +69,11 @@ export class PerfilComponent implements OnInit {
     this.usuario = {
       nombre: this.usuarioActual?.displayName || '',
       apellidos: this.usuarioActual?.apellidos || '',
-      dni: this.usuarioActual?.dni || '',
+      // dni: this.usuarioActual?.dni || '',
       email: this.usuarioActual?.email || '',
       telefono: this.usuarioActual?.telefono || '',
-      departamento: this.usuarioActual?.departamento || '',
-      cargo: this.usuarioActual?.cargo || ''
+      // departamento: this.usuarioActual?.departamento || '',
+      // cargo: this.usuarioActual?.cargo || ''
     };
   }
 

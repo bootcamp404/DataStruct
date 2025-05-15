@@ -56,6 +56,13 @@ export class PerfilComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+  volver(): void {
+    this.router.navigate(['/ruta-anterior']);
+  }
+ 
+>>>>>>> 080a65654d002d361b8cacc37139f396c9f73899
   mostrarEditarPerfil() {
   console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
   this.mostrarFormularioEdicion = true;

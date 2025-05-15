@@ -7,3 +7,9 @@ body{
 :root{
     color-scheme: dark light;
 }
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #beccde #f3f4f6;
+}
