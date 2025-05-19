@@ -32,6 +32,10 @@ public class Empresa {
     @JsonManagedReference
     private SectorEmpresa sector;
 
+    @ManyToOne
+    @JoinColumn(name = "id_centro")
+    private Centros centro;
+
     @OneToMany(mappedBy = "empresa")
     @JsonBackReference
     private List<Kpi> kpis;

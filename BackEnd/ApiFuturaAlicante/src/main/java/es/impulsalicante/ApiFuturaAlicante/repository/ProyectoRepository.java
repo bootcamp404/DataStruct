@@ -1,5 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.repository;
 
+import es.impulsalicante.ApiFuturaAlicante.models.Actividad;
 import es.impulsalicante.ApiFuturaAlicante.models.Proyecto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,17 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, String> {
 
     @Query("SELECT p FROM Proyecto p WHERE p.departamento.id = :depId AND LOWER(p.objetivo) LIKE %:keyword%")
     List<Proyecto> findByDepartamentoAndKeyword(@Param("depId") String depId, @Param("keyword") String keyword);
+
+    @Query("""
+               SELECT p 
+                 FROM Proyecto p 
+                WHERE p.departamento.id = :depId 
+                  AND (LOWER(p.nombre) LIKE %:keyword% 
+                       OR LOWER(p.objetivo) LIKE %:keyword%)
+            """)
+    List<Proyecto> findProgramasDesarrolloLocal(
+            @Param("depId") String depId,
+            @Param("keyword") String keyword
+    );
 
 }

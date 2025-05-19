@@ -16,6 +16,14 @@ public interface SubvencionRepository extends JpaRepository<Subvencion, String> 
     @Query("SELECT SUM(s.importe) FROM Subvencion s WHERE s.entidad IS NOT NULL")
     BigDecimal sumImporteByEntidadIsNotNull();
 
+    @Query("""
+    SELECT COALESCE(SUM(s.importe), 0)
+      FROM Subvencion s
+     WHERE s.proyecto.id = 'P100'
+       AND FUNCTION('YEAR', s.fecha_creacion) = :anio
+  """)
+    BigDecimal sumAyudasObservatorioByAnio(@Param("anio") int anio);
+
     @Query("SELECT COUNT(s) FROM Subvencion s WHERE s.entidad IS NOT NULL")
     int countByEntidadIsNotNull();
 

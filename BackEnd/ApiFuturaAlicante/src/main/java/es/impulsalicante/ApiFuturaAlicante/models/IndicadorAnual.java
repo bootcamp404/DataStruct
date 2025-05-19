@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "indicadores_anuales")
+@Table(name="indicadores_anuales")
 public class IndicadorAnual {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
     private int anio;
@@ -28,6 +28,10 @@ public class IndicadorAnual {
     private int participantesFormacion;
     private int horasFormacion;
     private int asesoramientos;
+    @Column(name="ayudas_observatorio")
+    private Integer ayudasObservatorio;
+
+
     private Integer puestosTrabajo;
     private BigDecimal ayudasEntidades;
     private Integer ofertasEmpleo;
@@ -48,7 +52,10 @@ public class IndicadorAnual {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-
+    public Integer getAyudasObservatorio() { return ayudasObservatorio; }
+    public void setAyudasObservatorio(Integer ayudasObservatorio) {
+        this.ayudasObservatorio = ayudasObservatorio;
+    }
     public Integer getOfertasEmpleo() {
         return ofertasEmpleo;
     }
@@ -139,7 +146,7 @@ public class IndicadorAnual {
         return createdAt;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -151,7 +158,7 @@ public class IndicadorAnual {
         this.departamento = departamento;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
