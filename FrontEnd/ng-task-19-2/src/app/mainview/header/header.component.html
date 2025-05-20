@@ -1,15 +1,16 @@
 <!-- Encabezado -->
 <header class="flex items-center justify-between px-6 py-4 bg-white shadow-md w-full">
   <!-- Logo + nombre -->
-  <div class="flex items-center space-x-2">
+  <a [routerLink]="['/mainview']" class="flex items-center space-x-2 cursor-pointer">
     <img src="assets/img/logo.jpg" alt="Logo ImpulsAlicante" class="w-10 h-10">
     <span class="text-xl text-black font-bold">ImpulsAlicante</span>
-  </div>
+  </a>
 
   <!-- Navegación principal -->
   <nav class="hidden md:flex space-x-6 no-imprimir">
     <a routerLink="/mainview" class="text-gray-700 hover:text-indigo-600 transition">Inicio</a>
     <a routerLink="/dashboard" class="text-gray-700 hover:text-indigo-600 transition">Panel Administrativo</a>
+    <a routerLink="/panel-admin" class="text-gray-700 hover:text-indigo-600 transition">Lista Empleados</a>
   </nav>
 
   <!-- Controles de usuario -->
@@ -37,7 +38,7 @@
       <button (click)="toggleProfileMenu($event)" class="flex items-center space-x-2 hover:bg-gray-100 px-2 py-1 rounded-md">
         <svg class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 
+                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15
                 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <span class="text-sm font-medium max-w-[150px] truncate text-gray-600">{{ user.displayName || user.email }}</span>

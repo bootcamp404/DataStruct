@@ -1,0 +1,28 @@
+<h2 class="text-xl font-bold mb-4">Panel de administración</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Nombre</th>
+      <th>Rol</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of usuarios">
+      <td>{{ user.email }}</td>
+      <td>{{ user.nombre || '-' }}</td>
+      <td>
+        <select [(ngModel)]="user.rol">
+          <option value="pendiente">Pendiente</option>
+          <option value="usuario">Usuario</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </td>
+      <td>
+        <button (click)="actualizarRol(user)">Actualizar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
