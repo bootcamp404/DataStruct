@@ -61,23 +61,23 @@ export class PerfilComponent implements OnInit {
   }
  
   mostrarEditarPerfil() {
-  console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
-  this.mostrarFormularioEdicion = true;
-  this.usuario = {
-    nombre: this.usuarioActual?.nombre || '',
-    apellidos: this.usuarioActual?.apellidos || '',
-    email: this.usuarioActual?.email || '',
-    telefono: this.usuarioActual?.telefono || ''
-  };
-}
+    console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
+    this.mostrarFormularioEdicion = true;
+    this.usuario = {
+      nombre: this.usuarioActual?.nombre || '',
+      apellidos: this.usuarioActual?.apellidos || '',
+      email: this.usuarioActual?.email || '',
+      telefono: this.usuarioActual?.telefono || ''
+    };
+  }
 
   cancelarEdicion() {
     this.mostrarFormularioEdicion = false;
   }
 
-guardarCambios() {
+  guardarCambios() {
   // 'usuario' ya incluye el email (campo readonly)
-  this.authService.updateUser(this.usuario)
+  this.authService.actualizarUsuario(this.usuario.email, this.usuario)
     .then(updated => {
       this.mostrarFormularioEdicion = false;
       // Recargamos datos para reflejar cambios

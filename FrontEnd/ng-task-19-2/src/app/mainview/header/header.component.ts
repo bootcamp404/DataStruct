@@ -99,7 +99,6 @@ export class HeaderComponent {
   async onLogoutClick() {
     try {
       await this.authService.logout();
-      console.log('Sesión cerrada correctamente');
       this.router.navigate(['/auth/sign-in']);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);

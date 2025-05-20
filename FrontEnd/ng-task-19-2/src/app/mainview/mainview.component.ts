@@ -37,16 +37,11 @@ export class MainviewComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
-  console.log('MainviewComponent.ngOnInit - empezando');
-
   const usuario = await this.authService.getCurrentUser();
-  console.log('Usuario recuperado de localStorage:', usuario);
 
   if (usuario) {
-    console.log('Sesión activa: seteando estado a true');
     this.authService['_authStateService'].setAuthEstado(true);
   } else {
-    console.log('No hay usuario: seteando estado a false');
     this.authService['_authStateService'].setAuthEstado(false);
   }
 

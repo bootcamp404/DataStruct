@@ -57,8 +57,6 @@ export class AuthService {
       })
     );
 
-    console.log('Respuesta del backend:', response);
-
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
     this._router.navigate(['/mainview']);
@@ -100,22 +98,22 @@ export class AuthService {
 
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<AuthResponse | null> {
-  return new Promise((resolve) => {
-    const storedUser = localStorage.getItem('usuario');
-    if (!storedUser) {
-      resolve(null); // en lugar de reject
-      return;
-    }
+    return new Promise((resolve) => {
+      const storedUser = localStorage.getItem('usuario');
+      if (!storedUser) {
+        resolve(null); // en lugar de reject
+        return;
+      }
 
-    try {
-      const user = JSON.parse(storedUser) as AuthResponse;
-      resolve(user);
-    } catch (error) {
-      console.error('Error parseando los datos del usuario', error);
-      resolve(null); // también aquí en lugar de reject
-    }
-  });
-}
+      try {
+        const user = JSON.parse(storedUser) as AuthResponse;
+        resolve(user);
+      } catch (error) {
+        console.error('Error parseando los datos del usuario', error);
+        resolve(null); // también aquí en lugar de reject
+      }
+    });
+  }
 
 
   // Actualizar datos de usuario por email

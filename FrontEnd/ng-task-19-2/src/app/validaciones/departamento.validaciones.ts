@@ -14,16 +14,6 @@ export class DepartamentoValidaciones {
       errores.push('Nombre requerido');
     }
 
-    // Validar formato del ID
-    if (valores.id) {
-      if (valores.id.length < 3) {
-        errores.push('El ID debe tener al menos 3 caracteres');
-      }
-      if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(valores.id)) {
-        errores.push('El ID debe empezar con una letra y solo puede contener letras y números');
-      }
-    }
-
     // Validar formato del nombre
     if (valores.nombre && !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(valores.nombre)) {
       errores.push('El nombre solo puede contener letras y espacios');
