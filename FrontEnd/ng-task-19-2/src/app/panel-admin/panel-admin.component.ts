@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-panel-admin',
   standalone: true,
@@ -11,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class AdminPanelComponent implements OnInit {
   usuarios: any[] = [];
+  cargandoLista: boolean = false;
+  errorAlCargar: boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -19,9 +22,20 @@ export class AdminPanelComponent implements OnInit {
   }
 
   cargarUsuarios() {
+    this.cargandoLista = true;
+    this.errorAlCargar = false;
+
     this.http.get<any[]>(`/api/usuarios`).subscribe({
-      next: (data) => this.usuarios = data,
-      error: (err) => console.error('Error al cargar usuarios', err)
+      next: (data) => {
+        // Filtra fuera al admin_jefe
+        this.usuarios = data.filter(u => u.rol !== 'admin_jefe');
+        this.cargandoLista = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar usuarios', err);
+        this.errorAlCargar = true;
+        this.cargandoLista = false;
+      }
     });
   }
 
