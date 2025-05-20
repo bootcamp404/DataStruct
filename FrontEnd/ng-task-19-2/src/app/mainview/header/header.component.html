@@ -16,22 +16,21 @@
   <!-- Controles de usuario -->
   <div class="flex items-center space-x-4 no-imprimir">
     <!-- Selector de idioma -->
-    <div class="relative">
-      <button (click)="toggleLanguageDropdown($event)" class="flex items-center px-3 py-1 text-sm border bg-sky-700 rounded-md">
-        <span class="text-white">{{ currentLanguage }}</span>
-        <svg class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
+<div class="relative language-dropdown">
+  <button (click)="toggleLanguageDropdown($event)" class="flex items-center px-3 py-1 text-sm border bg-sky-700 rounded-md">
+    <span class="text-white">{{ currentLanguage }}</span>
+    <svg class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
 
-      @if(showLanguageDropdown){
-        <div class="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white rounded-md shadow-md z-10 border border-gray-200 py-1">
-          <a (click)="changeLanguage('Castellano')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Castellano</a>
-          <a (click)="changeLanguage('Valenciano')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Valenciano</a>
-          <a (click)="changeLanguage('Ingles')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Inglés</a>
-        </div>
-      }
-    </div>
+  <div *ngIf="showLanguageDropdown" class="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white rounded-md shadow-md z-10 border border-gray-200 py-1">
+    <a (click)="changeLanguage('es')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Castellano</a>
+    <a (click)="changeLanguage('va')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Valencià</a>
+    <a (click)="changeLanguage('en')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">English</a>
+  </div>
+</div>
+
 
     <!-- Menú de usuario -->
     <div class="relative">
