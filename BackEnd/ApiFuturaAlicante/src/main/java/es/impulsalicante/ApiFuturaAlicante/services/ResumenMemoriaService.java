@@ -702,7 +702,59 @@
             //4.4
             html.append(generarSeccion44(anio));
 
+            //4.5
+            html.append(generarSeccion45());
 
+            //4.6
+            html.append(generarSeccion46());
+
+            // 5 portada
+            html.append(String.format("""
+        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+            <div style='background: linear-gradient(to right, #8C5BA6 50%%, #8C5BA6 50%%); display: flex; align-items: center; height: 100px;'>
+                <div style='background-color: #8C5BA6; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+                <div style='padding-left: 20px;'>
+                    <div style='color: black; font-size: 24px; font-weight: bold;'>ÁREAS DE</div>
+                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #8C5BA6; padding: 4px 10px; display: inline-block;'>%s</div>
+                </div>
+            </div>
+            <div>
+                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+            </div>
+        </div>
+        """,
+                    "5", // número de sección
+                            " GESTIÓN", // título del departamento
+                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+            ));
+
+
+            //5.1
+            html.append(generarSeccion51(anio));
+
+
+            //6 portada
+            html.append(String.format("""
+        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+            <div style='background: linear-gradient(to right, #706052 50%%, #706052 50%%); display: flex; align-items: center; height: 100px;'>
+                <div style='background-color: #706052; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+                <div style='padding-left: 20px;'>
+                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #706052; padding: 4px 10px; display: inline-block;'>%s</div>
+                </div>
+            </div>
+            <div>
+                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+            </div>
+        </div>
+        """,
+                    "6", // número de sección
+                    "MARKETING Y COMUNICACIÓN", // título del departamento
+                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+            ));
+
+            //6.1
+            html.append(generarSeccion6());
 
             html.append("</tbody></table></div>");
             html.append("</body></html>");
@@ -1343,18 +1395,19 @@
 
             StringBuilder html = new StringBuilder();
             html.append(String.format("""
-      <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
-        <div style='display: flex; align-items: center; gap: 10px;'>
-          <div style='background-color: #B45D81; padding: 6px 12px; font-weight: bold;
-                      border-radius: 4px; font-size: 12px;'>4.1</div>
-          <h2 style='color: #A71A46; margin: 0; font-size: 24px;'>
-            PROGRAMAS DE DESARROLLO LOCAL INDUSTRIAL
-          </h2>
-        </div>
-        <p style='margin-top:15px; font-size:14px;'>
-          Balance de los ítems que contienen “desarrollo local industrial” en %d:
-        </p>
-    """, anio));
+                         <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                                                <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 10px;'>
+                                                  <div style='background-color: #F1D7E0; color: white; padding: 6px 12px;
+                                                              font-weight: bold; border-radius: 4px; font-size: 12px;'>4.1</div>
+                                                  <h2 style='margin: 0; color: #A71A46; font-size: 24px; line-height:1.2;'>
+                                                    PROGRAMAS DE DESARROLLO LOCAL INDUSTRIAL
+                                                  </h2>
+                                                </div>
+                                                <hr style='border:none; border-top:2px solid #A71A46; margin-bottom:20px;'/>
+                        <p style='margin-top:15px; font-size:14px;'>
+                          Balance de los ítems que contienen “desarrollo local industrial” en %d:
+                        </p>
+                    """, anio));
 
             // Renderiza los proyectos filtrados
             for (Proyecto p : programas) {
@@ -1400,41 +1453,45 @@
             StringBuilder html = new StringBuilder();
 
             html.append(String.format("""
-      <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
-        <!-- Título 4.2 -->
-        <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>
-          <div style='background-color: #DAB0C8; color: white; padding: 10px; font-weight: bold; font-size: 20px; border-radius: 4px;'>4.2</div>
-          <div>
-            <div style='font-size: 14px; color: #A71A46; font-weight: bold;'>OBSERVATORIO DE ESTRATEGIAS DEL</div>
-            <h2 style='margin: 0; color: #A71A46; font-size: 24px; line-height: 1.2;'>
-              PACTO TERRITORIAL POR EL EMPLEO DE LA CIUDAD DE ALICANTE
-            </h2>
-            <hr style='border: none; border-top: 2px solid #A71A46; width: 100px; margin-top: 5px;'/>
-          </div>
-        </div>
+                             <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                                                                        <!-- Título 4.2 -->
+                                                                        <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>
+                                                                          <div style='background-color: #F1D7E0; color: #000; padding: 6px 12px;
+                                                                                      font-weight: bold; display: inline-block; border-radius: 4px;
+                                                                                      font-size: 12px;'>4.2</div>
+                                                                          <div>
+                                                                            <div style='font-size: 14px; color: #A71A46; font-weight: bold; margin-bottom: 4px;'>
+                                                                              OBSERVATORIO DE ESTRATEGIAS DEL
+                                                                            </div>
+                                                                            <h2 style='margin: 0; color: #A71A46; font-size: 24px; line-height: 1.2;'>
+                                                                              PACTO TERRITORIAL POR EL EMPLEO DE LA CIUDAD DE ALICANTE
+                                                                            </h2>
+                                                                            <hr style='border: none; border-top: 2px solid #A71A46; width: 100px; margin-top: 8px;'/>
+                                                                          </div>
+                                                                        </div>
 
-        <!-- KPI Subvención -->
-        <div style='background-color: #A71A46; color: white; text-align: center; padding: 20px; border-radius: 6px; margin-bottom: 30px;'>
-          <div style='font-size: 32px; font-weight: bold;'>%s €</div>
-          <div style='font-size: 14px; opacity: 0.8;'>Subvención programa</div>
-        </div>
+                                <!-- KPI Subvención -->
+                                <div style='background-color: #A71A46; color: white; text-align: center; padding: 20px; border-radius: 6px; margin-bottom: 30px;'>
+                                  <div style='font-size: 32px; font-weight: bold;'>%s €</div>
+                                  <div style='font-size: 14px; opacity: 0.8;'>Subvención programa</div>
+                                </div>
 
-        <!-- Personas contratadas + descripción -->
-        <div style='display: flex; gap: 30px; margin-bottom: 30px;'>
-          <div style='background-color: #A71A46; color: white; padding: 15px; border-radius: 6px; text-align: center; min-width: 100px;'>
-            <div style='font-size: 24px; font-weight: bold;'>%d</div>
-            <div style='font-size: 12px;'>Personas<br/>contratadas</div>
-          </div>
-          <div style='flex: 1; font-size: 14px; line-height: 1.6; color: #333;'>
-            %s
-          </div>
-        </div>
+                                <!-- Personas contratadas + descripción -->
+                                <div style='display: flex; gap: 30px; margin-bottom: 30px;'>
+                                  <div style='background-color: #A71A46; color: white; padding: 15px; border-radius: 6px; text-align: center; min-width: 100px;'>
+                                    <div style='font-size: 24px; font-weight: bold;'>%d</div>
+                                    <div style='font-size: 12px;'>Personas<br/>contratadas</div>
+                                  </div>
+                                  <div style='flex: 1; font-size: 14px; line-height: 1.6; color: #333;'>
+                                    %s
+                                  </div>
+                                </div>
 
-        <!-- Objetivos -->
-        <div style='background-color: #F1D7E0; padding: 20px; border-radius: 6px;'>
-          <h3 style='margin: 0 0 10px; color: #A71A46;'>Objetivos</h3>
-          <ul style='margin: 0; padding-left: 20px; font-size: 14px; color: #333;'>
-    """,
+                                <!-- Objetivos -->
+                                <div style='background-color: #F1D7E0; padding: 20px; border-radius: 6px;'>
+                                  <h3 style='margin: 0 0 10px; color: #A71A46;'>Objetivos</h3>
+                                  <ul style='margin: 0; padding-left: 20px; font-size: 14px; color: #333;'>
+                            """,
                     importeSubvencion.setScale(2, RoundingMode.HALF_UP),
                     personasContratadas,
                     descripcion
@@ -1457,7 +1514,12 @@
         private String generarSeccion43(int anio) {
             StringBuilder html = new StringBuilder();
             html.append("<div class='section' style='page-break-before: always;'>");
-            html.append("<h2 style='color:#A71A46;'>4.3 Programas de Alicante Futura</h2>");
+            html.append("<div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>\n" +
+                    "          <div style='background-color: #F1D7E0; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>4.3</div>\n" +
+                    "          <h2 style='color: #A71A46; margin: 15px 0 10px;'>PROGRAMAS DE ALICANTE FUTURA</h2>\n" +
+                    "  <hr style='border: none; border-top: 2px solid #A71A46; margin-bottom: 30px;' />\n" +
+
+                    "        </div>");
             html.append("<div style='display:flex; flex-wrap:wrap; gap:20px; margin-top:15px;'>");
 
             // 4.3.1
@@ -1484,7 +1546,9 @@
         private String generarSeccion44(int anio) {
             StringBuilder html = new StringBuilder();
             html.append("<div class='section' style='page-break-before: always;'>");
-            html.append("<h2 style='color:#A76C00;'>4.4 ALIA - Oficina de Atracción de Inversiones</h2>");
+            html.append(" <div style='background-color: #F1D7E0; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>4.4</div>\n" +
+                    "                <h2 style='color: #A71A46; margin: 15px 0 10px;'>ALIA</h2>\n" +
+                    "                <hr style='border: none; border-top: 2px solid #A71A46; margin-bottom: 30px;' />");
             html.append("<p style='font-size:14px; margin-top:10px;'>ALIA es la oficina de atracción de inversiones de la Agencia Local de Desarrollo...</p>");
             html.append("<div style='display:flex; flex-wrap:wrap; gap:20px; margin-top:15px;'>");
 
@@ -1519,6 +1583,158 @@
         }
 
 
+        /**
+         * 4.5 Proyecto Cilab (texto estático)
+         */
+        private String generarSeccion45() {
+            return """
+      <div style=' font-family: Arial, sans-serif; padding: 30px;'>
+        <!-- Título 4.5 -->
+        <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>
+          <div style='background-color: #F1D7E0; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>4.5</div>
+          <h2 style='color: #A71A46; margin: 15px 0 10px;'>PROYECTO CILAB</h2>
+        </div>
+        <hr style='border: none; border-top: 2px solid #A71A46; margin-bottom: 30px;'/>
+        <p style='font-size:14px; line-height:1.6; color:#333;'>
+          El Laboratorio Ciudadano de Alicante (Cilab Alicante) es una iniciativa conjunta de la Agencia Local de
+          Desarrollo de Alicante ‘ImpulsAlicante’ y la Consellería de Innovación, Universidades, Ciencia y Sociedad
+          Digital, con una metodología experimental y participativa que se alinea con los Objetivos de Desarrollo
+          Sostenible (ODS), con la Agenda Urbana Alicante 2030, la estrategia digital municipal Alicante Futura y la
+          autonómica de “Territoris Innovadors”.
+        </p>
+      </div>
+      """;
+        }
+
+        /**
+         * 4.6 Oficina de Proyectos Europeos (texto estático)
+         */
+        private String generarSeccion46() {
+            return """
+      <div style=' font-family: Arial, sans-serif; padding: 30px;'>
+        <!-- Título 4.6 -->
+        <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>
+          <div style='background-color: #F1D7E0; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>4.6</div>
+          <h2 style='color: #A71A46; margin: 15px 0 10px;'>OFICINA DE PROYECTOS EUROPEOS</h2>
+        </div>
+        <hr style='border: none; border-top: 2px solid #A71A46; margin-bottom: 30px;'/>
+        <p style='font-size:14px; line-height:1.6; color:#333;'>
+          Las funciones de la Oficina de Proyectos Europeos se organizan en dos líneas: la primera revisa convocatorias
+          y prepara proyectos para acceder a los diferentes programas cofinanciados por la Unión Europea que encajen
+          con los fines, objetivos y funciones de la Agencia Local; la segunda informa y asesora a empresas, entidades
+          y departamentos municipales para acceder a fondos europeos.
+        </p>
+      </div>
+      """;
+        }
+
+
+        private String generarSeccion51(int anio) {
+            String depId = "DJA"; // Ajusta según tu clave real
+
+            // 1) Actividades del departamento en ese año
+            List<Actividad> actividades = actividadRepository
+                    .findByDepartamentoAndYear("DJA", anio);
+            int numActividades = actividades.size();
+            int totalAsistentes = actividades.stream()
+                    .mapToInt(a -> Optional.ofNullable(a.getNum_participantes()).orElse(0))
+                    .sum();
+
+
+            // 2) Contratos adjudicados por tipo
+            long totalContratos   = contratosRespository.countByDepartamentoAndYear(depId, anio);
+            BigDecimal totalImporte = contratosRespository.sumImporteByDepartamentoAndYear(depId, anio);
+
+            long contratosMayores = contratosRespository.countByDepartamentoAndTipoAndYear(depId, "mayor", anio);
+            BigDecimal importeMayores = contratosRespository.sumImporteByDepartamentoAndTipoAndYear(depId, "mayor", anio);
+
+            long contratosMenores = contratosRespository.countByDepartamentoAndTipoAndYear(depId, "menor", anio);
+            BigDecimal importeMenores = contratosRespository.sumImporteByDepartamentoAndTipoAndYear(depId, "menor", anio);
+
+
+            // 3) Montamos el HTML
+            return String.format("""
+      <!-- 5.1 Jurídico-Administrativo -->
+       <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+          <!-- Título 5.1 -->
+          <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>
+            <div style='background-color: #C696C4; color: white; padding: 6px 12px;
+                        font-weight: bold; display: inline-block; border-radius: 4px;
+                        font-size: 12px;'>5.1</div>
+            <h2 style='color: #7B5EA3; margin: 0;'>DEPARTAMENTO JURÍDICO-ADMINISTRATIVO</h2>
+          </div>
+          <hr style='border: none; border-top: 2px solid #7B5EA3; margin-bottom: 30px;'/>
+
+          <p style='font-size:14px; line-height:1.6; color:#555555; margin-top:0;'>
+            El departamento gestiona la redacción, licitación y adjudicación de contratos.
+          </p>
+        <!-- KPI Actividades / Asistentes -->
+        <div style='display:flex; gap:40px; margin:30px 0;'>
+          <div style='flex:1; background:#EDE7F6; padding:20px; border-radius:8px; text-align:center;'>
+            <div style='font-size:24px; font-weight:bold;'>%d</div>
+            <div style='font-size:12px; color:#666;'>Actividades %d</div>
+          </div>
+          <div style='flex:1; background:#EDE7F6; padding:20px; border-radius:8px; text-align:center;'>
+            <div style='font-size:24px; font-weight:bold;'>%,d</div>
+            <div style='font-size:12px; color:#666;'>Asistentes totales</div>
+          </div>
+        </div>
+
+        <!-- KPI Contratos -->
+        <div style='background-color:#7B5EA3; color:white; text-align:center; padding:20px; border-radius:6px;'>
+          <div style='font-size:32px; font-weight:bold;'>%,.2f €</div>
+          <div style='font-size:14px; opacity:0.8;'>Importe adjudicación</div>
+          <div style='margin-top:8px; font-size:18px;'>%d contratos</div>
+        </div>
+
+        <!-- Tabla detalle contratos -->
+        <table style='width:100%%; border-collapse:collapse; margin-top:20px; font-size:13px;'>
+          <thead>
+            <tr style='background:#DDD;'>
+              <th style='padding:8px; text-align:left;'>Tipo</th>
+              <th style='padding:8px; text-align:right;'>Nº</th>
+              <th style='padding:8px; text-align:right;'>Importe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style='padding:8px;'>Mayores</td>
+              <td style='padding:8px; text-align:right;'>%d</td>
+              <td style='padding:8px; text-align:right;'>%,.2f €</td>
+            </tr>
+            <tr>
+              <td style='padding:8px;'>Menores</td>
+              <td style='padding:8px; text-align:right;'>%d</td>
+              <td style='padding:8px; text-align:right;'>%,.2f €</td>
+            </tr>
+            <tr style='font-weight:bold; background:#CCC;'>
+              <td style='padding:8px;'>Total</td>
+              <td style='padding:8px; text-align:right;'>%d</td>
+              <td style='padding:8px; text-align:right;'>%,.2f €</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style='font-size:12px; margin-top:8px; color:#666;'>
+          Anexo 51: contratos mayores %d &nbsp;&nbsp;  
+          Anexo 52: contratos menores %d
+        </div>
+      </div>
+      """,
+                    // KPI actividades/asistentes
+                    numActividades, anio, totalAsistentes,
+                    // KPI contratos global
+                    totalImporte, totalContratos,
+                    // detalle mayores
+                    contratosMayores, importeMayores,
+                    // detalle menores
+                    contratosMenores, importeMenores,
+                    // totales fila
+                    contratosMayores + contratosMenores, totalImporte,
+                    // anexos
+                    anio, anio
+            );
+        }
 
         // Helper para construir cada “card”
         private String carta(String título, String valor) {
@@ -1529,6 +1745,49 @@
           <div style='margin-top:5px; font-size:14px;'>%s</div>
         </div>
       """, valor, título);
+        }
+
+        private String generarSeccion6() {
+            return """
+                    <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                      <!-- Título 6.1 -->
+                      <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 20px;'>
+                        <div style='background-color: #BEBEBE; padding: 6px 12px; font-weight: bold;
+                                    display: inline-block; border-radius: 4px; font-size: 12px;'>6.1</div>
+                        <h2 style='color: #5A4637; margin: 15px 0 10px;'>WEB Y REDES SOCIALES</h2>
+                      </div>
+                      <hr style='border: none; border-top: 2px solid #5A4637; margin-bottom: 30px;'/>
+                      <p style='font-size:14px; line-height:1.6; color:#333;'>
+                        Web Impulsalicante: <a href="https://www.impulsalicante.es">www.impulsalicante.es</a><br/>
+                        Portalemp: <a href="https://impulsalicante.portalemp.com/">impulsalicante.portalemp.com</a>
+                      </p>
+                        <ul style='margin-top:10px;'>
+                                                   <li><a href="https://www.facebook.com/impulsalicante" target="_blank">Facebook</a></li>
+                                                   <li><a href="https://x.com/ImpulsAlicante" target="_blank">X (Twitter)</a></li>
+                                                   <li><a href="https://www.instagram.com/impulsalicante" target="_blank">Instagram</a></li>
+                                                   <li><a href="https://www.youtube.com/user/EmprendeAlicante" target="_blank">YouTube</a></li>
+                                                 </ul>
+                         
+
+                      <!-- Título 6.2 -->
+                      <div style='display: flex; align-items: center; gap: 15px; margin: 40px 0 20px;'>
+                        <div style='background-color: #BEBEBE; padding: 6px 12px; font-weight: bold;
+                                    display: inline-block; border-radius: 4px; font-size: 12px;'>6.2</div>
+                        <h2 style='color: #5A4637; margin: 15px 0 10px;'>CAMPAÑAS DE MARKETING Y PUBLICIDAD</h2>
+                      </div>
+                      <hr style='border: none; border-top: 2px solid #5A4637; margin-bottom: 30px;'/>
+                      <ul style='column-count: 2; column-gap: 40px; margin-top:10px;'>
+                        <li>Catálogo de exportadores</li>
+                        <li>Alicante Plaza</li>
+                        <li>Revista Atalaya Empresarial</li>
+                        <li>Web Aplauso</li>
+                        <li>Asociación de Periodistas de Alicante</li>
+                        <li>Portal Líder</li>
+                        <li>Guía estudiantes UA</li>
+                        <li>Onda Cero</li>
+                      </ul>
+                    </div>
+                    """;
         }
 
 

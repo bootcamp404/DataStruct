@@ -33,6 +33,16 @@ public interface ActividadRepository extends JpaRepository<Actividad, String> {
     );
 
     @Query("""
+    SELECT a 
+      FROM Actividad a 
+     WHERE a.departamento.id = :depId
+       AND FUNCTION('YEAR', a.fecha_inicio) = :anio
+  """)
+    List<Actividad> findByDepartamentoAndYear(
+            @Param("depId") String depId,
+            @Param("anio") int anio
+    );
+    @Query("""
       SELECT COALESCE(SUM(a.num_participantes), 0)
       FROM Actividad a
       WHERE a.departamento.id = 'D2'
