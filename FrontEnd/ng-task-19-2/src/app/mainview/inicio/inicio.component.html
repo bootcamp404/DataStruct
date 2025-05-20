@@ -3,11 +3,11 @@
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
       <span class="text-[#1276E1] font-medium text-sm uppercase tracking-wider">Lo que ofrecemos</span>
-      <h2 class="text-5xl font-bold mt-2 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#1276E1] to-emerald-400">
+      <h2 class="text-5xl font-bold mt-2 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#1276E1] to-[#1FB26E]">
         {{ 'FEATURES.TITLE' | translate }}
       </h2>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-        {{ 'FEATURES.DESCRIPTION' | translate }}
+        {{ 'FEATURES.DESCRIPTION' }}
       </p>
     </div>
 
@@ -38,14 +38,13 @@
                 </div>
                 
                 <h3 class="text-2xl text-gray-600 font-bold mb-3 relative z-10 group-hover:text-[#1276E1] transition-colors duration-300">
-                {{ feature.titleKey | translate }}
+                {{ feature.titleKey }}
                 </h3>
                 
                 <p class="text-gray-600 leading-relaxed relative z-10">
-                {{ feature.descriptionKey | translate }}
+                {{ feature.descriptionKey}}
                 </p>
                 
-                <!-- Bottom accent line -->
                 <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#1276E1] to-[#1FB26E] w-0 group-hover:w-full transition-all duration-500"></div>
             </div>
         }
@@ -53,7 +52,8 @@
     
     <div class="text-center mt-16">
       <button class="px-8 py-3 rounded-full bg-gradient-to-r from-[#1276E1] to-[#1FB26E] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-        {{ 'COSO' | translate }}
+        <!-- REDIRIJIRA AL LOGIN -->
+        {{ 'COSO'}}
       </button>
     </div>
   </div>
