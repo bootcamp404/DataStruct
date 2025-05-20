@@ -16,34 +16,45 @@ public class Empresa {
 
     @Id
     private String idEmpresa;
-
+    @Column
     private String nombre;
-
-    @Temporal(TemporalType.DATE)
+    @Column @Temporal(TemporalType.DATE)
     private Date fechaCreacion;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference("empr-depa")
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_sector")
-    @JsonManagedReference
+    @JsonBackReference("empr-sect")
     private SectorEmpresa sector;
 
     @OneToMany(mappedBy = "empresa")
-    @JsonBackReference
+    @JsonManagedReference("kpis-empr")
     private List<Kpi> kpis;
 
+    //CONSTRUCTORES
     public Empresa() {}
 
-    public Empresa(String idEmpresa, String nombre, Date fechaCreacion, Departamento departamento, SectorEmpresa sector) {
+    public Empresa(String idEmpresa, List<Kpi> kpis, SectorEmpresa sector, Departamento departamento, Date fechaCreacion, String nombre) {
         this.idEmpresa = idEmpresa;
-        this.nombre = nombre;
-        this.fechaCreacion = fechaCreacion;
-        this.departamento = departamento;
+        this.kpis = kpis;
         this.sector = sector;
+        this.departamento = departamento;
+        this.fechaCreacion = fechaCreacion;
+        this.nombre = nombre;
+    }
+
+    //GETTERS SETTERS
+
+    public List<Kpi> getKpis() {
+        return kpis;
+    }
+
+    public void setKpis(List<Kpi> kpis) {
+        this.kpis = kpis;
     }
 
     public Departamento getDepartamento() {

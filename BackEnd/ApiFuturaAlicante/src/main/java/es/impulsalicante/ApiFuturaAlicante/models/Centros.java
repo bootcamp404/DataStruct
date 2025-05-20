@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Centro")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_centro")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Centros {
     @Id
@@ -25,37 +24,37 @@ public class Centros {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
-    @JsonManagedReference
+    @JsonBackReference("cent-depa")
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name="id_proyecto")
-    @JsonBackReference("proy-centros")
+    @JsonBackReference("cent-proy")
     private Proyecto proyecto;
 
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
+    //GETTERS Y SETTERS
+    public String getId() {
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getId() {
-        return id;
+    public Proyecto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(Proyecto proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 
     public Date getFecha_creacion() {
@@ -66,18 +65,34 @@ public class Centros {
         this.fecha_creacion = fecha_creacion;
     }
 
-    public Centros (String id, String nombre, String direccion, Date fecha_creacion){
-        this.id = id;
-        this.nombre = nombre;
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+
+    //CONSTRUCTORES
+
+    public Centros(String id, Proyecto proyecto, Departamento departamento, Date fecha_creacion, String direccion, String nombre) {
+        this.id = id;
+        this.proyecto = proyecto;
+        this.departamento = departamento;
         this.fecha_creacion = fecha_creacion;
+        this.direccion = direccion;
+        this.nombre = nombre;
     }
 
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public Centros( ){ }
-
+    public Centros(){}
 }
 
