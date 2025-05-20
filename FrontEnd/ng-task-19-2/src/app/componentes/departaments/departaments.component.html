@@ -1,5 +1,5 @@
 <div class="max-w-[5000px] p-8 bg-gradient-to-br from-slate-50 to-white rounded-xl shadow-sm border border-slate-100">
-  <div>      
+  <div>
     @if (cargandoLista) {
       <div class="text-center py-16 flex flex-col items-center gap-3">
         <div class="w-10 h-10 relative">
@@ -13,22 +13,22 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           @for (departamento of departamentosVisibles; track departamento.id) {
             <div class="bg-white rounded-lg overflow-hidden group transition-all duration-300 border border-slate-100 hover:border-emerald-100 hover:shadow-md flex flex-col items-center p-6">
-              
+
               <div class="relative z-10 p-0.5 mb-8">
                 <div class="p-1">
-                  <h1 class="flex items-center justify-center text-lg font-medium text-slate-800 line-clamp-2 tracking-tight mb-4 font-semibold">
+                  <h1 class="flex items-center justify-center text-lg font-medium text-slate-800 line-clamp-2 tracking-tight mb-4">
                     {{ departamento.nombre }}
                   </h1>
                 </div>
               </div>
-              
+
               <div class="flex items-center justify-center gap-3 mt-auto w-full opacity-80 group-hover:opacity-100 transition-opacity">
-                <button 
+                <button
                   (click)="abrirModalEdicion(departamento)"
                   class="px-4 py-2 bg-white text-emerald-600 rounded-md border border-emerald-200 hover:bg-emerald-50 transition-colors text-sm tracking-wide">
                   Editar
                 </button>
-                <button 
+                <button
                   (click)="eliminarDepartamento(departamento.id)"
                   class="px-4 py-2 bg-white text-rose-600 rounded-md border border-rose-200 hover:bg-rose-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-wide"
                   [disabled]="eliminando">
@@ -42,8 +42,8 @@
     }
     @if (departamentos.length > 4){
       <div class="mt-6 flex justify-center">
-        <label 
-          (click)="toggleMostrarTodos()" 
+        <label
+          (click)="toggleMostrarTodos()"
           class="text-emerald-600 cursor-pointer text-sm font-medium hover:underline"
         >
           {{ mostrarTodos ? 'Ver menos' : 'Ver más' }}
@@ -70,31 +70,31 @@
           <button (click)="cerrarModalEdicion()" class="text-slate-400 hover:text-slate-600 transition-colors">
           </button>
         </div>
-        
+
         <form [formGroup]="formularioEdicion" (ngSubmit)="guardarEdicion()" class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="flex flex-col gap-1.5 text-center md:col-span-2 bg-slate-50 p-4 rounded-lg border border-slate-100">
             <label class="text-xs text-slate-500 uppercase tracking-wider font-medium">Siglas del departamento</label>
             <p class="text-slate-700 font-medium">{{ formularioEdicion.get('id')?.value }}</p>
-          </div>          
+          </div>
 
           <div class="flex flex-col gap-1.5 md:col-span-2">
             <label class="text-xs text-slate-500 uppercase tracking-wider font-medium text-center">Nombre</label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               </div>
-              <input type="text" id="nombre" formControlName="nombre" 
+              <input type="text" id="nombre" formControlName="nombre"
                      class="w-full p-2.5 pl-10 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 bg-white text-center"
                      [class.border-rose-500]="error && mensajeError?.includes('nombre')">
             </div>
           </div>
 
           <div class="col-span-2 flex justify-center gap-3 mt-3">
-            <button type="button" 
+            <button type="button"
                     (click)="cerrarModalEdicion()"
                     class="px-5 py-2.5 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200 text-sm tracking-wide">
               Cancelar
             </button>
-            <button type="submit" 
+            <button type="submit"
                     class="px-5 py-2.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-wide shadow-sm"
                     [disabled]="editando">
               {{ editando ? 'Guardando...' : 'Guardar Cambios' }}
