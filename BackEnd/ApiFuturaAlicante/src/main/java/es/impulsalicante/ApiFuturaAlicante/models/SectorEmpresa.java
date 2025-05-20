@@ -13,7 +13,6 @@ public class SectorEmpresa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_sector")
     private Integer idSector;
-
     @Column(name = "nombre", nullable = false)
     private String nombre;
 

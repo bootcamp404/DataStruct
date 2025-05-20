@@ -1,9 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -32,13 +29,79 @@ public class Actividad {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference("acti-depa")
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_proyecto")
-    @JsonManagedReference
+    @JsonBackReference("acti-proy")
     private Proyecto proyecto;
+
+
+    //GETTERS Y SETTERS
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Date getFecha_inicio() {
+        return fecha_inicio;
+    }
+
+    public void setFecha_inicio(Date fecha_inicio) {
+        this.fecha_inicio = fecha_inicio;
+    }
+
+    public Date getFecha_fin() {
+        return fecha_fin;
+    }
+
+    public void setFecha_fin(Date fecha_fin) {
+        this.fecha_fin = fecha_fin;
+    }
+
+    public int getNum_participantes() {
+        return num_participantes;
+    }
+
+    public void setNum_participantes(int num_participantes) {
+        this.num_participantes = num_participantes;
+    }
+
+    public Integer getHoras() {
+        return horas;
+    }
+
+    public void setHoras(Integer horas) {
+        this.horas = horas;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
 
     public Proyecto getProyecto() {
         return proyecto;
@@ -48,81 +111,20 @@ public class Actividad {
         this.proyecto = proyecto;
     }
 
+    //CONSTRUCTORES
 
-    public void setNombre(String nombre) {
+
+    public Actividad(String id, Proyecto proyecto, Departamento departamento, Integer horas, int num_participantes, Date fecha_fin, Date fecha_inicio, String descripcion, String nombre) {
+        this.id = id;
+        this.proyecto = proyecto;
+        this.departamento = departamento;
+        this.horas = horas;
+        this.num_participantes = num_participantes;
+        this.fecha_fin = fecha_fin;
+        this.fecha_inicio = fecha_inicio;
+        this.descripcion = descripcion;
         this.nombre = nombre;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public void setFecha_fin(Date fecha_fin) {
-        this.fecha_fin = fecha_fin;
-    }
-
-    public void setFecha_inicio(Date fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
-    }
-
-    public void setNum_participantes(int num_participantes) {
-        this.num_participantes = num_participantes;
-    }
-
-    public void setHoras(Integer horas) {
-        this.horas = horas;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public Date getFecha_fin() {
-        return fecha_fin;
-    }
-
-    public Date getFecha_inicio() {
-        return fecha_inicio;
-    }
-
-    public int getNum_participantes() {
-        return num_participantes;
-    }
-
-    public Integer getHoras() {
-        return horas;
-    }
-
-    public Actividad (String id, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, int num_participantes, Integer horas, Departamento departamento){
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
-        this.num_participantes = num_participantes;
-        this.departamento = departamento;
-        this.horas = horas;
-    }
-
-    public Actividad () {}
+    public Actividad(){}
 }

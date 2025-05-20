@@ -55,6 +55,7 @@ public class DepartamentosController {
     @PostMapping
     public ResponseEntity<?> postDepartamento(@RequestBody Departamento dep){
         try{
+            System.out.println("---------ANTES DE IR AL SERVICIO-------------");
             servicio.postDepartamento(dep);
             //Creado
             return ResponseEntity.status(HttpStatus.CREATED).body(dep);
