@@ -117,36 +117,6 @@
     background-color: #f3f4f6;
   }
   
-  
-  /* Departments section styles */  
-  .departments-content {
-    padding: 1.5rem 2rem;
-    background-color: #e0e0e0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-  
-  .department-card {
-    width: 200px;
-    height: 120px;
-    background-color: #4F95B8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-  }
-  
-  .department-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  
   .footer {
     background-color: #666666;
     color: white;
