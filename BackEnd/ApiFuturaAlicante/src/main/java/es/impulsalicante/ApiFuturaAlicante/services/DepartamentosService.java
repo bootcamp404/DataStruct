@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-
 public class DepartamentosService {
-
 
     @Autowired
     private DepartamentosRepository repo_departamentos;
@@ -32,12 +30,8 @@ public class DepartamentosService {
 
     //PUT
     public Departamento putDepartamento(String id, Departamento dep) {
-        Departamento dep_mod = repo_departamentos.findById(id).get();
-
-        dep_mod.setNombre(dep.getNombre());
-
-        repo_departamentos.save(dep_mod);
-        return dep_mod;
+        dep.setId(id);
+        return repo_departamentos.save(dep);
     }
 
     //DELETE

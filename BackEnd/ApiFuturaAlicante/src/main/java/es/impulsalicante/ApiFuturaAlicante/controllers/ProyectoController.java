@@ -3,6 +3,7 @@ package es.impulsalicante.ApiFuturaAlicante.controllers;
 import es.impulsalicante.ApiFuturaAlicante.models.Proyecto;
 import es.impulsalicante.ApiFuturaAlicante.services.ProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class ProyectoController {
         }
     }
 
+    @GetMapping("/{id}")
     public ResponseEntity<?> getProyectoById(@PathVariable String id) {
         Optional<Proyecto> proyecto = proyectoService.getProyectoById(id);
         if (proyecto.isPresent()) {

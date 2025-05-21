@@ -7,9 +7,6 @@ export class ProyectoValidaciones {
     const valores = formulario.value;
 
     // Validar campos requeridos
-    if (!valores.id) {
-      errores.push('ID requerido');
-    }
     if (!valores.nombre) {
       errores.push('Nombre requerido');
     }

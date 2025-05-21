@@ -34,6 +34,8 @@ export class ProyectoComponent implements OnInit {
   eliminando = false;
   mostrarModalEdicion = false;
   editando = false;
+  mostrarTodos = false;
+
   private refreshSubscription: Subscription | null = null;
 
   constructor(
@@ -78,7 +80,6 @@ export class ProyectoComponent implements OnInit {
       
     }).subscribe({
       next: ({ proyectos, departamentos }) => {
-        console.log('Proyectos completos recibidos:', proyectos);
           this.departamentos = departamentos;
           this.proyectos = proyectos.map(proyecto => {
             const departamento = proyecto.departamento; // es un objeto
@@ -173,4 +174,13 @@ export class ProyectoComponent implements OnInit {
       this.editando = false;
     }
   }
+
+  get proyectosVisibles() {
+    return this.mostrarTodos ? this.proyectos : this.proyectos.slice(0, 4);
+  }
+
+  toggleMostrarTodos() {
+    this.mostrarTodos = !this.mostrarTodos;
+  }
+
 }

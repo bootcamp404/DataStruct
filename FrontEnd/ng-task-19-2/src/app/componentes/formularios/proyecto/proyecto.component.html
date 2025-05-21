@@ -1,116 +1,139 @@
-<div class="max-w-[5000px] p-8 bg-white rounded-lg shadow-lg">
-  <div>      
+<div class="max-w-[5000px] p-8 bg-gradient-to-br from-slate-50 to-white rounded-xl shadow-sm border border-slate-100">
+  <div>
     @if (cargandoLista) {
-      <div class="text-center py-8 text-gray-600 flex flex-col items-center gap-2">
-        <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
-        Cargando proyectos...
+      <div class="text-center py-16 flex flex-col items-center gap-3">
+        <div class="w-10 h-10 relative">
+          <div class="absolute inset-0 border border-slate-200 rounded-full"></div>
+          <div class="absolute inset-0 border-t-2 border-l-2 border-emerald-500 rounded-full animate-spin"></div>
+        </div>
+        <p class="mt-3 text-slate-500 font-light tracking-wide">Cargando proyectos</p>
       </div>
-
     } @else {
-      <!-- Lista de los proyectos -->
-      <div class="mt-2">
+      <div class="mt-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          @for (proyecto of proyectos; track proyecto.id_proyecto) {
-            <div class="bg-white shadow-sm rounded-lg border border-gray-200 p-4">
-              <h2 class="text-lg font-semibold text-center" >{{ proyecto.nombre }}</h2>  
-                <p class="text-sm text-gray-600 text-center">
-                  Departamento: {{ proyecto.nombre_departamento }}
-                </p>
-              <br><br>            
-                <div class="flex gap-2 justify-center" >
+        @for (proyecto of proyectosVisibles; track proyecto.id_proyecto) {
+          <div class="bg-white rounded-lg overflow-hidden group transition-all duration-300 border border-slate-100 hover:border-emerald-100 hover:shadow-md flex flex-col">
+            <div class="p-6 flex flex-col items-center text-center">
+              <h3 class="text-lg font-medium text-slate-800 line-clamp-2 tracking-tight mb-4">{{ proyecto.nombre }}</h3>
+              
+              <p class="text-slate-500 mb-5 text-sm line-clamp-2 font-light leading-relaxed">{{ proyecto.objetivo }}</p>
+              
+              <div class="relative w-full flex justify-center mb-5">
+
+              <span class="flex items-center justify-center text-m font-semibold text-emerald-800 transition-transform hover:scale-105">
+                {{ proyecto.nombre_departamento }}
+              </span>
+
+              </div>
+              
+              <div class="flex items-center justify-center gap-3 mt-auto w-full opacity-80 group-hover:opacity-100 transition-opacity">
                 <button 
                   (click)="abrirModalEdicion(proyecto)"
-                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                  class="px-4 py-2 bg-white text-emerald-600 rounded-md border border-emerald-200 hover:bg-emerald-50 transition-colors text-sm tracking-wide">
                   Editar
                 </button>
                 <button 
-                  class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-                  [disabled]="eliminando">
+                  [disabled]="eliminando"
+                  class="px-4 py-2 bg-white text-rose-600 rounded-md border border-rose-200 hover:bg-rose-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-wide">
                   {{ eliminando ? 'Eliminando...' : 'Eliminar' }}
                 </button>
-              </div> 
+              </div>
             </div>
-          }
+          </div>
+        }
         </div>
       </div>
     }
+    <div class="mt-6 flex justify-center" *ngIf="proyectos.length > 4">
+      <label 
+        (click)="toggleMostrarTodos()" 
+        class="text-emerald-600 cursor-pointer text-sm font-medium hover:underline"
+      >
+        {{ mostrarTodos ? 'Ver menos' : 'Ver más' }}
+      </label>
+    </div>
+
 
     @if (errorLista) {
-      <div class="mt-4 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm flex items-center justify-center gap-2">
-        <i class="fas fa-exclamation-circle"></i>
+      <div class="mt-6 bg-rose-50 text-rose-600 p-4 rounded-lg text-center text-sm border border-rose-100 tracking-wide">
         Error al cargar los proyectos
       </div>
     }
 
-    <!-- Modal de Edición -->
-  @if (mostrarModalEdicion) {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Editar Proyecto</h2>
-
-        <form [formGroup]="formularioEdicion" (ngSubmit)="guardarEdicion()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          <!-- ID solo lectura -->
-          <div class="flex flex-col gap-2 text-left md:col-span-2">
-            <label class="font-medium text-gray-700">ID Proyecto</label>
-            <p class="text-gray-700">{{ selectedProyecto?.id_proyecto }}</p>
-          </div>
-
-          <!-- Nombre -->
-          <div class="flex flex-col gap-2">
-            <label class="font-medium text-gray-700">Nombre</label>
-            <input type="text" formControlName="nombre" class="p-3 border rounded-lg" />
-          </div>
-
-          <!-- Objetivo -->
-          <div class="flex flex-col gap-2">
-            <label class="font-medium text-gray-700">Objetivo</label>
-            <textarea rows="3" formControlName="objetivo" class="p-3 border rounded-lg resize-none"></textarea>
-          </div>
-
-          <!-- Fecha Inicio -->
-          <div class="flex flex-col gap-2">
-            <label class="font-medium text-gray-700">Fecha de Inicio</label>
-            <input type="date" formControlName="fecha_ini" class="p-3 border rounded-lg" />
-          </div>
-
-          <!-- Fecha Fin -->
-          <div class="flex flex-col gap-2">
-            <label class="font-medium text-gray-700">Fecha de Finalización</label>
-            <input type="date" formControlName="fecha_fin" class="p-3 border rounded-lg" />
-          </div>
-
-          <!-- Departamento -->
-          <div class="flex flex-col gap-2 md:col-span-2">
-            <label class="font-medium text-gray-700">Departamento</label>
-            <select formControlName="id_departamento" class="p-3 border rounded-lg">
-              <option value="" disabled>Seleccione un departamento</option>
-              <option *ngFor="let depto of departamentos" [value]="depto.id">
-                {{ depto.nombre }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Botones -->
-          <div class="col-span-2 flex justify-center gap-4">
-            <button type="button" (click)="cerrarModalEdicion()" class="px-6 py-3 bg-gray-600 text-white rounded-lg">
-              Cancelar
-            </button>
-            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg" [disabled]="editando">
-              {{ editando ? 'Guardando...' : 'Guardar Cambios' }}
+    @if (mostrarModalEdicion) {
+      <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-xl max-w-xl w-full p-8 border border-slate-100">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-medium text-slate-800 tracking-tight">Editar Proyecto</h2>
+            <button (click)="cerrarModalEdicion()" class="text-slate-400 hover:text-slate-600 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
             </button>
           </div>
 
-          <!-- Error -->
-          @if (error) {
-            <div class="col-span-2 bg-red-50 border text-red-700 p-4 rounded-lg text-center">
-              {{ mensajeError }}
+          <form [formGroup]="formularioEdicion" (ngSubmit)="guardarEdicion()" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1.5 text-center md:col-span-2 bg-slate-50 p-4 rounded-lg border border-slate-100">
+              <label class="text-xs text-slate-500 uppercase tracking-wider font-medium">ID Proyecto</label>
+              <p class="text-slate-700 font-medium">{{ selectedProyecto?.id_proyecto }}</p>
             </div>
-          }
-        </form>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-slate-500 uppercase tracking-wider font-medium text-center">Nombre</label>
+              <input type="text" formControlName="nombre" class="p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 bg-white text-center" />
+            </div>
+
+            <div class="flex flex-col gap-1.5 md:col-span-2">
+              <label class="text-xs text-slate-500 uppercase tracking-wider font-medium text-center">Objetivo</label>
+              <textarea rows="2" formControlName="objetivo" class="p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 resize-none bg-white text-center"></textarea>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-slate-500 uppercase tracking-wider font-medium text-center">Fecha de Inicio</label>
+              <input type="date" formControlName="fecha_ini" class="p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 bg-white text-center" />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs text-slate-500 uppercase tracking-wider font-medium text-center">Fecha de Finalización</label>
+              <input type="date" formControlName="fecha_fin" class="p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 bg-white text-center" />
+            </div>
+
+            <div class="flex flex-col gap-1.5 md:col-span-2">
+              <label class="text-xs text-slate-500 uppercase tracking-wider font-medium text-center">Departamento</label>
+              <div class="relative">
+                <select formControlName="id_departamento" class="w-full p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 bg-white appearance-none pr-8 text-center">
+                  <option value="" disabled>Seleccione un departamento</option>
+                  @for (dpto of departamentos; track $index) {
+                    <option [value]="dpto.id">
+                        {{ dpto.nombre }}
+                    </option>
+                  }
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-span-2 flex justify-center gap-3 mt-3">
+              <button type="button" (click)="cerrarModalEdicion()" class="px-5 py-2.5 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors border border-slate-200 text-sm tracking-wide">
+                Cancelar
+              </button>
+              <button type="submit" class="px-5 py-2.5 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm tracking-wide shadow-sm" [disabled]="editando">
+                {{ editando ? 'Guardando...' : 'Guardar Cambios' }}
+              </button>
+            </div>
+
+            @if (error) {
+              <div class="col-span-2 bg-rose-50 text-rose-600 p-3 rounded-lg text-center text-sm mt-3 border border-rose-100">
+                {{ mensajeError }}
+              </div>
+            }
+          </form>
+        </div>
       </div>
-    </div>
-  }
-    
-  </div>
+    }
+  </div> 
 </div>

@@ -1,5 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -33,7 +34,7 @@ public class Convenio {
     private String anexo;
     @ManyToOne
     @JoinColumn(name = "id_departamento")
-    @JsonManagedReference
+    @JsonBackReference("conv-depa")
     private Departamento departamento;
 
     private LocalDate fechaFirma;

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
 
 export interface Usuario {
@@ -15,6 +15,7 @@ export interface AuthResponse {
   nombre: string;
   apellidos: string;
   telefono: string;
+  contrasenya: string;
 }
 
 @Injectable({
@@ -22,9 +23,9 @@ export interface AuthResponse {
 })
 export class AuthService {
 
-  private _http   = inject(HttpClient);
+  private _http = inject(HttpClient);
+  private _auth = inject(Auth);
   private _router = inject(Router);
-  private _auth   = inject(Auth);
   private _authStateService = inject(AuthStateService);
 
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
@@ -33,124 +34,107 @@ export class AuthService {
 
   // Registro usando TU API
   async registrarse(usuario: Usuario): Promise<AuthResponse> {
-    const response = await firstValueFrom(
-      this._http.post<AuthResponse>(
-        `${this.apiUrl}/usuarios`,
-        {
+    try {
+      return await firstValueFrom(
+        this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
           email: usuario.email,
-          contrasenya: usuario.contrasenia
-        }
-      )
-    );
-    localStorage.setItem('usuario', JSON.stringify(response));
-    this._authStateService.setAuthEstado(true);
-    this._router.navigate(['/mainview']);
-    return response;
+          contrasenia: usuario.contrasenia
+        })
+      );
+    } catch (error) {
+      console.error('Error en registro:', error);
+      throw error;
+    }
   }
+
 
   // Login usando TU API
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
     const response = await firstValueFrom(
-      this._http.post<AuthResponse>(
-        `${this.apiUrl}/usuarios/login`,
-        {
-          email: usuario.email,
-          contrasenya: usuario.contrasenia
-        }
-      )
+      this._http.post<AuthResponse>(`${this.apiUrl}/usuarios/login`, {
+        email: usuario.email,
+        contrasenya: usuario.contrasenia
+      })
     );
-
-    console.log('Respuesta del backend:', response);
 
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
     this._router.navigate(['/mainview']);
+
     return response;
   }
 
-  // Login con Google (Firebase) — temporal
-  iniciarSesionGoogle(): Promise<void> {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(this._auth, provider)
-      .then(credential => {
-        const fbUser = credential.user;
-        // Construimos un objeto mínimo para tu perfil:
-        const usuario: AuthResponse = {
-          email: fbUser.email ?? '',
-          nombre: fbUser.displayName ?? '',
-          apellidos: '',
-          telefono: ''
-        };
-        localStorage.setItem('usuario', JSON.stringify(usuario));
-        this._authStateService.setAuthEstado(true);
-        this._router.navigate(['/mainview']);
-      });
+  // Inicio de sesión con Google (Firebase)
+  iniciarSesionGoogle() {
+    const google = new GoogleAuthProvider();
+    return signInWithPopup(this._auth, google);
   }
 
-  // Login con Facebook (Firebase) — temporal
-  iniciarSesionFacebook(): Promise<void> {
-    const provider = new FacebookAuthProvider();
-    return signInWithPopup(this._auth, provider)
-      .then(credential => {
-        const fbUser = credential.user;
-        const usuario: AuthResponse = {
-          email: fbUser.email ?? '',
-          nombre: fbUser.displayName ?? '',
-          apellidos: '',
-          telefono: ''
-        };
-        localStorage.setItem('usuario', JSON.stringify(usuario));
-        this._authStateService.setAuthEstado(true);
-        this._router.navigate(['/mainview']);
-      });
+  // Inicio de sesión con Facebook (Firebase)
+  iniciarSesionFacebook() {
+    const facebook = new FacebookAuthProvider();
+    return signInWithPopup(this._auth, facebook);
   }
 
-  // Cerrar sesión (limpia tanto Firebase como localStorage)
+  // Logout general
   async logout() {
-    await signOut(this._auth);
     localStorage.removeItem('usuario');
     this._authStateService.setAuthEstado(false);
     this._router.navigate(['/auth/sign-in']);
   }
 
-  // Obtener usuario desde localStorage
-  getCurrentUser(): Promise<AuthResponse> {
-    return new Promise((resolve, reject) => {
+  // // Token, si en el futuro lo necesitas
+  // guardarToken(token: string) {
+  //   localStorage.setItem('token', token);
+  // }
+
+  // obtenerToken(): string | null {
+  //   return localStorage.getItem('token');
+  // }
+
+  // isLoggedIn(): boolean {
+  //   return !!this.obtenerToken();
+  // }
+
+  // Obtener usuario actual desde localStorage
+  getCurrentUser(): Promise<AuthResponse | null> {
+    return new Promise((resolve) => {
       const storedUser = localStorage.getItem('usuario');
       if (!storedUser) {
-        reject('Usuario no encontrado en localStorage');
+        resolve(null); // en lugar de reject
         return;
       }
+
       try {
-        resolve(JSON.parse(storedUser));
-      } catch {
-        reject('Error parseando los datos del usuario');
+        const user = JSON.parse(storedUser) as AuthResponse;
+        resolve(user);
+      } catch (error) {
+        console.error('Error parseando los datos del usuario', error);
+        resolve(null); // también aquí en lugar de reject
       }
     });
   }
 
-  // Actualizar perfil en backend y en localStorage
-  updateUser(usuario: {
-    email: string;
-    nombre: string;
-    apellidos: string;
-    telefono: string;
-  }): Promise<AuthResponse> {
-    const url = `${this.apiUrl}/usuarios/${encodeURIComponent(usuario.email)}`;
+
+  // Actualizar datos de usuario por email
+  actualizarUsuario(email: string, usuario: any): Promise<void> {
     return firstValueFrom(
-      this._http.put<AuthResponse>(
-        url,
-        {
-          nombre:    usuario.nombre,
-          apellidos: usuario.apellidos,
-          telefono:  usuario.telefono
-        }
-      )
-    ).then(updatedUser => {
-      localStorage.setItem('usuario', JSON.stringify(updatedUser));
-      this._authStateService.setAuthEstado(true);
-      
-      return updatedUser;
+      this._http.put<void>(`${this.apiUrl}/usuarios/${encodeURIComponent(email)}`, usuario)
+    );
+  }
+
+  // Opcional: actualizar perfil en Firebase si usas Auth de Firebase
+  updateUser(usuario: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const user = this._auth.currentUser;
+      if (user) {
+        updateProfile(user, {
+          displayName: usuario.nombre
+        }).then(() => resolve())
+          .catch((error) => reject(error));
+      } else {
+        reject('Usuario no autenticado');
+      }
     });
   }
 }

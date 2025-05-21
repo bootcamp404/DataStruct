@@ -49,14 +49,14 @@ export default class SignInComponent {
       toast.success('Bienvenido')
       this._router.navigateByUrl('/mainview');
     } catch (error) {
-      toast.error('Ha ocurrido un error');
+      toast.error('Nombre o contraseña incorrecto');
     }
   }
   async iniciarSesionConGoogle(){
     try {
       await this._authService.iniciarSesionGoogle();
       toast.success('Bienvenido')
-      this._router.navigateByUrl('tareas');
+      this._router.navigateByUrl('/mainview');
     } catch (error) {
       toast.error('Ha ocurrido un error.')
     }
@@ -65,7 +65,7 @@ export default class SignInComponent {
     try {
       await this._authService.iniciarSesionFacebook();
       toast.success('Bienvenido')
-      this._router.navigateByUrl('tareas')
+      this._router.navigateByUrl('/mainview')
     } catch (error) {
       toast.error('Ha ocurrido un error.')
     }

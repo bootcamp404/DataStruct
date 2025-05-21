@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContentComponent } from './content/content.component';
 import { DepartamentosComponent } from './departamentos/departamentos.component';
 import { FooterComponent } from './footer/footer.component';
@@ -15,25 +15,39 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './mainview.component.html',
   styleUrls: ['./mainview.component.css'],
   standalone: true,
-
-  imports: [CommonModule, ReactiveFormsModule, DepartamentosComponent, FeaturesComponent, FooterComponent, ContentComponent,HeaderComponent, TranslateModule]
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    DepartamentosComponent, 
+    FeaturesComponent, 
+    FooterComponent, 
+    ContentComponent,
+    HeaderComponent, 
+    TranslateModule
+  ]
 })
-export class MainviewComponent implements OnInit {
+export class MainviewComponent implements OnInit, OnDestroy {
   currentLanguage = 'Castellano';
   searchControl = new FormControl('');
   showLanguageDropdown = false; // Nueva propiedad para controlar el dropdown
 
-
   constructor(
     private router: Router,
     private authService: AuthService
-
   ) {}
 
-  ngOnInit(): void {
-    // Añadir el evento para cerrar el dropdown cuando se hace clic fuera
-    document.addEventListener('click', this.closeDropdownOnClickOutside.bind(this));
+  async ngOnInit(): Promise<void> {
+  const usuario = await this.authService.getCurrentUser();
+
+  if (usuario) {
+    this.authService['_authStateService'].setAuthEstado(true);
+  } else {
+    this.authService['_authStateService'].setAuthEstado(false);
   }
+
+  document.addEventListener('click', this.closeDropdownOnClickOutside.bind(this));
+}
+
 
   ngOnDestroy(): void {
     // Eliminar el evento cuando se destruye el componente
@@ -67,11 +81,8 @@ export class MainviewComponent implements OnInit {
     }
   }
 
-  logOut(): void {
-    // Si usas Firebase auth u otro servicio de autenticación:
-      this.authService.logout().then(() => {
-      this.router.navigate(['/auth/sign-in']);
-   });
-
+  async logOut(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigate(['/auth/sign-in']);
   }
 }

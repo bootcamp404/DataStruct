@@ -21,12 +21,12 @@ public class Contrato {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
-    @JsonManagedReference
+    @JsonBackReference("cont-depa")
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_contrato")
-    @JsonManagedReference
+    @JsonBackReference("cont-tip_cont")
     private TipoContrato tipo_contrato;
 
     //CONSTRUCTORES
@@ -62,6 +62,8 @@ public class Contrato {
     public Date getFecha_creacion() {
         return fecha_creacion;
     }
+
+
 
     //SETTERS
     public void setImporte(Double importe) {

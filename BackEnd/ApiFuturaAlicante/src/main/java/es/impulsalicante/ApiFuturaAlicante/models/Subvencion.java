@@ -17,30 +17,26 @@ public class Subvencion {
     @Id
     @Column
     private String id_subvencion;
-
     @Column
     private String entidad;
-
     @Column
     private int importe;
-
     @Column
     private Date fecha_creacion;
-
     @Column(length = 1)
     private String modalidad; // Valores esperados: "A", "B", "C"
 
     @ManyToOne
     @JoinColumn(name="id_proyecto")
-    @JsonBackReference("proy-subv")
+    @JsonBackReference("subv-proy")
     private Proyecto proyecto;
 
     @ManyToOne
     @JoinColumn(name = "id_estado_sub", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference("subv-est_sub")
     private EstadoSubvencion estadoSubvencion;
 
-
+    //GETTERS SETTERS
     public void setId(String id_subvencion) {
         this.id_subvencion = id_subvencion;
     }
@@ -101,6 +97,7 @@ public class Subvencion {
         return estadoSubvencion;
     }
 
+    //CONSTRUCTORES
     public Subvencion (String id_subvencion, String entidad, int importe, Date fecha_creacion, EstadoSubvencion estadoSubvencion){
         this.id_subvencion = id_subvencion;
         this.entidad = entidad;

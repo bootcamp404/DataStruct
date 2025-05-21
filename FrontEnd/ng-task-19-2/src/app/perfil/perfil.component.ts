@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 interface Usuario {
   nombre: string;
@@ -62,15 +61,15 @@ export class PerfilComponent implements OnInit {
   }
  
   mostrarEditarPerfil() {
-  console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
-  this.mostrarFormularioEdicion = true;
-  this.usuario = {
-    nombre: this.usuarioActual?.nombre || '',
-    apellidos: this.usuarioActual?.apellidos || '',
-    email: this.usuarioActual?.email || '',
-    telefono: this.usuarioActual?.telefono || ''
-  };
-}
+    console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
+    this.mostrarFormularioEdicion = true;
+    this.usuario = {
+      nombre: this.usuarioActual?.nombre || '',
+      apellidos: this.usuarioActual?.apellidos || '',
+      email: this.usuarioActual?.email || '',
+      telefono: this.usuarioActual?.telefono || ''
+    };
+  }
 
   cancelarEdicion() {
     this.mostrarFormularioEdicion = false;
@@ -78,7 +77,7 @@ export class PerfilComponent implements OnInit {
 
   guardarCambios() {
   // 'usuario' ya incluye el email (campo readonly)
-  this.authService.updateUser(this.usuario)
+  this.authService.actualizarUsuario(this.usuario.email, this.usuario)
     .then(updated => {
       this.mostrarFormularioEdicion = false;
       // Recargamos datos para reflejar cambios
@@ -87,17 +86,6 @@ export class PerfilComponent implements OnInit {
     .catch(error => {
       this.errorMsg = 'Error al guardar los cambios';
       console.error('Error al guardar datos:', error);
-
-      if (error instanceof HttpErrorResponse) {
-        console.error('Detalles HTTP:', {
-          status: error.status,
-          message: error.message,
-          errorBody: error.error,
-          url: error.url
-        });
-      } else {
-        console.error('Error no HTTP:', error);
-      }
     });
   }
 }
