@@ -24,11 +24,14 @@
         </svg>
       </button>
 
-      <div *ngIf="showLanguageDropdown" class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50">
-        <a (click)="changeLanguage('es')" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">Castellano</a>
-        <a (click)="changeLanguage('va')" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">Valencià</a>
-        <a (click)="changeLanguage('en')" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">English</a>
-      </div>
+      @if (showLanguageDropdown) {
+        <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+          <a (click)="changeLanguage('es')" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">Castellano</a>
+          <a (click)="changeLanguage('va')" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">Valencià</a>
+          <a (click)="changeLanguage('en')" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">English</a>
+        </div>
+      }
+
     </div>
 
     <!-- Menú de usuario -->
