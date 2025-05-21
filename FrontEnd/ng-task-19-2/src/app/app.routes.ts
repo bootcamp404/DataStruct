@@ -19,23 +19,30 @@ export const routes: Routes = [
   {
     path: 'mainview',
     component: MainviewComponent,
-    canActivate: [privateGuard()],
+    canActivate: [privateGuard()]
   },
   {
     path: '',
-    component: InicioComponent,
+    component: InicioComponent
+  },
+  {
+    path: 'inicio',
+    component: InicioComponent
   },
   {
     path: 'plantillas',
     component: PlantillasComponent,
+    canActivate: [privateGuard()]
   },
   {
     path: 'perfil',
-    component: PerfilComponent
+    component: PerfilComponent,
+    canActivate: [privateGuard()]
   },
   {
     path: 'formularios',
-    component: FormulariosComponent
+    component: FormulariosComponent,
+    canActivate: [privateGuard()]
   },
   {
     path: 'informes',
@@ -49,11 +56,13 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    //canActivate: [privateGuard]
   },
   {
     path: 'panel-admin',
-    component: AdminPanelComponent
+    component: AdminPanelComponent,
+    canActivate: [privateGuard()]
   },
   {
     path: '**',

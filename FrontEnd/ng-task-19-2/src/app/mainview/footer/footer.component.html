@@ -2,6 +2,7 @@
 <footer class="border-t py-12 mt-12">
   <div class="container mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
       <!-- Logo y descripción -->
       <div>
         <div class="flex items-center mb-4">
@@ -9,41 +10,42 @@
           <h3 class="ml-2 font-bold text-lg">ImpulsAlicante</h3>
         </div>
         <p class="text-gray-600">
-          Soluciones avanzadas para la gestión de formularios empresariales y generación de informes departamentales.
+          {{ 'FOOTER.DESCRIPCION' | translate }}
         </p>
       </div>
 
       <!-- Empresa -->
       <div>
-        <h4 class="font-medium mb-4">Empresa</h4>
+        <h4 class="font-medium mb-4">{{ 'FOOTER.EMPRESA.TITULO' | translate }}</h4>
         <ul class="space-y-2">
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Sobre nosotros</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Contacto</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Política de privacidad</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Términos de uso</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.EMPRESA.SOBRE_NOSOTROS' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.EMPRESA.CONTACTO' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.EMPRESA.PRIVACIDAD' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.EMPRESA.TERMINOS' | translate }}</a></li>
         </ul>
       </div>
 
       <!-- Recursos -->
       <div>
-        <h4 class="font-medium mb-4">Recursos</h4>
+        <h4 class="font-medium mb-4">{{ 'FOOTER.RECURSOS.TITULO' | translate }}</h4>
         <ul class="space-y-2">
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Centro de ayuda</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Tutoriales</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Documentación</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Blog</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.RECURSOS.AYUDA' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.RECURSOS.TUTORIALES' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.RECURSOS.DOCUMENTACION' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.RECURSOS.BLOG' | translate }}</a></li>
         </ul>
       </div>
 
       <!-- Legal -->
       <div>
-        <h4 class="font-medium mb-4">Legal</h4>
+        <h4 class="font-medium mb-4">{{ 'FOOTER.LEGAL.TITULO' | translate }}</h4>
         <ul class="space-y-2">
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">RGPD</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Cookies</a></li>
-          <li><a href="#" class="text-gray-600 hover:text-blue-600">Licencias</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.LEGAL.RGPD' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.LEGAL.COOKIES' | translate }}</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-blue-600">{{ 'FOOTER.LEGAL.LICENCIAS' | translate }}</a></li>
         </ul>
       </div>
+
     </div>
   </div>
 </footer>

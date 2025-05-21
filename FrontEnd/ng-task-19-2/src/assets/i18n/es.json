@@ -32,25 +32,47 @@
       }
     }
   },
-    "DEPARTAMENTOS": {
-      "TITULO": "Departamentos",
-      "DESCRIPCION": "Selecciona un departamento para acceder a sus formularios.",
-      "RRHH": {
-        "NOMBRE": "Recursos Humanos",
-        "DESCRIPCION": "Gestión de empleados y contrataciones"
+
+    "CABECERA":{
+      "INICIO": "Inicio",
+      "PANEL": "Panel Administrativo",
+      "LISTA": "Lista Empleados",
+      "PERFIL": "Mi perfil",
+      "SESION": "Cerrar sesión"
+    },
+
+    "FOOTER": {
+      "DESCRIPCION": "Soluciones avanzadas para la gestión de formularios empresariales y generación de informes departamentales.",
+      "EMPRESA": {
+        "TITULO": "Empresa",
+        "SOBRE_NOSOTROS": "Sobre nosotros",
+        "CONTACTO": "Contacto",
+        "PRIVACIDAD": "Política de privacidad",
+        "TERMINOS": "Términos de uso"
       },
-      "EMP": {
-        "NOMBRE": "Empleo y Formación",
-        "DESCRIPCION": "Gestión de proyectos y seguimiento"
+      "RECURSOS": {
+        "TITULO": "Recursos",
+        "AYUDA": "Centro de ayuda",
+        "TUTORIALES": "Tutoriales",
+        "DOCUMENTACION": "Documentación",
+        "BLOG": "Blog"
       },
-      "JUR": {
-        "NOMBRE": "Jurídico Administrativo",
-        "DESCRIPCION": "Documentos administrativos y contratos"
-      },
-      "MRK": {
-        "NOMBRE": "Marketing y Comunicación",
-        "DESCRIPCION": "Gestión de comunicación y campañas de marketing"
-      },
-      "ACCEDER": "Acceder"
+      "LEGAL": {
+        "TITULO": "Legal",
+        "RGPD": "RGPD",
+        "COOKIES": "Cookies",
+        "LICENCIAS": "Licencias"
+      }
+    },
+
+    "PANEL-ADMINISTRATIVO":{
+      "PANEL": "Panel Administrativo",
+      "LISTADEPARTAMENTOS": "Lista de Departamentos",
+      "DOCUMENTOS": "DOCUMENTOS",
+      "CREAR": "Crear +",
+      "CREAR-FUNCIONES": {
+        "DEPARTAMENTO": "Departamento",
+        "DOCUMENTO": "Documento"
+      }
     }
   }
