@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface Usuario {
   nombre: string;
@@ -19,7 +20,7 @@ interface Usuario {
   standalone: true,
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, TranslateModule]
 })
 export class PerfilComponent implements OnInit {
   usuario: Usuario = {
@@ -59,7 +60,7 @@ export class PerfilComponent implements OnInit {
   volver(): void {
     this.router.navigate(['/ruta-anterior']);
   }
- 
+
   mostrarEditarPerfil() {
     console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
     this.mostrarFormularioEdicion = true;

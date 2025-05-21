@@ -10,12 +10,13 @@ import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
 import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyecto.component';
 import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
@@ -26,14 +27,14 @@ export class DashboardComponent implements OnInit {
   cargandoLista = false;
   error = false;
   mostrarModalCreacion = false;
-  
+
   mensajeError: string | null = null;
 
-  constructor(    
+  constructor(
     private fb: FormBuilder,
     private departamentoService: DepartamentoService,
     private router: Router,
-    private actualizarDepts: ActualizarService) {  
+    private actualizarDepts: ActualizarService) {
       this.formularioDept = this.fb.group({
         id: ['', [Validators.required]],
         nombre: ['', [Validators.required]]
@@ -52,11 +53,11 @@ export class DashboardComponent implements OnInit {
       id: '',
       nombre: ''
     });
-    
+
     // Limpiar mensajes de error
     this.mensajeError = null;
     this.error = false;
-    
+
     // Mostrar el modal
     this.mostrarModalCreacion = true;
   }
@@ -71,32 +72,32 @@ export class DashboardComponent implements OnInit {
   async guardarNuevo() {
     this.creando = true;
     this.mensajeError = null;
-    
+
     try {
       const nuevoDepartamento = this.formularioDept.value;
-     
+
       // Validar el formulario contra todos los departamentos existentes
       const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
         this.formularioDept,
         this.departamentos
       );
-      
+
       if (!resultadoValidacion.valido) {
         this.error = true;
         this.mensajeError = resultadoValidacion.errores.join('\n');
         return;
       }
-     
+
       const response = await firstValueFrom(
         this.departamentoService.crearDepartamento(nuevoDepartamento)
       );
 
       this.actualizarDepts.refreshPagina();
-     
+
       // Si el status es 201 (created) o 200 (OK), consideramos la creación exitosa
       if (response.status === 201 || response.status === 200) {
         this.cerrarModalCreacion();
-       
+
         // Redirigir a la página principal de listar
         this.router.navigate(['/dashboard']);
       } else {

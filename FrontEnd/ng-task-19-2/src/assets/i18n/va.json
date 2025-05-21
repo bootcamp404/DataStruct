@@ -1,56 +1,74 @@
 {
   "FEATURES": {
     "TITLE": "Característiques Principals",
-    "DESCRIPTION": "Descobreix totes les eines que tenim per simplificar la gestió dels teus formularis empresarials.",
+    "DESCRIPTION": "Descobreix totes les eines que oferim per a simplificar la gestió dels teus formularis empresarials.",
     "ITEMS": {
       "CUSTOM_FORMS": {
         "TITLE": "Formularis Personalitzats",
         "DESC": "Crea formularis adaptats a les necessitats específiques de cada departament."
       },
       "DEPARTMENT_ORGANIZATION": {
-        "TITLE": "Organització per Departaments",
+        "TITLE": "Organització Departamental",
         "DESC": "Gestiona formularis per departaments per a una millor organització i seguiment."
       },
       "EXPORT_PDF": {
         "TITLE": "Exportació a PDF",
-        "DESC": "Exporta formularis i informes en format PDF per compartir o arxivar."
+        "DESC": "Exporta formularis i informes en format PDF per a compartir o arxivar."
       },
       "ADVANCED_ANALYTICS": {
         "TITLE": "Anàlisi Avançada",
-        "DESC": "Visualitza dades i tendències amb gràfics interactius i panells personalitzables."
+        "DESC": "Visualitza dades i tendències amb gràfics interactius i quadres personalitzables."
       },
       "TEAM_COLLABORATION": {
         "TITLE": "Col·laboració en Equip",
-        "DESC": "Treballa conjuntament amb diferents rols i permisos per a cada membre de l’equip."
+        "DESC": "Treballa conjuntament amb diferents rols i permisos per a cada membre de l'equip."
       },
       "PROCESS_AUTOMATION": {
         "TITLE": "Automatització de Processos",
         "DESC": "Automatitza fluxos de treball amb aprovacions i notificacions."
-      },
-      "MAINVIEW": {
-        "FOOTER_COPYRIGHT": "© 2025 ImpulsAlicante - Tots els drets reservats"
       }
+    }
+  },
+
+  "CABECERA": {
+    "INICIO": "Inici",
+    "PANEL": "Panell Administratiu",
+    "LISTA": "Llista d'Empleats",
+    "PERFIL": "Meu perfil",
+    "SESION": "Tancar sessió"
+  },
+
+  "FOOTER": {
+    "DESCRIPCION": "Solucions avançades per a la gestió de formularis empresarials i la generació d'informes departamentals.",
+    "EMPRESA": {
+      "TITULO": "Empresa",
+      "SOBRE_NOSOTROS": "Sobre nosaltres",
+      "CONTACTO": "Contacte",
+      "PRIVACIDAD": "Política de privacitat",
+      "TERMINOS": "Termes d'ús"
     },
-    "DEPARTAMENTOS": {
-      "TITULO": "Departaments",
-      "DESCRIPCION": "Selecciona un departament per accedir als seus formularis.",
-      "RRHH": {
-        "NOMBRE": "Recursos Humans",
-        "DESCRIPCION": "Gestió d'empleats i contractacions"
-      },
-      "EMP": {
-        "NOMBRE": "Empleo i Formació",
-        "DESCRIPCION": "Gestió de projectes i seguiment"
-      },
-      "JUR": {
-        "NOMBRE": "Jurídic Administratiu",
-        "DESCRIPCION": "Documents administratius i contractes"
-      },
-      "MRK": {
-        "NOMBRE": "Màrqueting i Comunicació",
-        "DESCRIPCION": "Gestió de comunicació i campanyes de màrqueting"
-      },
-      "ACCEDER": "Accedir"
+    "RECURSOS": {
+      "TITULO": "Recursos",
+      "AYUDA": "Centre d'ajuda",
+      "TUTORIALES": "Tutorials",
+      "DOCUMENTACION": "Documentació",
+      "BLOG": "Blog"
+    },
+    "LEGAL": {
+      "TITULO": "Legal",
+      "RGPD": "RGPD",
+      "COOKIES": "Galetes",
+      "LICENCIAS": "Llicències"
+    }
+  },
+  "PANEL-ADMINISTRATIVO":{
+    "PANEL": "Panell Administratiu",
+    "LISTADEPARTAMENTOS": "Llista de Departaments",
+    "DOCUMENTOS": "Documents",
+    "CREAR": "Crear +",
+    "CREAR-FUNCIONES": {
+      "DEPARTAMENTO": "Departament",
+      "DOCUMENTO": "Document"
     }
   }
 }

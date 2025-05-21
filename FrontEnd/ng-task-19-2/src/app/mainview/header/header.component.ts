@@ -4,7 +4,7 @@ import { AuthService } from '../../auth/data-access/auth.service';
 import { CommonModule } from '@angular/common';
 import { NgZone } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./header.component.css'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, TranslateModule]
 })
 export class HeaderComponent {
   searchTerm: string = '';

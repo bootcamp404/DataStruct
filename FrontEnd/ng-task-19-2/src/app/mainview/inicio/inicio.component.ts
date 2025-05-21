@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink, RouterModule } from '@angular/router';
+import { HeaderComponent } from "../header/header.component";
+import { FooterComponent } from '../footer/footer.component';
 
 interface Feature {
   icon: string;
@@ -10,7 +12,7 @@ interface Feature {
 
 @Component({
   selector: 'app-inicio',
-  imports: [TranslateModule, RouterModule],
+  imports: [TranslateModule, RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
