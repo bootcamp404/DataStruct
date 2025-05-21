@@ -57,13 +57,6 @@ public class Departamento {
         this.convenios = convenios;
     }
 
-    /*
-    public Departamento(String id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
-     */
-
     public Departamento( ) {
     }
 

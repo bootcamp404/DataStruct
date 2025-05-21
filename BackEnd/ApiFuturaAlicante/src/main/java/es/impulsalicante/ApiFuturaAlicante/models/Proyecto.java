@@ -25,7 +25,8 @@ public class Proyecto {
 
     @ManyToOne
     @JoinColumn(name="id_departamento")
-    @JsonBackReference("proy-depa")
+    @JsonIgnoreProperties({"contratos", "centros", "proyectos", "actividades", "campanyasMarketing", "empresas",
+                           "convenios"})
     private Departamento departamento;
 
     @OneToMany(mappedBy="proyecto")

@@ -94,10 +94,10 @@ export class HeaderComponent {
         this.currentLanguage = 'Castellano';
         break;
       case 'va':
-        this.currentLanguage = 'Valencià';
+        this.currentLanguage = 'Valenciano';
         break;
       case 'en':
-        this.currentLanguage = 'English';
+        this.currentLanguage = 'Inglés';
         break;
       default:
         this.currentLanguage = 'Castellano';
