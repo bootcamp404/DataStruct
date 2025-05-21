@@ -23,14 +23,13 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
     </svg>
   </button>
-
-  <div *ngIf="showLanguageDropdown" class="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white rounded-md shadow-md z-10 border border-gray-200 py-1">
+  @if (showLanguageDropdown) {
+    <div class="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white rounded-md shadow-md z-10 border border-gray-200 py-1">
     <a (click)="changeLanguage('es')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Castellano</a>
     <a (click)="changeLanguage('va')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Valencià</a>
     <a (click)="changeLanguage('en')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">English</a>
-  </div>
+  </div>}
 </div>
-
 
     <!-- Menú de usuario -->
     <div class="relative">
