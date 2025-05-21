@@ -1,5 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
@@ -15,31 +16,31 @@ public class Departamento {
     private String nombre;
 
     @OneToMany(mappedBy = "departamento")
-    @JsonManagedReference("cont-depa")
+    @JsonIgnoreProperties("departamento")
     private List<Contrato> contratos;
 
     @OneToMany(mappedBy = "departamento")
-    @JsonManagedReference("cent-depa")
+    @JsonIgnoreProperties("departamento")
     private List<Centros> centros;
 
     @OneToMany(mappedBy="departamento")
-    @JsonManagedReference("proy-depa")
+    @JsonIgnoreProperties("departamento")
     private List<Proyecto> proyectos;
 
     @OneToMany(mappedBy = "departamento")
-    @JsonManagedReference("acti-depa")
+    @JsonIgnoreProperties("departamento")
     private List<Actividad> actividades;
 
     @OneToMany(mappedBy = "departamento")
-    @JsonManagedReference("camp-depa")
+    @JsonIgnoreProperties("departamento")
     private List<CampanyaMarketing> campanyasMarketing;
 
     @OneToMany(mappedBy = "departamento")
-    @JsonManagedReference("empr-depa")
+    @JsonIgnoreProperties("departamento")
     private List<Empresa> empresas;
 
     @OneToMany(mappedBy = "departamento")
-    @JsonManagedReference("conv-depa")
+    @JsonIgnoreProperties("departamento")
     private List<Convenio> convenios;
 
 

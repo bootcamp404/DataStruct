@@ -1,9 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
@@ -21,12 +19,12 @@ public class Contrato {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
-    @JsonBackReference("cont-depa")
+    @JsonIgnoreProperties({"contratos", "centros", "proyectos", "actividades", "campanyasMarketing", "empresas", "convenios"})
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_contrato")
-    @JsonBackReference("cont-tip_cont")
+    @JsonIgnoreProperties({"contratos"})
     private TipoContrato tipo_contrato;
 
     //CONSTRUCTORES

@@ -1,8 +1,11 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "sector_empresa")
@@ -15,6 +18,10 @@ public class SectorEmpresa {
     private Integer idSector;
     @Column(name = "nombre", nullable = false)
     private String nombre;
+
+    @OneToMany(mappedBy = "sector")
+    @JsonIgnoreProperties("sector")
+    private List<Empresa> empresas;
 
     public Integer getIdSector() {
         return idSector;
