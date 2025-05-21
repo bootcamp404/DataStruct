@@ -17,8 +17,17 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent {
   searchTerm: string = '';
   isProfileMenuOpen = false;
-  currentLanguage: string = 'Castellano';
-  showLanguageDropdown: boolean = false;
+  showLanguageDropdown = false;
+
+  // Mapa de nombres legibles
+  languageNames: { [key: string]: string } = {
+    es: 'Castellano',
+    va: 'Valencià',
+    en: 'English'
+  };
+
+  // Idioma actual (en formato de código)
+  currentLanguageCode: string = 'es';
 
   user = {
     email: '' as string | null,
@@ -33,10 +42,10 @@ export class HeaderComponent {
   ) {}
 
   async ngOnInit() {
-    // Cargar idioma desde localStorage o usar 'es' por defecto
+    // Cargar idioma desde localStorage o usar 'es'
     const savedLang = localStorage.getItem('idioma') || 'es';
+    this.currentLanguageCode = savedLang;
     this.translate.use(savedLang);
-    this.setCurrentLanguageLabel(savedLang);
 
     // Cargar usuario actual
     const currentUser = await this.authService.getCurrentUser();
@@ -47,13 +56,13 @@ export class HeaderComponent {
       if (nombre && apellidos) {
         this.user.displayName = `${nombre} ${apellidos}`;
       } else {
-        this.user.displayName = null; // Forzar el uso del email
+        this.user.displayName = null;
       }
     }
   }
 
   ngOnDestroy(): void {
-    document.removeEventListener('click', this.closeDropdownOnClickOutside.bind(this));
+
   }
 
   toggleLanguageDropdown(event: MouseEvent): void {
@@ -64,44 +73,11 @@ export class HeaderComponent {
     }
   }
 
-  closeDropdownOnClickOutside(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.relative')) {
-      this.showLanguageDropdown = false;
-    }
-  }
-
-  changeLanguage(language: string): void {
-    this.currentLanguage = language;
-    this.showLanguageDropdown = false;
-
-    const langMap = {
-      Castellano: 'es',
-      Valenciano: 'va',
-      Inglés: 'en'
-    };
-
-    const langCode = langMap[language as keyof typeof langMap] || 'es';
-
+  changeLanguage(langCode: string): void {
+    this.currentLanguageCode = langCode;
     this.translate.use(langCode);
-    localStorage.setItem('lang', langCode);
-  }
-
-
-  private setCurrentLanguageLabel(languageCode: string) {
-    switch(languageCode) {
-      case 'es':
-        this.currentLanguage = 'Castellano';
-        break;
-      case 'va':
-        this.currentLanguage = 'Valenciano';
-        break;
-      case 'en':
-        this.currentLanguage = 'Inglés';
-        break;
-      default:
-        this.currentLanguage = 'Castellano';
-    }
+    localStorage.setItem('idioma', langCode);
+    this.showLanguageDropdown = false;
   }
 
   toggleProfileMenu(event: MouseEvent): void {
