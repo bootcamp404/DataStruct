@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink, RouterModule } from '@angular/router';
 
 interface Feature {
   icon: string;
@@ -9,7 +10,7 @@ interface Feature {
 
 @Component({
   selector: 'app-inicio',
-  imports: [TranslateModule],
+  imports: [TranslateModule, RouterModule],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
