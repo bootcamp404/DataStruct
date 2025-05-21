@@ -17,17 +17,8 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent {
   searchTerm: string = '';
   isProfileMenuOpen = false;
-  showLanguageDropdown = false;
-
-  // Mapa de nombres legibles
-  languageNames: { [key: string]: string } = {
-    es: 'Castellano',
-    va: 'Valencià',
-    en: 'English'
-  };
-
-  // Idioma actual (en formato de código)
-  currentLanguageCode: string = 'es';
+  currentLanguage: string = 'Castellano';
+  showLanguageDropdown: boolean = false;
 
   user = {
     email: '' as string | null,
@@ -42,10 +33,10 @@ export class HeaderComponent {
   ) {}
 
   async ngOnInit() {
-    // Cargar idioma desde localStorage o usar 'es'
+    // Cargar idioma desde localStorage o usar 'es' por defecto
     const savedLang = localStorage.getItem('idioma') || 'es';
-    this.currentLanguageCode = savedLang;
     this.translate.use(savedLang);
+    this.setCurrentLanguageLabel(savedLang);
 
     // Cargar usuario actual
     const currentUser = await this.authService.getCurrentUser();
@@ -56,13 +47,13 @@ export class HeaderComponent {
       if (nombre && apellidos) {
         this.user.displayName = `${nombre} ${apellidos}`;
       } else {
-        this.user.displayName = null;
+        this.user.displayName = null; // Forzar el uso del email
       }
     }
   }
 
   ngOnDestroy(): void {
-
+    document.removeEventListener('click', this.closeDropdownOnClickOutside.bind(this));
   }
 
   toggleLanguageDropdown(event: MouseEvent): void {
@@ -73,11 +64,44 @@ export class HeaderComponent {
     }
   }
 
-  changeLanguage(langCode: string): void {
-    this.currentLanguageCode = langCode;
-    this.translate.use(langCode);
-    localStorage.setItem('idioma', langCode);
+  closeDropdownOnClickOutside(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      this.showLanguageDropdown = false;
+    }
+  }
+
+  changeLanguage(language: string): void {
+    this.currentLanguage = language;
     this.showLanguageDropdown = false;
+
+    const langMap = {
+      Castellano: 'es',
+      Valenciano: 'va',
+      Inglés: 'en'
+    };
+
+    const langCode = langMap[language as keyof typeof langMap] || 'es';
+
+    this.translate.use(langCode);
+    localStorage.setItem('lang', langCode);
+  }
+
+
+  private setCurrentLanguageLabel(languageCode: string) {
+    switch(languageCode) {
+      case 'es':
+        this.currentLanguage = 'Castellano';
+        break;
+      case 'va':
+        this.currentLanguage = 'Valenciano';
+        break;
+      case 'en':
+        this.currentLanguage = 'Inglés';
+        break;
+      default:
+        this.currentLanguage = 'Castellano';
+    }
   }
 
   toggleProfileMenu(event: MouseEvent): void {
