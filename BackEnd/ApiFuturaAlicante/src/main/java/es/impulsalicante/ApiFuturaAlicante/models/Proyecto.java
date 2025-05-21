@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "Proyecto")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_proyecto")
 public class Proyecto {
 
     @Id
