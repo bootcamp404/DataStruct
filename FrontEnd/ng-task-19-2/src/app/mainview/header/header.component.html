@@ -15,21 +15,27 @@
       <!-- Navegación principal -->
       <nav class="hidden md:flex gap-8 text-base font-medium">
         <a routerLink="/mainview"
-           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
-           class="text-gray-700 hover:text-indigo-600 transition-colors">
+          routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
+          class="relative text-gray-700 hover:text-[#1276E1] transition-colors group">
           Inicio
+          <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#1276E1] to-[#1FB26E] w-0 group-hover:w-full transition-all duration-500"></div>
         </a>
+
         <a routerLink="/dashboard"
-           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
-           class="text-gray-700 hover:text-indigo-600 transition-colors">
+          routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
+          class="relative text-gray-700 hover:text-[#1276E1] transition-colors group">
           Panel Administrativo
+          <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#1276E1] to-[#1FB26E] w-0 group-hover:w-full transition-all duration-500"></div>
         </a>
+
         <a routerLink="/panel-admin"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
-           class="text-gray-700 hover:text-indigo-600 transition-colors">
+           class="relative text-gray-700 hover:text-[#1276E1] transition-colors group">
           Lista Empleados
+          <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#1276E1] to-[#1FB26E] w-0 group-hover:w-full transition-all duration-500"></div>
         </a>
       </nav>
+
 
       <!-- Controles de usuario -->
       <div class="flex items-center gap-3">

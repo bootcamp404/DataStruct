@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Proyecto } from '../../../modelos/proyecto';
-import { firstValueFrom, forkJoin, Subscription } from 'rxjs';
+import { Departamento } from '../../../modelos/departamento';
 import { ProyectoService } from '../../../services/proyecto.service';
+import { DepartamentoService } from '../../../services/departamento.service';
 import { ActualizarService } from '../../../services/actualizar.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom, forkJoin, Subscription } from 'rxjs';
 import { ProyectoValidaciones } from '../../../validaciones/proyecto.validaciones';
-import { Departamento } from '../../../modelos/departamento';
-import { DepartamentoService } from '../../../services/departamento.service';
 
 interface ProyectoConDepartamento extends Proyecto {
-  nombre_departamento: string;
+  nombre_departamento: string; // solo para mostrar en UI
 }
 
 @Component({
   selector: 'app-proyecto',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './proyecto.component.html',
-  styleUrl: './proyecto.component.css'
+  styleUrls: ['./proyecto.component.css']
 })
-export class ProyectoComponent implements OnInit {
+export class ProyectoComponent implements OnInit, OnDestroy {
   formularioEdicion: FormGroup;
   proyectos: ProyectoConDepartamento[] = [];
   departamentos: Departamento[] = [];
@@ -35,6 +35,7 @@ export class ProyectoComponent implements OnInit {
   mostrarModalEdicion = false;
   editando = false;
   mostrarTodos = false;
+  filtroTexto: string = '';
 
   private refreshSubscription: Subscription | null = null;
 
@@ -50,22 +51,19 @@ export class ProyectoComponent implements OnInit {
       objetivo: ['', Validators.required],
       fecha_ini: ['', Validators.required],
       fecha_fin: ['', Validators.required],
-      id_departamento: ['', Validators.required]  // usado en el <select>
+      id_departamento: ['', Validators.required]  // solo id para el select
     });
-
   }
 
   ngOnInit() {
     this.cargarDatosIniciales();
 
-    // Suscribirse al evento de actualización
     this.refreshSubscription = this.actualizarPag.actualizarPagina$.subscribe(() => {
       this.cargarDatosIniciales();
     });
   }
 
-  ngOnDestroy(){
-    // Cancelar la suscripción al destruir el componente para evitar memory leaks
+  ngOnDestroy() {
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
@@ -77,25 +75,29 @@ export class ProyectoComponent implements OnInit {
     forkJoin({
       proyectos: this.proyectoService.obtenerProyectos(),
       departamentos: this.departamentoService.obtenerDepartamentos()
-      
     }).subscribe({
       next: ({ proyectos, departamentos }) => {
-          this.departamentos = departamentos;
-          this.proyectos = proyectos.map(proyecto => {
-            const departamento = proyecto.departamento; // es un objeto
-            return {
-              ...proyecto,
-              nombre_departamento: departamento ? departamento.nombre : 'Desconocido'
-            } as ProyectoConDepartamento;
-          });
-          this.proyectoService.setProyectos(proyectos);
-          this.cargandoLista = false;
-        },
-        error: (error) => {
-          console.error('Error al cargar proyectos o departamentos:', error);
-          this.errorLista = true;
-          this.cargandoLista = false;
-        }
+        this.departamentos = departamentos;
+        // Mapear cada proyecto para agregar el nombre del departamento basado en id
+        this.proyectos = proyectos.map(proyecto => {
+          const nombreDepto = proyecto.departamento?.id
+            ? this.getNombreDepartamento(proyecto.departamento.id)
+            : 'Desconocido';
+
+          return {
+            ...proyecto,
+            nombre_departamento: nombreDepto
+          } as ProyectoConDepartamento;
+        });
+
+        this.proyectoService.setProyectos(proyectos);
+        this.cargandoLista = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar proyectos o departamentos:', error);
+        this.errorLista = true;
+        this.cargandoLista = false;
+      }
     });
   }
 
@@ -130,7 +132,6 @@ export class ProyectoComponent implements OnInit {
 
   async guardarEdicion() {
     if (!this.selectedProyecto) return;
-    console.log("Funciona");
 
     this.editando = true;
     this.error = false;
@@ -139,23 +140,29 @@ export class ProyectoComponent implements OnInit {
     try {
       const formulario = this.formularioEdicion.value;
 
-      // Validaciones personalizadas si las tienes
-      const resultadoValidacion = ProyectoValidaciones.validarFormulario(this.formularioEdicion, this.proyectos.filter(p => p.id_proyecto !== this.selectedProyecto?.id_proyecto));
+      // Validación personalizada
+      const resultadoValidacion = ProyectoValidaciones.validarFormulario(
+        this.formularioEdicion,
+        this.proyectos.filter(p => p.id_proyecto !== this.selectedProyecto?.id_proyecto)
+      );
+
       if (!resultadoValidacion.valido) {
         this.error = true;
         this.mensajeError = resultadoValidacion.errores.join('\n');
         return;
       }
 
-      // Construcción del objeto Proyecto con el departamento como objeto anidado
+      // Construcción del objeto Proyecto con departamento solo con id
       const proyectoActualizado: Proyecto = {
         id_proyecto: this.selectedProyecto.id_proyecto,
         nombre: formulario.nombre,
         objetivo: formulario.objetivo,
         fecha_ini: formulario.fecha_ini,
         fecha_fin: formulario.fecha_fin,
-        departamento: this.departamentos.find(d => d.id === formulario.id_departamento)!
+        departamento: { id: formulario.id_departamento }  // solo id
       };
+
+      console.log('Proyecto a actualizar:', JSON.stringify(proyectoActualizado));
 
       const response = await firstValueFrom(
         this.proyectoService.actualizarProyecto(proyectoActualizado.id_proyecto, proyectoActualizado)

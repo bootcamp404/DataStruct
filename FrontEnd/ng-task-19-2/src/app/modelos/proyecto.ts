@@ -6,6 +6,5 @@ export interface Proyecto {
   fecha_fin: string;
   departamento: {
     id: string;
-    nombre: string;
   };
 }

@@ -35,16 +35,13 @@ export class ProyectoService {
   }
   
   actualizarProyecto(id: string, proyecto: Proyecto): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
 
-    return this.http.put(`${this.apiUrl}/${id}`, proyecto, { headers, observe: 'response' })
-      .pipe(
-        catchError(error => {
-          return throwError(() => error);
-        })
-      );
+    return this.http.put(`${this.apiUrl}/${id}`, proyecto, {
+      headers: headers,
+      observe: 'response'
+    });
   }
 }
