@@ -22,7 +22,7 @@ export const routes: Routes = [
     canActivate: [privateGuard()],
   },
   {
-    path: 'inicio',
+    path: '',
     component: InicioComponent,
   },
   {
