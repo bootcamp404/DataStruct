@@ -32,6 +32,7 @@ export class DepartamentsComponent implements OnInit {
   eliminando = false;
   mostrarModalEdicion = false;
   editando = false;
+  mostrarTodos = false;
   private refreshSubscription: Subscription | null = null;
 
   constructor(
@@ -160,5 +161,13 @@ export class DepartamentsComponent implements OnInit {
     } finally {
       this.eliminando = false;
     }
+  }
+
+  get departamentosVisibles() {
+    return this.mostrarTodos ? this.departamentos : this.departamentos.slice(0, 4);
+  }
+
+  toggleMostrarTodos() {
+    this.mostrarTodos = !this.mostrarTodos;
   }
 } 

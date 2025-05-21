@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContentComponent } from './content/content.component';
-import { DepartamentosComponent } from './departamentos/departamentos.component';
 import { FooterComponent } from './footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +17,6 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     CommonModule, 
     ReactiveFormsModule, 
-    DepartamentosComponent, 
     FeaturesComponent, 
     FooterComponent, 
     ContentComponent,
@@ -37,16 +35,11 @@ export class MainviewComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
-  console.log('MainviewComponent.ngOnInit - empezando');
-
   const usuario = await this.authService.getCurrentUser();
-  console.log('Usuario recuperado de localStorage:', usuario);
 
   if (usuario) {
-    console.log('Sesión activa: seteando estado a true');
     this.authService['_authStateService'].setAuthEstado(true);
   } else {
-    console.log('No hay usuario: seteando estado a false');
     this.authService['_authStateService'].setAuthEstado(false);
   }
 

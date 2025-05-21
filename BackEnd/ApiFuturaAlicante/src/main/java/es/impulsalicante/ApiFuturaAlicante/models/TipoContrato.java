@@ -1,8 +1,6 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -14,12 +12,11 @@ public class TipoContrato {
     @Id
     @Column(name = "id_tipo_contrato")
     private String id;
-
     @Column
     private String nombre;
 
     @OneToMany(mappedBy = "tipo_contrato")
-    @JsonBackReference
+    @JsonIgnoreProperties("tipo_contrato")
     private List<Contrato> contratos;
 
     //CONSTRUCTORES

@@ -1,58 +1,85 @@
-<!-- Encabezado -->
-<header class="flex items-center justify-between px-6 py-4 bg-white shadow-md w-full">
-  <!-- Logo + nombre -->
-  <div class="flex items-center space-x-2">
-    <img src="assets/img/logo.jpg" alt="Logo ImpulsAlicante" class="w-10 h-10">
-    <span class="text-xl text-black font-bold">ImpulsAlicante</span>
-  </div>
+<header class="sticky top-0 z-50 w-full py-3 bg-white shadow-sm border-b border-gray-100 no-imprimir">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between">
 
-  <!-- Navegación principal -->
-  <nav class="hidden md:flex space-x-6 no-imprimir">
-    <a routerLink="/mainview" class="text-gray-700 hover:text-indigo-600 transition">Inicio</a>
-    <a routerLink="/dashboard" class="text-gray-700 hover:text-indigo-600 transition">Panel Administrativo</a>
-  </nav>
-
-  <!-- Controles de usuario -->
-  <div class="flex items-center space-x-4 no-imprimir">
-    <!-- Selector de idioma -->
-    <div class="relative">
-      <button (click)="toggleLanguageDropdown($event)" class="flex items-center px-3 py-1 text-sm border bg-sky-700 rounded-md">
-        <span class="text-white">{{ currentLanguage }}</span>
-        <svg class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-
-      @if(showLanguageDropdown){
-        <div class="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white rounded-md shadow-md z-10 border border-gray-200 py-1">
-          <a (click)="changeLanguage('Castellano')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Castellano</a>
-          <a (click)="changeLanguage('Valenciano')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Valenciano</a>
-          <a (click)="changeLanguage('Ingles')" class="block px-3 py-1 text-s text-center text-black hover:bg-gray-100 cursor-pointer">Inglés</a>
+      <!-- Logo + nombre -->
+      <a [routerLink]="['/mainview']" class="flex items-center gap-2 group">
+        <div class="rounded-md p-1">
+          <img src="assets/img/logo.png" alt="Logo dataBridge" class="w-16 h-16 object-contain">
         </div>
-      }
-    </div>
+        <span class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+          dataBridge
+        </span>
+      </a>
 
-    <!-- Menú de usuario -->
-    <div class="relative">
-      <button (click)="toggleProfileMenu($event)" class="flex items-center space-x-2 hover:bg-gray-100 px-2 py-1 rounded-md">
-        <svg class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 
-                10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <span class="text-sm font-medium max-w-[150px] truncate text-gray-600">{{ user.displayName || user.email }}</span>
-        <svg class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
+      <!-- Navegación principal -->
+      <nav class="hidden md:flex gap-8 text-base font-medium">
+        <a routerLink="/mainview"
+           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
+           class="text-gray-700 hover:text-indigo-600 transition-colors">
+          Inicio
+        </a>
+        <a routerLink="/dashboard"
+           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
+           class="text-gray-700 hover:text-indigo-600 transition-colors">
+          Panel Administrativo
+        </a>
+        <a routerLink="/panel-admin"
+           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
+           class="text-gray-700 hover:text-indigo-600 transition-colors">
+          Lista Empleados
+        </a>
+      </nav>
 
-      @if(isProfileMenuOpen){
-        <div class="absolute right-0 mt-2 w-40 bg-white border rounded shadow-md z-10">
-          <a routerLink="/perfil" class="block px-4 py-2 text-black hover:bg-gray-100">Mi Perfil</a>
-          <div class="border-t border-gray-100"></div>
-          <button (click)="onLogoutClick()" class="w-full text-left px-4 py-2 text-black hover:bg-gray-100">Cerrar Sesión</button>
+      <!-- Controles de usuario -->
+      <div class="flex items-center gap-3">
+
+        <!-- Idioma -->
+        <div class="relative">
+          <button (click)="toggleLanguageDropdown($event)"
+                  class="flex items-center px-2 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow hover:shadow-md">
+            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="..."/></svg>
+            <span>{{ currentLanguage }}</span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          @if (showLanguageDropdown) {
+            <div class="absolute right-0 mt-1 w-36 bg-white rounded shadow border border-gray-200 z-50 text-base">
+              <a (click)="changeLanguage('es')" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">Castellano</a>
+              <a (click)="changeLanguage('va')" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">Valencià</a>
+              <a (click)="changeLanguage('en')" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">English</a>
+            </div>
+          }
         </div>
-      }
+
+        <!-- Perfil -->
+        <div class="relative">
+          <button (click)="toggleProfileMenu($event)"
+                  class="flex items-center px-3 py-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 shadow-sm text-sm text-gray-700">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15
+                      10a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <span class="ml-2 truncate max-w-[120px] hidden sm:inline">
+              {{ user.displayName || user.email }}
+            </span>
+            <svg class="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          @if (isProfileMenuOpen) {
+            <div class="absolute right-0 mt-1 w-44 bg-white rounded shadow border border-gray-200 z-50 text-base">
+              <a routerLink="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">Mi Perfil</a>
+              <button (click)="onLogoutClick()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50">Cerrar Sesión</button>
+            </div>
+          }
+        </div>
+
+      </div>
     </div>
   </div>
 </header>

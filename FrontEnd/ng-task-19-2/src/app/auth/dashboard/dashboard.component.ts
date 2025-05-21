@@ -15,7 +15,7 @@ import { DepartamentsComponent } from '../../componentes/departaments/departamen
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;

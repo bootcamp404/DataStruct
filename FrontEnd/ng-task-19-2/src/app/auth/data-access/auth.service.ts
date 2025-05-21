@@ -34,18 +34,19 @@ export class AuthService {
 
   // Registro usando TU API
   async registrarse(usuario: Usuario): Promise<AuthResponse> {
-    const response = await firstValueFrom(
-      this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
-        email: usuario.email,
-        contrasenya: usuario.contrasenia
-      })
-    );
-
-    localStorage.setItem('usuario', JSON.stringify(response));
-    this._authStateService.setAuthEstado(true);
-    this._router.navigate(['/mainview']);
-    return response;
+    try {
+      return await firstValueFrom(
+        this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
+          email: usuario.email,
+          contrasenia: usuario.contrasenia
+        })
+      );
+    } catch (error) {
+      console.error('Error en registro:', error);
+      throw error;
+    }
   }
+
 
   // Login usando TU API
   async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
@@ -55,8 +56,6 @@ export class AuthService {
         contrasenya: usuario.contrasenia
       })
     );
-
-    console.log('Respuesta del backend:', response);
 
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
@@ -99,22 +98,22 @@ export class AuthService {
 
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<AuthResponse | null> {
-  return new Promise((resolve) => {
-    const storedUser = localStorage.getItem('usuario');
-    if (!storedUser) {
-      resolve(null); // en lugar de reject
-      return;
-    }
+    return new Promise((resolve) => {
+      const storedUser = localStorage.getItem('usuario');
+      if (!storedUser) {
+        resolve(null); // en lugar de reject
+        return;
+      }
 
-    try {
-      const user = JSON.parse(storedUser) as AuthResponse;
-      resolve(user);
-    } catch (error) {
-      console.error('Error parseando los datos del usuario', error);
-      resolve(null); // también aquí en lugar de reject
-    }
-  });
-}
+      try {
+        const user = JSON.parse(storedUser) as AuthResponse;
+        resolve(user);
+      } catch (error) {
+        console.error('Error parseando los datos del usuario', error);
+        resolve(null); // también aquí en lugar de reject
+      }
+    });
+  }
 
 
   // Actualizar datos de usuario por email

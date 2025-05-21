@@ -13,35 +13,51 @@ public class Proyecto {
     @Id
     @Column(name = "id_proyecto")
     private String id_proyecto;
-
     @Column(nullable = false)
     private String nombre;
-
     @Column
     private String objetivo;
-
     @Column
     private Date fecha_ini;
     @Column
     private Date fecha_fin;
 
 
-
     @ManyToOne
     @JoinColumn(name="id_departamento")
-    @JsonManagedReference("dep-proy")
+    @JsonIgnoreProperties({"contratos", "centros", "proyectos", "actividades", "campanyasMarketing", "empresas", "convenios"})
     private Departamento departamento;
 
     @OneToMany(mappedBy="proyecto")
-    @JsonManagedReference("proy-centros")
+    @JsonIgnoreProperties("proyecto")
     private List<Centros> centros;
 
     @OneToMany(mappedBy="proyecto")
-    @JsonManagedReference("proy-subv")
+    @JsonIgnoreProperties("proyecto")
     private List<Subvencion> subvenciones;
 
+    @OneToMany(mappedBy="proyecto")
+    @JsonIgnoreProperties("proyecto")
+    private List<Actividad> actividades;
 
 
+    //GETTERS SETTERS
+
+    public void setCentros(List<Centros> centros) {
+        this.centros = centros;
+    }
+
+    public List<Actividad> getActividades() {
+        return actividades;
+    }
+
+    public void setActividades(List<Actividad> actividades) {
+        this.actividades = actividades;
+    }
+
+    public void setSubvenciones(List<Subvencion> subvenciones) {
+        this.subvenciones = subvenciones;
+    }
 
     public List<Subvencion> getSubvenciones() {
         return subvenciones;
@@ -98,15 +114,17 @@ public class Proyecto {
         return departamento;
     }
 
-
-
-    public Proyecto (String id_proyecto,String nombre, String objetivo, Date fecha_ini, Date fecha_fin, Departamento departamento) {
+    //CONSTRUCTORES
+    public Proyecto(String id_proyecto, String nombre, Date fecha_ini, Date fecha_fin, String objetivo, Departamento departamento, List<Centros> centros, List<Subvencion> subvenciones, List<Actividad> actividades) {
         this.id_proyecto = id_proyecto;
         this.nombre = nombre;
-        this.objetivo = objetivo;
         this.fecha_ini = fecha_ini;
         this.fecha_fin = fecha_fin;
+        this.objetivo = objetivo;
         this.departamento = departamento;
+        this.centros = centros;
+        this.subvenciones = subvenciones;
+        this.actividades = actividades;
     }
 
     public Proyecto ( ) { }

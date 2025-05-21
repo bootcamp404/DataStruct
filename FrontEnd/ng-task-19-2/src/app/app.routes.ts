@@ -2,14 +2,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainviewComponent } from './mainview/mainview.component';
 import { privateGuard, publicGuard } from './core/auth.guard';
-import { PerfilComponent } from './perfil/perfil.component'; 
+import { PerfilComponent } from './perfil/perfil.component';
 import { FormulariosComponent } from './componentes/formularios/formularios.component';
-import { InformesComponent } from './informes/informes.component';
-import { ResumenComponent } from './informes/resumen.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
-import { DepartamentosComponent } from './mainview/departamentos/departamentos.component';
-import { ProyectoComponent } from './componentes/formularios/proyecto/proyecto.component';
 import { PlantillasComponent } from './componentes/plantillas/plantillas.component';
+import { AdminPanelComponent } from './panel-admin/panel-admin.component';
+import { InicioComponent } from './mainview/inicio/inicio.component';
+
 
 export const routes: Routes = [
   {
@@ -23,8 +22,8 @@ export const routes: Routes = [
     canActivate: [privateGuard()],
   },
   {
-    path: 'test',
-    component: ProyectoComponent,
+    path: '',
+    component: InicioComponent,
   },
   {
     path: 'plantillas',
@@ -53,6 +52,10 @@ export const routes: Routes = [
     component: DashboardComponent
   },
   {
+    path: 'panel-admin',
+    component: AdminPanelComponent
+  },
+  {
     path: '**',
     redirectTo: '/auth/sign-in'
   }
@@ -62,4 +65,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { } 
+export class AppRoutingModule { }
