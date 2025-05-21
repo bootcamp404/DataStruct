@@ -28,6 +28,10 @@ public class Empresa {
     @JsonIgnoreProperties({"empresas"})
     private SectorEmpresa sector;
 
+    @ManyToOne
+    @JoinColumn(name = "id_centro")
+    private Centros centro;
+
     @OneToMany(mappedBy = "empresa")
     @JsonIgnoreProperties({"empresa"})
     private List<Kpi> kpis;

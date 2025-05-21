@@ -29,6 +29,10 @@ public class ResumenMemoriaDTO {
     private Integer inscripcionesOfertas;
     private Integer perceptoresPrestacion;
     private Integer colectivosVulnerables;
+    private BigDecimal ayudasLaboratorio;
+    private int personasLaboratorio;
+    private String descripcionLaboratorio;
+    private List<String> objetivosLaboratorio;
 
     // Datos perfil demandantes
     private Integer totalNuevosDemandantes;
@@ -43,6 +47,15 @@ public class ResumenMemoriaDTO {
     private Integer ofertasEmpleo;
     private Integer puestosTrabajo;
     private BigDecimal importeAyudasEmpresas;
+    private int areasIndustrialesExistentes;
+    private int areasIndustrialesNuevas;
+    private long superficieIndustrialTotal;
+    private int empleosEnIndustrial;
+    private BigDecimal facturacionIndustrial;
+    private BigDecimal ayudasObservatorio;
+    private Integer personasObservatorio;
+    private String descripcionObservatorio;
+    private List<String> objetivosObservatorio;
 
     private int empresasCreadas;
 
@@ -51,6 +64,86 @@ public class ResumenMemoriaDTO {
     private List<ResumenDepartamentoDTO> resumenDepartamentos;
 
     // Getters y Setters
+
+    public BigDecimal getAyudasLaboratorio() {
+        return ayudasLaboratorio;
+    }
+
+    public void setAyudasLaboratorio(BigDecimal ayudasLaboratorio) {
+        this.ayudasLaboratorio = ayudasLaboratorio;
+    }
+
+    public int getPersonasLaboratorio() {
+        return personasLaboratorio;
+    }
+
+    public void setPersonasLaboratorio(int personasLaboratorio) {
+        this.personasLaboratorio = personasLaboratorio;
+    }
+
+    public String getDescripcionLaboratorio() {
+        return descripcionLaboratorio;
+    }
+
+    public void setDescripcionLaboratorio(String descripcionLaboratorio) {
+        this.descripcionLaboratorio = descripcionLaboratorio;
+    }
+
+    public List<String> getObjetivosLaboratorio() {
+        return objetivosLaboratorio;
+    }
+
+    public void setObjetivosLaboratorio(List<String> objetivosLaboratorio) {
+        this.objetivosLaboratorio = objetivosLaboratorio;
+    }
+
+    public BigDecimal getAyudasObservatorio() { return ayudasObservatorio; }
+    public void setAyudasObservatorio(BigDecimal v) { this.ayudasObservatorio = v; }
+    public Integer getPersonasObservatorio() { return personasObservatorio; }
+    public void setPersonasObservatorio(Integer v) { this.personasObservatorio = v; }
+    public String getDescripcionObservatorio() { return descripcionObservatorio; }
+    public void setDescripcionObservatorio(String v) { this.descripcionObservatorio = v; }
+    public List<String> getObjetivosObservatorio() { return objetivosObservatorio; }
+    public void setObjetivosObservatorio(List<String> v) { this.objetivosObservatorio = v; }
+    public BigDecimal getFacturacionIndustrial() {
+        return facturacionIndustrial;
+    }
+
+    public int getAreasIndustrialesExistentes() {
+        return areasIndustrialesExistentes;
+    }
+
+    public int getAreasIndustrialesNuevas() {
+        return areasIndustrialesNuevas;
+    }
+
+    public int getEmpleosEnIndustrial() {
+        return empleosEnIndustrial;
+    }
+
+    public long getSuperficieIndustrialTotal() {
+        return superficieIndustrialTotal;
+    }
+
+    public void setAreasIndustrialesExistentes(int areasIndustrialesExistentes) {
+        this.areasIndustrialesExistentes = areasIndustrialesExistentes;
+    }
+
+    public void setEmpleosEnIndustrial(int empleosEnIndustrial) {
+        this.empleosEnIndustrial = empleosEnIndustrial;
+    }
+
+    public void setFacturacionIndustrial(BigDecimal facturacionIndustrial) {
+        this.facturacionIndustrial = facturacionIndustrial;
+    }
+
+    public void setAreasIndustrialesNuevas(int areasIndustrialesNuevas) {
+        this.areasIndustrialesNuevas = areasIndustrialesNuevas;
+    }
+
+    public void setSuperficieIndustrialTotal(long superficieIndustrialTotal) {
+        this.superficieIndustrialTotal = superficieIndustrialTotal;
+    }
 
     public int getEmpresasCreadas() {
         return empresasCreadas;

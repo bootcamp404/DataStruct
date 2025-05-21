@@ -24,13 +24,25 @@ public interface IndicadorAnualRepository extends JpaRepository<IndicadorAnual, 
     @Query("SELECT SUM(i.horasFormacion) FROM IndicadorAnual i WHERE i.anio = :anio")
     BigDecimal sumHorasFormacionByAnio(@Param("anio") int anio);
 
+    @Query("""
+  SELECT COALESCE(SUM(i.ayudasObservatorio), 0)
+  FROM IndicadorAnual i
+  WHERE i.anio = :anio
+""")
+    BigDecimal sumAyudasObservatorioByAnio(@Param("anio") int anio);
+
+
     @Query("SELECT SUM(i.ofertasEmpleo) FROM IndicadorAnual i WHERE i.anio = :anio")
     Integer sumOfertasEmpleoByAnio(@Param("anio") int anio);
 
     @Query("SELECT SUM(i.puestosTrabajo) FROM IndicadorAnual i WHERE i.anio = :anio")
     Integer sumPuestosTrabajoByAnio(@Param("anio") int anio);
 
+
     @Query("SELECT SUM(i.ayudasEmpresas) FROM IndicadorAnual i WHERE i.anio = :anio")
     BigDecimal sumAyudasEmpresasByAnio(@Param("anio") int anio);
+
+
+
 }
 
