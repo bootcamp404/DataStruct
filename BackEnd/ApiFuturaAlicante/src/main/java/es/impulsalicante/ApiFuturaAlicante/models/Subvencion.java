@@ -1,10 +1,7 @@
 package es.impulsalicante.ApiFuturaAlicante.models;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -28,12 +25,12 @@ public class Subvencion {
 
     @ManyToOne
     @JoinColumn(name="id_proyecto")
-    @JsonBackReference("subv-proy")
+    @JsonIgnoreProperties({"subvenciones", "centros", "actividades"})
     private Proyecto proyecto;
 
     @ManyToOne
     @JoinColumn(name = "id_estado_sub", nullable = false)
-    @JsonBackReference("subv-est_sub")
+    @JsonIgnoreProperties({"subvenciones"})
     private EstadoSubvencion estadoSubvencion;
 
     //GETTERS SETTERS

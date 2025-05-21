@@ -21,8 +21,7 @@ public class Kpi {
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_empresa", nullable = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JsonBackReference("kpis-empr")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "kpis"})
     private Empresa empresa;
 
 

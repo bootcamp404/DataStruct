@@ -25,19 +25,19 @@ public class Proyecto {
 
     @ManyToOne
     @JoinColumn(name="id_departamento")
-    @JsonBackReference("proy-depa")
+    @JsonIgnoreProperties({"contratos", "centros", "proyectos", "actividades", "campanyasMarketing", "empresas", "convenios"})
     private Departamento departamento;
 
     @OneToMany(mappedBy="proyecto")
-    @JsonManagedReference("cent-proy")
+    @JsonIgnoreProperties("proyecto")
     private List<Centros> centros;
 
     @OneToMany(mappedBy="proyecto")
-    @JsonManagedReference("subv-proy")
+    @JsonIgnoreProperties("proyecto")
     private List<Subvencion> subvenciones;
 
     @OneToMany(mappedBy="proyecto")
-    @JsonManagedReference("acti-proy")
+    @JsonIgnoreProperties("proyecto")
     private List<Actividad> actividades;
 
 

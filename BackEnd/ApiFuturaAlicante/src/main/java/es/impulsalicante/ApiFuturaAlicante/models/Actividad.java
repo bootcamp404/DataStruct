@@ -2,9 +2,7 @@ package es.impulsalicante.ApiFuturaAlicante.models;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-
 import java.util.Date;
-import java.util.List;
 
 
 @Entity
@@ -29,12 +27,12 @@ public class Actividad {
 
     @ManyToOne
     @JoinColumn(name = "id_departamento", nullable = false)
-    @JsonBackReference("acti-depa")
+    @JsonIgnoreProperties({"contratos", "centros", "proyectos", "actividades", "campanyasMarketing", "empresas", "convenios"})
     private Departamento departamento;
 
     @ManyToOne
     @JoinColumn(name = "id_proyecto")
-    @JsonBackReference("acti-proy")
+    @JsonIgnoreProperties({"actividades", "subvenciones", "centros", "departamento"})
     private Proyecto proyecto;
 
 

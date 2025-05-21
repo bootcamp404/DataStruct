@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContentComponent } from './content/content.component';
-import { DepartamentosComponent } from './departamentos/departamentos.component';
 import { FooterComponent } from './footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +17,6 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     CommonModule, 
     ReactiveFormsModule, 
-    DepartamentosComponent, 
     FeaturesComponent, 
     FooterComponent, 
     ContentComponent,
