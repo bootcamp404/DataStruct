@@ -142,7 +142,15 @@
 
             // Contenido general
             html.append("<div style='page-break-after: always;'>")
-                    .append("<h2 style='color:#004080;'>Agencia Local en Cifras</h2>")
+
+                    .append(" <div style='display: flex; align-items: center; margin-bottom: 20px;'>\n" +
+                            "                                  <div style='background-color: #d4d9e1; color: #000;\n" +
+                            "                                              padding: 6px 12px; margin-bottom: 20px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>1.1</div>\n" +
+                            "                                  <h2 style='color: #004080; margin: 0;'>AGENCIA LOCAL EN CIFRAS</h2>\n" +
+                            "                                </div>\n" +
+                            "\n" +
+                            "                                <!-- Línea separadora -->\n" +
+                            "                                <hr style='border: none; border-top: 2px solid #004080; margin-bottom: 30px;'/>")
                     .append("<table style='width: 100%; font-family: Arial, sans-serif; font-size: 14px; border-collapse: collapse;'>")
 
                     // Fila: Total y nuevos usuarios
@@ -195,73 +203,85 @@
             //1.2
             html.append("<div style='page-break-before: always;'>")
                     .append("""
-    <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-      <div style='margin-bottom: 20px;'>
-        <div style='display: flex; align-items: center;'>
-          <div style='background-color: #004080; color: white; padding: 5px 10px; font-weight: bold; font-size: 14px; border-radius: 4px; margin-right: 10px;'>1.2</div>
-          <h2 style='color: #004080; margin: 0;'>QUÉ HACEMOS</h2>
-        </div>
-        <p style='margin-top: 15px; line-height: 1.6; font-size: 14px;'>
-          Desde su creación, en el año 2000, la <strong>Agencia Local de Desarrollo Económico y Social</strong> es la entidad gestora de las actuaciones y estrategias definidas en el
-          <strong>Pacto Territorial por el Empleo de la ciudad de Alicante</strong> y la encargada de poner en marcha políticas que impulsan la creación de empleo y el desarrollo socioeconómico del municipio.
-        </p>
-        <p style='line-height: 1.6; font-size: 14px;'>
-          Todas las actuaciones realizadas van encaminadas al desarrollo de las <strong>cuatro líneas estratégicas</strong> del Pacto Territorial:
-        </p>
-      </div>
-    
-      <h3 style='color: #d4d9e1; font-size: 32px; margin-bottom: 10px;'>líneas estratégicas</h3>
-    
-      <div style='display: flex; flex-wrap: wrap; gap: 10px; '>
-        <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
-          <p style='font-weight: bold; color: #004080;'>1</p>
-          <p style='font-weight: bold;'>Apoyo activo al empleo con especial atención a colectivos vulnerables</p>
-          <ul style='margin-top: 5px; font-size: 13px;'>
-            <li>Orientación laboral</li>
-            <li>Formación para el empleo</li>
-            <li>Intermediación laboral</li>
-          </ul>
-        </div>
-        <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
-          <p style='font-weight: bold; color: #004080;'>2</p>
-          <p style='font-weight: bold;'>Dinamización y diversificación de la economía del territorio</p>
-          <ul style='margin-top: 5px; font-size: 13px;'>
-            <li>Modernización del tejido productivo</li>
-            <li>Promoción del emprendimiento</li>
-            <li>Atracción de inversiones (ALIA)</li>
-          </ul>
-        </div>
-        <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
-          <p style='font-weight: bold; color: #004080;'>3</p>
-          <p style='font-weight: bold;'>Transición del modelo productivo hacia la nueva economía</p>
-          <ul style='margin-top: 5px; font-size: 13px;'>
-            <li>Desarrollo tecnológico</li>
-            <li>Transformación digital</li>
-            <li>Innovación y emprendimiento – Alicante Futura</li>
-          </ul>
-        </div>
-        <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
-          <p style='font-weight: bold; color: #004080;'>4</p>
-          <p style='font-weight: bold;'>Impulsar la colaboración público-privada y la planificación estratégica</p>
-          <ul style='margin-top: 5px; font-size: 13px;'>
-            <li>Entre administraciones públicas</li>
-            <li>Con entidades públicas y privadas</li>
-            <li>Mejora de los servicios al ciudadano</li>
-          </ul>
-        </div>
-      </div>
-    
-      <h3 style='color: #d4d9e1; font-size: 32px; margin-top: 30px;'>5 áreas</h3>
-      <div style='display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;'>
-        <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Empleo y Formación</div>
-        <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Promoción Económica</div>
-        <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento Jurídico Administrativo</div>
-        <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento Económico Financiero</div>
-        <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Marketing y Comunicación</div>
-      </div>
-    </div>
-    """)
+                              <div style='font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+                                
+                                <!-- Encabezado 1.2 -->
+                                <div style='display: flex; align-items: center; margin-bottom: 20px;'>
+                                  <div style='background-color: #d4d9e1; color: #000; margin-bottom: 20px;
+                                              padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>1.2</div>
+                                  <h2 style='color: #004080; margin: 0;'>QUÉ HACEMOS</h2>
+                                </div>
 
+                                <!-- Línea separadora -->
+                                <hr style='border: none; border-top: 2px solid #004080; margin-bottom: 30px;'/>
+
+                                <!-- Párrafos de texto -->
+                                <p style='margin-top: 15px; line-height: 1.6; font-size: 14px;'>
+                                  Desde su creación, en el año 2000, la <strong>Agencia Local de Desarrollo Económico y Social</strong>
+                                  es la entidad gestora de las actuaciones y estrategias definidas en el
+                                  <strong>Pacto Territorial por el Empleo de la ciudad de Alicante</strong> y la encargada de poner
+                                  en marcha políticas que impulsan la creación de empleo y el desarrollo socioeconómico del municipio.
+                                </p>
+                                <p style='line-height: 1.6; font-size: 14px;'>
+                                  Todas las actuaciones realizadas van encaminadas al desarrollo de las
+                                  <strong>cuatro líneas estratégicas</strong> del Pacto Territorial:
+                                </p>
+
+                                <!-- Líneas estratégicas -->
+                                <h3 style='color: #d4d9e1; font-size: 32px; margin: 30px 0 10px;'>LÍNEAS ESTRATÉGICAS</h3>
+                                <div style='display: flex; flex-wrap: wrap; gap: 10px;'>
+                                  <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+                                            <p style='font-weight: bold; color: #004080;'>1</p>
+                                            <p style='font-weight: bold;'>Apoyo activo al empleo con especial atención a colectivos vulnerables</p>
+                                            <ul style='margin-top: 5px; font-size: 13px;'>
+                                              <li>Orientación laboral</li>
+                                              <li>Formación para el empleo</li>
+                                              <li>Intermediación laboral</li>
+                                            </ul>
+                                          </div>
+                                          <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+                                            <p style='font-weight: bold; color: #004080;'>2</p>
+                                            <p style='font-weight: bold;'>Dinamización y diversificación de la economía del territorio</p>
+                                            <ul style='margin-top: 5px; font-size: 13px;'>
+                                              <li>Modernización del tejido productivo</li>
+                                              <li>Promoción del emprendimiento</li>
+                                              <li>Atracción de inversiones (ALIA)</li>
+                                            </ul>
+                                          </div>
+                                          <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+                                            <p style='font-weight: bold; color: #004080;'>3</p>
+                                            <p style='font-weight: bold;'>Transición del modelo productivo hacia la nueva economía</p>
+                                            <ul style='margin-top: 5px; font-size: 13px;'>
+                                              <li>Desarrollo tecnológico</li>
+                                              <li>Transformación digital</li>
+                                              <li>Innovación y emprendimiento – Alicante Futura</li>
+                                            </ul>
+                                          </div>
+                                          <div style='flex: 1 1 47%; border: 1px solid #ccc; padding: 15px; min-width: 200px;'>
+                                            <p style='font-weight: bold; color: #004080;'>4</p>
+                                            <p style='font-weight: bold;'>Impulsar la colaboración público-privada y la planificación estratégica</p>
+                                            <ul style='margin-top: 5px; font-size: 13px;'>
+                                              <li>Entre administraciones públicas</li>
+                                              <li>Con entidades públicas y privadas</li>
+                                              <li>Mejora de los servicios al ciudadano</li>
+                                            </ul>
+                                          </div>
+                                  
+                                </div>
+
+                                <!-- Áreas -->
+                                <h3 style='color: #d4d9e1; font-size: 32px; margin: 30px 0 10px;'>5 ÁREAS</h3>
+                                <div style='display: flex; flex-wrap: wrap; gap: 10px;'>
+                                   <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Empleo y Formación</div>
+                                                                  <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Promoción Económica</div>
+                                                                  <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento Jurídico Administrativo</div>
+                                                                  <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento Económico Financiero</div>
+                                                                  <div style='background-color: #004080; color: white; padding: 10px; text-align: center; flex: 1;'>Departamento de Marketing y Comunicación</div>
+                                                          
+                                </div>
+
+                              </div>  <!-- cierra padding -->
+                            """)
                     .append("</div>");
 
             // Tabla de departamentos
@@ -295,13 +315,21 @@
                             .append("</tr>");
                 }
             }
+            html.append("</tbody></table></div>");
 
             //1.3
             html.append("""
                     <div style="page-break-before: always; font-family: Arial, sans-serif; background-color: #0056A0; color: white; padding: 40px;">
-                              <div style="text-align: center; margin-bottom: 40px;">
-                                <div style="display: inline-block; background-color: #003366; padding: 5px 10px; border-radius: 5px; font-weight: bold;">1.3</div>
-                                <h2 style="display: inline-block; margin: 0 10px; font-size: 28px;">CÓMO ESTAMOS <span style="color: #aac4e6;">ORGANIZADOS</span></h2>
+                              <div style="margin-bottom: 40px;">
+                                 <!-- Encabezado 1.3 -->
+                                <div style='display: flex; align-items: center; margin-bottom: 20px;'>
+                                  <div style='background-color: #d4d9e1; color: #000;
+                                              padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; margin-bottom: 20px; font-size: 12px;'>1.3</div>
+                                  <h2 style='color: #004080; margin: 0;'>CÓMO ESTAMOS ORGANIZADOS</h2>
+                                </div>
+
+                                <!-- Línea separadora -->
+                                <hr style='border: none; border-top: 2px solid #004080; margin-bottom: 30px;'/>
                               </div>
                             
                               <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
@@ -399,6 +427,9 @@
                     "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
             ));
 
+
+            //2.1
+
             html.append("""
     <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
       <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.1</div>
@@ -454,71 +485,75 @@
 
     //2.3
             String template = """
-    <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
-        <h2 style='color: #008080; text-align: center;'>2.3 SERVICIOS PARA EL EMPLEO</h2>
-        <h3 style='background-color: #000; color: white; padding: 10px 15px; margin-top: 30px;'>2.3.1 Orientación e intermediación laboral</h3>
-    
-        <div style='text-align: center; border: 1px solid #ccc; padding: 20px; margin-top: 20px;'>
-            <h4 style='margin-bottom: 10px;'>PORTALEMP</h4>
-            <p style='font-size: 18px; background-color: #e6f4f1; display: inline-block; padding: 8px 20px; border-radius: 8px; color: #006666; font-weight: bold;'>
-                impulsalicante.portalemp.com
-            </p>
-        </div>
-    
-        <div style='display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;'>
-            <div style='flex: 1; min-width: 240px; background-color: #009999; color: white; padding: 20px; border-radius: 8px;'>
-                <strong>Demandantes de empleo registrados:</strong>
-                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
-            </div>
-            <div style='flex: 1; min-width: 240px; background-color: #009999; color: white; padding: 20px; border-radius: 8px;'>
-                <strong>Personas atendidas:</strong>
-                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
-            </div>
-            <div style='flex: 1; min-width: 240px; background-color: #f0f9f9; padding: 20px; border-radius: 8px;'>
-                <strong>Ofertas de empleo:</strong>
-                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
-            </div>
-            <div style='flex: 1; min-width: 240px; background-color: #f0f9f9; padding: 20px; border-radius: 8px;'>
-                <strong>Inscripciones y derivaciones a ofertas:</strong>
-                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
-            </div>
-            <div style='flex: 1; min-width: 240px; background-color: #eaf9ff; padding: 20px; border-radius: 8px;'>
-                <strong>Perceptores de prestaciones:</strong>
-                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
-            </div>
-            <div style='flex: 1; min-width: 240px; background-color: #eaf9ff; padding: 20px; border-radius: 8px;'>
-                <strong>Pertenecientes a colectivos vulnerables:</strong>
-                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
-            </div>
-        </div>
-    
-        <h4 style='margin-top: 40px;'>Perfil Demandantes 2023</h4>
-        <p style='margin-bottom: 20px;'>Mujer mayor de 45 años, parada de larga duración</p>
-    
-        <div style='display: flex; flex-wrap: wrap; gap: 30px;'>
-            <div style='flex: 1; min-width: 200px;'>
-                <strong>Total nuevos demandantes:</strong>
-                <div style='font-size: 22px; margin-top: 8px;'>%s</div>
-            </div>
-            <div style='flex: 1; min-width: 200px;'>
-                <strong>Mujeres:</strong>
-                <ul style='margin-top: 8px;'>
-                    <li>Mayores de 45: %s</li>
-                    <li>Entre 30 y 45: %s</li>
-                    <li>Menores de 30: %s</li>
-                </ul>
-            </div>
-            <div style='flex: 1; min-width: 200px;'>
-                <strong>Hombres:</strong>
-                <ul style='margin-top: 8px;'>
-                    <li>Mayores de 45: %s</li>
-                    <li>Entre 30 y 45: %s</li>
-                    <li>Menores de 30: %s</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    """;
+                    <div style=' font-family: Arial, sans-serif; padding: 30px;'>
+                          <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.3</div>
+                      <h2 style='color: #00a99d; margin: 15px 0 10px;'>SERVICIOS PARA EL EMPLEO</h2>
+                      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                      
+                      
+                        <h3 style='background-color: #006666; color: white; padding: 10px 15px; margin-top: 30px;'>2.3.1 Orientación e intermediación laboral</h3>
+                        
+                        <div style='text-align: center; border: 1px solid #ccc; padding: 20px; margin-top: 20px;'>
+                            <h4 style='margin-bottom: 10px;'>PORTALEMP</h4>
+                            <p style='font-size: 18px; background-color: #e6f4f1; display: inline-block; padding: 8px 20px; border-radius: 8px; color: #006666; font-weight: bold;'>
+                                impulsalicante.portalemp.com
+                            </p>
+                        </div>
+                        
+                        <div style='display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;'>
+                            <div style='flex: 1; min-width: 240px; background-color: #009999; color: white; padding: 20px; border-radius: 8px;'>
+                                <strong>Demandantes de empleo registrados:</strong>
+                                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
+                            </div>
+                            <div style='flex: 1; min-width: 240px; background-color: #009999; color: white; padding: 20px; border-radius: 8px;'>
+                                <strong>Personas atendidas:</strong>
+                                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
+                            </div>
+                            <div style='flex: 1; min-width: 240px; background-color: #f0f9f9; padding: 20px; border-radius: 8px;'>
+                                <strong>Ofertas de empleo:</strong>
+                                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
+                            </div>
+                            <div style='flex: 1; min-width: 240px; background-color: #f0f9f9; padding: 20px; border-radius: 8px;'>
+                                <strong>Inscripciones y derivaciones a ofertas:</strong>
+                                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
+                            </div>
+                            <div style='flex: 1; min-width: 240px; background-color: #eaf9ff; padding: 20px; border-radius: 8px;'>
+                                <strong>Perceptores de prestaciones:</strong>
+                                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
+                            </div>
+                            <div style='flex: 1; min-width: 240px; background-color: #eaf9ff; padding: 20px; border-radius: 8px;'>
+                                <strong>Pertenecientes a colectivos vulnerables:</strong>
+                                <div style='font-size: 24px; margin-top: 10px;'>%s</div>
+                            </div>
+                        </div>
+                        
+                        <h4 style='margin-top: 40px;'>Perfil Demandantes 2023</h4>
+                        <p style='margin-bottom: 20px;'>Mujer mayor de 45 años, parada de larga duración</p>
+                        
+                        <div style='display: flex; flex-wrap: wrap; gap: 30px;'>
+                            <div style='flex: 1; min-width: 200px;'>
+                                <strong>Total nuevos demandantes:</strong>
+                                <div style='font-size: 22px; margin-top: 8px;'>%s</div>
+                            </div>
+                            <div style='flex: 1; min-width: 200px;'>
+                                <strong>Mujeres:</strong>
+                                <ul style='margin-top: 8px;'>
+                                    <li>Mayores de 45: %s</li>
+                                    <li>Entre 30 y 45: %s</li>
+                                    <li>Menores de 30: %s</li>
+                                </ul>
+                            </div>
+                            <div style='flex: 1; min-width: 200px;'>
+                                <strong>Hombres:</strong>
+                                <ul style='margin-top: 8px;'>
+                                    <li>Mayores de 45: %s</li>
+                                    <li>Entre 30 y 45: %s</li>
+                                    <li>Menores de 30: %s</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    """;
 
 
             html.append(String.format(template,
@@ -756,7 +791,6 @@
             //6.1
             html.append(generarSeccion6());
 
-            html.append("</tbody></table></div>");
             html.append("</body></html>");
 
             return html.toString();
@@ -793,7 +827,9 @@
             StringBuilder html = new StringBuilder();
             html.append("""
             <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-                <h2 style='color: #008080; text-align: center;'>2.5 PROGRAMAS Y PROYECTOS</h2>
+               <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.5</div>
+                      <h2 style='color: #00a99d; margin: 15px 0 10px;'>PROGRAMAS Y PROYECTOS</h2>
+                      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
         """);
 
             for (Proyecto proyecto : proyectos) {
@@ -913,10 +949,12 @@
 
             StringBuilder html = new StringBuilder();
             html.append("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-            <h2 style='color:#008080;'>2.6.1 SUBVENCIONES A ENTIDADES SIN ÁNIMO DE LUCRO</h2>
-            <p style='font-size:14px;'>Subvenciones por fomento de inserción laboral, innovación social y emprendimiento.</p>
-        """);
+                    <div style='page-break-before: always; font-family: Arial, sans-serif;'>
+                         <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
+                                  <h2 style='color: #00a99d; margin: 15px 0 10px;'>SUBVENCIONES A ENTIDADES</h2>
+                                  <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                        <p style='font-size:14px;'>Subvenciones por fomento de inserción laboral, innovación social y emprendimiento.</p>
+                    """);
 
             for (String modalidad : List.of("A", "B", "C")) {
                 List<Subvencion> lista = porModalidad.getOrDefault(modalidad, Collections.emptyList());
@@ -1053,7 +1091,7 @@
             <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
               <div style='display: flex; align-items: center; gap: 10px;'>
                 <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold;
-                            border-radius: 4px; font-size: 12px;'>3.5</div>
+                            border-radius: 4px; font-size: 12px; '>3.5</div>
                 <h2 style='color: #f15a24; margin: 0; font-size: 20px;'>
                   COLABORACIÓN EN EVENTOS DE EMPRENDIMIENTO Y PROMOCIÓN EMPRESARIAL
                 </h2>
@@ -1113,10 +1151,15 @@
 
             StringBuilder html = new StringBuilder();
             html.append("""
-            <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-              <h2 style='color: #004080; text-align: center;'>2.2 Nuestros Centros</h2>
-              <div style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-top: 30px;'>
-        """);
+                        <div style=' font-family: Arial, sans-serif;'>
+                                <div style=' font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+                                                                               <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.2</div>
+                                                                               <h2 style='color: #00a99d; margin: 15px 0 10px;'>NUESTROS CENTROS</h2>
+                                                                               <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                                                                         
+                                                                         
+                                                                                       <div style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-top: 30px;' />
+                    """);
 
             for (CentroDTO centro : centros) {
                 html.append(String.format("""
@@ -1247,7 +1290,11 @@
             StringBuilder html = new StringBuilder();
             html.append("""
             <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
-                <h2 style='color: #008080; text-align: center;'>2.4 ACTIVIDADES DE FORMACIÓN</h2>
+                    <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.4</div>
+                      <h2 style='color: #00a99d; margin: 15px 0 10px;'>ACTIVIDADES DE FORMACIÓN</h2>
+                      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                      
+                      
                 <div style='display: flex; flex-wrap: wrap; gap: 30px; margin-top: 30px;'>
         """);
 
@@ -2004,7 +2051,14 @@
             StringBuilder html = new StringBuilder();
             html.append("""
             <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-              <h2 style='color: #004080;'>1.4 DÓNDE ESTAMOS</h2>
+                                <div style='display: flex; align-items: center; margin-bottom: 20px;'>
+                                  <div style='background-color: #d4d9e1; color: #000; margin-bottom: 20px;
+                                              padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>1.4</div>
+                                  <h2 style='color: #004080; margin: 0;'>DÓNDE ESTAMOS</h2>
+                                </div>
+
+                                <!-- Línea separadora -->
+                                <hr style='border: none; border-top: 2px solid #004080; margin-bottom: 30px;'/>
               <div style='display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;'>
         """);
 
