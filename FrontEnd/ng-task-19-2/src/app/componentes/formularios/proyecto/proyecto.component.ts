@@ -122,7 +122,6 @@ export class ProyectoComponent implements OnInit {
     this.mostrarModalEdicion = true;
   }
 
-
   cerrarModalEdicion() {
     this.mostrarModalEdicion = false;
     this.selectedProyecto = null;
@@ -131,6 +130,7 @@ export class ProyectoComponent implements OnInit {
 
   async guardarEdicion() {
     if (!this.selectedProyecto) return;
+    console.log("Funciona");
 
     this.editando = true;
     this.error = false;
@@ -182,5 +182,4 @@ export class ProyectoComponent implements OnInit {
   toggleMostrarTodos() {
     this.mostrarTodos = !this.mostrarTodos;
   }
-
 }
