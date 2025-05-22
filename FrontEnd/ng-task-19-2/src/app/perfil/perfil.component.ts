@@ -38,9 +38,12 @@ export class PerfilComponent implements OnInit {
   cargando = true;
   errorMsg = '';
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private translate: TranslateService) { }
 
   ngOnInit() {
+    const lang = localStorage.getItem('idioma') || 'es'; // ✅ Recuperar idioma guardado
+    this.translate.use(lang);
+
     this.cargarDatosUsuario();
   }
 
