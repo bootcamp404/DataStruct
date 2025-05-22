@@ -2,6 +2,7 @@
   "FEATURES": {
     "TITLE": "Características Principales",
     "DESCRIPTION": "Descubre todas las herramientas que tenemos para simplificar la gestión de tus formularios empresariales.",
+    "SUBTITLE": "Lo que ofrecemos",
     "ITEMS": {
       "CUSTOM_FORMS": {
         "TITLE": "Formularios Personalizados",
@@ -68,7 +69,7 @@
     "PANEL-ADMINISTRATIVO":{
       "PANEL": "Panel Administrativo",
       "LISTADEPARTAMENTOS": "Lista de Departamentos",
-      "DOCUMENTOS": "DOCUMENTOS",
+      "DOCUMENTOS": "Documentos",
       "CREAR": "Crear +",
       "CREAR-FUNCIONES": {
         "DEPARTAMENTO": "Departamento",

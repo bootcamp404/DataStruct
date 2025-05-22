@@ -32,7 +32,7 @@ export const publicGuard = (): CanActivateFn => {
       take(1), // Muy importante
       map((estado) => {
         if (estado) {
-          router.navigateByUrl('/mainview');
+          router.navigateByUrl('/inicio');
           return false;
         }
         return true;

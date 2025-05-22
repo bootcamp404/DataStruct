@@ -16,6 +16,7 @@ export class AppComponent {
   constructor(private translate: TranslateService) {
     // Lee el idioma guardado en localStorage, o usa 'es' (Castellano)
     const savedLang = localStorage.getItem('lang') || 'es';
+    this.translate.setDefaultLang('es');
     this.translate.use(savedLang);
   }
 }
