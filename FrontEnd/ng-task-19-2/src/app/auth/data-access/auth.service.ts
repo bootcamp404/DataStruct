@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
+import { firstValueFrom, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
@@ -117,10 +117,15 @@ export class AuthService {
 
 
   // Actualizar datos de usuario por email
-  actualizarUsuario(email: string, usuario: any): Promise<void> {
-    return firstValueFrom(
-      this._http.put<void>(`${this.apiUrl}/usuarios/${encodeURIComponent(email)}`, usuario)
-    );
+  actualizarUsuario(email: string, usuario: any): Observable<any> {
+    const headers = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json');
+
+    return this._http.put(`${this.apiUrl}/usuarios/${encodeURIComponent(email)}`, usuario, {
+      headers: headers,
+      observe: 'response'
+    });
   }
 
   // Opcional: actualizar perfil en Firebase si usas Auth de Firebase

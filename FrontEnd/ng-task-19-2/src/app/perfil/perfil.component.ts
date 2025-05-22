@@ -77,16 +77,17 @@ export class PerfilComponent implements OnInit {
   }
 
   guardarCambios() {
-  // 'usuario' ya incluye el email (campo readonly)
-  this.authService.actualizarUsuario(this.usuario.email, this.usuario)
-    .then(updated => {
-      this.mostrarFormularioEdicion = false;
-      // Recargamos datos para reflejar cambios
-      this.cargarDatosUsuario();
-    })
-    .catch(error => {
-      this.errorMsg = 'Error al guardar los cambios';
-      console.error('Error al guardar datos:', error);
-    });
+    this.authService.actualizarUsuario(this.usuario.email, this.usuario)
+      .subscribe({
+        next: (response) => {
+          this.mostrarFormularioEdicion = false;
+          this.cargarDatosUsuario();
+        },
+        error: (error) => {
+          this.errorMsg = 'Error al guardar los cambios';
+          console.error('Error al guardar datos:', error);
+        }
+      });
   }
+
 }

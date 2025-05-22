@@ -18,7 +18,10 @@ interface ProyectoConDepartamento extends Proyecto {
   selector: 'app-proyecto',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './proyecto.component.html',
-  styleUrls: ['./proyecto.component.css']
+  styleUrls: ['./proyecto.component.css'],
+  host: {
+    ngSkipHydration: 'true'
+  }
 })
 export class ProyectoComponent implements OnInit, OnDestroy {
   formularioEdicion: FormGroup;
@@ -176,8 +179,13 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         throw new Error('Error al actualizar el proyecto');
       }
     } catch (error: any) {
-      this.mensajeError = error?.message || 'Error al actualizar el proyecto';
-    } finally {
+      if (error.status === 200) {
+        this.cargarDatosIniciales();
+        this.cerrarModalEdicion();
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.mensajeError = error?.message || 'Error al actualizar el departamento';
+      }    } finally {
       this.editando = false;
     }
   }
