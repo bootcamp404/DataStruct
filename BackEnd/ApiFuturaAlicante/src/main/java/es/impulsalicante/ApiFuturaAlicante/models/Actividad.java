@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "actividad")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Actividad {
     @Id
     @Column(name = "id_actividad")
