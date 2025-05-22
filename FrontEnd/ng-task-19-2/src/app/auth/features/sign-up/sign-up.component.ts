@@ -59,6 +59,7 @@ export default class SignUpComponent {
       const { email, contrasenya } = this.form.value;
 
       if (!email || !contrasenya) return;
+      console.log(email, contrasenya)
 
       await this._authService.registrarse({email, contrasenya});
 

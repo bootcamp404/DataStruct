@@ -26,7 +26,7 @@ export class AuthService {
       return await firstValueFrom(
         this._http.post<Usuario>(`${this.apiUrl}/usuarios`, {
           email: usuario.email,
-          constrasenya: usuario.contrasenya
+          contrasenya: usuario.contrasenya
         })
       );
     } catch (error) {
