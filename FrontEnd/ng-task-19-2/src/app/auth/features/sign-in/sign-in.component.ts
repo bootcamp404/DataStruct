@@ -54,7 +54,7 @@ export default class SignInComponent {
         contrasenya
       };
 
-      await this._authService.iniciarSesión(usuario);
+      await this._authService.iniciarSesion(usuario);
 
       toast.success('Bienvenido');
       this._router.navigateByUrl('/inicio');

@@ -37,7 +37,7 @@ export class AuthService {
 
 
   // Login usando TU API
-  async iniciarSesión(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
+  async iniciarSesion(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
     const response = await firstValueFrom(
       this._http.post<Usuario>(`${this.apiUrl}/usuarios/login`, {
         email: usuario.email,
