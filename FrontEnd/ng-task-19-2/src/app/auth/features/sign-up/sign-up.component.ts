@@ -8,16 +8,9 @@ import { GoogleComponent } from '../../ui/google/google.component';
 import { FacebookComponent } from '../../ui/facebook/facebook.component';
 import { CommonModule } from '@angular/common'; 
 
-
-interface FormSignUp {
-  email: FormControl<string | null>;
-  contrasenia: FormControl<string | null>;
-  confirmarContrasenia: FormControl<string | null>;
-}
-
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('contrasenia');
-  const confirmPassword = control.get('confirmarContrasenia');
+  const password = control.get('contrasenya');
+  const confirmPassword = control.get('confirmarContrasenya');
 
   if (password && confirmPassword && password.value !== confirmPassword.value) {
     confirmPassword.setErrors({ passwordMismatch: true });
@@ -30,13 +23,13 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent, CommonModule], // Añadir CommonModule aquí
+  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent, CommonModule],
   templateUrl: './sign-up.component.html'
 })
 export default class SignUpComponent {
 
-  // Actualizar el método para incluir confirmarContrasenia
-  esRequerido(campo: 'email' | 'contrasenia' | 'confirmarContrasenia') {
+  // Actualizar el método para incluir confirmarContrasenya
+  esRequerido(campo: 'email' | 'contrasenya' | 'confirmarContrasenya') {
     return seRequiere(campo, this.form);
   }
   
@@ -45,7 +38,7 @@ export default class SignUpComponent {
   }
   
   passwordNoCoincide() {
-    const confirmPassword = this.form.get('confirmarContrasenia');
+    const confirmPassword = this.form.get('confirmarContrasenya');
     return confirmPassword?.errors?.['passwordMismatch'] && confirmPassword?.touched;
   }
   
@@ -55,22 +48,22 @@ export default class SignUpComponent {
 
   form = this._formBuilder.group({
     email: this._formBuilder.control('', [Validators.required, Validators.email]),
-    contrasenia: this._formBuilder.control('', Validators.required),
-    confirmarContrasenia: this._formBuilder.control('', Validators.required)
+    contrasenya: this._formBuilder.control('', Validators.required),
+    confirmarContrasenya: this._formBuilder.control('', Validators.required)
   }, { validators: passwordMatchValidator });
 
   async submit() {
     try {
       if(this.form.invalid) return;
 
-      const { email, contrasenia } = this.form.value;
+      const { email, contrasenya } = this.form.value;
 
-      if (!email || !contrasenia) return;
+      if (!email || !contrasenya) return;
 
-      await this._authService.registrarse({email, contrasenia});
+      await this._authService.registrarse({email, contrasenya});
 
       toast.success('Usuario creado correctamente');
-      this._router.navigateByUrl('/mainview');
+      this._router.navigateByUrl('/inicio');
     } catch (error) {
       console.log(this.form.value.email);
       toast.error('Ha ocurrido un error.');
@@ -81,7 +74,7 @@ export default class SignUpComponent {
     try {
       await this._authService.iniciarSesionGoogle();
       toast.success('Bienvenido.');
-      this._router.navigateByUrl('/mainview');
+      this._router.navigateByUrl('/inicio');
     } catch (error) {
       toast.error('Ha ocurrido un error.');
     }
@@ -91,7 +84,7 @@ export default class SignUpComponent {
     try {
       await this._authService.iniciarSesionFacebook();
       toast.success('Bienvenido.');
-      this._router.navigateByUrl('/mainview');
+      this._router.navigateByUrl('/inicio');
     } catch (error) {
       toast.error('Ha ocurrido un error.');
     }

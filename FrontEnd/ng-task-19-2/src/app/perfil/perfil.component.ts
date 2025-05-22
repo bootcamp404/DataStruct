@@ -4,16 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-
-interface Usuario {
-  nombre: string;
-  apellidos: string;
-  // dni: string;
-  email: string;
-  telefono: string;
-//   departamento?: string;
-//   cargo?: string;
- }
+import { Usuario } from '../modelos/usuario';
 
 @Component({
   selector: 'app-perfil',
@@ -26,9 +17,9 @@ export class PerfilComponent implements OnInit {
   usuario: Usuario = {
     nombre: '',
     apellidos: '',
-    // dni: '',
     email: '',
     telefono: '',
+    contrasenya: '',
     // departamento: '',
     // cargo: ''
   };
@@ -49,7 +40,7 @@ export class PerfilComponent implements OnInit {
     this.authService.getCurrentUser().then(user => {
       this.usuarioActual = user;
       this.cargando = false;
-            console.log('Usuario recibido:', user);
+      console.log('Usuario recibido:', user);
     }).catch(error => {
       this.errorMsg = 'Error al cargar los datos del usuario';
       this.cargando = false;
@@ -68,7 +59,8 @@ export class PerfilComponent implements OnInit {
       nombre: this.usuarioActual?.nombre || '',
       apellidos: this.usuarioActual?.apellidos || '',
       email: this.usuarioActual?.email || '',
-      telefono: this.usuarioActual?.telefono || ''
+      telefono: this.usuarioActual?.telefono || '',
+      contrasenya: this.usuarioActual?.constrasenya || ''
     };
   }
 
@@ -77,6 +69,8 @@ export class PerfilComponent implements OnInit {
   }
 
   guardarCambios() {
+
+    console.log('Usuario a enviar:', this.usuario); // 👈
     this.authService.actualizarUsuario(this.usuario.email, this.usuario)
       .subscribe({
         next: (response) => {

@@ -4,19 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
-
-export interface Usuario {
-  email: string;
-  contrasenia: string;
-}
-
-export interface AuthResponse {
-  email: string;
-  nombre: string;
-  apellidos: string;
-  telefono: string;
-  contrasenya: string;
-}
+import { Usuario } from '../../modelos/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -33,12 +21,12 @@ export class AuthService {
   constructor() {}
 
   // Registro usando TU API
-  async registrarse(usuario: Usuario): Promise<AuthResponse> {
+  async registrarse(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
     try {
       return await firstValueFrom(
-        this._http.post<AuthResponse>(`${this.apiUrl}/usuarios`, {
+        this._http.post<Usuario>(`${this.apiUrl}/usuarios`, {
           email: usuario.email,
-          contrasenia: usuario.contrasenia
+          constrasenya: usuario.contrasenya
         })
       );
     } catch (error) {
@@ -49,11 +37,11 @@ export class AuthService {
 
 
   // Login usando TU API
-  async iniciarSesión(usuario: Usuario): Promise<AuthResponse> {
+  async iniciarSesión(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
     const response = await firstValueFrom(
-      this._http.post<AuthResponse>(`${this.apiUrl}/usuarios/login`, {
+      this._http.post<Usuario>(`${this.apiUrl}/usuarios/login`, {
         email: usuario.email,
-        contrasenya: usuario.contrasenia
+        contrasenya: usuario.contrasenya
       })
     );
 
@@ -97,7 +85,7 @@ export class AuthService {
   // }
 
   // Obtener usuario actual desde localStorage
-  getCurrentUser(): Promise<AuthResponse | null> {
+  getCurrentUser(): Promise<Usuario | null> {
     return new Promise((resolve) => {
       const storedUser = localStorage.getItem('usuario');
       if (!storedUser) {
@@ -106,7 +94,7 @@ export class AuthService {
       }
 
       try {
-        const user = JSON.parse(storedUser) as AuthResponse;
+        const user = JSON.parse(storedUser) as Usuario;
         resolve(user);
       } catch (error) {
         console.error('Error parseando los datos del usuario', error);
@@ -115,14 +103,13 @@ export class AuthService {
     });
   }
 
-
   // Actualizar datos de usuario por email
   actualizarUsuario(email: string, usuario: any): Observable<any> {
     const headers = new HttpHeaders()
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json');
 
-    return this._http.put(`${this.apiUrl}/usuarios/${encodeURIComponent(email)}`, usuario, {
+    return this._http.put(`${this.apiUrl}/usuarios/${email}`, usuario, {
       headers: headers,
       observe: 'response'
     });
