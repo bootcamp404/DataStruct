@@ -15,6 +15,7 @@ public class Contrato {
     @Column(name = "importe_adjudicacion")
     private Double importe;
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_creacion;
 
     @ManyToOne

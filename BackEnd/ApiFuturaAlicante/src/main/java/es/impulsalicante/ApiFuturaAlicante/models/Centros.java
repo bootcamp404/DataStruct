@@ -18,6 +18,7 @@ public class Centros {
     @Column(nullable = false)
     private String direccion;
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_creacion;
 
     @ManyToOne

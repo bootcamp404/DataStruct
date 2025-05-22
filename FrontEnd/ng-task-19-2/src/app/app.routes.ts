@@ -37,7 +37,7 @@ export const routes: Routes = [
   {
     path: 'perfil',
     component: PerfilComponent,
-    canActivate: [privateGuard()]
+    //canActivate: [privateGuard()]
   },
   {
     path: 'formularios',

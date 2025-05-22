@@ -16,6 +16,7 @@ public class CampanyaMarketing {
     @Column
     private String nombre;
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_creacion;
 
     @ManyToOne

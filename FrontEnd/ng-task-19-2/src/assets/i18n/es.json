@@ -74,5 +74,17 @@
         "DEPARTAMENTO": "Departamento",
         "DOCUMENTO": "Documento"
       }
+    },
+    "PERFIL":{
+      "MIPERFIL": "Mi Perfil",
+      "NOMBRE": "Nombre",
+      "APELLIDOS": "Apellidos",
+      "EMAIL": "Email",
+      "TELEFONO": "Teléfono",
+      "VOLVER": "Volver",
+      "EDITAR": "Editar",
+      "GUARDAR": "Guardar Cambios",
+      "CANCELAR": "Cancelar",
+      "MODIFICACION": "El email no puede ser modificado."
     }
   }
