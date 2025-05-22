@@ -70,5 +70,18 @@
       "DEPARTAMENTO": "Departament",
       "DOCUMENTO": "Document"
     }
+  },
+
+  "PERFIL":{
+    "MIPERFIL": "Meu Perfil",
+    "NOMBRE": "Nom",
+    "APELLIDOS": "Cognoms",
+    "EMAIL": "Email",
+    "TELEFONO": "Telèfon",
+    "VOLVER": "Tornar",
+    "EDITAR": "Editar",
+    "GUARDAR": "Guardar Cambis",
+    "CANCELAR": "Cancelar",
+    "MODIFICACION": "El email no es pot modificar."
   }
 }

@@ -71,6 +71,19 @@
       "DEPARTAMENTO": "Department",
       "DOCUMENTO": "Document"
     }
+  },
+
+  "PERFIL":{
+    "MIPERFIL": "My Profile",
+    "NOMBRE": "First Name",
+    "APELLIDOS": "Second Name",
+    "EMAIL": "Email",
+    "TELEFONO": "Phone",
+    "VOLVER": "Back",
+    "EDITAR": "Edit",
+    "GUARDAR": "Save Changes",
+    "CANCELAR": "Cancel",
+    "MODIFICACION": "The email cannot be changed."
   }
 }
 

@@ -1,14 +1,12 @@
 package es.impulsalicante.ApiFuturaAlicante.controllers;
 
-import es.impulsalicante.ApiFuturaAlicante.models.Departamento;
 import es.impulsalicante.ApiFuturaAlicante.models.Usuario;
 import es.impulsalicante.ApiFuturaAlicante.services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -51,7 +49,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateUsuario(@PathVariable String id, @RequestBody Usuario usuario) {
         Optional<Usuario> existingUsuario = usuariosService.getUsuarioById(id);
         if (existingUsuario.isPresent()) {
