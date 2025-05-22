@@ -15,8 +15,10 @@ public class Actividad {
     @Column
     private String descripcion;
     @Column(name = "fecha_ini")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_inicio;
     @Column(name = "fecha_fin")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_fin;
     @Column
     private int num_participantes;

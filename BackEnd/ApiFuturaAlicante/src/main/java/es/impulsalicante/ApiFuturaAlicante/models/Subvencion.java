@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Subvencion")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_subvencion")
 public class Subvencion {
 
     @Id
@@ -19,6 +18,7 @@ public class Subvencion {
     @Column
     private int importe;
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_creacion;
     @Column(length = 1)
     private String modalidad; // Valores esperados: "A", "B", "C"

@@ -8,14 +8,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "Empresa")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idEmpresa")
 public class Empresa {
 
     @Id
     private String idEmpresa;
     @Column
     private String nombre;
-    @Column @Temporal(TemporalType.DATE)
+    @Column //@Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaCreacion;
 
     @ManyToOne
