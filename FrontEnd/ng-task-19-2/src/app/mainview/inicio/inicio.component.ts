@@ -40,7 +40,7 @@ export class InicioComponent {
     }
   ];
   toggleDarkMode() {
-    const htmlEl = document.documentElement; // <html> element
+    const htmlEl = document.body; // <html> element
     if (htmlEl.classList.contains('dark')) {
       htmlEl.classList.remove('dark');
       localStorage.setItem('theme', 'light');
