@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: 'class', // Activa el modo oscuro basado en clase 'dark'
+export default {
+  darkMode: 'class', // modo oscuro por clase 'dark'
   content: [
-    "./src/**/*.{html,ts}", // Escanea tus archivos Angular para clases Tailwind
+    "./src/**/*.{html,ts}",
   ],
   theme: {
     extend: {},
   },
   plugins: [],
-}
+};
