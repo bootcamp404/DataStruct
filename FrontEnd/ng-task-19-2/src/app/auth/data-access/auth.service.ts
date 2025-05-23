@@ -27,6 +27,7 @@ export class AuthService {
   private _auth = inject(Auth);
   private _router = inject(Router);
   private _authStateService = inject(AuthStateService);
+  private _isLoggedIn: boolean | null = null;
 
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
@@ -95,6 +96,22 @@ export class AuthService {
   // isLoggedIn(): boolean {
   //   return !!this.obtenerToken();
   // }
+
+  // Saber si el usuario esta logeado sin token
+  async isLogged(): Promise<boolean> {
+    try {
+      const user = await this.getCurrentUser();
+      return !!user; // Devuelve true si existe usuario, false si es null
+    } catch (error) {
+      console.error('Error verificando autenticación:', error);
+      return false; // En caso de error, considera no logueado
+    }
+  }
+  // Getter para estado de autenticación
+  get isLoggedIn(): boolean {
+    return this._isLoggedIn ?? false;
+  }
+
 
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<AuthResponse | null> {

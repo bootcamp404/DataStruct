@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from '../footer/footer.component';
+import { AuthService } from '../../auth/data-access/auth.service';
 
 interface Feature {
   icon: string;
@@ -34,4 +35,6 @@ export class InicioComponent {
       descriptionKey: 'FEATURES.ITEMS.EXPORT_PDF.DESC'
     }
   ];
+  
+  constructor(public authService: AuthService) {}
 }

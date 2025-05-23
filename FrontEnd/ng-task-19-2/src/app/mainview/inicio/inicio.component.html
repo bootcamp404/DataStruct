@@ -50,12 +50,14 @@
 
 
     <div class="text-center mt-16">
-      <button
+      @if(!authService.isLogged()){
+        <button 
         class="px-8 py-3 rounded-full bg-gradient-to-r from-[#1276E1] to-[#1FB26E] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
         [routerLink]="['/auth/sign-in']"
-      >
-        {{ 'COSO' }}
-      </button>
+        >
+          {{ 'Iniciar Sesión' }}
+        </button>
+      }
     </div>
   </div>
 </section>
