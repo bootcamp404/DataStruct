@@ -16,10 +16,6 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/features/auth.routes')
   },
   {
-    path: '',
-    component: InicioComponent
-  },
-  {
     path: 'inicio',
     component: InicioComponent
   },
@@ -60,7 +56,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/auth/sign-in'
+    redirectTo: '/inicio'
   }
 ];
 

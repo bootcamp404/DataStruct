@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-50 w-full py-3 bg-white shadow-sm border-b border-gray-100 no-imprimir">
+<header class="sticky top-0 z-50 w-full bg-white shadow-sm border-b border-gray-100 no-imprimir">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between">
 
@@ -13,23 +13,26 @@
       </a>
 
       <!-- Navegación principal -->
-      <nav class="hidden md:flex gap-8 text-base font-medium">
+      <nav class=" md:flex gap-6 text-base font-medium">
         <a routerLink="/inicio"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class="text-gray-700 hover:text-indigo-600 transition-colors">
            {{ 'CABECERA.INICIO' | translate}}
+           <!-- Inicio -->
         </a>
 
         <a routerLink="/dashboard"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class="text-gray-700 hover:text-indigo-600 transition-colors">
            {{ 'CABECERA.PANEL' | translate}}
+           <!-- Panel administrativo -->
         </a>
 
         <a routerLink="/panel-admin"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class="text-gray-700 hover:text-indigo-600 transition-colors">
            {{ 'CABECERA.LISTA' | translate}}
+           <!-- Lista de empleados -->
         </a>
       </nav>
 
@@ -40,7 +43,7 @@
         <!-- Idioma -->
         <div class="relative">
           <button (click)="toggleLanguageDropdown($event)"
-                  class="flex items-center px-2 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow hover:shadow-md">
+                  class="flex items-center px-2 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow hover:shadow-md">
             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="..."/></svg>
             <span>{{ languageNames[currentLanguageCode] }}</span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,8 +62,8 @@
         <!-- Perfil -->
         <div class="relative">
           <button (click)="toggleProfileMenu($event)"
-                  class="flex items-center px-3 py-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 shadow-sm text-sm text-gray-700">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm">
+                  class="flex items-center px-3 rounded-full border border-gray-200 bg-white hover:bg-gray-50 shadow-sm text-sm text-gray-700">
+            <div class="w-8 h-7.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm">
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15
@@ -77,7 +80,9 @@
           @if (isProfileMenuOpen) {
             <div class="absolute right-0 mt-1 w-44 bg-white rounded shadow border border-gray-200 z-50 text-base">
               <a routerLink="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">{{ 'CABECERA.PERFIL' | translate }}</a>
+              <!-- Mi perfil -->
               <button (click)="onLogoutClick()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50">{{ 'CABECERA.SESION' | translate }}</button>
+              <!-- Cerrar sesión -->
             </div>
           }
         </div>
