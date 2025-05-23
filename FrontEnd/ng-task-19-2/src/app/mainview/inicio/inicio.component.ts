@@ -57,11 +57,14 @@ export class InicioComponent implements OnInit {
 
   toggleDarkMode(): void {
     this.isDarkMode = !this.isDarkMode;
+    console.log('Modo oscuro:', this.isDarkMode); // 👈 Agrega esto
+
     if (this.isDarkMode) {
       this.renderer.addClass(document.documentElement, 'dark');
     } else {
       this.renderer.removeClass(document.documentElement, 'dark');
     }
+
     localStorage.setItem('darkMode', this.isDarkMode.toString());
   }
 }
