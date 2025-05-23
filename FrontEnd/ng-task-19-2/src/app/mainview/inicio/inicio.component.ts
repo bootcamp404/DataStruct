@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from '../footer/footer.component';
+import { AuthService } from '../../auth/data-access/auth.service';
 
 interface Feature {
   icon: string;
@@ -38,4 +39,6 @@ export class InicioComponent {
       ruta: "auth/sign-in"
     }
   ];
+  
+  constructor(public authService: AuthService) {}
 }

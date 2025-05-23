@@ -15,6 +15,7 @@ export class AuthService {
   private _auth = inject(Auth);
   private _router = inject(Router);
   private _authStateService = inject(AuthStateService);
+  private _isLoggedIn: boolean | null = null;
 
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
@@ -47,25 +48,80 @@ export class AuthService {
 
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
-    this._router.navigate(['/mainview']);
+    this._router.navigate(['/inicio']);
 
     return response;
   }
 
   // Inicio de sesión con Google (Firebase)
-  iniciarSesionGoogle() {
+  async iniciarSesionGoogle(): Promise<Usuario | null> {
     const google = new GoogleAuthProvider();
-    return signInWithPopup(this._auth, google);
+
+    try {
+      const credential = await signInWithPopup(this._auth, google);
+      const user = credential.user;
+
+      if (user && user.email) {
+        const usuario: Usuario = {
+          nombre: user.displayName?.split(' ')[0] || '',
+          apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
+          email: user.email,
+          telefono: user.phoneNumber || '',
+          contrasenya: '', // Firebase no proporciona contraseña para login social
+        };
+
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this._authStateService.setAuthEstado(true);
+        this._router.navigate(['/inicio']);
+
+        return usuario;
+      } else {
+        console.error('No se obtuvo un email válido desde Google.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error en login con Google:', error);
+      return null;
+    }
   }
 
+
   // Inicio de sesión con Facebook (Firebase)
-  iniciarSesionFacebook() {
+  async iniciarSesionFacebook(): Promise<Usuario | null> {
     const facebook = new FacebookAuthProvider();
-    return signInWithPopup(this._auth, facebook);
+
+    try {
+      const credential = await signInWithPopup(this._auth, facebook);
+      const user = credential.user;
+
+      if (user && user.email) {
+        const usuario: Usuario = {
+          nombre: user.displayName?.split(' ')[0] || '',
+          apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
+          email: user.email,
+          telefono: user.phoneNumber || '',
+          contrasenya: '', // No viene en login social
+        };
+
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this._authStateService.setAuthEstado(true);
+        this._router.navigate(['/inicio']);
+
+        return usuario;
+      } else {
+        console.error('No se obtuvo un email válido desde Facebook.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error en login con Facebook:', error);
+      return null;
+    }
   }
+
 
   // Logout general
   async logout() {
+    await signOut(this._auth)
     localStorage.removeItem('usuario');
     this._authStateService.setAuthEstado(false);
     this._router.navigate(['/auth/sign-in']);
@@ -83,6 +139,22 @@ export class AuthService {
   // isLoggedIn(): boolean {
   //   return !!this.obtenerToken();
   // }
+
+  // Saber si el usuario esta logeado sin token
+  async isLogged(): Promise<boolean> {
+    try {
+      const user = await this.getCurrentUser();
+      return !!user; // Devuelve true si existe usuario, false si es null
+    } catch (error) {
+      console.error('Error verificando autenticación:', error);
+      return false; // En caso de error, considera no logueado
+    }
+  }
+  // Getter para estado de autenticación
+  get isLoggedIn(): boolean {
+    return this._isLoggedIn ?? false;
+  }
+
 
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<Usuario | null> {

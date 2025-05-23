@@ -9,6 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
 import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyecto.component';
+import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
 import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -16,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, ActividadComponent, DepartamentsComponent, TranslateModule],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
   cargandoLista = false;
   error = false;
   mostrarModalCreacion = false;
+  
 
   mensajeError: string | null = null;
 
