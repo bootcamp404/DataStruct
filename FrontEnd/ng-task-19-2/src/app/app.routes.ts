@@ -1,6 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { MainviewComponent } from './mainview/mainview.component';
 import { privateGuard, publicGuard } from './core/auth.guard';
 import { PerfilComponent } from './perfil/perfil.component';
 import { FormulariosComponent } from './componentes/formularios/formularios.component';
@@ -17,11 +16,6 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/features/auth.routes')
   },
   {
-    path: 'mainview',
-    component: MainviewComponent,
-    canActivate: [privateGuard()]
-  },
-  {
     path: '',
     component: InicioComponent
   },
@@ -32,7 +26,7 @@ export const routes: Routes = [
   {
     path: 'plantillas',
     component: PlantillasComponent,
-    canActivate: [privateGuard()]
+    //canActivate: [privateGuard()]
   },
   {
     path: 'perfil',
@@ -42,17 +36,17 @@ export const routes: Routes = [
   {
     path: 'formularios',
     component: FormulariosComponent,
-    canActivate: [privateGuard()]
+    //canActivate: [privateGuard()]
   },
   {
     path: 'informes',
     loadComponent: () => import('./informes/informes.component').then(m => m.InformesComponent),
-    canActivate: [privateGuard()]
+    //canActivate: [privateGuard()]
   },
   {
     path: 'informes/resumen',
     loadComponent: () => import('./informes/resumen.component').then(m => m.ResumenComponent),
-    canActivate: [privateGuard()]
+    //canActivate: [privateGuard()]
   },
   {
     path: 'dashboard',
@@ -62,7 +56,7 @@ export const routes: Routes = [
   {
     path: 'panel-admin',
     component: AdminPanelComponent,
-    canActivate: [privateGuard()]
+    //canActivate: [privateGuard()]
   },
   {
     path: '**',

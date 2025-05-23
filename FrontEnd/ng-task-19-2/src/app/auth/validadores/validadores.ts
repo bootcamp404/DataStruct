@@ -1,7 +1,7 @@
 import { FormGroup } from "@angular/forms";
 
 
-export const seRequiere = (campo: 'email' | 'contrasenia' | 'confirmarContrasenia', form: any) => {
+export const seRequiere = (campo: 'email' | 'contrasenya' | 'confirmarContrasenya', form: any) => {
     const control = form.get(campo);
 
     return control && control.touched && control.hasError('required');

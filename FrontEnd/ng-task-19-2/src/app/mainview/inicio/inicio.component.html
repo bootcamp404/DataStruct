@@ -3,7 +3,7 @@
 <section class="py-24 bg-gradient-to-b from-white to-gray-50">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
-      <span class="text-[#1276E1] font-medium text-sm uppercase tracking-wider">Lo que ofrecemos</span>
+      <span class="text-[#1276E1] font-medium text-sm uppercase tracking-wider">{{ "FEATURES.SUBTITLE" | translate}}</span>
       <h2 class="text-5xl font-bold mt-2 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#1276E1] to-[#1FB26E]">
         {{ 'FEATURES.TITLE' | translate }}
       </h2>
@@ -14,7 +14,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       @for(feature of features; track $index){
-        <a [routerLink]="['/auth/sign-in']"
+        <a [routerLink]="[feature.ruta]"
            class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 relative overflow-hidden block no-underline">
 
           <!-- Decorative element -->

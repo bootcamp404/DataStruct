@@ -21,21 +21,21 @@
                   </div>
                   <div>
                       <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
-                      <input type="password" name="password" id="password" placeholder="••••••••" formControlName="contrasenia"
+                      <input type="password" name="password" id="password" placeholder="••••••••" formControlName="contrasenya"
                       class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg
                         focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        @if(esRequerido('contrasenia')){
+                        @if(esRequerido('contrasenya')){
                             <small class="text-red-500">Este campo es requerido</small>
                            }
                   </div>
                   <div>
                     <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirmar Contraseña</label>
-                    <input type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" formControlName="confirmarContrasenia"
+                    <input type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" formControlName="confirmarContrasenya"
                     class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg
                       focus:ring-green-600 focus:border-green-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                       dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    @if(esRequerido('confirmarContrasenia')){
+                    @if(esRequerido('confirmarContrasenya')){
                       <small class="text-red-500">Este campo es requerido</small>
                     }
                     @if(passwordNoCoincide()){

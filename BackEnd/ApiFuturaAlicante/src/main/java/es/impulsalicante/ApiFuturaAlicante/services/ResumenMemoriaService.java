@@ -18,6 +18,7 @@
     import java.time.LocalDate;
     import java.time.format.DateTimeFormatter;
     import java.util.*;
+    import java.util.function.Function;
     import java.util.stream.Collectors;
 
 
@@ -29,6 +30,8 @@
         @Autowired
         private ContratosRespository contratosRespository;
 
+        @Autowired
+        private DepartamentosRepository departamentosRepository;
         @Autowired
         private UsuariosRepository usuarioRepository;
 
@@ -284,38 +287,7 @@
                             """)
                     .append("</div>");
 
-            // Tabla de departamentos
-            html.append("<div class='section'><h2>Departamentos</h2><table>")
-                    .append("<thead><tr>")
-                    .append("<th>Departamento</th>")
-                    .append("<th>Personas atendidas</th>")
-                    .append("<th>Altas demandantes</th>")
-                    .append("<th>Orientaciones</th>")
-                    .append("<th>Cursos</th>")
-                    .append("<th>Participantes</th>")
-                    .append("<th>Horas</th>")
-                    .append("<th>Empresas apoyadas</th>")
-                    .append("<th>Empresas creadas</th>")
-                    .append("<th>Sesiones asesoramiento</th>")
-                    .append("</tr></thead><tbody>");
 
-            if (datos.getResumenDepartamentos() != null) {
-                for (ResumenDepartamentoDTO d : datos.getResumenDepartamentos()) {
-                    html.append("<tr>")
-                            .append("<td>").append(d.getNombre()).append("</td>")
-                            .append("<td>").append(d.getPersonasAtendidas()).append("</td>")
-                            .append("<td>").append(d.getAltasDemandantes()).append("</td>")
-                            .append("<td>").append(d.getAccionesOrientacion()).append("</td>")
-                            .append("<td>").append(d.getCursos()).append("</td>")
-                            .append("<td>").append(d.getParticipantes()).append("</td>")
-                            .append("<td>").append(d.getHoras()).append("</td>")
-                            .append("<td>").append(d.getEmpresasApoyadas()).append("</td>")
-                            .append("<td>").append(d.getNuevasEmpresas()).append("</td>")
-                            .append("<td>").append(d.getSesionesAsesoramiento()).append("</td>")
-                            .append("</tr>");
-                }
-            }
-            html.append("</tbody></table></div>");
 
             //1.3
             html.append("""
@@ -599,7 +571,9 @@
             int total = totalA + totalB + totalC;
 
             html.append(String.format("""
-        <h2 style='color:#008080; text-align: center;'>2.6 SUBVENCIONES A ENTIDADES</h2>
+        <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
+      <h2 style='color: #00a99d; margin: 15px 0 10px;'>SUBVENCIONES A ENTIDADES</h2>
+      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
     
         <table style='width:100%%; margin-bottom: 30px; border-collapse: collapse;'>
             <tr>
@@ -826,50 +800,73 @@
 
             StringBuilder html = new StringBuilder();
             html.append("""
-            <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-               <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.5</div>
-                      <h2 style='color: #00a99d; margin: 15px 0 10px;'>PROGRAMAS Y PROYECTOS</h2>
-                      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+        <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+          <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.5</div>
+          <h2 style='color: #00a99d; margin: 15px 0 10px;'>PROGRAMAS Y PROYECTOS</h2>
+          <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
         """);
 
             for (Proyecto proyecto : proyectos) {
+                // obtenemos subvenciones y actividades tal como tú
                 List<Subvencion> subvenciones = proyecto.getSubvenciones();
                 List<Actividad> actividades = proyecto.getCentros().stream()
                         .flatMap(centro -> actividadRepository.findAll().stream()
-                                .filter(a -> a.getDepartamento() != null &&
-                                        centro.getDepartamento() != null &&
-                                        a.getDepartamento().getId().equals(centro.getDepartamento().getId()) &&
-                                        a.getProyecto() != null &&
-                                        a.getProyecto().getId_proyecto().equals(proyecto.getId_proyecto())
-                                ))
+                                .filter(a ->
+                                        a.getDepartamento() != null &&
+                                                centro.getDepartamento() != null &&
+                                                a.getDepartamento().getId().equals(centro.getDepartamento().getId()) &&
+                                                a.getProyecto() != null &&
+                                                a.getProyecto().getId_proyecto().equals(proyecto.getId_proyecto())
+                                )
+                        )
                         .toList();
 
+                // Cadena con entidades
+                String entidades = subvenciones.stream()
+                        .map(Subvencion::getEntidad)
+                        .filter(Objects::nonNull)
+                        .distinct()
+                        .collect(Collectors.joining(", "));
+                if (entidades.isEmpty()) entidades = "—";
+
+                // Cadena con estados (usa el id de tu entidad estado_subvencion)
+                String estados = subvenciones.stream()
+                        .map(s -> s.getEstadoSubvencion().getId())
+                        .filter(Objects::nonNull)
+                        .distinct()
+                        .collect(Collectors.joining(", "));
+                if (estados.isEmpty()) estados = "—";
+
                 int totalImporte = subvenciones.stream().mapToInt(Subvencion::getImporte).sum();
+                int totalActividades = actividades.size();
                 int totalParticipantes = actividades.stream().mapToInt(Actividad::getNum_participantes).sum();
-                int totalHoras = actividades.stream().mapToInt(a -> a.getHoras() != null ? a.getHoras() : 0).sum();
+                int totalHoras = actividades.stream()
+                        .map(a -> a.getHoras() == null ? 0 : a.getHoras())
+                        .mapToInt(Integer::intValue)
+                        .sum();
 
                 html.append(String.format("""
-                <div style='border: 1px solid #ccc; border-radius: 10px; padding: 20px; margin: 20px 0; background-color: #f9f9f9;'>
-                    <h3 style='color: #004080;'>%s</h3>
-                    <p><strong>Objetivo:</strong> %s</p>
-                    <p><strong>Fecha de Inicio:</strong> %s</p>
-                    <p><strong>Fecha de Fin:</strong> %s</p>
-    
-                    <h4 style='margin-top: 15px; color: #009999;'>Resumen de Subvenciones</h4>
-                    <ul>
-                        <li><strong>Nº de Subvenciones:</strong> %d</li>
-                        <li><strong>Importe Total:</strong> %d €</li>
-                        <li><strong>Entidades:</strong> %s</li>
-                        <li><strong>Estados:</strong> %s</li>
-                    </ul>
-    
-                    <h4 style='margin-top: 15px; color: #009999;'>Resumen de Actividades</h4>
-                    <ul>
-                        <li><strong>Actividades vinculadas:</strong> %d</li>
-                        <li><strong>Total Participantes:</strong> %d</li>
-                        <li><strong>Total Horas:</strong> %d</li>
-                    </ul>
-                </div>
+            <div style='border:1px solid #ccc; border-radius:10px; padding:20px; margin:20px 0; background:#f9f9f9;'>
+              <h3 style='color:#004080;'>%s</h3>
+              <p><strong>Objetivo:</strong> %s</p>
+              <p><strong>Fecha de Inicio:</strong> %s</p>
+              <p><strong>Fecha de Fin:</strong> %s</p>
+
+              <h4 style='margin-top:15px; color:#009999;'>Resumen de Subvenciones</h4>
+              <ul>
+                <li><strong>Nº de Subvenciones:</strong> %d</li>
+                <li><strong>Importe Total:</strong> %d €</li>
+                <li><strong>Entidades:</strong> %s</li>
+                <li><strong>Estados:</strong> %s</li>
+              </ul>
+
+              <h4 style='margin-top:15px; color:#009999;'>Resumen de Actividades</h4>
+              <ul>
+                <li><strong>Actividades vinculadas:</strong> %d</li>
+                <li><strong>Total Participantes:</strong> %d</li>
+                <li><strong>Total Horas:</strong> %d</li>
+              </ul>
+            </div>
             """,
                         safe(proyecto.getNombre()),
                         safe(proyecto.getObjetivo()),
@@ -877,20 +874,18 @@
                         safe(proyecto.getFecha_fin()),
                         subvenciones.size(),
                         totalImporte,
-                        subvenciones.stream().map(Subvencion::getEntidad).distinct().collect(Collectors.joining(", ")),
-                        subvenciones.stream()
-                                .map(s -> s.getEstadoSubvencion().getId()),
-                        actividades.size(),
+                        entidades,
+                        estados,
+                        totalActividades,
                         totalParticipantes,
                         totalHoras
                 ));
             }
 
-
-
             html.append("</div>");
             return html.toString();
         }
+
 
         private String generarSeccionProyectosYActividadesEmprendimiento(List<Proyecto> proyectos, List<Actividad> actividades) {
             StringBuilder html = new StringBuilder();
@@ -899,7 +894,7 @@
             for (Proyecto proyecto : proyectos) {
                 String seccion = "3.2." + contadorSeccion++;
                 html.append("""
-                <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+                <div style=' font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
                   <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>%s</div>
                   <h2 style='color: #f15a24; margin: 15px 0 10px;'>%s</h2>
                   <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
@@ -939,7 +934,14 @@
             return html.toString();
         }
 
-
+        private String escapeHtml(String text) {
+            if (text == null) return "";
+            return text.replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;")
+                    .replace("'", "&#x27;");
+        }
         private String generarDetalleSubvencionesPorModalidad() {
             List<Subvencion> subvenciones = subvencionRepository.findAll();
 
@@ -950,9 +952,7 @@
             StringBuilder html = new StringBuilder();
             html.append("""
                     <div style='page-break-before: always; font-family: Arial, sans-serif;'>
-                         <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
-                                  <h2 style='color: #00a99d; margin: 15px 0 10px;'>SUBVENCIONES A ENTIDADES</h2>
-                                  <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                         <h2 style='color:#008080;'>2.6.1 Subvenciones a entidades sin ánimo de lucro</h2>
                         <p style='font-size:14px;'>Subvenciones por fomento de inserción laboral, innovación social y emprendimiento.</p>
                     """);
 
@@ -1088,7 +1088,7 @@
 
             StringBuilder html = new StringBuilder();
             html.append(String.format("""
-            <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+            <div style=' font-family: Arial, sans-serif; padding: 30px;'>
               <div style='display: flex; align-items: center; gap: 10px;'>
                 <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold;
                             border-radius: 4px; font-size: 12px; '>3.5</div>
@@ -1176,7 +1176,7 @@
 
 
         private String generarSeccionConveniosNominativos() {
-            List<Convenio> convenios = convenioRepository.findByDepartamento_Id("D1");
+            List<Convenio> convenios = convenioRepository.findByDepartamento_Id("D2");
 
             int total = convenios.size();
             BigDecimal suma = convenios.stream()
@@ -1234,20 +1234,18 @@
 
 
         private String generarSeccionOtros() {
-            record EventoOtros(String titulo, String descripcion, String anexo, String imagenPath) {
+            record EventoOtros(String titulo, String descripcion, String imagenPath) {
             }
 
             List<EventoOtros> eventos = List.of(
                     new EventoOtros(
                             "IV Feria de empleo y formación Zona Norte",
                             "El 29 de marzo de 2023 se celebró la cuarta edición de la feria de empleo y formación, en horario de 9:30 a 13:30 horas. En ella participaron más de 27 organizaciones entre centros educativos, instituciones y servicios públicos. La feria contó con la asistencia de un amplio número de estudiantes de secundaria.",
-                            "Anexo 20: 4ª feria de empleo y formación Zona Norte.",
                             "img/anexo20.jpg"
                     ),
                     new EventoOtros(
                             "IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional",
                             "El 24 de noviembre, la plaza del Ayuntamiento y el auditorio de Puerta Ferrisa acogieron el IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional. El evento reunió a 16 empresas y 18 asociaciones para exponer tanto ofertas de trabajo como las diversas propuestas de las entidades participantes.",
-                            "Anexo 21: Memoria IV Encuentro de Empleo dirigido a personas con diversidad funcional.",
                             "img/anexo21.jpg"
                     )
             );
@@ -1255,8 +1253,9 @@
             StringBuilder html = new StringBuilder();
             html.append("""
                         <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
-                            <h2 style='color:#008080;'>2.7 OTROS</h2>
-                    """);
+ <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
+      <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
+      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />                    """);
 
             int index = 1;
             for (EventoOtros e : eventos) {
@@ -1266,9 +1265,7 @@
                                 <p>%s</p>
                         """, index++, e.titulo(), e.descripcion()));
 
-                if (e.anexo() != null) {
-                    html.append("<p><strong>" + e.anexo() + "</strong></p>");
-                }
+
                 if (e.imagenPath() != null) {
                     html.append("<img src='" + e.imagenPath() + "' style='width:100%%; margin-top:10px;' />");
                 }
@@ -1312,48 +1309,56 @@
             return html.toString();
         }
 
-        private String generarSeccionDatosTotalesPromocionEconomica( int anio) {
+        private String generarSeccionDatosTotalesPromocionEconomica(int anio) {
+            // Fijo D3 para Promoción Económica
             String idDepartamento = "D3";
-            List<IndicadorAnual> indicadores = indicadoresAnualesRepository.findByAnioAndDepartamento(anio, idDepartamento);
-            if (indicadores.isEmpty()) return "";
+            List<IndicadorAnual> indicadores = indicadoresAnualesRepository
+                    .findByAnioAndDepartamento(anio, idDepartamento);
+            if (indicadores.isEmpty()) {
+                return "";
+            }
+            IndicadorAnual d = indicadores.get(0);
 
-            IndicadorAnual datos = indicadores.get(0);
-
-            StringBuilder html = new StringBuilder();
-
-            html.append("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+            return """
+        <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+          <!-- Encabezado 3.1 -->
           <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>3.1</div>
           <h2 style='color: #f15a24; margin: 15px 0 10px;'>DATOS TOTALES</h2>
-          <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
-    
-          <h3>EMPRENDIMIENTO</h3>
-          <p><strong>%s</strong> asesoramientos</p>
-          <p><strong>%s</strong> Empresas creadas</p>
-    
-          <h3 style='margin-top: 25px;'>FORMACIÓN</h3>
-          <p><strong>%s</strong> acciones formativas</p>
-          <p><strong>%s</strong> Participantes</p>
-          <p><strong>%s</strong> Horas</p>
-    
-          <h3 style='margin-top: 25px;'>OTROS</h3>
-          <p><strong>%s</strong> Puestos de trabajo</p>
-          <p><strong>%s €</strong> Ayudas concedidas</p>
-          <p><strong>%s</strong> Ofertas de empleo</p>
+          <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;'/>
+
+          <!-- Emprendimiento -->
+          <div style='background-color: #f15a24; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px;'>
+            <h3 style='margin-top: 0;'>EMPRENDIMIENTO</h3>
+            <p><strong>%s</strong> asesoramientos</p>
+            <p><strong>%s</strong> empresas creadas</p>
+          </div>
+
+          <!-- Formación -->
+          <div style='background-color: #fbe1d2; color: #f15a24; padding: 15px; border-radius: 6px; margin-bottom: 20px;'>
+            <h3 style='margin-top: 0;'>FORMACIÓN</h3>
+            <p><strong>%s</strong> acciones formativas</p>
+            <p><strong>%s</strong> participantes</p>
+            <p><strong>%s</strong> horas</p>
+          </div>
+
+          <!-- Otros -->
+          <div style='background-color: #f15a24; color: white; padding: 15px; border-radius: 6px;'>
+            <h3 style='margin-top: 0;'>OTROS</h3>
+            <p><strong>%s</strong> puestos de trabajo</p>
+            <p><strong>%s €</strong> ayudas concedidas</p>
+            <p><strong>%s</strong> ofertas de empleo</p>
+          </div>
         </div>
         """.formatted(
-                    safe(datos.getAsesoramientos()),
-                    safe(datos.getEmpresasCreadas()),
-                    safe(datos.getActividadesFormacion()),
-                    safe(datos.getParticipantesFormacion()),
-                    safe(datos.getHorasFormacion()),
-                    safe(datos.getPuestosTrabajo()),
-                    safe(datos.getAyudasEmpresas()),
-                    safe(datos.getOfertasEmpleo())
-            ));
-
-
-            return html.toString();
+                    safe(d.getAsesoramientos()),
+                    safe(d.getEmpresasCreadas()),
+                    safe(d.getActividadesFormacion()),
+                    safe(d.getParticipantesFormacion()),
+                    safe(d.getHorasFormacion()),
+                    safe(d.getPuestosTrabajo()),
+                    safe(d.getAyudasEmpresas()),
+                    safe(d.getOfertasEmpleo())
+            );
         }
 
         private String generarSeccionViverosEmpresariales(int anio) {
@@ -1371,7 +1376,7 @@
             StringBuilder html = new StringBuilder();
             // Cabecera al estilo de la 3.4
             html.append(String.format("""
-                <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                <div style=' font-family: Arial, sans-serif; padding: 30px;'>
                   <div style='display: flex; align-items: center; gap: 10px;'>
                     <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold;
                                 border-radius: 4px; font-size: 12px;'>3.3</div>
@@ -1444,14 +1449,11 @@
             html.append(String.format("""
                          <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
                                                 <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 10px;'>
-                                                  <div style='background-color: #F1D7E0; color: white; padding: 6px 12px;
-                                                              font-weight: bold; border-radius: 4px; font-size: 12px;'>4.1</div>
-                                                  <h2 style='margin: 0; color: #A71A46; font-size: 24px; line-height:1.2;'>
-                                                    PROGRAMAS DE DESARROLLO LOCAL INDUSTRIAL
-                                                  </h2>
+                                                 <div style='background-color: #F1D7E0; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>4.1</div>
+                                                                           <h2 style='color: #A71A46; margin: 15px 0 10px;'>PROGRAMAS DE DESARROLLO LOCAL INDUSTRIAL</h2>
+                                                                      <hr style='border: none; border-top: 2px solid #A71A46; margin-bottom: 30px;' />
                                                 </div>
-                                                <hr style='border:none; border-top:2px solid #A71A46; margin-bottom:20px;'/>
-                        <p style='margin-top:15px; font-size:14px;'>
+                                                                        <p style='margin-top:15px; font-size:14px;'>
                           Balance de los ítems que contienen “desarrollo local industrial” en %d:
                         </p>
                     """, anio));
@@ -1612,7 +1614,7 @@
             html.append(formatoTarjeta("Focus group", "Actividades anuales", String.format("%d", 13)).replace("%d", String.valueOf(anio)));
 
             html.append("</div>");
-            html.append("<div style='margin-top:20px; text-align:center;'><img src='img/anexo45.jpg' style='width:100%;'/><p style='font-size:12px;'><strong>Anexo 45</strong> Memoria final ALIA</p></div>");
+            html.append("<div style='margin-top:20px; text-align:center;'><img src='img/anexo45.jpg' style='width:100%;'/></div>");
             html.append("</div>");
             return html.toString();
         }
@@ -1762,10 +1764,7 @@
           </tbody>
         </table>
 
-        <div style='font-size:12px; margin-top:8px; color:#666;'>
-          Anexo 51: contratos mayores %d &nbsp;&nbsp;  
-          Anexo 52: contratos menores %d
-        </div>
+      
       </div>
       """,
                     // KPI actividades/asistentes
@@ -1978,7 +1977,7 @@
             StringBuilder html = new StringBuilder();
 
             html.append("""
-            <div style='page-break-before: always; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
+            <div style='font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; padding: 20px;'>
                 <div style='background-color: #fbe1d2; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>3.4</div>
                 <h2 style='color: #f15a24; margin: 15px 0 10px;'>Ayudas Económicas a Empresas de la Ciudad de Alicante</h2>
                 <hr style='border: none; border-top: 2px solid #f15a24; margin-bottom: 30px;' />
