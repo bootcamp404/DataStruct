@@ -1,11 +1,7 @@
-@import "tailwindcss";
+@tailwind utilities;
 
-body{
-    @apply bg-gray-900;
-}
-
-:root{
-    color-scheme: dark light;
+:root {
+  color-scheme: dark light;
 }
 
 /* Scrollbar */
