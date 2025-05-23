@@ -1,24 +1,33 @@
-<!-- features.component.html -->
 <app-header></app-header>
-<section class="py-24 bg-gradient-to-b from-white to-gray-50">
+
+<!-- Botón de modo oscuro -->
+<div class="text-right p-4">
+  <button
+    (click)="toggleDarkMode()"
+    class="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition"
+  >
+    Cambiar a {{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro' }}
+  </button>
+</div>
+
+<section class="py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
-      <span class="text-[#1276E1] font-medium text-sm uppercase tracking-wider">{{ "FEATURES.SUBTITLE" | translate}}</span>
+      <span class="text-[#1276E1] font-medium text-sm uppercase tracking-wider">{{ "FEATURES.SUBTITLE" | translate }}</span>
       <h2 class="text-5xl font-bold mt-2 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#1276E1] to-[#1FB26E]">
         {{ 'FEATURES.TITLE' | translate }}
       </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-        {{ 'FEATURES.DESCRIPTION' | translate}}
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        {{ 'FEATURES.DESCRIPTION' | translate }}
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       @for(feature of features; track $index){
         <a [routerLink]="[feature.ruta]"
-           class="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 relative overflow-hidden block no-underline">
+           class="group bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700 relative overflow-hidden block no-underline">
 
-          <!-- Decorative element -->
-          <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 opacity-70 z-0"></div>
+          <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 dark:from-blue-900 dark:to-emerald-900 opacity-70 z-0"></div>
 
           <div class="mb-6 relative z-10">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-[#1276E1] to-[#1FB26E] text-white shadow-md">
@@ -35,11 +44,11 @@
             </div>
           </div>
 
-          <h3 class="text-2xl text-gray-600 font-bold mb-3 relative z-10 group-hover:text-[#1276E1] transition-colors duration-300">
+          <h3 class="text-2xl text-gray-600 dark:text-gray-100 font-bold mb-3 relative z-10 group-hover:text-[#1276E1] transition-colors duration-300">
             {{ feature.titleKey | translate }}
           </h3>
 
-          <p class="text-gray-600 leading-relaxed relative z-10">
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed relative z-10">
             {{ feature.descriptionKey | translate }}
           </p>
 
@@ -48,15 +57,15 @@
       }
     </div>
 
-
     <div class="text-center mt-16">
-      <button 
-      class="px-8 py-3 rounded-full bg-gradient-to-r from-[#1276E1] to-[#1FB26E] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-      [routerLink]="['/auth/sign-in']"
+      <button
+        class="px-8 py-3 rounded-full bg-gradient-to-r from-[#1276E1] to-[#1FB26E] text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+        [routerLink]="['/auth/sign-in']"
       >
         {{ 'Iniciar Sesión' }}
       </button>
-    </div> 
+    </div>
   </div>
 </section>
+
 <app-footer></app-footer>

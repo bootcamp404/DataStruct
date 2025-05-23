@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../auth/data-access/auth.service';
@@ -18,7 +18,7 @@ interface Feature {
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
-export class InicioComponent {
+export class InicioComponent implements OnInit {
   features: Feature[] = [
     {
       icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
@@ -39,6 +39,29 @@ export class InicioComponent {
       ruta: "auth/sign-in"
     }
   ];
-  
-  constructor(public authService: AuthService) {}
+
+  isDarkMode = false;
+
+  constructor(
+    public authService: AuthService,
+    private renderer: Renderer2
+  ) {}
+
+  ngOnInit(): void {
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme === 'true') {
+      this.isDarkMode = true;
+      this.renderer.addClass(document.documentElement, 'dark');
+    }
+  }
+
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      this.renderer.addClass(document.documentElement, 'dark');
+    } else {
+      this.renderer.removeClass(document.documentElement, 'dark');
+    }
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
+  }
 }
