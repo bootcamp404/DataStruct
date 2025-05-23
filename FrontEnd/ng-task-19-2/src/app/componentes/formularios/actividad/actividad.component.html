@@ -1,0 +1,136 @@
+<app-header></app-header>
+
+<div class="w-full min-h-screen px-4 py-6">
+  <!-- Encabezado del modal -->
+  <div class="flex justify-between items-center mb-4">
+    <div>
+      <h2 class="text-xl font-bold text-gray-800">
+        {{ selectedActividad ? 'Editar Actividad' : 'Nueva Actividad' }}
+      </h2>
+    </div>
+    <button (click)="cerrarModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+      <!-- icono de cerrar -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 
+                 111.414 1.414L11.414 10l4.293 4.293a1 1 0 
+                 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 
+                 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 
+                 010-1.414z"
+              clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  <form [formGroup]="formActividad" (ngSubmit)="guardar()" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <!-- Nombre -->
+    <div class="flex flex-col">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Nombre</label>
+      <input type="text"
+             formControlName="nombre"
+             class="p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-center" />
+    </div>
+
+    <!-- Descripción -->
+    <div class="flex flex-col md:col-span-2">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Descripción</label>
+      <textarea rows="2"
+                formControlName="descripcion"
+                class="p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 resize-none text-center"></textarea>
+    </div>
+
+    <!-- Fecha inicio -->
+    <div class="flex flex-col">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Fecha Inicio</label>
+      <input type="date"
+             formControlName="fecha_ini"
+             class="p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-center" />
+    </div>
+
+    <!-- Fecha fin -->
+    <div class="flex flex-col">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Fecha Fin</label>
+      <input type="date"
+             formControlName="fecha_fin"
+             class="p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-center" />
+    </div>
+
+    <!-- Nº Participantes -->
+    <div class="flex flex-col">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Participantes</label>
+      <input type="number"
+             formControlName="num_participantes"
+             min="0"
+             class="p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-center" />
+    </div>
+
+    <!-- Horas -->
+    <div class="flex flex-col">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Horas</label>
+      <input type="number"
+             formControlName="horas"
+             min="0"
+             class="p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-center" />
+    </div>
+
+    <!-- Departamento -->
+    <div class="flex flex-col md:col-span-2">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Departamento</label>
+      <div class="relative">
+        <select formControlName="id_departamento"
+                class="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 appearance-none text-center">
+          <option value="" disabled>Seleccione un departamento</option>
+          <option *ngFor="let d of departamentos" [value]="d.id">
+            {{ d.nombre }}
+          </option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <!-- chevron -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Proyecto -->
+    <div class="flex flex-col md:col-span-2">
+      <label class="text-xs text-gray-500 uppercase tracking-wider font-medium text-center">Proyecto</label>
+      <div class="relative">
+        <select formControlName="id_proyecto"
+                class="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 appearance-none text-center">
+          <option value="" disabled>Seleccione un proyecto</option>
+          <option *ngFor="let p of proyectos" [value]="p.id_proyecto">
+            {{ p.nombre }}
+          </option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="col-span-2 flex justify-center gap-4 mt-6">
+      <button type="button"
+              (click)="cerrarModal()"
+              class="px-5 py-2.5 text-gray-600 rounded-lg border border-gray-200 hover:bg-gray-50 text-sm font-medium">
+        Cancelar
+      </button>
+      <button type="submit"
+              [disabled]="procesando"
+              class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-sm">
+        {{ procesando ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="col-span-2 mt-4 bg-red-50 text-red-600 p-3 rounded-lg text-center text-sm border border-red-100">
+      {{ mensajeError }}
+    </div>
+  </form>
+</div>
