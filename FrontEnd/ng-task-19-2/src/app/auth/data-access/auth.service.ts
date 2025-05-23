@@ -140,21 +140,6 @@ export class AuthService {
   //   return !!this.obtenerToken();
   // }
 
-  // Saber si el usuario esta logeado sin token
-  async isLogged(): Promise<boolean> {
-    try {
-      const user = await this.getCurrentUser();
-      return !!user; // Devuelve true si existe usuario, false si es null
-    } catch (error) {
-      console.error('Error verificando autenticación:', error);
-      return false; // En caso de error, considera no logueado
-    }
-  }
-  // Getter para estado de autenticación
-  get isLoggedIn(): boolean {
-    return this._isLoggedIn ?? false;
-  }
-
 
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<Usuario | null> {

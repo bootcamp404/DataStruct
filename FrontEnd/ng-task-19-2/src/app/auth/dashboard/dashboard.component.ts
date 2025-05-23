@@ -17,7 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, ActividadComponent, DepartamentsComponent, TranslateModule],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
