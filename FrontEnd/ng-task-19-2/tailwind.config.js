@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  darkMode: 'class', // modo oscuro por clase 'dark'
+module.exports = {
+  darkMode: 'class', // IMPORTANTE para que funcione el toggle con clase 'dark'
   content: [
     "./src/**/*.{html,ts}",
   ],
@@ -8,4 +8,5 @@ export default {
     extend: {},
   },
   plugins: [],
-};
+}
+

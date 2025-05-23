@@ -40,11 +40,26 @@ export class InicioComponent {
     }
   ];
   toggleDarkMode() {
-    const html = document.documentElement;
-    if(html.classList.contains('dark')){
-      html.classList.remove('dark');
+    const htmlEl = document.documentElement; // <html> element
+    if (htmlEl.classList.contains('dark')) {
+      htmlEl.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      console.log('Modo claro activado');
     } else {
-      html.classList.add('dark');
+      htmlEl.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      console.log('Modo oscuro activado');
+    }
+  }
+
+  ngOnInit() {
+    // Al cargar el componente, aplicar el tema guardado
+    const savedTheme = localStorage.getItem('theme');
+    const htmlEl = document.documentElement;
+    if (savedTheme === 'dark') {
+      htmlEl.classList.add('dark');
+    } else {
+      htmlEl.classList.remove('dark');
     }
   }
 
