@@ -1,6 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { MainviewComponent } from './mainview/mainview.component';
 import { privateGuard, publicGuard } from './core/auth.guard';
 import { PerfilComponent } from './perfil/perfil.component';
 import { FormulariosComponent } from './componentes/formularios/formularios.component';
