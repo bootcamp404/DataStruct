@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
--- Host: localhost    Database: impulsaalicante
+-- Host: 127.0.0.1    Database: impulsaalicante
 -- ------------------------------------------------------
--- Server version	8.0.35
+-- Server version	8.0.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -368,6 +368,30 @@ INSERT INTO `proyecto` VALUES ('A001','Proyecto Empleo Joven','Fomentar la emple
 UNLOCK TABLES;
 
 --
+-- Table structure for table `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rol` (
+  `id_rol` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`id_rol`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol`
+--
+
+LOCK TABLES `rol` WRITE;
+/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
+INSERT INTO `rol` VALUES (1,'Administrador total');
+/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sector_empresa`
 --
 
@@ -462,9 +486,12 @@ CREATE TABLE `usuarios` (
   `email` varchar(255) NOT NULL,
   `contrasenya` varchar(255) NOT NULL,
   `telefono` varchar(255) DEFAULT NULL,
+  `id_rol` int NOT NULL,
   PRIMARY KEY (`email`),
   UNIQUE KEY `email_UNIQUE` (`email`),
-  UNIQUE KEY `telefono_UNIQUE` (`telefono`)
+  UNIQUE KEY `telefono_UNIQUE` (`telefono`),
+  KEY `FK_USUARIO_ROL_idx` (`id_rol`),
+  CONSTRAINT `FK_USUARIO_ROL` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -474,7 +501,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES ('Juan','Pérez García','juan.perez@example.com','1234Segura','612345678'),('Juan','Pérez','prueba123@gmail.com','123456','666777888'),(NULL,NULL,'prueba33@gmail.com','123456',NULL);
+INSERT INTO `usuarios` VALUES ('ivan',NULL,'ivan@gmail.com','123456',NULL,1),('leo',NULL,'leo@gmail.com','123456',NULL,1),('prueba','1','prueba123@gmail.com','123456',NULL,1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -487,4 +514,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-16  8:08:23
+-- Dump completed on 2025-05-23 11:26:02
