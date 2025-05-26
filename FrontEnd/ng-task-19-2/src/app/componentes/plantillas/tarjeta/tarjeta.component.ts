@@ -1,15 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-interface Template {
-  id: number
-  name: string
-  description: string
-  category: string
-  fields: number
-  createdAt: Date
-  isActive: boolean
-}
+import { Template } from '../../../modelos/template';
 
 @Component({
   selector: 'app-tarjeta',

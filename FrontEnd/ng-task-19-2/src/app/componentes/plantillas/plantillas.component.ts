@@ -1,102 +1,55 @@
-import { Component } from '@angular/core';
-import { BuscadorComponent } from './buscador/buscador.component';
-import { TarjetaComponent } from './tarjeta/tarjeta.component';
-import { HeaderComponent } from "../../mainview/header/header.component";
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProyectoService } from '../../services/proyecto.service';
-import { TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
-import { Departamento } from '../../modelos/departamento';
 import { DepartamentoService } from '../../services/departamento.service';
-
-
-interface Template {
-  id: number
-  name: string
-  description: string
-  category: string
-  fields: number
-  createdAt: Date
-  isActive: boolean
-}
+import { TranslateService } from '@ngx-translate/core';
+import { Template } from '../../modelos/template';          // ←  la nueva interfaz
+import { Departamento } from '../../modelos/departamento';
+import { HeaderComponent } from '../../mainview/header/header.component';
+import { TarjetaComponent } from './tarjeta/tarjeta.component';
+import { BuscadorComponent } from './buscador/buscador.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-plantillas',
-  imports: [BuscadorComponent, TarjetaComponent, HeaderComponent, ReactiveFormsModule, CommonModule],
+  standalone: true,
+  imports: [HeaderComponent, TarjetaComponent, BuscadorComponent, ReactiveFormsModule, CommonModule],   
   templateUrl: './plantillas.component.html',
-  styleUrl: './plantillas.component.css'
+  styleUrl:  './plantillas.component.css'
 })
-export class PlantillasComponent {
-  templates: Template[] = [
-    {
-      id: 1,
-      name: "Factura Estándar",
-      description: "Plantilla para facturas con campos básicos",
-      category: "Finanzas",
-      fields: 12,
-      createdAt: new Date("2023-12-10"),
-      isActive: true,
-    },
-    {
-      id: 2,
-      name: "Formulario de Contacto",
-      description: "Plantilla para recopilar información de contacto",
-      category: "Marketing",
-      fields: 8,
-      createdAt: new Date("2024-01-15"),
-      isActive: true,
-    },
-    {
-      id: 3,
-      name: "Inventario de Productos",
-      description: "Plantilla para gestionar inventario",
-      category: "Logística",
-      fields: 15,
-      createdAt: new Date("2024-02-20"),
-      isActive: true,
-    },
-    {
-      id: 4,
-      name: "Reporte de Gastos",
-      description: "Plantilla para reportar gastos mensuales",
-      category: "Finanzas",
-      fields: 10,
-      createdAt: new Date("2024-03-05"),
-      isActive: false,
-    },
-    {
-      id: 5,
-      name: "Encuesta de Satisfacción",
-      description: "Plantilla para encuestas a clientes",
-      category: "Marketing",
-      fields: 12,
-      createdAt: new Date("2024-03-18"),
-      isActive: true,
-    },
-    {
-      id: 6,
-      name: "Orden de Compra",
-      description: "Plantilla para órdenes de compra",
-      category: "Compras",
-      fields: 14,
-      createdAt: new Date("2024-04-02"),
-      isActive: true,
-    },
-  ]
+export class PlantillasComponent implements OnInit {
 
-  departamentos: Departamento[] = [];
+  /* ----------  PLANTILLAS  ---------- */
+  templates: Template[] = [
+    { id: 1, name: 'Proyecto',              description: 'Plantilla para proyectos',         category: 'Proyecto', isActive: true },
+    { id: 2, name: 'Formulario Contacto',   description: 'Recopila info de contacto',        category: 'Marketing', isActive: true },
+    { id: 3, name: 'Inventario Productos',  description: 'Gestión de inventario',            category: 'Logística', isActive: true },
+    { id: 4, name: 'Reporte de Gastos',     description: 'Gastos mensuales',                 category: 'Finanzas', isActive: true },
+    { id: 5, name: 'Encuesta Satisfacción', description: 'Encuestas a clientes',             category: 'Marketing', isActive: true },
+    { id: 6, name: 'Orden de Compra',       description: 'Plantilla para órdenes de compra', category: 'Compras', isActive: true },
+  ];
+
+  /* ----------  FILTRO / BUSCADOR  ---------- */
+  searchTerm = '';
+  selectedCategory = '';
+  filteredTemplates: Template[] = this.templates;
+  categories = [...new Set(this.templates.map(t => t.category))];
+
+  /* ----------  MODAL CREACIÓN  ---------- */
+  mostrarModalCreacionProyecto = false;
+  proyectoAsociado: Template | null = null;
+
+  /* ----------  FORMULARIO  ---------- */
   formularioProyecto: FormGroup;
   creando = false;
   error = false;
   mensajeError: string | null = null;
-  filteredTemplates: Template[] = this.templates
-  searchTerm = ""
-  selectedCategory = ""
-  categories: string[] = [...new Set(this.templates.map((template) => template.category))]
-  mostrarModalCreacionProyecto = false;
-  proyectoAsociado: any = null;
+
+  /* ----------  LISTA DE PROYECTOS CREADOS (caché local)  ---------- */
   proyectosCreados: any[] = [];
 
+  /* ----------  DATOS AUXILIARES  ---------- */
+  departamentos: Departamento[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -106,42 +59,53 @@ export class PlantillasComponent {
   ) {
     this.formularioProyecto = this.fb.group({
       id_proyecto: ['', Validators.required],
-      nombre: ['', Validators.required],
-      objetivo: ['', Validators.required],
-      fecha_ini: ['', Validators.required],
-      fecha_fin: ['', Validators.required],
-      departamento_id: ['', Validators.required]
-    });
+      nombre:      ['', Validators.required],
+      objetivo:    ['', Validators.required],
+      fecha_ini:   ['', Validators.required],
+      fecha_fin:   ['', Validators.required],
+      departamento_id: ['', Validators.required],
 
+      /* Campos opcionales según la categoría -------------------- */
+      cliente: [''],           // Finanzas → Factura
+      proveedor: [''],         // Compras → Orden de compra
+      correo: [''],            // Marketing → Formulario contacto
+    });
+  }
+
+  /* ----------  Life cycle  ---------- */
+  ngOnInit(): void {
     this.cargarDepartamentos();
   }
 
+  /* ----------  Departamentos (select)  ---------- */
   cargarDepartamentos(): void {
     this.departamentoService.obtenerDepartamentos().subscribe({
-      next: (datos) => {
-        this.departamentos = datos;
-      },
-      error: (err) => {
-        console.error('Error al cargar departamentos', err);
-      }
+      next: data => this.departamentos = data,
+      error: err => console.error('Error al cargar departamentos', err)
     });
   }
 
-  abrirModalCreacionProyecto(template: any) {
+  /* ----------  Abrir / cerrar modal  ---------- */
+  abrirModalCreacionProyecto(template: Template): void {
     this.proyectoAsociado = template;
     this.mostrarModalCreacionProyecto = true;
+
     this.error = false;
     this.mensajeError = null;
+
+    /* Limpia campos opcionales */
+    this.formularioProyecto.patchValue({ cliente: '', proveedor: '', correo: '' });
   }
 
-  cerrarModalCreacionProyecto() {
+  cerrarModalCreacionProyecto(): void {
     this.mostrarModalCreacionProyecto = false;
     this.proyectoAsociado = null;
     this.formularioProyecto.reset();
   }
 
-  guardarProyecto() {
-    if (this.formularioProyecto.invalid) {
+  /* ----------  Guardar proyecto (POST API)  ---------- */
+  guardarProyecto(): void {
+    if (this.formularioProyecto.invalid || !this.proyectoAsociado) {
       this.error = true;
       this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
       return;
@@ -149,29 +113,36 @@ export class PlantillasComponent {
 
     this.creando = true;
     this.error = false;
-    this.mensajeError = null;
 
-    const form = this.formularioProyecto.value;
+    const f   = this.formularioProyecto.value;
+    const cat = this.proyectoAsociado.category;   // clave diferenciadora
 
-    // Si el backend espera un objeto "departamento" en lugar de solo "departamento_id", ajusta aquí:
-    const proyecto = {
-      id_proyecto: form.id_proyecto,
-      nombre: form.nombre,
-      objetivo: form.objetivo,
-      fecha_ini: form.fecha_ini,
-      fecha_fin: form.fecha_fin,
-      departamento: {
-        id: form.departamento_id
-      }
+    /* Construir payload genérico + campos extra por categoría ---------- */
+    const proyecto: any = {
+      id_proyecto: f.id_proyecto,
+      nombre:      f.nombre,
+      objetivo:    f.objetivo,
+      fecha_ini:   f.fecha_ini,
+      fecha_fin:   f.fecha_fin,
+      categoria:   cat,
+      departamento: { id: f.departamento_id }
     };
 
+    /* Campos adicionales */
+    if (cat === 'Finanzas')  proyecto.cliente   = f.cliente;    // Factura / Gastos
+    if (cat === 'Compras')   proyecto.proveedor = f.proveedor;  // Orden de compra
+    if (cat === 'Marketing') proyecto.correo    = f.correo;     // Formulario contacto / Encuesta
+
+    /* POST al backend --------------------------------------------------- */
     this.proyectoService.crearProyecto(proyecto).subscribe({
       next: () => {
+        /* Añadimos al array local solo para visualización inmediata -------- */
+        this.proyectosCreados.push(proyecto);
+
         this.cerrarModalCreacionProyecto();
         this.creando = false;
-        // Opcional: notificación de éxito
       },
-      error: (err) => {
+      error: err => {
         this.error = true;
         this.creando = false;
         this.mensajeError = err.error?.message || 'Ocurrió un error al crear el proyecto.';
@@ -179,25 +150,26 @@ export class PlantillasComponent {
     });
   }
 
+  /* ----------  Filtros de búsqueda / categoría  ---------- */
   onSearch(term: string): void {
-    this.searchTerm = term
-    this.applyFilters()
+    this.searchTerm = term;
+    this.applyFilters();
   }
 
   onCategoryChange(category: string): void {
-    this.selectedCategory = category
-    this.applyFilters()
+    this.selectedCategory = category;
+    this.applyFilters();
   }
 
   applyFilters(): void {
-    this.filteredTemplates = this.templates.filter((template) => {
+    this.filteredTemplates = this.templates.filter(t => {
       const matchesSearch =
-        template.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        template.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+        t.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        t.description.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      const matchesCategory = this.selectedCategory === "" || template.category === this.selectedCategory
+      const matchesCategory = this.selectedCategory === '' || t.category === this.selectedCategory;
 
-      return matchesSearch && matchesCategory && template.isActive
-    })
+      return matchesSearch && matchesCategory && t.isActive;
+    });
   }
 }
