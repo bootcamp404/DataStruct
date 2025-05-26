@@ -14,6 +14,7 @@ public class Departamento {
     @Column
     private String nombre;
 
+    //RELACIONES
     @OneToMany(mappedBy = "departamento")
     @JsonIgnoreProperties("departamento")
     private List<Contrato> contratos;
