@@ -1,1 +1,13 @@
-<router-outlet /> <ngx-sonner-toaster/>
+
+<router-outlet></router-outlet>
+<ngx-sonner-toaster/>
+
+<!-- Botón flotante -->
+<button class="chat-toggle-btn" (click)="toggleChat()">
+  💬
+</button>
+
+<!-- Contenedor del chat -->
+<div class="chat-widget-container" [class.open]="chatAbierto">
+  <app-chat></app-chat>
+</div>
