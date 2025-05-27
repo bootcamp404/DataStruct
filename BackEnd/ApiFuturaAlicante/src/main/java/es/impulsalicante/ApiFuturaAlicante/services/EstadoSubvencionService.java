@@ -21,7 +21,13 @@ public class EstadoSubvencionService {
         return estadoSubvencionRepository.findById(id);
     }
 
+    private String generarId(){
+        Long count = estadoSubvencionRepository.count();
+        return "ES" + (count + 1);
+    }
     public EstadoSubvencion createEstadoSubvencion(EstadoSubvencion estadoSubvencion) {
+        String nuevoId = generarId();
+        estadoSubvencion.setId(nuevoId);
         return estadoSubvencionRepository.save(estadoSubvencion);
     }
 

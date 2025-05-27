@@ -21,7 +21,13 @@ public class CentrosService {
         return centroRepository.findById(id);
     }
 
+    private String generarId(){
+        Long count = centroRepository.count();
+        return "Ce" + (count + 1);
+    }
     public Centros createCentro(Centros centro) {
+        String nuevoId = generarId();
+        centro.setId(nuevoId);
         return centroRepository.save(centro);
     }
 
