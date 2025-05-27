@@ -1,0 +1,65 @@
+/* src/app/app.component.css */
+/* Botón flotante */
+.chat-toggle-btn {
+  position: fixed;
+  bottom: 20px;       /* ajusta según tu footer */
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: #007bff;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+/* Contenedor del widget */
+.chat-widget-container {
+  position: fixed;
+  bottom: 90px;       /* justo encima del botón */
+  right: 20px;
+  width: 300px;
+  max-height: 500px;
+  overflow: hidden;
+  transform: translateY(130%);   /* escondido hacia abajo */
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
+/* Cuando está abierto, lo traemos a la vista */
+.chat-widget-container.open {
+  transform: translateY(0);
+}
+
+.chat-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Ajusta tu chat.component para que tenga un box fijo */
+.app-chat {
+  width: 350px;
+  height: 500px;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+.chat-toggle {
+  position: fixed;
+  bottom: 20px;    /* distancia desde el borde inferior */
+  right: 20px;     /* distancia desde el borde derecho */
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 10000;
+}
