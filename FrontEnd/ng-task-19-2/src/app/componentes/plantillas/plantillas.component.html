@@ -17,7 +17,8 @@
   @if (filteredTemplates.length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       @for (template of filteredTemplates; track template.id) {
-        <app-tarjeta [template]="template"></app-tarjeta>
+        <app-tarjeta [template]="template"
+        (rellenar)="abrirModalCreacionProyecto(template)"></app-tarjeta>
       }
     </div>
   } @else {
@@ -28,6 +29,97 @@
         (click)="searchTerm = ''; selectedCategory = ''; applyFilters()">
         Mostrar todos los formularios
       </button>
+    </div>
+  }
+
+  @if (mostrarModalCreacionProyecto) {
+    <div class="fixed inset-0 bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div class="bg-black rounded-lg shadow-xl max-w-3xl w-full p-6">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">
+          {{ 'PANEL-ADMINISTRATIVO.CREAR-FUNCIONES.PROYECTO' }}
+        </h2>
+
+        <form [formGroup]="formularioProyecto" (ngSubmit)="guardarProyecto()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="id_proyecto" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-id-card text-blue-500 mr-2"></i>ID Proyecto
+            </label>
+            <input type="text" id="id_proyecto" formControlName="id_proyecto"
+                  class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  [class.border-red-500]="error && mensajeError?.includes('id_proyecto')">
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="nombre" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-pen text-blue-500 mr-2"></i>{{ 'NOMBRE' }}
+            </label>
+            <input type="text" id="nombre" formControlName="nombre"
+                  class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  [class.border-red-500]="error && mensajeError?.includes('nombre')">
+          </div>
+
+          <div class="flex flex-col gap-2 md:col-span-2">
+            <label for="objetivo" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-bullseye text-blue-500 mr-2"></i>{{ 'OBJETIVO' }}
+            </label>
+            <textarea id="objetivo" formControlName="objetivo" rows="3"
+                      class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none"
+                      [class.border-red-500]="error && mensajeError?.includes('objetivo')"></textarea>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="fecha_ini" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>{{ 'FECHA_INICIO' }}
+            </label>
+            <input type="date" id="fecha_ini" formControlName="fecha_ini"
+                  class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  [class.border-red-500]="error && mensajeError?.includes('fecha_ini')">
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="fecha_fin" class="font-medium text-gray-700 flex items-center">
+              <i class="fas fa-calendar-check text-blue-500 mr-2"></i>{{ 'FECHA_FIN' }}
+            </label>
+            <input type="date" id="fecha_fin" formControlName="fecha_fin"
+                  class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  [class.border-red-500]="error && mensajeError?.includes('fecha_fin')">
+          </div>
+
+          <div class="flex flex-col gap-2 md:col-span-2">
+            <label for="departamento_id" class="font-medium text-black flex items-center">
+              <i class="fas fa-building text-blue-500 mr-2"></i>{{ 'DEPARTAMENTO' }}
+            </label>
+            <select id="departamento_id" formControlName="departamento_id"
+                    class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                    [class.border-red-500]="error && mensajeError?.includes('departamento_id')">
+              <option value="" disabled selected>{{ 'SELECCIONE' }}</option>
+              <option *ngFor="let dept of departamentos" [value]="dept.id">
+                {{ dept.nombre }}
+              </option>
+            </select>
+          </div>
+
+
+          <div class="col-span-2 flex justify-center gap-4">
+            <button type="button"
+                    (click)="cerrarModalCreacionProyecto()"
+                    class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              Cancelar
+            </button>
+            <button type="submit"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    [disabled]="creando">
+              {{ creando ? ('GUARDANDO' ) : ('PANEL-ADMINISTRATIVO.CREAR-FUNCIONES.PROYECTO') }}
+            </button>
+          </div>
+
+          @if (error) {
+            <div class="col-span-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm">
+              {{ mensajeError }}
+            </div>
+          }
+        </form>
+      </div>
     </div>
   }
 </div>

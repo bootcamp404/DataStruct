@@ -23,7 +23,7 @@ public class Proyecto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_fin;
 
-
+    // RELACIONES
     @ManyToOne
     @JoinColumn(name="id_departamento")
     @JsonIgnoreProperties({"contratos", "centros", "proyectos", "actividades", "campanyasMarketing", "empresas", "convenios"})

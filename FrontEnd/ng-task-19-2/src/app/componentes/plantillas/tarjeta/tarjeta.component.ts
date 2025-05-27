@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface Template {
   id: number
@@ -18,7 +18,12 @@ interface Template {
   styleUrl: './tarjeta.component.css'
 })
 export class TarjetaComponent {
-  @Input() template!: Template
+  @Input() template!: Template;
+  @Output() rellenar = new EventEmitter<void>();
+
+  onRellenar(){
+    this.rellenar.emit();
+  }
 
   getCategoryColor(category: string): string {
     const colors: Record<string, string> = {
