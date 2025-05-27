@@ -1,5 +1,4 @@
 <app-header></app-header>
-
 <div class="w-full min-h-screen px-4 py-6">
     <!-- Encabezado -->
     <div class="flex justify-between items-center mb-4">
@@ -49,7 +48,7 @@
     <!-- Selector de vista -->
     <div class="bg-gray-100 rounded-lg inline-flex p-1 mb-6">
       <button 
-        [ngClass]="{'bg-white shadow-sm': vistaActual === 'cuadricula'}"
+        [ngClass]="{'bgwhite- shadow-sm': vistaActual === 'cuadricula'}"
         (click)="cambiarVista('cuadricula')" 
         class="px-4 py-2 rounded-md text-sm font-medium"
       >
@@ -138,7 +137,7 @@
             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="divide-y divide-gray-200">
           <tr *ngFor="let formulario of formularios" (click)="verFormulario(formulario.id)" class="hover:bg-gray-50 cursor-pointer">
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">{{ formulario.titulo }}</div>

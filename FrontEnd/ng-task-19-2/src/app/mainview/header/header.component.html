@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-50 w-full bg-white shadow-sm border-b border-gray-100 no-imprimir">
+<header class="border-b sticky top-0 z-50 w-full">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between">
 
@@ -13,80 +13,82 @@
       </a>
 
       <!-- Navegación principal -->
-      <nav class=" md:flex gap-6 text-base font-medium">
+      <nav class="md:flex gap-6 text-base font-medium">
         <a routerLink="/inicio"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
-           class="text-gray-700 hover:text-indigo-600 transition-colors">
-           {{ 'CABECERA.INICIO' | translate}}
-           <!-- Inicio -->
+           class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          {{ 'CABECERA.INICIO' | translate }}
         </a>
-
         <a routerLink="/dashboard"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
-           class="text-gray-700 hover:text-indigo-600 transition-colors">
-           {{ 'CABECERA.PANEL' | translate}}
-           <!-- Panel administrativo -->
+           class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          {{ 'CABECERA.PANEL' | translate }}
         </a>
-
         <a routerLink="/panel-admin"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
-           class="text-gray-700 hover:text-indigo-600 transition-colors">
-           {{ 'CABECERA.LISTA' | translate}}
-           <!-- Lista de empleados -->
+           class=" hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          {{ 'CABECERA.LISTA' | translate }}
         </a>
       </nav>
 
-
       <!-- Controles de usuario -->
       <div class="flex items-center gap-3">
+        <!-- Botón de modo oscuro -->
+        <button
+          (click)="toggleTheme()"
+          class="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600 transition">
+          Cambiar tema
+        </button>
 
         <!-- Idioma -->
         <div class="relative">
-          <button (click)="toggleLanguageDropdown($event)"
-                  class="flex items-center px-2 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow hover:shadow-md">
-            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="..."/></svg>
-            <span>{{ languageNames[currentLanguageCode] }}</span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </button>
-          @if (showLanguageDropdown) {
-            <div class="absolute right-0 mt-1 w-36 bg-white rounded-2xl shadow border border-gray-200 z-50 text-base">
-              <a (click)="changeLanguage('es')" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">Castellano</a>
-              <a (click)="changeLanguage('va')" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">Valencià</a>
-              <a (click)="changeLanguage('en')" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">English</a>
-            </div>
-          }
+  <button (click)="toggleLanguageDropdown($event)"
+          class="flex items-center px-2 py-1.5 text-sm font-medium rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 shadow hover:shadow-md">
+    <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="..."/></svg>
+    <span>{{ languageNames[currentLanguageCode] }}</span>
+    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+          <div *ngIf="showLanguageDropdown" class="absolute right-0 mt-1 w-36 bg-white dark:bg-gray-800 rounded-2xlb text-white shadow border border-gray-200 dark:border-gray-700 z-50 text-base">
+          <a (click)="changeLanguage('es')" class="block px-4 py-2  hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer" img src="assets/img/bandera-1.svg">Castellano</a>
+          <a (click)="changeLanguage('va')" class="block px-4 py-2  hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">Valencià</a>
+          <a (click)="changeLanguage('en')" class="block px-4 py-2  hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">English</a>
+        </div>
         </div>
 
         <!-- Perfil -->
-        <div class="relative">
-          <button (click)="toggleProfileMenu($event)"
-                  class="flex items-center px-3 rounded-full border border-gray-200 bg-white hover:bg-gray-50 shadow-sm text-sm text-gray-700">
-            <div class="w-8 h-7.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm">
-              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15
-                      10a3 3 0 11-6 0 3 3 0 016 0z"/>
+        @if (usuarioActual; as usuario) {
+          <div class="relative">
+            <button (click)="toggleProfileMenu($event)"
+              class="flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 shadow hover:shadow-md text-sm">
+              <div class="w-8 h-7.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-sm">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15
+                        10a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <span class="ml-2 truncate max-w-[120px] hidden sm:inline">
+                {{ user.displayName || user.email }}
+              </span>
+              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
-            </div>
-            <span class="ml-2 truncate max-w-[120px] hidden sm:inline">
-              {{ user.displayName || user.email }}
-            </span>
-            <svg class="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-          </button>
-          @if (isProfileMenuOpen) {
-            <div class="absolute right-0 mt-1 w-44 bg-white rounded shadow border border-gray-200 z-50 text-base">
-              <a routerLink="/perfil" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">{{ 'CABECERA.PERFIL' | translate }}</a>
-              <!-- Mi perfil -->
-              <button (click)="onLogoutClick()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50">{{ 'CABECERaA.SESION' | translate }}</button>
-              <!-- Cerrar sesión -->
-            </div>
-          }
-        </div>
-
+            </button>
+            @if (isProfileMenuOpen) {
+              <div class="absolute right-0 mt-1 w-44 bg-gray-800 text-white rounded shadow border border-gray-200 dark:border-gray-700 z-50 text-base">
+                <a routerLink="/perfil" class="block px-4 py-2  hover:bg-gray-50 dark:hover:bg-gray-700">{{ 'CABECERA.PERFIL' | translate }}</a>
+                <button (click)="onLogoutClick()" class="w-full text-left px-4 py-2  hover:bg-gray-50 dark:hover:bg-gray-700">{{ 'CABECERA.CERRAR_SESION' | translate }}</button>
+              </div>
+            }
+          </div>
+        } @else {
+          <a [routerLink]="['/auth/sign-in']"
+             class="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 shadow hover:shadow-md text-sm font-medium">
+            {{ 'CABECERA.INICIAR_SESION' | translate }}
+          </a>
+        }
       </div>
     </div>
   </div>
