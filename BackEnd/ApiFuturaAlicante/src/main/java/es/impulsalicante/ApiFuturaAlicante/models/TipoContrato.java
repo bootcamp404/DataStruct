@@ -50,4 +50,8 @@ public class TipoContrato {
     public void setContratos(List<Contrato> contratos) {
         this.contratos = contratos;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

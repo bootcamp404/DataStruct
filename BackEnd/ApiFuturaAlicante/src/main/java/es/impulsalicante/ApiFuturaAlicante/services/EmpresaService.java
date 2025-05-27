@@ -21,7 +21,13 @@ public class EmpresaService {
         return empresaRepository.findById(id);
     }
 
+    private String generarId(){
+        Long count = empresaRepository.count();
+        return "E" + (count + 1);
+    }
     public Empresa createEmpresa(Empresa empresa) {
+        String nuevoId = generarId();
+        empresa.setIdEmpresa(nuevoId);
         return empresaRepository.save(empresa);
     }
 

@@ -24,7 +24,13 @@ public class ContratosService {
     }
 
     //POST
+    private String generarId(){
+        Long count = repositorio.count();
+        return "Co" + (count + 1);
+    }
     public Contrato CrearContrato(Contrato contrato){
+        String nuevoId = generarId();
+        contrato.setId(nuevoId);
         return repositorio.save(contrato);
     }
 
