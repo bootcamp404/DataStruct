@@ -16,15 +16,15 @@ public class ChatService {
         chatMap.put(normalize("¿Qué servicios ofrece DataBridge?"),
                 "En DataBridge ofrecemos una organización departamental donde poder registrar la información para al final del año poder generar una memoria anual con un solo click.");
         chatMap.put(normalize("¿Cómo puedo registrarme?"),
-                "Para registrarte ve a /register, rellena el formulario y confirma tu email.");
+                "Para registrarte ve a a la esquina superior derecha, rellena el formulario y confirma tu email.");
         chatMap.put(normalize("¿Cuáles son los departamentos?"),
-                "Los departamentos predeterminados son .");
+                "Los departamentos predeterminados son el de empleo y formación, promoción económica, desarrollo local estrátegico, jurídico y administrativo, y recursos humanos. Pero se pueden crear tantos como sean necesarios.");
         chatMap.put(normalize("¿Cómo puedo descargar la memoria anual?"),
                 "Después de completar todos los formularios necesarios, se podrá generar la memoria anual con solo pulsar al botón del banner");
         chatMap.put(normalize("¿Puedo filtrar por departamento?"),
                 "Sí, en la sección dashboards y documentos hay un filtro de departamentos para mostrar solo la información de estos.");
         chatMap.put(normalize("No está aquí mi duda"),
-                "No te preocupes, manda un correo a impulsa@gmla.com y se te responderá lo antes posible");
+                "No te preocupes, manda un correo a impulsa@gmail.com y se te responderá lo antes posible");
     }
 
     public String preguntar(String input) {
