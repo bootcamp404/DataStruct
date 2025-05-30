@@ -1,125 +1,263 @@
 <app-header></app-header>
 
-<div class="w-full px-4 py-8 bg-gray-100 ">
+<div class="w-full px-4 py-8 bg-gray-100">
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-black mb-2">Formularios disponibles</h1>
-    <p class="text-black">Explora y utiliza nuestros formularios</p>
+    <p class="text-black">Selecciona el tipo de formulario que deseas crear</p>
   </div>
 
-  <div class="mb-8">
-    <app-buscador 
-      (searchChange)="onSearch($event)"
-      [categories]="categories"
-      (categoryChange)="onCategoryChange($event)">
-    </app-buscador>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    @for (template of templates; track template.id) {
+      <div 
+        (click)="abrirModalCreacion(template)"
+        class="bg-white border border-gray-200 rounded-lg shadow-sm p-6 cursor-pointer hover:shadow-md transition-shadow"
+      >
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h2 class="text-lg font-semibold text-gray-800">{{ template.name }}</h2>
+            <p class="text-sm text-gray-500">{{ template.category }}</p>
+          </div>
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            Activo
+          </span>
+        </div>
+        
+        <p class="text-sm text-gray-600 mb-4">{{ template.description }}</p>
+        
+        <div class="mt-4 flex justify-end">
+          <button class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Crear
+          </button>
+        </div>
+      </div>
+    }
   </div>
 
-  @if (filteredTemplates.length > 0) {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (template of filteredTemplates; track template.id) {
-        <app-tarjeta [template]="template"
-        (rellenar)="abrirModalCreacionProyecto(template)"></app-tarjeta>
-      }
-    </div>
-  } @else {
-    <div class="bg-gray-50 rounded-lg p-8 text-center">
-      <p class="text-gray-600 text-lg">No se encontraron formularios que coincidan con tu búsqueda.</p>
-      <button 
-        class="mt-4 px-4 py-2 bg-indigo-600 text-black rounded-md hover:bg-indigo-700 transition-colors"
-        (click)="searchTerm = ''; selectedCategory = ''; applyFilters()">
-        Mostrar todos los formularios
-      </button>
-    </div>
-  }
-
-  @if (mostrarModalCreacionProyecto) {
+  <!-- Modal de Creación -->
+  @if (mostrarModalCreacion) {
     <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full p-6">
-        <h2 class="text-2xl text-gray-700 mb-6 text-center">
-          {{ 'PANEL-ADMINISTRATIVO.CREAR-FUNCIONES.PROYECTO' }}
-        </h2>
+      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl text-gray-700">
+            {{ templateSeleccionado?.name }}
+          </h2>
+          <button (click)="cerrarModalCreacion()" class="text-gray-400 hover:text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
-        <form [formGroup]="formularioProyecto" (ngSubmit)="guardarProyecto()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="flex flex-col gap-2">
-            <label for="id_proyecto" class="font-medium text-black flex items-center">
-              <i class="fas fa-id-card text-blue-500 mr-2"></i>ID Proyecto
-            </label>
-            <input type="text" id="id_proyecto" formControlName="id_proyecto"
-                  class="text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                  [class.border-red-500]="error && mensajeError?.includes('id_proyecto')">
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <label for="nombre" class="font-medium text-black flex items-center">
-              <i class="fas fa-pen text-blue-500 mr-2"></i>{{ 'NOMBRE' }}
-            </label>
-            <input type="text" id="nombre" formControlName="nombre"
-                  class="text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                  [class.border-red-500]="error && mensajeError?.includes('nombre')">
-          </div>
-
-          <div class="flex flex-col gap-2 md:col-span-2">
-            <label for="objetivo" class="font-medium text-gray-700 flex items-center">
-              <i class="fas fa-bullseye text-blue-500 mr-2"></i>{{ 'OBJETIVO' }}
-            </label>
-            <textarea id="objetivo" formControlName="objetivo" rows="3"
-                      class="text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm resize-none"
-                      [class.border-red-500]="error && mensajeError?.includes('objetivo')"></textarea>
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <label for="fecha_ini" class="font-medium text-gray-700 flex items-center">
-              <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>{{ 'FECHA_INICIO' }}
-            </label>
-            <input type="date" id="fecha_ini" formControlName="fecha_ini"
-                  class="text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                  [class.border-red-500]="error && mensajeError?.includes('fecha_ini')">
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <label for="fecha_fin" class="font-medium text-gray-700 flex items-center">
-              <i class="fas fa-calendar-check text-blue-500 mr-2"></i>{{ 'FECHA_FIN' }}
-            </label>
-            <input type="date" id="fecha_fin" formControlName="fecha_fin"
-                  class="text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                  [class.border-red-500]="error && mensajeError?.includes('fecha_fin')">
-          </div>
-
-          <div class="flex flex-col gap-2 md:col-span-2">
-            <label for="departamento_id" class="font-medium text-black flex items-center">
-              <i class="fas fa-building text-blue-500 mr-2"></i>{{ 'DEPARTAMENTO' }}
-            </label>
-            <select id="departamento_id" formControlName="departamento_id"
-                    class="text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                    [class.border-red-500]="error && mensajeError?.includes('departamento_id')">
-              <option value="" disabled selected>{{ 'SELECCIONE' }}</option>
-              @for (dept of departamentos; track $index) {
-                <option [value]="dept.id">
-                  {{ dept.nombre }}
-                </option>
-              }
-            </select>
-          </div>
-
-          <div class="col-span-2 flex justify-center gap-4">
-            <button type="button"
-                    (click)="cerrarModalCreacionProyecto()"
-                    class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-              Cancelar
-            </button>
-            <button type="submit"
-                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    [disabled]="creando">
-              {{ creando ? ('GUARDANDO' ) : ('PANEL-ADMINISTRATIVO.CREAR-FUNCIONES.PROYECTO') }}
-            </button>
-          </div>
-
-          @if (error) {
-            <div class="col-span-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center shadow-sm">
-              {{ mensajeError }}
+        <!-- Formulario de Proyecto -->
+        @if (templateSeleccionado?.id === 1) {
+          <form [formGroup]="formularioProyecto" (ngSubmit)="guardarFormulario()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">ID Proyecto</label>
+              <input type="text" formControlName="id_proyecto"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('id_proyecto')">
             </div>
-          }
-        </form>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Nombre</label>
+              <input type="text" formControlName="nombre"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('nombre')">
+            </div>
+
+            <div class="flex flex-col gap-2 md:col-span-2">
+              <label class="font-medium text-gray-700">Objetivo</label>
+              <textarea formControlName="objetivo" rows="3"
+                        class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                        [class.border-red-500]="error && mensajeError?.includes('objetivo')"></textarea>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Fecha Inicio</label>
+              <input type="date" formControlName="fecha_ini"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('fecha_ini')">
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Fecha Fin</label>
+              <input type="date" formControlName="fecha_fin"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('fecha_fin')">
+            </div>
+
+            <div class="flex flex-col gap-2 md:col-span-2">
+              <label class="font-medium text-gray-700">Departamento</label>
+              <select formControlName="departamento_id"
+                      class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      [class.border-red-500]="error && mensajeError?.includes('departamento_id')">
+                <option value="" disabled selected>Seleccione un departamento</option>
+                @for (dept of departamentos; track dept.id) {
+                  <option [value]="dept.id">{{ dept.nombre }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-span-2 flex justify-center gap-4 mt-6">
+              <button type="button"
+                      (click)="cerrarModalCreacion()"
+                      class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                Cancelar
+              </button>
+              <button type="submit"
+                      [disabled]="creando"
+                      class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                {{ creando ? 'Guardando...' : 'Guardar' }}
+              </button>
+            </div>
+          </form>
+        }
+
+        <!-- Formulario de Actividad -->
+        @if (templateSeleccionado?.id === 2) {
+          <form [formGroup]="formularioActividad" (ngSubmit)="guardarFormulario()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Nombre</label>
+              <input type="text" formControlName="nombre"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('nombre')">
+            </div>
+
+            <div class="flex flex-col gap-2 md:col-span-2">
+              <label class="font-medium text-gray-700">Descripción</label>
+              <textarea formControlName="descripcion" rows="3"
+                        class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                        [class.border-red-500]="error && mensajeError?.includes('descripcion')"></textarea>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Fecha Inicio</label>
+              <input type="date" formControlName="fecha_ini"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('fecha_ini')">
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Fecha Fin</label>
+              <input type="date" formControlName="fecha_fin"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('fecha_fin')">
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Número de Participantes</label>
+              <input type="number" formControlName="num_participantes" min="0"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('num_participantes')">
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Horas</label>
+              <input type="number" formControlName="horas" min="0"
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('horas')">
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Departamento</label>
+              <select formControlName="id_departamento"
+                      class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      [class.border-red-500]="error && mensajeError?.includes('id_departamento')">
+                <option value="" disabled selected>Seleccione un departamento</option>
+                @for (dept of departamentos; track dept.id) {
+                  <option [value]="dept.id">{{ dept.nombre }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Proyecto</label>
+              <select formControlName="id_proyecto"
+                      class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      [class.border-red-500]="error && mensajeError?.includes('id_proyecto')">
+                <option value="" disabled selected>Seleccione un proyecto</option>
+                @for (proy of proyectos; track proy.id_proyecto) {
+                  <option [value]="proy.id_proyecto">{{ proy.nombre }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-span-2 flex justify-center gap-4 mt-6">
+              <button type="button"
+                      (click)="cerrarModalCreacion()"
+                      class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                Cancelar
+              </button>
+              <button type="submit"
+                      [disabled]="creando"
+                      class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                {{ creando ? 'Guardando...' : 'Guardar' }}
+              </button>
+            </div>
+          </form>
+        }
+
+        <!-- Formulario de Subvención -->
+        @if (templateSeleccionado?.id === 3) {
+          <form [formGroup]="formularioSubvencion" (ngSubmit)="guardarFormulario()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Entidad</label>
+              <input type="text" formControlName="entidad" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Importe</label>
+              <input type="number" formControlName="importe" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Estado</label>
+              <select formControlName="id_estado_sub" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="" disabled>Seleccione un estado</option>
+                @for (estado of estadosSubvencion; track estado.id_estado_sub) {
+                  <option [value]="estado.id_estado_sub">{{ estado.id_estado_sub }}</option>
+                }
+              </select>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Proyecto</label>
+              <select formControlName="id_proyecto" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="" disabled>Seleccione un proyecto</option>
+                @for (proy of proyectos; track proy.id_proyecto) {
+                  <option [value]="proy.id_proyecto">{{ proy.nombre }}</option>
+                }
+              </select>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Fecha de creación</label>
+              <input type="date" formControlName="fecha_creacion" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-gray-700">Modalidad</label>
+              <select formControlName="modalidad" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="" disabled>Seleccione una modalidad</option>
+                @for (mod of modalidades; track mod) {
+                  <option [value]="mod">{{ mod }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-span-2 flex justify-center gap-4 mt-6">
+              <button type="button" (click)="cerrarModalCreacion()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                Cancelar
+              </button>
+              <button type="submit" [disabled]="creando" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                {{ creando ? 'Guardando...' : 'Guardar' }}
+              </button>
+            </div>
+          </form>
+        }
+
+        @if (error) {
+          <div class="mt-4 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center">
+            {{ mensajeError }}
+          </div>
+        }
       </div>
     </div>
   }

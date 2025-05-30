@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HeaderComponent } from "../../mainview/header/header.component";
 
 interface Formulario {
@@ -26,56 +27,28 @@ export class FormulariosComponent implements OnInit {
   filtroEstado: string = 'Todos los estados';
   filtroDepartamento: string = 'Todos los...';
   
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
-
     // Simulación de datos de formularios
     this.formularios = [
       {
         id: 1,
-        titulo: 'Evaluación de Desempeño',
-        departamento: 'Recursos Humanos',
-        descripcion: 'Formulario para evaluar el rendimiento de los empleados',
+        titulo: 'Crear Proyecto',
+        departamento: 'Gestión',
+        descripcion: 'Formulario para crear nuevos proyectos',
         respuestas: 24,
         fecha: '12/4/2024',
         estado: 'Activo'
       },
       {
         id: 2,
-        titulo: 'Encuesta de Satisfacción',
-        departamento: 'Marketing',
-        descripcion: 'Formulario para medir la satisfacción de los clientes',
+        titulo: 'Crear Actividad',
+        departamento: 'Gestión',
+        descripcion: 'Formulario para crear nuevas actividades',
         respuestas: 56,
         fecha: '5/4/2024',
         estado: 'Activo'
-      },
-      {
-        id: 3,
-        titulo: 'Reporte de Gastos',
-        departamento: 'Finanzas',
-        descripcion: 'Formulario para reportar gastos relacionados con el trabajo',
-        respuestas: 18,
-        fecha: '2/4/2024',
-        estado: 'Activo'
-      },
-      {
-        id: 4,
-        titulo: 'Solicitud de Vacaciones',
-        departamento: 'Recursos Humanos',
-        descripcion: 'Formulario para solicitar días de vacaciones',
-        respuestas: 32,
-        fecha: '1/4/2024',
-        estado: 'Activo'
-      },
-      {
-        id: 5,
-        titulo: 'Solicitud de Material',
-        departamento: 'Operaciones',
-        descripcion: 'Formulario para solicitar material de oficina',
-        respuestas: 0,
-        fecha: '15/3/2024',
-        estado: 'Borrador'
       }
     ];
   }
@@ -90,8 +63,12 @@ export class FormulariosComponent implements OnInit {
   }
 
   verFormulario(id: number): void {
-    // Implementar lógica para ver un formulario
-    console.log('Ver formulario', id);
+    // Navegar a proyectos o actividades según el id
+    if (id === 1) {
+      this.router.navigate(['/proyectos']);
+    } else if (id === 2) {
+      this.router.navigate(['/actividades']);
+    }
   }
 
   editarFormulario(id: number, event: Event): void {

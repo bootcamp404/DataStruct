@@ -7,6 +7,7 @@ import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { PlantillasComponent } from './componentes/plantillas/plantillas.component';
 import { AdminPanelComponent } from './panel-admin/panel-admin.component';
 import { InicioComponent } from './mainview/inicio/inicio.component';
+import { ProyectoComponent } from './componentes/formularios/proyecto/proyecto.component';
 
 
 export const routes: Routes = [
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path: 'inicio',
     component: InicioComponent
+  },
+  {
+    path: 'test',
+    component: ProyectoComponent
   },
   {
     path: 'plantillas',

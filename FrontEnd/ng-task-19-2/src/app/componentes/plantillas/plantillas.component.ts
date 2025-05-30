@@ -2,9 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProyectoService } from '../../services/proyecto.service';
 import { DepartamentoService } from '../../services/departamento.service';
+import { ActividadService } from '../../services/actividad.service';
+import { SubvencionService } from '../../services/subvencion.service';
+import { EstadoSubvencionService, EstadoSubvencion } from '../../services/estado-subvencion.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Template } from '../../modelos/template';          // ←  la nueva interfaz
+import { Template } from '../../modelos/template';
 import { Departamento } from '../../modelos/departamento';
+import { Proyecto } from '../../modelos/proyecto';
+import { Subvencion } from '../../modelos/subvencion';
 import { HeaderComponent } from '../../mainview/header/header.component';
 import { TarjetaComponent } from './tarjeta/tarjeta.component';
 import { BuscadorComponent } from './buscador/buscador.component';
@@ -21,12 +26,9 @@ export class PlantillasComponent implements OnInit {
 
   /* ----------  PLANTILLAS  ---------- */
   templates: Template[] = [
-    { id: 1, name: 'Proyecto',              description: 'Plantilla para proyectos',         category: 'Proyecto', isActive: true },
-    { id: 2, name: 'Formulario Contacto',   description: 'Recopila info de contacto',        category: 'Marketing', isActive: true },
-    { id: 3, name: 'Inventario Productos',  description: 'Gestión de inventario',            category: 'Logística', isActive: true },
-    { id: 4, name: 'Reporte de Gastos',     description: 'Gastos mensuales',                 category: 'Finanzas', isActive: true },
-    { id: 5, name: 'Encuesta Satisfacción', description: 'Encuestas a clientes',             category: 'Marketing', isActive: true },
-    { id: 6, name: 'Orden de Compra',       description: 'Plantilla para órdenes de compra', category: 'Compras', isActive: true },
+    { id: 1, name: 'Crear Proyecto', description: 'Formulario para crear nuevos proyectos', category: 'Gestión', isActive: true },
+    { id: 2, name: 'Crear Actividad', description: 'Formulario para crear nuevas actividades', category: 'Gestión', isActive: true },
+    { id: 3, name: 'Crear Subvención', description: 'Formulario para crear nuevas subvenciones', category: 'Gestión', isActive: true }
   ];
 
   /* ----------  FILTRO / BUSCADOR  ---------- */
@@ -36,45 +38,71 @@ export class PlantillasComponent implements OnInit {
   categories = [...new Set(this.templates.map(t => t.category))];
 
   /* ----------  MODAL CREACIÓN  ---------- */
-  mostrarModalCreacionProyecto = false;
-  proyectoAsociado: Template | null = null;
+  mostrarModalCreacion = false;
+  templateSeleccionado: Template | null = null;
+  departamentoSeleccionado: Departamento | null = null;
 
   /* ----------  FORMULARIO  ---------- */
   formularioProyecto: FormGroup;
+  formularioActividad: FormGroup;
+  formularioSubvencion: FormGroup;
   creando = false;
   error = false;
   mensajeError: string | null = null;
 
-  /* ----------  LISTA DE PROYECTOS CREADOS (caché local)  ---------- */
-  proyectosCreados: any[] = [];
-
   /* ----------  DATOS AUXILIARES  ---------- */
   departamentos: Departamento[] = [];
+  proyectos: Proyecto[] = [];
+  estadosSubvencion: EstadoSubvencion[] = [];
+  modalidades: string[] = ['A', 'B', 'C'];
 
   constructor(
     private fb: FormBuilder,
     private proyectoService: ProyectoService,
     private departamentoService: DepartamentoService,
+    private actividadService: ActividadService,
+    private subvencionService: SubvencionService,
+    private estadoSubvencionService: EstadoSubvencionService,
     private translate: TranslateService
   ) {
+    // Formulario de Proyecto
     this.formularioProyecto = this.fb.group({
       id_proyecto: ['', Validators.required],
-      nombre:      ['', Validators.required],
-      objetivo:    ['', Validators.required],
-      fecha_ini:   ['', Validators.required],
-      fecha_fin:   ['', Validators.required],
+      nombre: ['', Validators.required],
+      objetivo: ['', Validators.required],
+      fecha_ini: ['', Validators.required],
+      fecha_fin: ['', Validators.required],
       departamento_id: ['', Validators.required],
+    });
 
-      /* Campos opcionales según la categoría -------------------- */
-      cliente: [''],           // Finanzas → Factura
-      proveedor: [''],         // Compras → Orden de compra
-      correo: [''],            // Marketing → Formulario contacto
+    // Formulario de Actividad
+    this.formularioActividad = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: [''],
+      fecha_ini: ['', Validators.required],
+      fecha_fin: ['', Validators.required],
+      num_participantes: [0, [Validators.required, Validators.min(0)]],
+      horas: [0, [Validators.required, Validators.min(0)]],
+      id_departamento: ['', Validators.required],
+      id_proyecto: ['', Validators.required],
+    });
+
+    // Formulario de Subvención
+    this.formularioSubvencion = this.fb.group({
+      entidad: ['', Validators.required],
+      importe: [0, [Validators.required, Validators.min(0)]],
+      id_estado_sub: ['', Validators.required],
+      id_proyecto: ['', Validators.required],
+      fecha_creacion: ['', Validators.required],
+      modalidad: ['', [Validators.required]],
     });
   }
 
   /* ----------  Life cycle  ---------- */
   ngOnInit(): void {
     this.cargarDepartamentos();
+    this.cargarProyectos();
+    this.cargarEstadosSubvencion();
   }
 
   /* ----------  Departamentos (select)  ---------- */
@@ -85,67 +113,160 @@ export class PlantillasComponent implements OnInit {
     });
   }
 
-  /* ----------  Abrir / cerrar modal  ---------- */
-  abrirModalCreacionProyecto(template: Template): void {
-    this.proyectoAsociado = template;
-    this.mostrarModalCreacionProyecto = true;
+  /* ----------  Proyectos (select)  ---------- */
+  cargarProyectos(): void {
+    this.proyectoService.obtenerProyectos().subscribe({
+      next: data => this.proyectos = data,
+      error: err => console.error('Error al cargar proyectos', err)
+    });
+  }
 
+  cargarEstadosSubvencion(): void {
+    this.estadoSubvencionService.obtenerEstados().subscribe({
+      next: estados => this.estadosSubvencion = estados,
+      error: err => console.error('Error al cargar estados de subvención', err)
+    });
+  }
+
+  /* ----------  Abrir / cerrar modal  ---------- */
+  abrirModalCreacion(template: Template): void {
+    this.templateSeleccionado = template;
+    this.mostrarModalCreacion = true;
     this.error = false;
     this.mensajeError = null;
 
-    /* Limpia campos opcionales */
-    this.formularioProyecto.patchValue({ cliente: '', proveedor: '', correo: '' });
-  }
-
-  cerrarModalCreacionProyecto(): void {
-    this.mostrarModalCreacionProyecto = false;
-    this.proyectoAsociado = null;
-    this.formularioProyecto.reset();
-  }
-
-  /* ----------  Guardar proyecto (POST API)  ---------- */
-  guardarProyecto(): void {
-    if (this.formularioProyecto.invalid || !this.proyectoAsociado) {
-      this.error = true;
-      this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
-      return;
+    if (template.id === 1) {
+      this.formularioProyecto.reset();
+    } else if (template.id === 2) {
+      this.formularioActividad.reset();
+    } else if (template.id === 3) {
+      this.formularioSubvencion.reset();
     }
+  }
+
+  cerrarModalCreacion(): void {
+    this.mostrarModalCreacion = false;
+    this.templateSeleccionado = null;
+    this.formularioProyecto.reset();
+    this.formularioActividad.reset();
+    this.formularioSubvencion.reset();
+  }
+
+  /* ----------  Guardar formulario  ---------- */
+  guardarFormulario(): void {
+    if (!this.templateSeleccionado) return;
 
     this.creando = true;
     this.error = false;
 
-    const f   = this.formularioProyecto.value;
-    const cat = this.proyectoAsociado.category;   // clave diferenciadora
+    if (this.templateSeleccionado.id === 1) {
+      this.guardarProyecto();
+    } else if (this.templateSeleccionado.id === 2) {
+      this.guardarActividad();
+    } else if (this.templateSeleccionado.id === 3) {
+      this.guardarSubvencion();
+    }
+  }
 
-    /* Construir payload genérico + campos extra por categoría ---------- */
-    const proyecto: any = {
-      id_proyecto: f.id_proyecto,
-      nombre:      f.nombre,
-      objetivo:    f.objetivo,
-      fecha_ini:   f.fecha_ini,
-      fecha_fin:   f.fecha_fin,
-      categoria:   cat,
-      departamento: { id: f.departamento_id }
-    };
+  guardarProyecto(): void {
+    if (this.formularioProyecto.invalid) {
+      this.error = true;
+      this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
+      this.creando = false;
+      return;
+    }
 
-    /* Campos adicionales */
-    if (cat === 'Finanzas')  proyecto.cliente   = f.cliente;    // Factura / Gastos
-    if (cat === 'Compras')   proyecto.proveedor = f.proveedor;  // Orden de compra
-    if (cat === 'Marketing') proyecto.correo    = f.correo;     // Formulario contacto / Encuesta
+    const proyecto = this.formularioProyecto.value;
+    proyecto.departamento = { id: proyecto.departamento_id };
 
-    /* POST al backend --------------------------------------------------- */
     this.proyectoService.crearProyecto(proyecto).subscribe({
       next: () => {
-        /* Añadimos al array local solo para visualización inmediata -------- */
-        this.proyectosCreados.push(proyecto);
-
-        this.cerrarModalCreacionProyecto();
+        this.cerrarModalCreacion();
         this.creando = false;
       },
       error: err => {
         this.error = true;
         this.creando = false;
         this.mensajeError = err.error?.message || 'Ocurrió un error al crear el proyecto.';
+      }
+    });
+  }
+
+  guardarActividad(): void {
+    if (this.formularioActividad.invalid) {
+      this.error = true;
+      this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
+      this.creando = false;
+      return;
+    }
+
+    // Generar un ID único usando timestamp y número aleatorio
+    const timestamp = new Date().getTime();
+    const random = Math.floor(Math.random() * 1000);
+    const id_actividad = `ACT-${timestamp}-${random}`;
+
+    const actividad = {
+      id_actividad,
+      ...this.formularioActividad.value,
+      num_participantes: Number(this.formularioActividad.value.num_participantes),
+      horas: Number(this.formularioActividad.value.horas)
+    };
+
+    console.log('Enviando actividad:', actividad); // Para debug
+
+    this.actividadService.crearActividad(actividad).subscribe({
+      next: (response) => {
+        if (response.status === 201 || response.status === 200) {
+          console.log('Actividad creada:', response.body); // Para debug
+          this.cerrarModalCreacion();
+          this.creando = false;
+        } else {
+          this.error = true;
+          this.creando = false;
+          this.mensajeError = 'Error al crear la actividad. Por favor, intente nuevamente.';
+        }
+      },
+      error: err => {
+        this.error = true;
+        this.creando = false;
+        this.mensajeError = err.error?.message || 'Ocurrió un error al crear la actividad.';
+        console.error('Error al crear actividad:', err);
+      }
+    });
+  }
+
+  guardarSubvencion(): void {
+    if (this.formularioSubvencion.invalid) {
+      this.error = true;
+      this.mensajeError = 'Por favor, completa todos los campos obligatorios.';
+      this.creando = false;
+      return;
+    }
+    const timestamp = new Date().getTime();
+    const random = Math.floor(Math.random() * 1000);
+    const id_subvencion = `SUB-${timestamp}-${random}`;
+    const subvencion: Subvencion = {
+      id_subvencion,
+      ...this.formularioSubvencion.value,
+      importe: Number(this.formularioSubvencion.value.importe),
+      fecha_creacion: new Date(this.formularioSubvencion.value.fecha_creacion).toISOString(),
+    };
+    this.subvencionService.crearSubvencion(subvencion).subscribe({
+      next: (response) => {
+        if (response.status === 201 || response.status === 200) {
+          this.cerrarModalCreacion();
+          this.creando = false;
+        } else {
+          this.error = true;
+          this.creando = false;
+          this.mensajeError = 'Error al crear la subvención. Por favor, intente nuevamente.';
+        }
+      },
+      error: err => {
+        this.error = true;
+        this.creando = false;
+        this.mensajeError = err.error?.message || 'Ocurrió un error al crear la subvención.';
+        console.error('Error al crear subvención:', err);
       }
     });
   }

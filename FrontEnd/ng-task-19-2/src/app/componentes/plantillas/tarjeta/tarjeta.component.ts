@@ -10,10 +10,12 @@ import { Template } from '../../../modelos/template';
 })
 export class TarjetaComponent {
   @Input() template!: Template;
-  @Output() rellenar = new EventEmitter<void>();
+  @Input() departamentoId!: string;
+  @Output() rellenar = new EventEmitter<{ template: Template, departamentoId: string }>();
 
-  onRellenar(){
-    this.rellenar.emit();
+  onRellenar() {
+    console.log('departamentoId recibido:', this.departamentoId);
+    this.rellenar.emit({ template: this.template, departamentoId: this.departamentoId });
   }
 
   getCategoryColor(category: string): string {

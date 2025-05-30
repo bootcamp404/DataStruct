@@ -1,0 +1,56 @@
+{
+  "FEATURES": {
+    "TITLE": "Main Features",
+    "DESCRIPTION": "Discover all the tools we offer to simplify the management of your business forms.",
+    "ITEMS": {
+      "CUSTOM_FORMS": {
+        "TITLE": "Custom Forms",
+        "DESC": "Create forms tailored to the specific needs of each department."
+      },
+      "DEPARTMENT_ORGANIZATION": {
+        "TITLE": "Department Organization",
+        "DESC": "Manage forms by department for better organization and tracking."
+      },
+      "EXPORT_PDF": {
+        "TITLE": "Export to PDF",
+        "DESC": "Export forms and reports in PDF format for sharing or archiving."
+      },
+      "ADVANCED_ANALYTICS": {
+        "TITLE": "Advanced Analytics",
+        "DESC": "View data and trends with interactive charts and customizable dashboards."
+      },
+      "TEAM_COLLABORATION": {
+        "TITLE": "Team Collaboration",
+        "DESC": "Work together with different roles and permissions for each team member."
+      },
+      "PROCESS_AUTOMATION": {
+        "TITLE": "Process Automation",
+        "DESC": "Automate workflows with approvals and notifications."
+      },
+      "MAINVIEW": {
+        "FOOTER_COPYRIGHT": "© 2025 ImpulsAlicante - All rights reserved"
+      }
+    },
+      "DEPARTAMENTOS": {
+        "TITULO": "Departments",
+        "DESCRIPCION": "Select a department to access its forms.",
+        "RRHH": {
+          "NOMBRE": "Human Resources",
+          "DESCRIPCION": "Employee and hiring management"
+        },
+        "EMP": {
+          "NOMBRE": "Employment and Training",
+          "DESCRIPCION": "Project management and tracking"
+        },
+        "JUR": {
+          "NOMBRE": "Legal and Administrative",
+          "DESCRIPCION": "Administrative documents and contracts"
+        },
+        "MRK": {
+          "NOMBRE": "Marketing and Communication",
+          "DESCRIPCION": "Communication management and marketing campaigns"
+        },
+        "ACCEDER": "Access"
+      }
+    }
+  }
