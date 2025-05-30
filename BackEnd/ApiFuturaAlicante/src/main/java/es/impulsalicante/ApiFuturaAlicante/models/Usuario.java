@@ -8,7 +8,8 @@ import jakarta.validation.constraints.*;
 @Table(name = "usuarios")
 public class Usuario {
     //PROPIEDADES
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Email(message = "Debe ingresar un email válido")
     private String email;
     @Column (nullable = true)
@@ -29,19 +30,29 @@ public class Usuario {
     private Rol rol;
 
     //CONSTRUCTOR
-    public Usuario(String telefono, String email, String apellidos, String nombre, String contrasenya, Rol rol) {
+    public Usuario(Long id, Rol rol, String contrasenya, String telefono, String apellidos, String nombre, String email) {
+        this.id = id;
+        this.rol = rol;
+        this.contrasenya = contrasenya;
         this.telefono = telefono;
-        this.email = email;
         this.apellidos = apellidos;
         this.nombre = nombre;
-        this.contrasenya = contrasenya;
-        this.rol = rol;
+        this.email = email;
     }
+
     public Usuario(){
 
     }
 
     //GETTERS SETTERS
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Rol getRol() {
         return rol;
     }
