@@ -37,7 +37,7 @@ export class HeaderComponent {
     email: null as string | null,
     displayName: null as string | null,
   }
-
+  role: string = '';
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -71,6 +71,8 @@ export class HeaderComponent {
       const apellidos = currentUser.apellidos?.trim();
       this.user.displayName = [nombre, apellidos].filter(Boolean).join(' ') || null;
     }
+    // Roles
+     this.role = this.authService.getRole();
   }
 
   toggleLanguageDropdown(event: MouseEvent): void {
