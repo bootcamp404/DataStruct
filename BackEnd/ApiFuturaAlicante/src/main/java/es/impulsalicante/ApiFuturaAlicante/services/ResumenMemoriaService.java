@@ -547,7 +547,7 @@
     //2.4
             html.append(generarSeccionActividadesFormacion());
 
-            List<Actividad> actividades = actividadRepository.findByDepartamentoId("D1");
+            List<Actividad> actividades = actividadRepository.findByDepartamentoId("D2");
             String tablaCursosHTML = generarTablaCursos(actividades);
             html.append(tablaCursosHTML);
 
@@ -951,7 +951,7 @@
 
             StringBuilder html = new StringBuilder();
             html.append("""
-                    <div style='page-break-before: always; font-family: Arial, sans-serif;'>
+                    <div style='ç; font-family: Arial, sans-serif;'>
                          <h2 style='color:#008080;'>2.6.1 Subvenciones a entidades sin ánimo de lucro</h2>
                         <p style='font-size:14px;'>Subvenciones por fomento de inserción laboral, innovación social y emprendimiento.</p>
                     """);
@@ -1145,7 +1145,7 @@
         private String generarSeccionCentrosEmpleoYFormacion() {
             List<CentroDTO> centros = centrosRepository.findAll()
                     .stream()
-                    .filter(c -> c.getDepartamento() != null && "Empleo y Formación".equalsIgnoreCase(c.getDepartamento().getNombre()))
+                    .filter(c -> c.getDepartamento() != null && "Departamento de Empleo y Formación".equalsIgnoreCase(c.getDepartamento().getNombre()))
                     .map(c -> new CentroDTO(c.getNombre(), c.getDireccion()))
                     .toList();
 
@@ -1186,7 +1186,7 @@
             StringBuilder html = new StringBuilder();
 
             html.append(String.format("""
-            <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+            <div style='font-family: Arial, sans-serif; padding: 30px;'>
                 <h2 style='color:#008080;'>2.6.2 Convenios nominativos</h2>
                 <div style='display: flex; justify-content: space-between; margin-bottom: 20px;'>
                     <div><strong>Convenios:</strong> %d</div>
@@ -1252,7 +1252,7 @@
 
             StringBuilder html = new StringBuilder();
             html.append("""
-                        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                        <div style='font-family: Arial, sans-serif; padding: 30px;'>
  <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
       <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
       <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />                    """);
