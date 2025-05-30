@@ -1,10 +1,9 @@
 <app-header></app-header>
+
 <section class="py-24 bg-gradient-to-b">
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
-      <h2
-        class="text-5xl font-bold mt-2 mb-6 bg-clip-text bg-gradient-to-r"
-      >
+      <h2 class="text-5xl font-bold mt-2 mb-6 bg-clip-text bg-gradient-to-r">
         {{ 'FEATURES.TITLE' | translate }}
       </h2>
       <p class="text-xl max-w-3xl mx-auto leading-relaxed">
@@ -12,55 +11,112 @@
       </p>
     </div>
 
-    <!--Estos son los 3 cuadrados-->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-      @for(feature of features; track $index){
-        <a
-          [routerLink]="[feature.ruta]"
-          class="group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border relative overflow-hidden block no-underline"
-        >
-          <!-- Decorative element -->
-          <div
-            class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 opacity-70 z-0"
-          ></div>
+      <div *ngFor="let feature of features"
+           class="relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">
 
+        <!-- Enlace EXTERNO al PDF -->
+        <a *ngIf="feature.external"
+           [href]="feature.ruta"
+           target="_blank"
+           rel="noopener"
+           class="block w-full h-full">
+
+          <!-- Decorativo -->
+          <div
+            class="absolute -right-8 -top-8 w-24 h-24 rounded-full
+                   bg-gradient-to-br from-blue-100 to-emerald-100
+                   opacity-70 z-0">
+          </div>
+
+          <!-- Icono -->
           <div class="mb-6 relative z-10">
             <div
-              class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-[#1276E1] to-[#1FB26E] shadow-md"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="h-8 w-8"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  [attr.d]="feature.icon"
-                ></path>
+              class="inline-flex items-center justify-center
+                     w-16 h-16 rounded-full
+                     bg-gradient-to-r from-[#1276E1] to-[#1FB26E]
+                     shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor"
+                   class="h-8 w-8">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      [attr.d]="feature.icon">
+                </path>
               </svg>
             </div>
           </div>
 
+          <!-- Título -->
           <h3
-            class="text-2xl  font-bold mb-3 relative z-10 group-hover:text-[#1276E1]"
-          >
+            class="text-2xl font-bold mb-3 relative z-10
+                   group-hover:text-[#1276E1]">
             {{ feature.titleKey | translate }}
           </h3>
 
+          <!-- Descripción -->
           <p class="leading-relaxed relative z-10">
             {{ feature.descriptionKey | translate }}
           </p>
 
+          <!-- Línea inferior animada -->
           <div
-            class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#1276E1] to-[#1FB26E] w-0 group-hover:w-full"
-          ></div>
+            class="absolute bottom-0 left-0 h-1
+                   bg-gradient-to-r from-[#1276E1] to-[#1FB26E]
+                   w-0 group-hover:w-full">
+          </div>
         </a>
-      }
+
+        <!-- Enlace INTERNO via routerLink -->
+        <a *ngIf="!feature.external"
+           [routerLink]="feature.ruta"
+           class="block w-full h-full">
+
+          <div
+            class="absolute -right-8 -top-8 w-24 h-24 rounded-full
+                   bg-gradient-to-br from-blue-100 to-emerald-100
+                   opacity-70 z-0">
+          </div>
+          <div class="mb-6 relative z-10">
+            <div
+              class="inline-flex items-center justify-center
+                     w-16 h-16 rounded-full
+                     bg-gradient-to-r from-[#1276E1] to-[#1FB26E]
+                     shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor"
+                   class="h-8 w-8">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      [attr.d]="feature.icon">
+                </path>
+              </svg>
+            </div>
+          </div>
+          <h3
+            class="text-2xl font-bold mb-3 relative z-10
+                   group-hover:text-[#1276E1]">
+            {{ feature.titleKey | translate }}
+          </h3>
+          <p class="leading-relaxed relative z-10">
+            {{ feature.descriptionKey | translate }}
+          </p>
+          <div
+            class="absolute bottom-0 left-0 h-1
+                   bg-gradient-to-r from-[#1276E1] to-[#1FB26E]
+                   w-0 group-hover:w-full">
+          </div>
+        </a>
+
+      </div>
     </div>
   </div>
 </section>
+
 <app-footer></app-footer>
