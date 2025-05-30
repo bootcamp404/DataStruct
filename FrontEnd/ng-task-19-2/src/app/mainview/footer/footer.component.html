@@ -6,8 +6,12 @@
       <!-- Logo y descripción -->
       <div>
         <div class="flex items-center mb-4">
-          <div class="w-10 h-10 bg-gray-200"></div>
-          <p class="ml-2 font-bold" style="font-size: xx-large;">ImpulsAlicante</p>
+        <div class="rounded-md p-1">
+          <img src="assets/img/logo.png" alt="Logo dataBridge" class="w-16 h-16 object-contain">
+        </div>
+        <span class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+          dataBridge
+        </span>
         </div>
         <p>
           {{ 'FOOTER.DESCRIPCION' | translate }}
@@ -16,7 +20,7 @@
 
       <!-- Empresa -->
       <div>
-        <h4 class="mb-4" style="color:inherit; font-size:xx-large;" >{{ 'FOOTER.EMPRESA.TITULO' | translate }}</h4>
+        <h4 class="font-medium mb-4" style="color:inherit; font-size:xx-large;" >{{ 'FOOTER.EMPRESA.TITULO' | translate }}</h4>
         <ul class="space-y-8">
           <li><a href="#" class=" hover:text-blue-600">{{ 'FOOTER.EMPRESA.SOBRE_NOSOTROS' | translate }}</a></li>
           <li><a href="#" class=" hover:text-blue-600">{{ 'FOOTER.EMPRESA.CONTACTO' | translate }}</a></li>
