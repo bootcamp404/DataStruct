@@ -4,14 +4,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #f3f4f6; /* claro */
+  background-color: #f3f4f6 !important; /* claro */
   transition: background-color 0.3s ease, color 0.3s ease;
   color: #4b5563;
 }
 
 html.dark .header-container {
-  background-color: #1f2937; /* gris oscuro */
-  color: #d1d5db; /* gris claro */
+  background-color: #1f2937 !important; /* gris oscuro */
+  color: #d1d5db !important; /* gris claro */
 }
 
 /* Navegación */
