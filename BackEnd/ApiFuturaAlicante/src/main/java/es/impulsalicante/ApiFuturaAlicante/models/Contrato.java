@@ -46,6 +46,10 @@ public class Contrato {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public TipoContrato getTipo_contrato() {
         return tipo_contrato;
     }

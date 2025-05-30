@@ -21,7 +21,13 @@ public class SubvencionService {
         return subvencionRepository.findById(id);
     }
 
+    private String generarId(){
+        Long count = subvencionRepository.count();
+        return "S" + (count + 1);
+    }
     public Subvencion createSubvencion(Subvencion subvencion) {
+        String nuevoId = generarId();
+        subvencion.setId(nuevoId);
         return subvencionRepository.save(subvencion);
     }
 

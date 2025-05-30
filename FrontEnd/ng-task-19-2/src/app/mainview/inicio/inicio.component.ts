@@ -4,6 +4,8 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../auth/data-access/auth.service';
+import { Usuario } from '../../modelos/usuario';
+import { CommonModule } from '@angular/common';
 
 interface Feature {
   icon: string;
@@ -14,7 +16,7 @@ interface Feature {
 
 @Component({
   selector: 'app-inicio',
-  imports: [TranslateModule, RouterModule, HeaderComponent, FooterComponent],
+  imports: [TranslateModule, RouterModule, HeaderComponent, FooterComponent, CommonModule],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css'
 })
@@ -39,29 +41,4 @@ export class InicioComponent {
       ruta: "auth/sign-in"
     }
   ];
-  toggleDarkMode() {
-    const htmlEl = document.body; // <html> element
-    if (htmlEl.classList.contains('dark')) {
-      htmlEl.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      console.log('Modo claro activado');
-    } else {
-      htmlEl.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      console.log('Modo oscuro activado');
-    }
-  }
-
-  ngOnInit() {
-    // Al cargar el componente, aplicar el tema guardado
-    const savedTheme = localStorage.getItem('theme');
-    const htmlEl = document.documentElement;
-    if (savedTheme === 'dark') {
-      htmlEl.classList.add('dark');
-    } else {
-      htmlEl.classList.remove('dark');
-    }
-  }
-
-  constructor(public authService: AuthService) {}
 }

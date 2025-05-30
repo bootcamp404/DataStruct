@@ -24,7 +24,13 @@ public class DepartamentosService {
     }
 
     //POST
+    private String generarId(){
+        Long count = repo_departamentos.count();
+        return "D" + (count + 1);
+    }
     public void postDepartamento(Departamento dep) {
+        String nuevoId = generarId();
+        dep.setId(nuevoId);
         repo_departamentos.save(dep);
     }
 

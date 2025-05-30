@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
@@ -16,6 +16,7 @@ export class AuthService {
   private _router = inject(Router);
   private _authStateService = inject(AuthStateService);
   private _isLoggedIn: boolean | null = null;
+  private userRole: string = '';
 
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
@@ -48,6 +49,7 @@ export class AuthService {
 
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
+    this.userRole = response.rol || '';
     this._router.navigate(['/inicio']);
 
     return response;
@@ -186,4 +188,19 @@ export class AuthService {
       }
     });
   }
+  getRole(): string {
+  if (this.userRole) return this.userRole;
+
+  const storedUser = localStorage.getItem('usuario');
+  if (!storedUser) return '';
+
+  try {
+    const usuario = JSON.parse(storedUser) as Usuario;
+    this.userRole = usuario.rol || '';
+    return this.userRole;
+  } catch {
+    return '';
+  }
+}
+
 }

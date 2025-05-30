@@ -1,0 +1,26 @@
+<div class="chat-widget">
+  <div class="preguntas">
+    <button class="btn-pregunta" (click)="askServicios()">
+      ¿Qué servicios ofrece DataBridge?
+    </button>
+    <button class="btn-pregunta" (click)="askRegistro()">
+      ¿Cómo puedo registrarme?
+    </button>
+    <button class="btn-pregunta" (click)="askDepartamentos()">
+      ¿Cuáles son los departamentos?
+    </button>
+    <button class="btn-pregunta" (click)="askMemoria()">
+      ¿Cómo puedo descargar la memoria anual?
+    </button>
+    <button class="btn-pregunta" (click)="askFiltrar()">
+      ¿Puedo filtrar por departamento?
+    </button>
+    <button class="btn-pregunta" (click)="askOtra()">
+      No está aquí mi duda
+    </button>
+  </div>
+
+  <div class="respuesta-bubble">
+    {{ respuesta }}
+  </div>
+</div>

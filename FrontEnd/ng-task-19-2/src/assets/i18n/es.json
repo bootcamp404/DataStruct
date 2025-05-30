@@ -38,7 +38,8 @@
       "PANEL": "Panel Administrativo",
       "LISTA": "Lista Empleados",
       "PERFIL": "Mi perfil",
-      "SESION": "Cerrar sesión"
+      "INICIAR_SESION": "Iniciar sesión",
+      "CERRAR_SESION": "Cerrar sesión"
     },
 
     "FOOTER": {
