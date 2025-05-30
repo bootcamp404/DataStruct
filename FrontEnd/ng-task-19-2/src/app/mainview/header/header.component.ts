@@ -37,7 +37,20 @@ export class HeaderComponent {
     email: null as string | null,
     displayName: null as string | null,
   }
-  role: string = '';
+  role: number | null = null;
+  get roleName(): string {
+    const map: { [key: number]: string } = {
+      1: 'Administrador total',
+      2: 'Administrador empleo y formación',
+      3: 'Administrador promoción económica',
+      4: 'Administrador recursos humanos',
+      6: 'Empleado empleo y formación',
+      7: 'Empleado promoción económica',
+      8: 'Empleado recursos humanos',
+      9: 'Usuario'
+    };
+    return this.role ? map[this.role] || 'Desconocido' : 'Sin rol';
+  }
   constructor(
     private router: Router,
     private authService: AuthService,

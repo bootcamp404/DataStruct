@@ -8,6 +8,7 @@ import { PlantillasComponent } from './componentes/plantillas/plantillas.compone
 import { AdminPanelComponent } from './panel-admin/panel-admin.component';
 import { InicioComponent } from './mainview/inicio/inicio.component';
 import { ProyectoComponent } from './componentes/formularios/proyecto/proyecto.component';
+import { ActividadComponent } from './componentes/formularios/actividad/actividad.component';
 
 
 export const routes: Routes = [
@@ -22,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: 'test',
-    component: ProyectoComponent
+    component: ActividadComponent
   },
   {
     path: 'plantillas',

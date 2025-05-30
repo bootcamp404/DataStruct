@@ -32,10 +32,15 @@
         <td class="py-2 px-4">{{ usuario.email }}</td>
         <td class="py-2 px-4">{{ usuario.nombre || '—' }}</td>
         <td class="py-2 px-4">
-          <select [(ngModel)]="usuario.rol" class="border rounded px-2 py-1">
-            <option value="pendiente">Pendiente</option>
-            <option value="usuario">Usuario</option>
-            <option value="admin">Administrador</option>
+          <select [(ngModel)]="usuario.rol.id" class="border rounded px-2 py-1">
+            <option [value]="1">Administrador total</option>
+            <option [value]="2">Administrador empleo y formación</option>
+            <option [value]="3">Administrador promoción económica</option>
+            <option [value]="4">Administrador recursos humanos</option>
+            <option [value]="6">Empleado empleo y formación</option>
+            <option [value]="7">Empleado promoción económica</option>
+            <option [value]="8">Empleado recursos humanos</option>
+            <option [value]="9">Usuario</option>
           </select>
         </td>
         <td class="py-2 px-4">
