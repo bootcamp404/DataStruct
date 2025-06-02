@@ -46,7 +46,7 @@ CREATE TABLE `actividad` (
 
 LOCK TABLES `actividad` WRITE;
 /*!40000 ALTER TABLE `actividad` DISABLE KEYS */;
-INSERT INTO `actividad` VALUES ('A001','Asesoramiento Empresarial','Asesoramiento individualizado a personas emprendedoras','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',50,'D3',30,'P001'),('A002','Mentorías','Mentorías para emprendedores con ideas innovadoras','2025-04-01 00:00:00.000000','2025-04-15 00:00:00.000000',35,'D3',20,'P001'),('A003','Formación básica','Formación para nuevos emprendedores','2025-05-10 00:00:00.000000','2025-05-20 00:00:00.000000',60,'D3',25,'P002'),('A004','Gestión y Competencias Empresariales','Sesiones formativas sobre emprendimiento','2025-06-01 00:00:00.000000','2025-06-10 00:00:00.000000',40,'D3',15,'P002'),('A5','Prueba para ver auto id','jaja xd','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',4,'D1',20,NULL);
+INSERT INTO `actividad` VALUES ('A001','Asesoramiento Empresarial','Asesoramiento individualizado a personas emprendedoras','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',50,'D3',30,'P001'),('A002','Mentorías','Mentorías para emprendedores con ideas innovadoras','2025-04-01 00:00:00.000000','2025-04-15 00:00:00.000000',35,'D3',20,'P001'),('A003','Formación básica','Formación para nuevos emprendedores','2025-05-10 00:00:00.000000','2025-05-20 00:00:00.000000',60,'D3',25,'P002'),('A004','Gestión y Competencias Empresariales','Sesiones formativas sobre emprendimiento','2025-06-01 00:00:00.000000','2025-06-10 00:00:00.000000',40,'D3',15,'P002'),('A5','Prueba para ver auto id','jaja xd','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',4,'D2',20,NULL);
 /*!40000 ALTER TABLE `actividad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -105,7 +105,7 @@ CREATE TABLE `centro` (
 
 LOCK TABLES `centro` WRITE;
 /*!40000 ALTER TABLE `centro` DISABLE KEYS */;
-INSERT INTO `centro` VALUES ('4','Sede PEPE','Calle Ficticia 123, Alicante',NULL,NULL,NULL),('C100','Centro de Formación Norte','Calle Norte 123, Alicante',NULL,'D1',NULL),('C101','Centro de Formación Sur','Calle Sur 456, Alicante',NULL,'D1',NULL),('C102','Centro Integral de Empleo','Avenida Empleo 789, Alicante',NULL,'D1',NULL),('C2','Centro Sur','Avenida de Ejemplo 456, Alicante',NULL,NULL,NULL),('C3','Centro Este','Plaza de la Ciudad 789, Alicante',NULL,NULL,NULL),('T1','Territorio 1','Calle Falsa 123',NULL,NULL,NULL);
+INSERT INTO `centro` VALUES ('4','Sede PEPE','Calle Ficticia 123, Alicante',NULL,NULL,NULL),('C100','Centro de Formación Norte','Calle Norte 123, Alicante',NULL,'D2',NULL),('C101','Centro de Formación Sur','Calle Sur 456, Alicante',NULL,'D2',NULL),('C102','Centro Integral de Empleo','Avenida Empleo 789, Alicante',NULL,'D2',NULL),('C2','Centro Sur','Avenida de Ejemplo 456, Alicante',NULL,NULL,NULL),('C3','Centro Este','Plaza de la Ciudad 789, Alicante',NULL,NULL,NULL),('T1','Territorio 1','Calle Falsa 123',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `centro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +178,7 @@ CREATE TABLE `convenio` (
 
 LOCK TABLES `convenio` WRITE;
 /*!40000 ALTER TABLE `convenio` DISABLE KEYS */;
-INSERT INTO `convenio` VALUES ('CN001','APSA','Inclusión de personas con discapacidad',10000.00,5,80,120,'Inserción laboral, formación ocupacional','Anexo I completo','Anexo I','2024-03-15','2025-03-15','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CN002','Cruz Roja','Programa Refuerzo Educativo',10000.00,4,60,90,'Talleres de apoyo escolar','Anexo II validado','Anexo II','2024-02-01','2025-02-01','D1',NULL,NULL,NULL,NULL,NULL,NULL),('CN003','Fundación Secretariado Gitano','Acción Gitana Empleo',9000.00,6,100,150,'Orientación laboral, formación digital','Alta participación','Anexo III','2024-01-10','2025-01-10','D1',NULL,NULL,NULL,NULL,NULL,NULL),('CN004','Santa María del Mar','Talleres de capacitación',8500.00,3,45,75,'Formación práctica','Satisfacción elevada','Anexo IV','2024-04-01','2025-04-01','D1',NULL,NULL,NULL,NULL,NULL,NULL),('CN005','Fundación Laboral de la Construcción','Plan Formativo Construcción',15000.00,8,120,200,'Formación teórico-práctica','Demanda sectorial alta','Anexo V','2024-05-20','2025-05-20','D1',NULL,NULL,NULL,NULL,NULL,NULL),('CN006','Mercalicante','Plan Agroalimentario',10000.00,7,110,195,'Seguridad alimentaria, logística','Buena acogida empresarial','Anexo VI','2024-06-01','2025-06-01','D1',NULL,NULL,NULL,NULL,NULL,NULL),('CNV100','APSA','Contratación de trabajadores con discapacidad intelectual',16000.00,0,2,NULL,'Ayudante de oficina','Buen desempeño laboral','Anexo 14','2024-01-15','2024-12-31','D2',NULL,NULL,NULL,1,1,NULL),('CNV101','Cruz Roja','Puentes hacia el empleo: itinerarios por la igualdad',10000.00,6,121,893,'Orientación e inserción sociolaboral','Alta participación y resultados visibles','Anexo 15','2024-02-01','2024-12-31','D2','4','6.589,66 h orientación / 6 acciones / 57 inserciones','Igualdad de oportunidades y formación técnica',83,38,'Personas insertadas con seguimiento social'),('CNV102','Fundación Secretariado Gitano','Acceder',10000.00,NULL,526,NULL,'Formación y empleabilidad de población gitana','Contrataciones y apoyo al autoempleo','Anexo 16','2024-03-01','2024-12-31','D2','3','54 acciones / 108 contrataciones / 26 autoempleo','Educación secundaria y empleabilidad',378,148,'22% contratos indefinidos'),('CNV103','Fundación Santa María la Real','Lanzadera Conecta Empleo Alicante 2023',8000.00,1,30,NULL,'Mejora de empleabilidad','Inserción y contrataciones efectivas','Anexo 17','2024-04-01','2024-12-31','D2','1','6 contrataciones indefinidas','Emprendimiento, innovación social',16,14,'Participantes en situación de desempleo'),('CV006','Fundación Secretariado Gitano','Acceder',10000.00,6,526,150,'Formación para inserción laboral','Buen resultado general','Anexo Gitano','2024-02-01','2024-12-31','D1','Empoderamiento digital, habilidades sociales','54 formados, 108 contrataciones, 11 en graduado secundaria','Empleo, juventud, mujeres',300,226,'22% contratos indefinidos. 26 autoempleo.');
+INSERT INTO `convenio` VALUES ('CN001','APSA','Inclusión de personas con discapacidad',10000.00,5,80,120,'Inserción laboral, formación ocupacional','Anexo I completo','Anexo I','2024-03-15','2025-03-15','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CN002','Cruz Roja','Programa Refuerzo Educativo',10000.00,4,60,90,'Talleres de apoyo escolar','Anexo II validado','Anexo II','2024-02-01','2025-02-01','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CN003','Fundación Secretariado Gitano','Acción Gitana Empleo',9000.00,6,100,150,'Orientación laboral, formación digital','Alta participación','Anexo III','2024-01-10','2025-01-10','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CN004','Santa María del Mar','Talleres de capacitación',8500.00,3,45,75,'Formación práctica','Satisfacción elevada','Anexo IV','2024-04-01','2025-04-01','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CN005','Fundación Laboral de la Construcción','Plan Formativo Construcción',15000.00,8,120,200,'Formación teórico-práctica','Demanda sectorial alta','Anexo V','2024-05-20','2025-05-20','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CN006','Mercalicante','Plan Agroalimentario',10000.00,7,110,195,'Seguridad alimentaria, logística','Buena acogida empresarial','Anexo VI','2024-06-01','2025-06-01','D2',NULL,NULL,NULL,NULL,NULL,NULL),('CNV100','APSA','Contratación de trabajadores con discapacidad intelectual',16000.00,0,2,NULL,'Ayudante de oficina','Buen desempeño laboral','Anexo 14','2024-01-15','2024-12-31','D2',NULL,NULL,NULL,1,1,NULL),('CNV101','Cruz Roja','Puentes hacia el empleo: itinerarios por la igualdad',10000.00,6,121,893,'Orientación e inserción sociolaboral','Alta participación y resultados visibles','Anexo 15','2024-02-01','2024-12-31','D2','4','6.589,66 h orientación / 6 acciones / 57 inserciones','Igualdad de oportunidades y formación técnica',83,38,'Personas insertadas con seguimiento social'),('CNV102','Fundación Secretariado Gitano','Acceder',10000.00,NULL,526,NULL,'Formación y empleabilidad de población gitana','Contrataciones y apoyo al autoempleo','Anexo 16','2024-03-01','2024-12-31','D2','3','54 acciones / 108 contrataciones / 26 autoempleo','Educación secundaria y empleabilidad',378,148,'22% contratos indefinidos'),('CNV103','Fundación Santa María la Real','Lanzadera Conecta Empleo Alicante 2023',8000.00,1,30,NULL,'Mejora de empleabilidad','Inserción y contrataciones efectivas','Anexo 17','2024-04-01','2024-12-31','D2','1','6 contrataciones indefinidas','Emprendimiento, innovación social',16,14,'Participantes en situación de desempleo'),('CV006','Fundación Secretariado Gitano','Acceder',10000.00,6,526,150,'Formación para inserción laboral','Buen resultado general','Anexo Gitano','2024-02-01','2024-12-31','D2','Empoderamiento digital, habilidades sociales','54 formados, 108 contrataciones, 11 en graduado secundaria','Empleo, juventud, mujeres',300,226,'22% contratos indefinidos. 26 autoempleo.');
 /*!40000 ALTER TABLE `convenio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +202,7 @@ CREATE TABLE `departamento` (
 
 LOCK TABLES `departamento` WRITE;
 /*!40000 ALTER TABLE `departamento` DISABLE KEYS */;
-INSERT INTO `departamento` VALUES ('D1','Empleo y Formación'),('D2','Departamento de Empleo y Formación'),('D3','Promoción Económica'),('RRHH','Recursos Humanos');
+INSERT INTO `departamento` VALUES ('D1','Económico-Financiero'),('D2','Empleo y Formación'),('D3','Promoción Económica'),('D4','Desarrollo Local y Estrategico'),('DJA','Jurídico-Administrativo'),('MK','Marketing y Comunicación'),('RRHH','Recursos Humanos');
 /*!40000 ALTER TABLE `departamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -367,7 +367,7 @@ CREATE TABLE `proyecto` (
 
 LOCK TABLES `proyecto` WRITE;
 /*!40000 ALTER TABLE `proyecto` DISABLE KEYS */;
-INSERT INTO `proyecto` VALUES ('A001','Proyecto Empleo Joven','Fomentar la empleabilidad en jóvenes menores de 30 años','2024-01-15 00:00:00.000000','2024-07-15 00:00:00.000000','D1'),('A002','Taller TIC para Mayores','Reducir la brecha digital en personas mayores de 55 años','2024-03-01 00:00:00.000000','2024-06-30 00:00:00.000000','D1'),('A003','Formación Inclusiva','Desarrollar habilidades laborales en colectivos vulnerables','2024-02-01 00:00:00.000000','2024-05-15 00:00:00.000000','D1'),('A004','Portal de Empleo Online','Actualizar y mejorar la plataforma de búsqueda de empleo','2024-01-01 00:00:00.000000','2024-12-31 00:00:00.000000','D1'),('P001','Proyecto Empleo Joven','Fomentar la empleabilidad en jóvenes menores de 30 años','2024-01-15 00:00:00.000000','2024-07-15 00:00:00.000000','D1'),('P002','Taller TIC para Mayores','Reducir la brecha digital en personas mayores de 55 años','2024-03-01 00:00:00.000000','2024-06-30 00:00:00.000000','D1'),('P003','Formación Inclusiva','Desarrollar habilidades laborales en colectivos vulnerables','2024-02-01 00:00:00.000000','2024-05-15 00:00:00.000000','D1'),('P004','Portal de Empleo Online','Actualizar y mejorar la plataforma de búsqueda de empleo local','2024-01-01 00:00:00.000000','2024-12-31 00:00:00.000000','D1'),('P011','Oficina de asesoramiento a emprendedores (Punto PAE)','Fomentar el emprendimiento mediante el acompañamiento y asesoramiento.','2025-01-15 00:00:00.000000','2025-12-15 00:00:00.000000','D3'),('P012','Formación Centro de Emprendedores','Impulsar el conocimiento y habilidades para la creación de empresas.','2025-02-01 00:00:00.000000','2025-11-30 00:00:00.000000','D3'),('P1','Proyecto A','Desarrollar una nueva página web',NULL,'2024-06-15 00:00:00.000000','RRHH'),('P5','Proyecto B','Desarrollar una nueva página web',NULL,'2024-06-15 00:00:00.000000','RRHH');
+INSERT INTO `proyecto` VALUES ('A001','Proyecto Empleo Joven','Fomentar la empleabilidad en jóvenes menores de 30 años','2024-01-15 00:00:00.000000','2024-07-15 00:00:00.000000','D2'),('A002','Taller TIC para Mayores','Reducir la brecha digital en personas mayores de 55 años','2024-03-01 00:00:00.000000','2024-06-30 00:00:00.000000','D2'),('A003','Formación Inclusiva','Desarrollar habilidades laborales en colectivos vulnerables','2024-02-01 00:00:00.000000','2024-05-15 00:00:00.000000','D2'),('A004','Portal de Empleo Online','Actualizar y mejorar la plataforma de búsqueda de empleo','2024-01-01 00:00:00.000000','2024-12-31 00:00:00.000000','D2'),('P001','Proyecto Empleo Joven','Fomentar la empleabilidad en jóvenes menores de 30 años','2024-01-15 00:00:00.000000','2024-07-15 00:00:00.000000','D2'),('P002','Taller TIC para Mayores','Reducir la brecha digital en personas mayores de 55 años','2024-03-01 00:00:00.000000','2024-06-30 00:00:00.000000','D2'),('P003','Formación Inclusiva','Desarrollar habilidades laborales en colectivos vulnerables','2024-02-01 00:00:00.000000','2024-05-15 00:00:00.000000','D2'),('P004','Portal de Empleo Online','Actualizar y mejorar la plataforma de búsqueda de empleo local','2024-01-01 00:00:00.000000','2024-12-31 00:00:00.000000','D2'),('P011','Oficina de asesoramiento a emprendedores (Punto PAE)','Fomentar el emprendimiento mediante el acompañamiento y asesoramiento.','2025-01-15 00:00:00.000000','2025-12-15 00:00:00.000000','D3'),('P012','Formación Centro de Emprendedores','Impulsar el conocimiento y habilidades para la creación de empresas.','2025-02-01 00:00:00.000000','2025-11-30 00:00:00.000000','D3'),('P1','Proyecto A','Desarrollar una nueva página web',NULL,'2024-06-15 00:00:00.000000','RRHH'),('P5','Proyecto B','Desarrollar una nueva página web',NULL,'2024-06-15 00:00:00.000000','RRHH');
 /*!40000 ALTER TABLE `proyecto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -382,7 +382,7 @@ CREATE TABLE `rol` (
   `id_rol` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,7 +391,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador total'),(2,'Administrador empleo y formacion'),(3,'Administrador promocion economica'),(4,'Administrador recursos humanos');
+INSERT INTO `rol` VALUES (1,'Administrador total'),(2,'Administrador empleo y formación'),(3,'Administrador promoción económica'),(4,'Administrador económico-financiero'),(5,'Administrador jurídico-administrativo'),(6,'Administrador marketing y comunicación'),(7,'Administrador recursos humanos'),(8,'Administrador desarrollo local y estrategico'),(9,'Empleado marketing y comunicación'),(10,'Empleado jurídico-administrativo'),(11,'Empleado empleo y formación'),(12,'Empleado económico-financiero'),(13,'Empleado promoción económica'),(14,'Empleado recursos humanos'),(15,'Empleado desarrollo local y estrategico'),(16,'Usuario');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -497,7 +497,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `telefono_UNIQUE` (`telefono`),
   KEY `FK_USUARIO_ROL_idx` (`id_rol`),
   CONSTRAINT `FK_USUARIO_ROL` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -506,7 +506,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES ('hIban','si','juanito@meme.com','123456',NULL,2,1),('leo',NULL,'leo@gmail.com','123456',NULL,1,2),('Prueba para roles','apellidos','prueba@gmail.com','12345',NULL,2,3),('prueba','1','prueba123@gmail.com','123456',NULL,1,4);
+INSERT INTO `usuarios` VALUES ('hIban','si','juanito@meme.com','123456',NULL,1,1),('leo',NULL,'leo@gmail.com','123456',NULL,1,2),('Prueba para roles','apellidos','prueba@gmail.com','12345',NULL,1,3),('prueba','1','prueba123@gmail.com','123456',NULL,1,4);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -519,4 +519,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-30 13:56:45
+-- Dump completed on 2025-06-02 10:50:48
