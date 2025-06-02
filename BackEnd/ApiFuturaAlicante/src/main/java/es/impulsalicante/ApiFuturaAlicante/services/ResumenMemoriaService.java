@@ -1841,50 +1841,98 @@
             ResumenMemoriaDTO resumen = new ResumenMemoriaDTO();
             resumen.setAnio(anio);
 
-            // ✅ Cargar datos globales
+            // ✅ Cargar TODOS los datos del año y sumarlos
             List<IndicadorAnual> lista = indicadoresAnualesRepository.findByAnio(anio);
-            IndicadorAnual datos = lista.isEmpty() ? null : lista.get(0);
 
-            if (datos != null) {
+            if (!lista.isEmpty()) {
+                // 🔧 SUMAR todos los valores en lugar de tomar solo el primero
 
-                resumen.setPersonasOrientadas(datos.getPersonasAtendidas());
-                resumen.setActividadesFormacion(datos.getActividadesFormacion());
-                resumen.setParticipantesFormacion(datos.getParticipantesFormacion());
-                resumen.setContrataciones(datos.getContrataciones());
-                resumen.setEmpresasCreadas(empresaRepository.countEmpresasByAnio(anio));
-                resumen.setAsesoramientos(datos.getAsesoramientos());
-                resumen.setImporteAyudas(datos.getAyudasEntidades());
-                resumen.setImporteAyudas(datos.getAyudasEmpresas());
-                resumen.setImporteAyudasEmpresas(indicadoresAnualesRepository.sumAyudasEmpresasByAnio(anio));
-                resumen.setHorasOrientacion(
-                        indicadoresAnualesRepository.sumHorasOrientacionByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumHorasOrientacionByAnio(anio)
-                                : BigDecimal.ZERO
+                // Orientación e Intermediación Laboral
+                resumen.setPersonasOrientadas(
+                        lista.stream().mapToInt(IndicadorAnual::getPersonasAtendidas).sum()
+                );
+
+                resumen.setAltasDemandantes(
+                        lista.stream().mapToInt(i -> i.getAltasDemandantes() != null ? i.getAltasDemandantes() : 0).sum()
+                );
+
+                resumen.setAccionesOrientacion(
+                        lista.stream().mapToInt(i -> i.getAccionesOrientacion() != null ? i.getAccionesOrientacion() : 0).sum()
+                );
+
+                resumen.setOfertasEmpleo(
+                        lista.stream().mapToInt(i -> i.getOfertasEmpleo() != null ? i.getOfertasEmpleo() : 0).sum()
+                );
+
+                // Formación
+                resumen.setActividadesFormacion(
+                        lista.stream().mapToInt(IndicadorAnual::getActividadesFormacion).sum()
+                );
+
+                resumen.setCursos(
+                        lista.stream().mapToInt(IndicadorAnual::getActividadesFormacion).sum() // O un valor específico si tienes cursos separados
+                );
+
+                resumen.setPildorasFormativas(
+                        lista.stream().mapToInt(i -> i.getPildorasFormativas() != null ? i.getPildorasFormativas() : 0).sum()
+                );
+
+                resumen.setParticipantesFormacion(
+                        lista.stream().mapToInt(IndicadorAnual::getParticipantesFormacion).sum()
                 );
 
                 resumen.setHorasFormacion(
-                        indicadoresAnualesRepository.sumHorasFormacionByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumHorasFormacionByAnio(anio)
-                                : BigDecimal.ZERO);
+                        BigDecimal.valueOf(lista.stream().mapToInt(IndicadorAnual::getHorasFormacion).sum())
+                );
 
-                resumen.setOfertasEmpleo(
-                        indicadoresAnualesRepository.sumOfertasEmpleoByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumOfertasEmpleoByAnio(anio)
-                                : 0);
+                // Asesoramiento Empresarial y Autoempleo
+                resumen.setAsesoramientos(
+                        lista.stream().mapToInt(IndicadorAnual::getAsesoramientos).sum()
+                );
+
+                resumen.setEmpresasCreadas(
+                        lista.stream().mapToInt(IndicadorAnual::getEmpresasCreadas).sum()
+                );
+
+                // Otros datos
+                resumen.setContrataciones(
+                        lista.stream().mapToInt(IndicadorAnual::getContrataciones).sum()
+                );
+
+                resumen.setHorasOrientacion(
+                        BigDecimal.valueOf(lista.stream().mapToInt(IndicadorAnual::getHorasOrientacion).sum())
+                );
 
                 resumen.setPuestosTrabajo(
-                        indicadoresAnualesRepository.sumPuestosTrabajoByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumPuestosTrabajoByAnio(anio)
-                                : 0);
-                resumen.setAyudasObservatorio(
-                        indicadoresAnualesRepository.sumAyudasObservatorioByAnio(anio)
+                        lista.stream().mapToInt(i -> i.getPuestosTrabajo() != null ? i.getPuestosTrabajo() : 0).sum()
                 );
+
+                // Importes (sumar BigDecimal correctamente)
+                resumen.setImporteAyudasEmpresas(
+                        lista.stream()
+                                .map(i -> i.getAyudasEmpresas() != null ? i.getAyudasEmpresas() : BigDecimal.ZERO)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                );
+
+                resumen.setImporteAyudas(
+                        lista.stream()
+                                .map(i -> i.getAyudasEntidades() != null ? i.getAyudasEntidades() : BigDecimal.ZERO)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                );
+
+                resumen.setAyudasObservatorio(
+                        BigDecimal.valueOf(lista.stream().mapToInt(i -> i.getAyudasObservatorio() != null ? i.getAyudasObservatorio() : 0).sum())
+                );
+
+                // Datos específicos del Observatorio (mantener como estaba)
                 resumen.setPersonasObservatorio(
                         actividadRepository.countPersonasContratadasObservatorio(anio)
                 );
+
                 resumen.setDescripcionObservatorio(
                         "Durante el año " + anio + " se ha puesto en marcha el Observatorio de Estrategias del Pacto Territorial..."
                 );
+
                 resumen.setObjetivosObservatorio(List.of(
                         "Gestión del Pacto Territorial",
                         "Laboratorio de Nuevas Estrategias de Futuro",
@@ -1892,13 +1940,7 @@
                         "Relaciones con otros Pactos y Avalem Territori"
                 ));
 
-
-                resumen.setAltasDemandantes(datos.getAltasDemandantes());
-                resumen.setAccionesOrientacion(datos.getAccionesOrientacion());
-                resumen.setCursos(datos.getActividadesFormacion());
-                resumen.setPildorasFormativas(datos.getPildorasFormativas());
-
-
+                // Servicios (mantener como estaba)
                 List<ServicioDTO> servicios = new ArrayList<>();
                 servicios.add(new ServicioDTO("Orientación Laboral", "Acompañamiento personalizado para mejorar la empleabilidad."));
                 servicios.add(new ServicioDTO("Formación Profesional", "Cursos gratuitos de formación adaptados al mercado laboral."));
@@ -1906,34 +1948,52 @@
                 resumen.setServicios(servicios);
 
             } else {
-                // Podrías dejar los valores en cero o loggear un warning
+                // Valores por defecto si no hay datos
                 System.err.println("No se encontraron indicadores para el año " + anio);
+                inicializarValoresPorDefecto(resumen);
             }
 
-            // 🔸 Si tienes datos por departamento, puedes hacer:
+            // Resumen por departamentos (mantener como estaba)
             List<ResumenDepartamentoDTO> departamentos = new ArrayList<>();
-            indicadoresAnualesRepository.findAll().stream()
-                    .filter(i -> i.getAnio() == anio)
-                    .forEach(i -> {
-                        ResumenDepartamentoDTO dto = new ResumenDepartamentoDTO();
-                        dto.setNombre(i.getDepartamento());
-                        dto.setPersonasAtendidas(i.getPersonasAtendidas());
-                        dto.setParticipantes(i.getParticipantesFormacion());
-                        dto.setEmpresasApoyadas(i.getAyudasEmpresas());
-                        dto.setEmpresasCreadas(i.getEmpresasCreadas());
-                        dto.setAsesoramientos(i.getAsesoramientos());
-                        dto.setContrataciones(i.getContrataciones());
-                        dto.setCursos(i.getActividadesFormacion());
-                        dto.setHoras(i.getHorasFormacion());
-                        // Puedes añadir más si lo necesitas
-                        departamentos.add(dto);
-                    });
+            lista.forEach(i -> {
+                ResumenDepartamentoDTO dto = new ResumenDepartamentoDTO();
+                dto.setNombre(i.getDepartamento());
+                dto.setPersonasAtendidas(i.getPersonasAtendidas());
+                dto.setParticipantes(i.getParticipantesFormacion());
+                dto.setEmpresasApoyadas(i.getAyudasEmpresas());
+                dto.setEmpresasCreadas(i.getEmpresasCreadas());
+                dto.setAsesoramientos(i.getAsesoramientos());
+                dto.setContrataciones(i.getContrataciones());
+                dto.setCursos(i.getActividadesFormacion());
+                dto.setHoras(i.getHorasFormacion());
+                departamentos.add(dto);
+            });
 
             resumen.setResumenDepartamentos(departamentos);
-
             return resumen;
         }
 
+        // Método auxiliar para inicializar valores por defecto
+        private void inicializarValoresPorDefecto(ResumenMemoriaDTO resumen) {
+            resumen.setPersonasOrientadas(0);
+            resumen.setAltasDemandantes(0);
+            resumen.setAccionesOrientacion(0);
+            resumen.setOfertasEmpleo(0);
+            resumen.setActividadesFormacion(0);
+            resumen.setCursos(0);
+            resumen.setPildorasFormativas(0);
+            resumen.setParticipantesFormacion(0);
+            resumen.setHorasFormacion(BigDecimal.ZERO);
+            resumen.setAsesoramientos(0);
+            resumen.setEmpresasCreadas(0);
+            resumen.setContrataciones(0);
+            resumen.setHorasOrientacion(BigDecimal.ZERO);
+            resumen.setPuestosTrabajo(0);
+            resumen.setImporteAyudasEmpresas(BigDecimal.ZERO);
+            resumen.setImporteAyudas(BigDecimal.ZERO);
+            resumen.setAyudasObservatorio(BigDecimal.valueOf(0));
+            resumen.setPersonasObservatorio(0);
+        }
 
         private String bloqueDato(String titulo, String valor) {
             return """
