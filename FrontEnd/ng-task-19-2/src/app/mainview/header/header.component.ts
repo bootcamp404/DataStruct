@@ -21,6 +21,7 @@ export class HeaderComponent {
   isProfileMenuOpen = false;
   showLanguageDropdown = false;
   usuarioActual: Usuario | null = null;
+  isLoggedIn = false;
 
   // Estado del tema
   isDark: boolean = false;
@@ -78,12 +79,15 @@ export class HeaderComponent {
     // Usuario
     const currentUser = await this.authService.getCurrentUser();
     if (currentUser) {
-      this.usuarioActual = currentUser; 
+      this.usuarioActual = currentUser;
       this.user.email = currentUser.email;
       const nombre = currentUser.nombre?.trim();
       const apellidos = currentUser.apellidos?.trim();
       this.user.displayName = [nombre, apellidos].filter(Boolean).join(' ') || null;
     }
+
+    this.isLoggedIn = !!currentUser;
+    this.role = this.authService.getRole();
     // Roles
      this.role = this.authService.getRole();
   }

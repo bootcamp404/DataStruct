@@ -24,11 +24,12 @@
            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
           {{ 'CABECERA.INICIO' | translate }}
         </a>
+        @if(isLoggedIn && role != 9){
         <a routerLink="/dashboard"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
           {{ 'CABECERA.PANEL' | translate }}
-        </a>
+        </a>}
         @if(role === 1){
         <a routerLink="/panel-admin"
            routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
