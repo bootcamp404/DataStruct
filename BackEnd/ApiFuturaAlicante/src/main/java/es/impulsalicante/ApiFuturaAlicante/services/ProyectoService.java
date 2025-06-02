@@ -24,7 +24,13 @@ public class ProyectoService {
         return proyectoRepository.findById(id);
     }
 
+    private String generarId(){
+        Long count = proyectoRepository.count();
+        return "P" + (count + 1);
+    }
     public Proyecto createProyecto(Proyecto proyecto) {
+        String nuevoId = generarId();
+        proyecto.setId_proyecto(nuevoId);
         return proyectoRepository.save(proyecto);
     }
 

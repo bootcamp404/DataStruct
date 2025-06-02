@@ -1,15 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-interface Template {
-  id: number
-  name: string
-  description: string
-  category: string
-  fields: number
-  createdAt: Date
-  isActive: boolean
-}
+import { Template } from '../../../modelos/template';
 
 @Component({
   selector: 'app-tarjeta',
@@ -19,10 +10,12 @@ interface Template {
 })
 export class TarjetaComponent {
   @Input() template!: Template;
-  @Output() rellenar = new EventEmitter<void>();
+  @Input() departamentoId!: string;
+  @Output() rellenar = new EventEmitter<{ template: Template, departamentoId: string }>();
 
-  onRellenar(){
-    this.rellenar.emit();
+  onRellenar() {
+    console.log('departamentoId recibido:', this.departamentoId);
+    this.rellenar.emit({ template: this.template, departamentoId: this.departamentoId });
   }
 
   getCategoryColor(category: string): string {

@@ -45,7 +45,6 @@ public class Empresa {
     }
 
     //GETTERS SETTERS
-
     public List<Kpi> getKpis() {
         return kpis;
     }

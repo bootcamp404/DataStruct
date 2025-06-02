@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { NgZone } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Usuario } from '../../modelos/usuario';
+import { ThemeService } from '../../theme.service';
 
 @Component({
   selector: 'app-header',
@@ -18,54 +20,78 @@ export class HeaderComponent {
   searchTerm: string = '';
   isProfileMenuOpen = false;
   showLanguageDropdown = false;
+  usuarioActual: Usuario | null = null;
 
-  // Mapa de nombres legibles
+  // Estado del tema
+  isDark: boolean = false;
+
+  // Idioma
+  currentLanguageCode: string = 'es';
   languageNames: { [key: string]: string } = {
     es: 'Castellano',
     va: 'Valencià',
     en: 'English'
   };
 
-  // Idioma actual (en formato de código)
-  currentLanguageCode: string = 'Español';
-
   user = {
-    email: '' as string | null,
-    displayName: '' as string | null,
+    email: null as string | null,
+    displayName: null as string | null,
   }
-
+  role: number | null = null;
+  get roleName(): string {
+    const map: { [key: number]: string } = {
+      1: 'Administrador total',
+      2: 'Administrador empleo y formación',
+      3: 'Administrador promoción económica',
+      4: 'Administrador recursos humanos',
+      6: 'Empleado empleo y formación',
+      7: 'Empleado promoción económica',
+      8: 'Empleado recursos humanos',
+      9: 'Usuario'
+    };
+    return this.role ? map[this.role] || 'Desconocido' : 'Sin rol';
+  }
   constructor(
     private router: Router,
     private authService: AuthService,
     private ngZone: NgZone,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private themeService: ThemeService
   ) {}
-async ngOnInit() {
-    // Cargar idioma desde localStorage o usar 'es'
+
+  async ngOnInit() {
+    // Idioma
     const savedLang = localStorage.getItem('idioma') || 'es';
     this.currentLanguageCode = savedLang;
     this.translate.use(savedLang);
 
-    // Cargar usuario actual
+    // Tema
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      this.isDark = true;
+    } else {
+      document.documentElement.classList.remove('dark');
+      this.isDark = false;
+    }
+
+    // Usuario
     const currentUser = await this.authService.getCurrentUser();
     if (currentUser) {
+      this.usuarioActual = currentUser; 
       this.user.email = currentUser.email;
       const nombre = currentUser.nombre?.trim();
       const apellidos = currentUser.apellidos?.trim();
-      if (nombre && apellidos) {
-        this.user.displayName = `${nombre} ${apellidos}`;
-      } else {
-        this.user.displayName = null;
-      }
+      this.user.displayName = [nombre, apellidos].filter(Boolean).join(' ') || null;
     }
+    // Roles
+     this.role = this.authService.getRole();
   }
 
   toggleLanguageDropdown(event: MouseEvent): void {
     event.stopPropagation();
     this.showLanguageDropdown = !this.showLanguageDropdown;
-    if (this.showLanguageDropdown) {
-      this.isProfileMenuOpen = false;
-    }
+    if (this.showLanguageDropdown) this.isProfileMenuOpen = false;
   }
 
   changeLanguage(langCode: string): void {
@@ -78,15 +104,23 @@ async ngOnInit() {
   toggleProfileMenu(event: MouseEvent): void {
     event.stopPropagation();
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
-    if (this.isProfileMenuOpen) {
-      this.showLanguageDropdown = false;
-    }
+    if (this.isProfileMenuOpen) this.showLanguageDropdown = false;
   }
 
   closeMenus(): void {
     this.isProfileMenuOpen = false;
+    this.showLanguageDropdown = false;
   }
-async onLogoutClick() {
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.language-dropdown') && !target.closest('.profile-menu')) {
+      this.closeMenus();
+    }
+  }
+
+  async onLogoutClick() {
     try {
       await this.authService.logout();
       this.router.navigate(['/auth/sign-in']);
@@ -95,24 +129,12 @@ async onLogoutClick() {
     }
   }
 
-  search(event: Event): void {
-    const input = event.target as HTMLInputElement;
+  cerrarSesion() {
+    this.authService.logout();
   }
 
   toggleTheme(): void {
-    console.log('Cambiando tema...');
-  }
-
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.language-dropdown') && !target.closest('.profile-menu')) {
-      this.closeAllDropdowns();
-    }
-  }
-
-  closeAllDropdowns() {
-    this.showLanguageDropdown = false;
-    this.isProfileMenuOpen = false;
+    this.themeService.toggleTheme();
+    this.isDark = this.themeService.isDarkMode();
   }
 }

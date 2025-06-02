@@ -27,12 +27,22 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUsuarioById(@PathVariable String id) {
+    public ResponseEntity<?> getUsuarioById(@PathVariable Long id) {
         Optional<Usuario> usuario = usuariosService.getUsuarioById(id);
         if (usuario.isPresent()) {
             return ResponseEntity.ok(usuario.get());
         } else {
-            return ResponseEntity.status(404).body("Usuario con ID " + id + " no encontrado.");
+            return ResponseEntity.status(404).body("Usuario con ID: " + id + " no encontrado.");
+        }
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> getUsuarioById(@PathVariable String email) {
+        Optional<Usuario> usuario = usuariosService.getUsuarioByEmail(email);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.status(404).body("Usuario con email: " + email + " no encontrado.");
         }
     }
 
@@ -49,7 +59,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUsuario(@PathVariable String id, @RequestBody Usuario usuario) {
+    public ResponseEntity<String> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         Optional<Usuario> existingUsuario = usuariosService.getUsuarioById(id);
         if (existingUsuario.isPresent()) {
             usuariosService.updateUsuario(id, usuario);
@@ -60,7 +70,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUsuario(@PathVariable String id) {
+    public ResponseEntity<String> deleteUsuario(@PathVariable Long id) {
         Optional<Usuario> existingUsuario = usuariosService.getUsuarioById(id);
         if (existingUsuario.isPresent()) {
             usuariosService.deleteUsuario(id);

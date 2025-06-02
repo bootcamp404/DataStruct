@@ -23,7 +23,13 @@ public class TiposContratosService {
     }
 
     //POST
+    private String generarId(){
+        Long count = repositorio.count();
+        return "TC" + (count + 1);
+    }
     public TipoContrato CrearTipoContrato(TipoContrato tipo_contrato){
+        String nuevoId = generarId();
+        tipo_contrato.setId(nuevoId);
         return repositorio.save(tipo_contrato);
     }
 

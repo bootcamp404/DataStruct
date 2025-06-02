@@ -87,16 +87,14 @@
           </div>
 
           <div class="space-y-2">
-            <label for="email" class="block text-sm font-medium text-gray-700" disabled>{{ "PERFIL.EMAIL" | translate}}:</label>
+            <label for="email" class="block text-sm font-medium text-gray-700">{{ "PERFIL.EMAIL" | translate}}:</label>
             <input
               type="email"
               id="email"
               name="email"
               [(ngModel)]="usuario.email"
-              readonly
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
-            <small class="text-xs text-gray-500">El email no puede ser modificado</small>
           </div>
 
           <div class="space-y-2">

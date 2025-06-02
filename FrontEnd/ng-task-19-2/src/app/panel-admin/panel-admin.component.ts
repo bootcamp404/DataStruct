@@ -27,8 +27,8 @@ export class AdminPanelComponent implements OnInit {
 
     this.http.get<any[]>(`/api/usuarios`).subscribe({
       next: (data) => {
-        // Filtra fuera al admin_jefe
-        this.usuarios = data.filter(u => u.rol !== 'admin_jefe');
+        // Filtra fuera al admin_jefe (por ejemplo, id 5 si existe)
+        this.usuarios = data.filter(u => u.rol?.id !== 5);
         this.cargandoLista = false;
       },
       error: (err) => {
@@ -40,7 +40,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   actualizarRol(usuario: any) {
-    this.http.put(`/api/usuarios/${usuario.email}/rol`, { rol: usuario.rol })
+    this.http.put(`/api/usuarios/${usuario.email}/rol`, { rol: { id: usuario.rol.id } })
       .subscribe({
         next: () => alert('Rol actualizado'),
         error: () => alert('Error al actualizar rol')

@@ -46,7 +46,7 @@ CREATE TABLE `actividad` (
 
 LOCK TABLES `actividad` WRITE;
 /*!40000 ALTER TABLE `actividad` DISABLE KEYS */;
-INSERT INTO `actividad` VALUES ('A001','Asesoramiento Empresarial','Asesoramiento individualizado a personas emprendedoras','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',50,'D3',30,'P001'),('A002','Mentorías','Mentorías para emprendedores con ideas innovadoras','2025-04-01 00:00:00.000000','2025-04-15 00:00:00.000000',35,'D3',20,'P001'),('A003','Formación básica','Formación para nuevos emprendedores','2025-05-10 00:00:00.000000','2025-05-20 00:00:00.000000',60,'D3',25,'P002'),('A004','Gestión y Competencias Empresariales','Sesiones formativas sobre emprendimiento','2025-06-01 00:00:00.000000','2025-06-10 00:00:00.000000',40,'D3',15,'P002');
+INSERT INTO `actividad` VALUES ('A001','Asesoramiento Empresarial','Asesoramiento individualizado a personas emprendedoras','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',50,'D3',30,'P001'),('A002','Mentorías','Mentorías para emprendedores con ideas innovadoras','2025-04-01 00:00:00.000000','2025-04-15 00:00:00.000000',35,'D3',20,'P001'),('A003','Formación básica','Formación para nuevos emprendedores','2025-05-10 00:00:00.000000','2025-05-20 00:00:00.000000',60,'D3',25,'P002'),('A004','Gestión y Competencias Empresariales','Sesiones formativas sobre emprendimiento','2025-06-01 00:00:00.000000','2025-06-10 00:00:00.000000',40,'D3',15,'P002'),('A5','Prueba para ver auto id','jaja xd','2025-03-01 00:00:00.000000','2025-03-31 00:00:00.000000',4,'D1',20,NULL);
 /*!40000 ALTER TABLE `actividad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +267,7 @@ DROP TABLE IF EXISTS `indicadores_anuales`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `indicadores_anuales` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(20) NOT NULL,
   `anio` int NOT NULL,
   `departamento` varchar(255) NOT NULL,
   `personas_atendidas` int DEFAULT '0',
@@ -293,9 +293,14 @@ CREATE TABLE `indicadores_anuales` (
   `candidatos_tramitados` int DEFAULT NULL,
   `creditos_concedidos` int DEFAULT NULL,
   `importe_microcreditos` decimal(12,2) DEFAULT NULL,
+  `ayudas_observatorio` int DEFAULT '0',
+  `ayudas_laboratorio` decimal(12,2) DEFAULT '0.00',
+  `personas_laboratorio` int DEFAULT '0',
+  `descripcion_laboratorio` text,
+  `objetivos_laboratorio` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -304,7 +309,6 @@ CREATE TABLE `indicadores_anuales` (
 
 LOCK TABLES `indicadores_anuales` WRITE;
 /*!40000 ALTER TABLE `indicadores_anuales` DISABLE KEYS */;
-INSERT INTO `indicadores_anuales` VALUES (1,2025,'empleo',7360,199,54,99,1301,6092,347,3944170.34,247271.99,'2025-04-24 07:19:54',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,2025,'D3',150,40,12,8,160,320,25,12500.00,3500.00,'2025-05-14 11:07:48',60,5,10,7,15,20,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `indicadores_anuales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,7 +382,7 @@ CREATE TABLE `rol` (
   `id_rol` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -387,7 +391,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador total');
+INSERT INTO `rol` VALUES (1,'Administrador total'),(2,'Administrador empleo y formacion'),(3,'Administrador promocion economica'),(4,'Administrador recursos humanos');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -486,13 +490,14 @@ CREATE TABLE `usuarios` (
   `email` varchar(255) NOT NULL,
   `contrasenya` varchar(255) NOT NULL,
   `telefono` varchar(255) DEFAULT NULL,
-  `id_rol` int NOT NULL,
-  PRIMARY KEY (`email`),
+  `id_rol` int DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `telefono_UNIQUE` (`telefono`),
   KEY `FK_USUARIO_ROL_idx` (`id_rol`),
   CONSTRAINT `FK_USUARIO_ROL` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -501,7 +506,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES ('ivan',NULL,'ivan@gmail.com','123456',NULL,1),('leo',NULL,'leo@gmail.com','123456',NULL,1),('prueba','1','prueba123@gmail.com','123456',NULL,1);
+INSERT INTO `usuarios` VALUES ('hIban','si','juanito@meme.com','123456',NULL,2,1),('leo',NULL,'leo@gmail.com','123456',NULL,1,2),('Prueba para roles','apellidos','prueba@gmail.com','12345',NULL,2,3),('prueba','1','prueba123@gmail.com','123456',NULL,1,4);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -514,4 +519,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-23 11:26:02
+-- Dump completed on 2025-05-30 13:56:45

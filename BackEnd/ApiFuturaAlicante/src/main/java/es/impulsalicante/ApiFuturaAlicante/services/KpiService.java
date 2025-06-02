@@ -21,7 +21,13 @@ public class KpiService {
         return kpiRepository.findById(id);
     }
 
+    private String generarId(){
+        Long count = kpiRepository.count();
+        return "K" + (count + 1);
+    }
     public Kpi createKpi(Kpi kpi) {
+        String nuevoId = generarId();
+        kpi.setId_kpi(nuevoId);
         return kpiRepository.save(kpi);
     }
 

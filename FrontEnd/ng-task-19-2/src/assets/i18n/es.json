@@ -1,6 +1,6 @@
 {
   "FEATURES": {
-    "TITLE": "LO QUE OFRECEMOS",
+    "TITLE": "Lo que ofrecemos",
     "DESCRIPTION": "Descubre todas las herramientas que tenemos para simplificar la gestión de tus formularios empresariales.",
     "ITEMS": {
       "CUSTOM_FORMS": {
@@ -38,7 +38,8 @@
       "PANEL": "Panel Administrativo",
       "LISTA": "Lista Empleados",
       "PERFIL": "Mi perfil",
-      "SESION": "Cerrar sesión"
+      "INICIAR_SESION": "Iniciar sesión",
+      "CERRAR_SESION": "Cerrar sesión"
     },
 
     "FOOTER": {

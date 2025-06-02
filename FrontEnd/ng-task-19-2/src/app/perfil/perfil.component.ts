@@ -20,6 +20,7 @@ export class PerfilComponent implements OnInit {
     email: '',
     telefono: '',
     contrasenya: '',
+    rol: {id: 9}
     // departamento: '',
     // cargo: ''
   };
@@ -63,7 +64,8 @@ export class PerfilComponent implements OnInit {
       apellidos: this.usuarioActual?.apellidos || '',
       email: this.usuarioActual?.email || '',
       telefono: this.usuarioActual?.telefono || '',
-      contrasenya: this.usuarioActual?.constrasenya || ''
+      contrasenya: this.usuarioActual?.constrasenya || '',
+      rol: {id: 9}
     };
   }
 

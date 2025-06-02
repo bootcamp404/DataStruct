@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
@@ -16,18 +16,23 @@ export class AuthService {
   private _router = inject(Router);
   private _authStateService = inject(AuthStateService);
   private _isLoggedIn: boolean | null = null;
+  private userRole: number | null = null;
 
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
   constructor() {}
 
   // Registro usando TU API
-  async registrarse(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
+  async registrarse(usuario: { email: string, contrasenya: string }): Promise<Usuario> {
     try {
       return await firstValueFrom(
         this._http.post<Usuario>(`${this.apiUrl}/usuarios`, {
           email: usuario.email,
-          contrasenya: usuario.contrasenya
+          contrasenya: usuario.contrasenya,
+          rol: { id: 9 },
+          nombre: null,
+          apellidos: null,
+          telefono: null
         })
       );
     } catch (error) {
@@ -48,6 +53,7 @@ export class AuthService {
 
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
+    this.userRole = response.rol?.id || null;
     this._router.navigate(['/inicio']);
 
     return response;
@@ -68,6 +74,7 @@ export class AuthService {
           email: user.email,
           telefono: user.phoneNumber || '',
           contrasenya: '', // Firebase no proporciona contraseña para login social
+          rol: { id: 9 }
         };
 
         localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -101,6 +108,7 @@ export class AuthService {
           email: user.email,
           telefono: user.phoneNumber || '',
           contrasenya: '', // No viene en login social
+          rol: { id: 9 }
         };
 
         localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -186,4 +194,17 @@ export class AuthService {
       }
     });
   }
+  getRole(): number | null {
+    if (this.userRole) return this.userRole;
+    const storedUser = localStorage.getItem('usuario');
+    if (!storedUser) return null;
+    try {
+      const usuario = JSON.parse(storedUser) as Usuario;
+      this.userRole = usuario.rol?.id || null;
+      return this.userRole;
+    } catch {
+      return null;
+    }
+  }
+
 }

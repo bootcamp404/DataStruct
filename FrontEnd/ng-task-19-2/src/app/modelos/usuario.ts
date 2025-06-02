@@ -4,6 +4,7 @@ export interface Usuario {
   email: string;
   telefono: string;
   contrasenya: string;
+  rol: { id: number };
 //   departamento?: string;
 //   cargo?: string;
 }
