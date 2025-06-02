@@ -2,29 +2,35 @@
 /* Botón flotante */
 .chat-toggle-btn {
   position: fixed;
-  bottom: 20px;       /* ajusta según tu footer */
+  bottom: 20px;
   right: 20px;
   width: 56px;
   height: 56px;
   border: none;
   border-radius: 50%;
-  background: #007bff;
+  background: linear-gradient(to right, #1176E1, #20B26E);
   color: white;
   font-size: 24px;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.chat-toggle-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 /* Contenedor del widget */
 .chat-widget-container {
   position: fixed;
-  bottom: 90px;       /* justo encima del botón */
+  bottom: 90px;
   right: 20px;
   width: 300px;
   max-height: 500px;
   overflow: hidden;
-  transform: translateY(130%);   /* escondido hacia abajo */
+  transform: translateY(130%);
   transition: transform 0.3s ease;
   z-index: 999;
 }
@@ -32,11 +38,6 @@
 /* Cuando está abierto, lo traemos a la vista */
 .chat-widget-container.open {
   transform: translateY(0);
-}
-
-.chat-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 /* Ajusta tu chat.component para que tenga un box fijo */
@@ -48,11 +49,17 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   overflow: hidden;
 }
+
+.chat-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .chat-toggle {
   position: fixed;
   bottom: 20px;    /* distancia desde el borde inferior */
   right: 20px;     /* distancia desde el borde derecho */
-  background: #007bff;
+  background: linear-gradient(to right, #1176E1, #20B26E);
   color: white;
   border: none;
   border-radius: 50%;

@@ -75,7 +75,7 @@ export class PerfilComponent implements OnInit {
 
   guardarCambios() {
 
-    console.log('Usuario a enviar:', this.usuario); // 👈
+    console.log('Usuario a enviar:', this.usuario);
     this.authService.actualizarUsuario(this.usuario.email, this.usuario)
       .subscribe({
         next: (response) => {

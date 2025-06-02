@@ -20,6 +20,7 @@ export const routes: Routes = [
   {
     path: 'inicio',
     component: InicioComponent
+
   },
   {
     path: 'test',
@@ -28,37 +29,37 @@ export const routes: Routes = [
   {
     path: 'plantillas',
     component: PlantillasComponent,
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'perfil',
     component: PerfilComponent,
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'formularios',
     component: FormulariosComponent,
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'informes',
     loadComponent: () => import('./informes/informes.component').then(m => m.InformesComponent),
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'informes/resumen',
     loadComponent: () => import('./informes/resumen.component').then(m => m.ResumenComponent),
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    //canActivate: [privateGuard]
+    canActivate: [privateGuard()]
   },
   {
     path: 'panel-admin',
     component: AdminPanelComponent,
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: '**',
