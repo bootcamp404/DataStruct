@@ -146,5 +146,4 @@ export class HeaderComponent {
     en: 'assets/img/banderas/en.png',
     va: 'assets/img/banderas/va.png'
   };
-
 }

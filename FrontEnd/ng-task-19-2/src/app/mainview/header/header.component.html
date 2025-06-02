@@ -48,25 +48,52 @@
           Cambiar tema
         </button>
 
-        <!-- Idioma -->      
+        <!-- Idioma -->
         <div class="relative">
+          <!-- Botón principal -->
           <button (click)="toggleLanguageDropdown($event)"
                   class="px-4 py-2 rounded-full bg-gradient-to-r from-[#1176E1] to-[#20B26E] shadow hover:shadow-md text-sm font-medium flex items-center text-white">
             <span class="flex items-center">
               <img [src]="languageFlags[currentLanguageCode]"
-                  alt="{{ currentLanguageCode }}"
-                  class="w-5 h-4 mr-2 object-contain rounded-sm" />
+                   alt="{{ currentLanguageCode }}"
+                   class="w-5 h-4 mr-2 object-contain rounded-sm" />
               {{ languageNames[currentLanguageCode] }}
             </span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
-          <div *ngIf="showLanguageDropdown" class="absolute right-0 mt-1 w-36 rounded-lg shadow border z-50 text-base" [ngClass]="isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'">
-            <a (click)="changeLanguage('es')" class="block px-4 py-2 cursor-pointer" [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">Castellano</a>
-            <a (click)="changeLanguage('va')" class="block px-4 py-2 cursor-pointer" [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">Valencià</a>
-            <a (click)="changeLanguage('en')" class="block px-4 py-2 cursor-pointer" [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">English</a>
-          </div>
+
+          <!-- Menú desplegable -->
+          <div *ngIf="showLanguageDropdown"
+               class="absolute right-0 mt-1 w-36 rounded-lg shadow border z-50 text-base"
+               [ngClass]="isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'">
+
+            <!-- Castellano -->
+            <a (click)="changeLanguage('es')"
+               class="flex items-center px-4 py-2 cursor-pointer"
+               [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">
+              <img src="assets/img/banderas/es.png" alt="es" class="w-5 h-4 mr-2 object-contain rounded-sm" />
+              Castellano
+            </a>
+
+            <!-- Valencià -->
+            <a (click)="changeLanguage('va')"
+               class="flex items-center px-4 py-2 cursor-pointer"
+               [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">
+              <img src="assets/img/banderas/va.png" alt="va" class="w-5 h-4 mr-2 object-contain rounded-sm" />
+              Valencià
+            </a>
+
+            <!-- English -->
+            <a (click)="changeLanguage('en')"
+               class="flex items-center px-4 py-2 cursor-pointer"
+               [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">
+              <img src="assets/img/banderas/en.png" alt="en" class="w-5 h-4 mr-2 object-contain rounded-sm" />
+              English
+            </a>
+</div>
+
         </div>
 
         <!-- Perfil -->
