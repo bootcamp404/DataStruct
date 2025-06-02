@@ -4,14 +4,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #f3f4f6 !important;
+  background-color: #f3f4f6 !important; /* claro */
   transition: background-color 0.3s ease, color 0.3s ease;
   color: #4b5563;
 }
 
 html.dark .header-container {
-  background-color: #1f2937 !important;
-  color: #d1d5db !important;
+  background-color: #1f2937 !important; /* gris oscuro */
+  color: #d1d5db !important; /* gris claro */
 }
 
 /* Navegación */
@@ -23,7 +23,7 @@ html.dark .header-container {
 }
 
 .navbar a:hover {
-  color: #1176E1;
+  color: #035398;
 }
 
 html.dark .navbar a {
@@ -31,12 +31,12 @@ html.dark .navbar a {
 }
 
 html.dark .navbar a:hover {
-  color: #20B26E;
+  color: #60a5fa;
 }
 
 /* Botón de idioma */
 .language-btn {
-  background-color: #1176E1;
+  background-color: #035398;
   color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 0.375rem;
@@ -48,15 +48,15 @@ html.dark .navbar a:hover {
 }
 
 .language-btn:hover {
-  background-color: #0D5CA8;
+  background-color: #06345b;
 }
 
 html.dark .language-btn {
-  background-color: #20B26E;
+  background-color: #2563eb;
 }
 
 html.dark .language-btn:hover {
-  background-color: #1A8F5A;
+  background-color: #1e40af;
 }
 
 /* Dropdowns */
@@ -184,7 +184,7 @@ html.dark .search-input {
 /* Botón búsqueda */
 .search-button {
   padding: 0.5rem;
-  background-color: #1176E1;
+  background-color: #035398;
   border: none;
   cursor: pointer;
   display: flex;
@@ -194,15 +194,15 @@ html.dark .search-input {
 }
 
 .search-button:hover {
-  background-color: #0D5CA8;
+  background-color: #06345b;
 }
 
 html.dark .search-button {
-  background-color: #20B26E;
+  background-color: #2563eb;
 }
 
 html.dark .search-button:hover {
-  background-color: #1A8F5A;
+  background-color: #1e40af;
 }
 
 /* No imprimir */
