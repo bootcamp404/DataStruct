@@ -7,7 +7,8 @@ import { Departamento } from '../../modelos/departamento';
 import { ActualizarService } from '../../services/actualizar.service';
 import { DepartamentoService } from '../../services/departamento.service';
 import { DepartamentoValidaciones } from '../../validaciones/departamento.validaciones';
-
+import { AuthService } from '../../auth/data-access/auth.service';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-pagina-departamentos',
@@ -19,7 +20,7 @@ import { DepartamentoValidaciones } from '../../validaciones/departamento.valida
     ngSkipHydration: 'true'
   }
 })
-export class DepartamentsComponent implements OnInit { 
+export class DepartamentsComponent implements OnInit {
   formularioEdicion: FormGroup;
   departamentos: Departamento[] = [];
   selectedDepartamento: Departamento | null = null;
@@ -39,6 +40,7 @@ export class DepartamentsComponent implements OnInit {
     private fb: FormBuilder,
     private departamentoService: DepartamentoService,
     private actualizarDepts: ActualizarService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.formularioEdicion = this.fb.group({
@@ -66,9 +68,17 @@ export class DepartamentsComponent implements OnInit {
     this.cargandoLista = true;
     this.departamentoService.obtenerDepartamentos().subscribe({
       next: (departamentos) => {
-        this.departamentos = departamentos;
+        const rol = this.authService.getRole();
+
+        // Si el rol es 10, mostramos solo el departamento con ID 10
+        if (rol === 10) {
+          this.departamentos = departamentos.filter(d => Number(d.id) === 10);
+        } else {
+          this.departamentos = departamentos;
+        }
+
         this.cargandoLista = false;
-        this.departamentoService.setDepartamentos(departamentos);
+        this.departamentoService.setDepartamentos(this.departamentos);
       },
       error: (error) => {
         console.error('Error al cargar departamentos:', error);
@@ -77,6 +87,7 @@ export class DepartamentsComponent implements OnInit {
       }
     });
   }
+
 
   selectDepartamento(departamento: Departamento) {
     this.selectedDepartamento = departamento;
@@ -105,7 +116,7 @@ export class DepartamentsComponent implements OnInit {
 
     try {
       const departamentoActualizado = this.formularioEdicion.value;
-      
+
       // Validar el formulario excluyendo el departamento actual
       const departamentosSinActual = this.departamentos.filter(d => d.id !== this.selectedDepartamento?.id);
       const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
@@ -127,7 +138,7 @@ export class DepartamentsComponent implements OnInit {
       if (response.status === 200) {
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
-        
+
         // Redirigir a la página principal de listar
         this.router.navigate(['/dashboard']);
       } else {
@@ -149,7 +160,7 @@ export class DepartamentsComponent implements OnInit {
 
   async eliminarDepartamento(id: string) {
     if (this.eliminando) return;
-    
+
     this.eliminando = true;
     try {
       await firstValueFrom(this.departamentoService.eliminarDepartamento(id));
@@ -170,4 +181,4 @@ export class DepartamentsComponent implements OnInit {
   toggleMostrarTodos() {
     this.mostrarTodos = !this.mostrarTodos;
   }
-} 
+}
