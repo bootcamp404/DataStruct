@@ -12,7 +12,7 @@ import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyec
 import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
 import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { AuthService } from '../data-access/auth.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -28,12 +28,13 @@ export class DashboardComponent implements OnInit {
   cargandoLista = false;
   error = false;
   mostrarModalCreacion = false;
-  
 
+  userRole: number | null = null;
   mensajeError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
+    private authservice: AuthService,
     private departamentoService: DepartamentoService,
     private router: Router,
     private actualizarDepts: ActualizarService) {
@@ -43,11 +44,15 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-  ngOnInit(): void {
-    this.departamentoService.departamentos$.subscribe(depts => {
-      this.departamentos = depts;
-    });
-  }
+    ngOnInit(): void {
+      this.authservice.getCurrentUser().then(usuario => {
+        this.userRole = usuario?.rol?.id || null;
+
+        this.departamentoService.departamentos$.subscribe(depts => {
+          this.departamentos = this.filtrarDepartamentosPorRol(depts, this.userRole);
+        });
+      });
+    }
 
   abrirModalCreacion() {
     // Resetear el formulario
@@ -146,4 +151,21 @@ export class DashboardComponent implements OnInit {
   deleteDoc(doc: any) {
     console.log('Eliminando documento:', doc);
   }
+  filtrarDepartamentosPorRol(departamentos: Departamento[], rolId: number | null): Departamento[] {
+    if (rolId === 1) {
+      return departamentos; // Administrador: acceso completo
+    }
+
+    if (rolId === 14) {
+      return departamentos.filter(dep => dep.nombre !== 'Recursos Humanos');
+    }
+
+    if (rolId === 16) {
+      return departamentos.filter(dep => dep.nombre === 'Empleo y Formación');
+    }
+
+    // Puedes añadir más condiciones según los roles
+    return []; // Si el rol no tiene acceso o no está definido
+  }
+
 }
