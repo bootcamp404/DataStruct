@@ -58,7 +58,6 @@ export default class SignUpComponent {
       const { email, contrasenya } = this.form.value;
       if (!email || !contrasenya) return;
 
-      // Registrar usuario con rol: { id: 9 }
       await this._authService.registrarse({ email, contrasenya });
 
       // Login automático

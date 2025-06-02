@@ -45,7 +45,7 @@ button:focus {
 :host ::ng-deep .controls .language-btn,
 :host ::ng-deep *[class*="language-btn"] {
     color: white !important;
-    background-color: #035398 !important;
+    background-color: #1176E1 !important;
 }
 
 :host ::ng-deep .language-btn *, 
@@ -109,33 +109,33 @@ button:focus {
 
 /* Cambiamos el color del botón "Crear formulario" */
 :host ::ng-deep .bg-blue-600 {
-  background-color: #035398 !important;
+  background-color: #1176E1 !important;
 }
 
 /* Cambiamos el color del botón "Crear formulario" al pasar el ratón */
 :host ::ng-deep .hover\:bg-blue-700:hover {
-  background-color: #06345b !important;
+  background-color: #0D5CA8 !important;
 }
 
 /* Cambiamos el color de los iconos de "Ver" en la vista de cuadrícula */
 :host ::ng-deep .inline-flex.items-center.px-3.py-1.bg-blue-600.text-white.rounded-md.hover\:bg-blue-700 {
-  background-color: #035398 !important;
+  background-color: #1176E1 !important;
 }
 
 :host ::ng-deep .inline-flex.items-center.px-3.py-1.bg-blue-600.text-white.rounded-md.hover\:bg-blue-700:hover {
-  background-color: #06345b !important;
+  background-color: #0D5CA8 !important;
 }
 
 :host ::ng-deep .text-blue-600 {
-  color: #035398 !important;
+  color: #1176E1 !important;
 }
 
 :host ::ng-deep .text-blue-600:hover {
-  color: #06345b !important;
+  color: #0D5CA8 !important;
 }
 
 :host ::ng-deep .hover\:bg-blue-50:hover {
-  background-color: rgba(3, 83, 152, 0.05) !important;
+  background-color: rgba(17, 118, 225, 0.05) !important;
 }
 
 

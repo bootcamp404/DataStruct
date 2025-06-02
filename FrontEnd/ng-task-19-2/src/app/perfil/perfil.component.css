@@ -3,7 +3,7 @@
     height: 100%;
     margin: 0;
     padding: 40px;
-    background-color: #06345b;
+    background-color: #1176E1;
     color: #fff;
     min-height: calc(100vh - 60px); /* Ajustar según el header de tu aplicación */
     box-sizing: border-box;
@@ -12,7 +12,7 @@
   .perfil-container h2 {
     color: #fff;
     margin-bottom: 30px;
-    border-bottom: 2px solid #035398;
+    border-bottom: 2px solid #20B26E;
     padding-bottom: 15px;
     font-size: 24px;
   }
@@ -39,7 +39,7 @@
   
   .dato-perfil strong {
     width: 120px;
-    color: #035398;
+    color: #1176E1;
     font-weight: 600;
   }
   
@@ -64,7 +64,7 @@
     display: block;
     margin-bottom: 10px;
     font-weight: 600;
-    color: #035398;
+    color: #1176E1;
   }
   
   .form-group small {
@@ -100,7 +100,7 @@
   }
   
   .btn-primary {
-    background-color: #035398;
+    background-color: #1176E1;
     color: white;
     padding: 12px 25px;
     border: none;
@@ -111,14 +111,14 @@
   }
   
   .btn-primary:hover {
-    background-color: #06345b;
+    background-color: #0D5CA8;
   }
   
   .btn-secundario {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: #20B26E;
+    color: white;
     padding: 12px 25px;
-    border: 1px solid #ccc;
+    border: 1px solid #1A8F5A;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 500;
@@ -126,7 +126,7 @@
   }
   
   .btn-secundario:hover {
-    background-color: #e5e5e5;
+    background-color: #1A8F5A;
   }
   
   @media (max-width: 768px) {

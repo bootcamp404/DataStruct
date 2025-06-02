@@ -1,4 +1,3 @@
-
 .content {
   background: linear-gradient(to right, #f5f7fa, #e4ecf5);
   padding: 60px 30px;
@@ -15,7 +14,7 @@
 }
 
 .content .highlight {
-  color: #035398;
+  color: #1176E1;
 }
 
 .content p {
@@ -35,20 +34,20 @@
 }
 
 .btn-primary {
-  background-color: #035398;
+  background-color: #1176E1;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #06345b;
+  background-color: #0D5CA8;
 }
 
 .btn-secondary {
-  background-color: white;
-  color: #1c1e21;
-  border: 1px solid #d1d5db;
+  background-color: #20B26E;
+  color: white;
+  border: 1px solid #1A8F5A;
 }
 
 .btn-secondary:hover {
-  background-color: #d0d0d0;
+  background-color: #1A8F5A;
 }

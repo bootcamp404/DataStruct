@@ -49,8 +49,8 @@ export class ActividadComponent implements OnInit, OnDestroy {
     this.formActividad = this.fb.group({
       nombre:             ['', Validators.required],
       descripcion:        [''],
-      fecha_ini:          ['', Validators.required],
-      fecha_fin:          ['', Validators.required],
+      fecha_ini:          [''],
+      fecha_fin:          [''],
       num_participantes:  [0,  [Validators.required, Validators.min(0)]],
       horas:              [0,  [Validators.required, Validators.min(0)]],
       id_departamento:    ['', Validators.required],

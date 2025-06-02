@@ -29,7 +29,7 @@ export class AuthService {
         this._http.post<Usuario>(`${this.apiUrl}/usuarios`, {
           email: usuario.email,
           contrasenya: usuario.contrasenya,
-          rol: { id: 9 },
+          rol: { id: 16 },
           nombre: null,
           apellidos: null,
           telefono: null
