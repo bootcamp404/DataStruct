@@ -4,39 +4,31 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #f3f4f6 !important;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  color: #4b5563;
+  background: linear-gradient(to right, #1176E1, #20B26E) !important;
+  transition: all 0.3s ease;
+  color: white;
 }
 
 html.dark .header-container {
-  background-color: #1f2937 !important;
-  color: #d1d5db !important;
+  background: linear-gradient(to right, #0D5CA8, #1A8F5A) !important;
+  color: white !important;
 }
 
 /* Navegación */
 .navbar a {
   text-decoration: none;
-  color: #4b5563;
+  color: white;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .navbar a:hover {
-  color: #1176E1;
-}
-
-html.dark .navbar a {
-  color: #d1d5db;
-}
-
-html.dark .navbar a:hover {
-  color: #20B26E;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Botón de idioma */
 .language-btn {
-  background-color: #1176E1;
+  background: linear-gradient(to right, #1176E1, #20B26E);
   color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 0.375rem;
@@ -44,19 +36,11 @@ html.dark .navbar a:hover {
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .language-btn:hover {
-  background-color: #0D5CA8;
-}
-
-html.dark .language-btn {
-  background-color: #20B26E;
-}
-
-html.dark .language-btn:hover {
-  background-color: #1A8F5A;
+  background: linear-gradient(to right, #0D5CA8, #1A8F5A);
 }
 
 /* Dropdowns */
@@ -65,17 +49,17 @@ html.dark .language-btn:hover {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: white;
+  background: linear-gradient(to right, #1176E1, #20B26E);
   border-radius: 0.375rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   z-index: 20;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 html.dark .language-dropdown,
 html.dark .profile-menu {
-  background-color: #374151; /* gris oscuro */
-  color: #d1d5db;
+  background: linear-gradient(to right, #0D5CA8, #1A8F5A);
+  color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
@@ -84,29 +68,17 @@ html.dark .profile-menu {
 .logout-btn {
   display: block;
   padding: 0.5rem 1rem;
-  color: #4b5563;
+  color: white;
   text-decoration: none;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .language-dropdown a:hover,
 .profile-menu a:hover,
 .logout-btn:hover {
-  background-color: #f3f4f6;
-}
-
-html.dark .language-dropdown a,
-html.dark .profile-menu a,
-html.dark .logout-btn {
-  color: #d1d5db;
-}
-
-html.dark .language-dropdown a:hover,
-html.dark .profile-menu a:hover,
-html.dark .logout-btn:hover {
-  background-color: #4b5563;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Botón cerrar sesión */
@@ -114,15 +86,11 @@ html.dark .logout-btn:hover {
   width: 100%;
   text-align: left;
   padding: 0.5rem 1rem;
-  color: #4b5563;
+  color: white;
   font-size: 0.875rem;
   background-color: transparent;
   border: none;
   cursor: pointer;
-}
-
-html.dark .logout-btn {
-  color: #d1d5db;
 }
 
 /* Controles */
@@ -136,18 +104,14 @@ html.dark .logout-btn {
 .logo-text {
   user-select: none;
   cursor: default;
-  color: #000;
+  color: white;
   text-decoration: none;
   pointer-events: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .logo-text:hover {
-  color: #000;
-}
-
-html.dark .logo-text {
-  color: #fff;
+  color: white;
 }
 
 /* Input búsqueda */
@@ -155,15 +119,11 @@ html.dark .logo-text {
   display: flex;
   align-items: center;
   width: 300px;
-  background-color: white;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-html.dark .search-container {
-  background-color: #374151;
+  transition: all 0.3s ease;
 }
 
 .search-input {
@@ -172,37 +132,29 @@ html.dark .search-container {
   border: none;
   outline: none;
   font-size: 0.9rem;
-  color: #666666;
+  color: white;
   background: transparent;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-html.dark .search-input {
-  color: #d1d5db;
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* Botón búsqueda */
 .search-button {
   padding: 0.5rem;
-  background-color: #1176E1;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .search-button:hover {
-  background-color: #0D5CA8;
-}
-
-html.dark .search-button {
-  background-color: #20B26E;
-}
-
-html.dark .search-button:hover {
-  background-color: #1A8F5A;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* No imprimir */
