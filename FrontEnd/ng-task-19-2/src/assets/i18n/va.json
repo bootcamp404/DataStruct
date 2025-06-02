@@ -8,11 +8,11 @@
         "DESC": "Crea formularis adaptats a les necessitats específiques de cada departament."
       },
       "DEPARTMENT_ORGANIZATION": {
-        "TITLE": "Organització Departamental",
+        "TITLE": "Organització dels Departaments",
         "DESC": "Gestiona formularis per departaments per a una millor organització i seguiment."
       },
       "EXPORT_PDF": {
-        "TITLE": "Exportació a PDF",
+        "TITLE": "Exportar a PDF",
         "DESC": "Exporta formularis i informes en format PDF per a compartir o arxivar."
       },
       "ADVANCED_ANALYTICS": {
@@ -57,7 +57,7 @@
     "LEGAL": {
       "TITULO": "Legal",
       "RGPD": "RGPD",
-      "COOKIES": "Galetes",
+      "COOKIES": "Cookies",
       "LICENCIAS": "Llicències"
     }
   },

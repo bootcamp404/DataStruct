@@ -8,11 +8,11 @@
         "DESC": "Crea formularios adaptados a las necesidades específicas de cada departamento."
       },
       "DEPARTMENT_ORGANIZATION": {
-        "TITLE": "Organización Departamental",
+        "TITLE": "Organización de los Departamentos",
         "DESC": "Gestiona formularios por departamentos para una mejor organización y seguimiento."
       },
       "EXPORT_PDF": {
-        "TITLE": "Exportación a PDF",
+        "TITLE": "Exportar a PDF",
         "DESC": "Exporta formularios e informes en formato PDF para compartir o archivar."
       },
       "ADVANCED_ANALYTICS": {

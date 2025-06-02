@@ -12,7 +12,7 @@
         <div class="rounded-md p-1">
           <img src="assets/img/logo.png" alt="Logo dataBridge" class="w-16 h-16 object-contain">
         </div>
-        <span class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#1176E1] to-[#20B26E]">
+        <span class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
           dataBridge
         </span>
       </a>
@@ -20,19 +20,19 @@
       <!-- Navegación principal -->
       <nav class="md:flex gap-6 text-base font-medium">
         <a routerLink="/inicio"
-           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-[#1176E1] to-[#20B26E] font-bold"
+           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
           {{ 'CABECERA.INICIO' | translate }}
         </a>
         @if(isLoggedIn && role != 9){
         <a routerLink="/dashboard"
-           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-[#1176E1] to-[#20B26E] font-bold"
+           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
           {{ 'CABECERA.PANEL' | translate }}
         </a>}
         @if(role === 1){
         <a routerLink="/panel-admin"
-           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-[#1176E1] to-[#20B26E] font-bold"
+           routerLinkActive="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 font-bold"
            class=" hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
           {{ 'CABECERA.LISTA' | translate }}
         </a>
@@ -52,7 +52,12 @@
         <div class="relative">
           <button (click)="toggleLanguageDropdown($event)"
                   class="px-4 py-2 rounded-full bg-gradient-to-r from-[#1176E1] to-[#20B26E] shadow hover:shadow-md text-sm font-medium flex items-center text-white">
-            <span>{{ languageNames[currentLanguageCode] }}</span>
+            <span class="flex items-center">
+              <img [src]="languageFlags[currentLanguageCode]"
+                  alt="{{ currentLanguageCode }}"
+                  class="w-5 h-4 mr-2 object-contain rounded-sm" />
+              {{ languageNames[currentLanguageCode] }}
+            </span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>

@@ -141,4 +141,10 @@ export class HeaderComponent {
     this.themeService.toggleTheme();
     this.isDark = this.themeService.isDarkMode();
   }
+  languageFlags: Record<string, string> = {
+    es: 'assets/img/banderas/es.png',
+    en: 'assets/img/banderas/en.png',
+    va: 'assets/img/banderas/va.png'
+  };
+
 }
