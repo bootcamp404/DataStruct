@@ -571,7 +571,7 @@
             int total = totalA + totalB + totalC;
 
             html.append(String.format("""
-        <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
+        <div style=' page-break-before: always;  background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
       <h2 style='color: #00a99d; margin: 15px 0 10px;'>SUBVENCIONES A ENTIDADES</h2>
       <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
     
@@ -796,7 +796,7 @@
         }
 
         private String generarSeccionProyectos() {
-            List<Proyecto> proyectos = proyectoRepository.findAll();
+            List<Proyecto> proyectos = proyectoRepository.findByDepartamentoId("D2");
 
             StringBuilder html = new StringBuilder();
             html.append("""
@@ -1005,76 +1005,76 @@
         private String formatDate(Date date) {
             return date != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(date) : "-";
         }
-        private String generarTablaCursos(List<Actividad> actividades) {
-            Map<String, int[]> resumen = new LinkedHashMap<>();
+            private String generarTablaCursos(List<Actividad> actividades) {
+                Map<String, int[]> resumen = new LinkedHashMap<>();
 
-            // Inicializar los tipos de cursos
-            resumen.put("Cursos Programación LABORA", new int[]{0, 0, 0});
-            resumen.put("Cursos propios con certificación", new int[]{0, 0, 0});
-            resumen.put("Cursos propios sin certificación", new int[]{0, 0, 0});
-            resumen.put("Convenios de formación", new int[]{0, 0, 0});
+                // Inicializar los tipos de cursos
+                resumen.put("Cursos Programación LABORA", new int[]{0, 0, 0});
+                resumen.put("Cursos propios con certificación", new int[]{0, 0, 0});
+                resumen.put("Cursos propios sin certificación", new int[]{0, 0, 0});
+                resumen.put("Convenios de formación", new int[]{0, 0, 0});
 
-            for (Actividad a : actividades) {
-                String desc = a.getDescripcion().toLowerCase();
+                for (Actividad a : actividades) {
+                    String desc = a.getDescripcion().toLowerCase();
 
-                if (desc.contains("labora")) {
-                    sumar(resumen.get("Cursos Programación LABORA"), a);
-                } else if (desc.contains("certificación")) {
-                    sumar(resumen.get("Cursos propios con certificación"), a);
-                } else if (desc.contains("competencias") || desc.contains("sin certificación")) {
-                    sumar(resumen.get("Cursos propios sin certificación"), a);
-                } else if (desc.contains("convenio") || desc.contains("convenios")) {
-                    sumar(resumen.get("Convenios de formación"), a);
+                    if (desc.contains("labora")) {
+                        sumar(resumen.get("Cursos Programación LABORA"), a);
+                    } else if (desc.contains("certificación")) {
+                        sumar(resumen.get("Cursos propios con certificación"), a);
+                    } else if (desc.contains("competencias") || desc.contains("sin certificación")) {
+                        sumar(resumen.get("Cursos propios sin certificación"), a);
+                    } else if (desc.contains("convenio") || desc.contains("convenios")) {
+                        sumar(resumen.get("Convenios de formación"), a);
+                    }
                 }
-            }
 
-            // Generar HTML
-            StringBuilder html = new StringBuilder();
-            html.append("""
-            <table style='width: 100%; border-collapse: collapse; margin-top: 30px;'>
-                <thead style='background-color: #47c3c2; color: white;'>
-                    <tr>
-                        <th style='padding: 8px;'>Modalidad</th>
-                        <th style='padding: 8px;'>Nº de Cursos</th>
-                        <th style='padding: 8px;'>Horas</th>
-                        <th style='padding: 8px;'>Participantes</th>
+                // Generar HTML
+                StringBuilder html = new StringBuilder();
+                html.append("""
+                <table style='width: 100%; border-collapse: collapse; margin-top: 30px;'>
+                    <thead style='background-color: #47c3c2; color: white;'>
+                        <tr>
+                            <th style='padding: 8px;'>Modalidad</th>
+                            <th style='padding: 8px;'>Nº de Cursos</th>
+                            <th style='padding: 8px;'>Horas</th>
+                            <th style='padding: 8px;'>Participantes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            """);
+
+                int totalCursos = 0, totalHoras = 0, totalParticipantes = 0;
+
+                for (Map.Entry<String, int[]> entry : resumen.entrySet()) {
+                    int[] valores = entry.getValue();
+                    html.append(String.format("""
+                    <tr style='background-color: #e9f4f3;'>
+                        <td style='padding: 8px;'>%s</td>
+                        <td style='padding: 8px;'>%d</td>
+                        <td style='padding: 8px;'>%d</td>
+                        <td style='padding: 8px;'>%d</td>
                     </tr>
-                </thead>
-                <tbody>
-        """);
+                """, entry.getKey(), valores[0], valores[1], valores[2]));
 
-            int totalCursos = 0, totalHoras = 0, totalParticipantes = 0;
+                    totalCursos += valores[0];
+                    totalHoras += valores[1];
+                    totalParticipantes += valores[2];
+                }
 
-            for (Map.Entry<String, int[]> entry : resumen.entrySet()) {
-                int[] valores = entry.getValue();
+                // Totales
                 html.append(String.format("""
-                <tr style='background-color: #e9f4f3;'>
-                    <td style='padding: 8px;'>%s</td>
+                <tr style='background-color: #009999; color: white; font-weight: bold;'>
+                    <td style='padding: 8px;'>Total</td>
                     <td style='padding: 8px;'>%d</td>
                     <td style='padding: 8px;'>%d</td>
                     <td style='padding: 8px;'>%d</td>
                 </tr>
-            """, entry.getKey(), valores[0], valores[1], valores[2]));
+            """, totalCursos, totalHoras, totalParticipantes));
 
-                totalCursos += valores[0];
-                totalHoras += valores[1];
-                totalParticipantes += valores[2];
+                html.append("</tbody></table>");
+
+                return html.toString();
             }
-
-            // Totales
-            html.append(String.format("""
-            <tr style='background-color: #009999; color: white; font-weight: bold;'>
-                <td style='padding: 8px;'>Total</td>
-                <td style='padding: 8px;'>%d</td>
-                <td style='padding: 8px;'>%d</td>
-                <td style='padding: 8px;'>%d</td>
-            </tr>
-        """, totalCursos, totalHoras, totalParticipantes));
-
-            html.append("</tbody></table>");
-
-            return html.toString();
-        }
         private String generarSeccionColaboracionEventos(int anio) throws IOException {
             // 1) Recupera sólo las actividades de D3 en el año indicado
             List<Actividad> eventos = actividadRepository
@@ -1145,7 +1145,7 @@
         private String generarSeccionCentrosEmpleoYFormacion() {
             List<CentroDTO> centros = centrosRepository.findAll()
                     .stream()
-                    .filter(c -> c.getDepartamento() != null && "Departamento de Empleo y Formación".equalsIgnoreCase(c.getDepartamento().getNombre()))
+                    .filter(c -> c.getDepartamento() != null && "D2".equalsIgnoreCase(c.getDepartamento().getId()))
                     .map(c -> new CentroDTO(c.getNombre(), c.getDireccion()))
                     .toList();
 
@@ -1252,8 +1252,8 @@
 
             StringBuilder html = new StringBuilder();
             html.append("""
-                        <div style='font-family: Arial, sans-serif; padding: 30px;'>
- <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
+                        <div style=' page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+ <div style=' background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
       <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
       <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />                    """);
 
