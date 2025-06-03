@@ -39,6 +39,8 @@ export class AdminPanelComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
+  usuariosOriginales: any[] = [];
+
   ngOnInit(): void {
     this.cargarUsuarios();
   }
@@ -50,6 +52,7 @@ export class AdminPanelComponent implements OnInit {
     this.http.get<any[]>(`${this.apiUrl}/usuarios`).subscribe({
       next: (data) => {
         this.usuarios = data;
+        this.usuariosOriginales = JSON.parse(JSON.stringify(data)); // Copia profunda
         this.cargandoLista = false;
       },
       error: (err) => {
@@ -62,16 +65,48 @@ export class AdminPanelComponent implements OnInit {
 
   actualizarRol(usuario: any) {
     this.actualizandoRolEmail = usuario.email;
+    const headers = { 'Content-Type': 'application/json' };
+    const body = { rol: { id: usuario.rol.id } };
 
-    this.http.put(`${this.apiUrl}/usuarios/${usuario.email}/rol`, { rol: { id: usuario.rol.id } }).subscribe({
+    this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, body, {headers}).subscribe({
       next: () => {
         this.actualizandoRolEmail = null;
+        alert('Rol actualizado correctamente');
       },
-      error: () => {
-        alert('Error al actualizar rol');
+      error: (error) => {
+        console.error('Error al actualizar rol', error);
         this.actualizandoRolEmail = null;
+        alert('Error al actualizar rol');
       }
     });
+  }
+
+  guardarTodosLosCambios() {
+    const cambios = this.usuarios.filter(usuario => {
+      const original = this.usuariosOriginales.find(u => u.id === usuario.id);
+      return original && usuario.rol?.id !== original.rol?.id;
+    });
+
+    if (cambios.length === 0) {
+      alert('No hay cambios de roles para guardar.');
+      return;
+    }
+
+    const peticiones = cambios.map(usuario =>
+      this.http.put(`${this.apiUrl}/usuarios/${usuario.id}/rol`, {
+        rol: { id: usuario.rol.id }
+      }).toPromise()
+    );
+
+    Promise.all(peticiones)
+      .then(() => {
+        alert('Roles actualizados correctamente.');
+        this.usuariosOriginales = JSON.parse(JSON.stringify(this.usuarios)); // Actualizar copia
+      })
+      .catch((error) => {
+        console.error('Error al guardar roles', error);
+        alert('Ocurrió un error al guardar los cambios.');
+      });
   }
 
   get usuariosFiltrados(): any[] {

@@ -159,7 +159,7 @@ export class AuthService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
-    return this._http.put(`${this.apiUrl}/usuarios/${id}`, usuario, { 
+    return this._http.put(`${this.apiUrl}/usuarios/${id}`, usuario, {
       headers,
       responseType: 'text' // Esto resuelve el problema de parsing
     });
@@ -169,7 +169,7 @@ export class AuthService {
   async updateUserProfile(id: number, usuario: Partial<Usuario>): Promise<Usuario> {
     try {
       console.log('AuthService: Iniciando actualización de usuario:', { id, usuario });
-      
+
       // Actualizar en la API
       const response = await firstValueFrom(this.actualizarUsuario(id, usuario));
       console.log('AuthService: Usuario actualizado en API correctamente:', response);
@@ -181,10 +181,10 @@ export class AuthService {
       }
 
       const currentUser = JSON.parse(currentUserData) as Usuario;
-      
+
       // Merge de los datos actualizados
       const updatedUser = { ...currentUser };
-      
+
       // Solo actualizar campos que tienen valor
       Object.keys(usuario).forEach(key => {
         const value = usuario[key as keyof Usuario];
@@ -192,10 +192,10 @@ export class AuthService {
           (updatedUser as any)[key] = value;
         }
       });
-      
+
       // Actualizar localStorage
       localStorage.setItem('usuario', JSON.stringify(updatedUser));
-      
+
       // Actualizar role en memoria si se modificó
       if (usuario.rol?.id) {
         this.userRole = usuario.rol.id;
