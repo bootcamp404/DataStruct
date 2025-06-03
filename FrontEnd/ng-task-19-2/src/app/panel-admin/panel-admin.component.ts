@@ -2,11 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from '../mainview/footer/footer.component';
+import { HeaderComponent } from '../mainview/header/header.component';
+import { AnimatedBackgroundComponent } from '../shared/components/animated-background/animated-background.component';
 
 @Component({
   selector: 'app-panel-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, AnimatedBackgroundComponent],
   templateUrl: './panel-admin.component.html',
   styleUrl: './panel-admin.component.css'
 })
@@ -63,7 +66,7 @@ export class AdminPanelComponent implements OnInit {
   actualizarRol(usuario: any) {
     this.actualizandoRolEmail = usuario.email;
 
-    this.http.put(`${this.apiUrl}/usuarios/${usuario.email}/rol`, { rol: { id: usuario.rol.id } }).subscribe({
+    this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, { rol: { id: usuario.rol.id } }).subscribe({
       next: () => {
         this.actualizandoRolEmail = null;
       },

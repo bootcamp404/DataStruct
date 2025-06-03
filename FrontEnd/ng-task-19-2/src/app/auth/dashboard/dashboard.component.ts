@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
 import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyecto.component';
 import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
-import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
+import { DepartamentsComponent } from '../../mainview/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
 import { FooterComponent } from '../../mainview/footer/footer.component'; 
