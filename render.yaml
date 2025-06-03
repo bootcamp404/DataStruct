@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: springboot-backend
+    env: java
+    rootDir: backend
+    buildCommand: ./mvnw clean install
+    startCommand: java -jar target/*.jar
+    plan: free
+    region: oregon
+    envVars:
+      - key: contrasena_bd
+        value: RaoCnelwAjjNaipcLJNIXJMrUJSaRiXg
+
+  - type: web
+    name: angular-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s dist
+    plan: free
+    region: oregon
