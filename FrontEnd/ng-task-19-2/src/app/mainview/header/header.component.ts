@@ -41,14 +41,22 @@ export class HeaderComponent {
   role: number | null = null;
   get roleName(): string {
     const map: { [key: number]: string } = {
-      1: 'Administrador total',
-      2: 'Administrador empleo y formación',
-      3: 'Administrador promoción económica',
-      4: 'Administrador recursos humanos',
-      6: 'Empleado empleo y formación',
-      7: 'Empleado promoción económica',
-      8: 'Empleado recursos humanos',
-      9: 'Usuario'
+      1:	'Administrador total',
+      2:	'Administrador empleo y formación',
+      3:	'Administrador promoción económica',
+      4:	'Administrador económico-financiero',
+      5:	'Administrador jurídico-administrativo',
+      6:	'Administrador marketing y comunicación',
+      7:	'Administrador recursos humanos',
+      8:	'Administrador desarrollo local y estrategico',
+      9:	'Empleado marketing y comunicación',
+      10:	'Empleado jurídico-administrativo',
+      11:	'Empleado empleo y formación',
+      12:	'Empleado económico-financiero',
+      13:	'Empleado promoción económica',
+      14:	'Empleado recursos humanos',
+      15:	'Empleado desarrollo local y estrategico',
+      16:	'Usuario'
     };
     return this.role ? map[this.role] || 'Desconocido' : 'Sin rol';
   }

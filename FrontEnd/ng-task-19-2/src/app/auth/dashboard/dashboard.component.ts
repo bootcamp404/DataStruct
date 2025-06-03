@@ -157,7 +157,7 @@ export class DashboardComponent implements OnInit {
     }
 
     if (rolId === 14) {
-      return departamentos.filter(dep => dep.nombre !== 'Recursos Humanos');
+      return departamentos.filter(dep => dep.nombre === 'Recursos Humanos');
     }
 
     if (rolId === 16) {
