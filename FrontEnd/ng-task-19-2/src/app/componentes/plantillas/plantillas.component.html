@@ -1,6 +1,7 @@
+<app-animated-background></app-animated-background>
 <app-header></app-header>
 
-<div class="w-full px-4 py-8 bg-gray-100">
+<div class="w-full px-4 py-8">
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-black mb-2">Formularios disponibles</h1>
     <p class="text-black">Selecciona el tipo de formulario que deseas crear</p>
@@ -205,15 +206,21 @@
           <form [formGroup]="formularioSubvencion" (ngSubmit)="guardarFormulario()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label class="font-medium text-gray-700">Entidad</label>
-              <input type="text" formControlName="entidad" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" formControlName="entidad" 
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('entidad')" />
             </div>
             <div class="flex flex-col gap-2">
               <label class="font-medium text-gray-700">Importe</label>
-              <input type="number" formControlName="importe" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="number" formControlName="importe" 
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('importe')" />
             </div>
             <div class="flex flex-col gap-2">
               <label class="font-medium text-gray-700">Estado</label>
-              <select formControlName="id_estado_sub" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <select formControlName="id_estado_sub" 
+                      class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      [class.border-red-500]="error && mensajeError?.includes('id_estado_sub')">
                 <option value="" disabled>Seleccione un estado</option>
                 @for (estado of estadosSubvencion; track estado.id_estado_sub) {
                   <option [value]="estado.id_estado_sub">{{ estado.id_estado_sub }}</option>
@@ -222,7 +229,9 @@
             </div>
             <div class="flex flex-col gap-2">
               <label class="font-medium text-gray-700">Proyecto</label>
-              <select formControlName="id_proyecto" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <select formControlName="id_proyecto" 
+                      class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      [class.border-red-500]="error && mensajeError?.includes('id_proyecto')">
                 <option value="" disabled>Seleccione un proyecto</option>
                 @for (proy of proyectos; track proy.id_proyecto) {
                   <option [value]="proy.id_proyecto">{{ proy.nombre }}</option>
@@ -231,11 +240,15 @@
             </div>
             <div class="flex flex-col gap-2">
               <label class="font-medium text-gray-700">Fecha de creación</label>
-              <input type="date" formControlName="fecha_creacion" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="date" formControlName="fecha_creacion" 
+                    class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    [class.border-red-500]="error && mensajeError?.includes('fecha_creacion')" />
             </div>
             <div class="flex flex-col gap-2">
               <label class="font-medium text-gray-700">Modalidad</label>
-              <select formControlName="modalidad" class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <select formControlName="modalidad" 
+                      class="p-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      [class.border-red-500]="error && mensajeError?.includes('modalidad')">
                 <option value="" disabled>Seleccione una modalidad</option>
                 @for (mod of modalidades; track mod) {
                   <option [value]="mod">{{ mod }}</option>
@@ -262,4 +275,5 @@
     </div>
   }
 </div>
-  
+
+<app-footer></app-footer>

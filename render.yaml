@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: springboot-backend
+    env: docker
+    rootDir: backend
+    plan: free
+    region: oregon
+    envVars:
+      - key: contrasena_bd
+        value: RaoCnelwAjjNaipcLJNIXJMrUJSaRiXg
+
+  - type: web
+    name: angular-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s dist
+    plan: free
+    region: oregon

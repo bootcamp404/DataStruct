@@ -17,24 +17,24 @@ public class UsuariosService {
         return usuariosRepository.findAll();
     }
 
-    public Optional<Usuario> getUsuarioById(String id) {
+    public Optional<Usuario> getUsuarioById(Long id) {
         return usuariosRepository.findById(id);
-    }
-
-    public Usuario createUsuario(Usuario usuario) {
-        return usuariosRepository.save(usuario);
-    }
-
-    public Usuario updateUsuario(String id, Usuario usuario) {
-        usuario.setEmail(id);
-        return usuariosRepository.save(usuario);
     }
 
     public Optional<Usuario> getUsuarioByEmail(String email) {
         return usuariosRepository.findByEmail(email);
     }
 
-    public void deleteUsuario(String id) {
+    public Usuario createUsuario(Usuario usuario) {
+        return usuariosRepository.save(usuario);
+    }
+
+    public Usuario updateUsuario(Long id, Usuario usuario) {
+        usuario.setId(id);
+        return usuariosRepository.save(usuario);
+    }
+
+    public void deleteUsuario(Long id) {
         usuariosRepository.deleteById(id);
     }
 }

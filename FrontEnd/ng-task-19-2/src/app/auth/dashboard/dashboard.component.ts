@@ -10,14 +10,18 @@ import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
 import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyecto.component';
 import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
-import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
+import { DepartamentsComponent } from '../../mainview/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
+import { FooterComponent } from '../../mainview/footer/footer.component'; 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule,
+    AnimatedBackgroundComponent, FooterComponent
+  ],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
@@ -28,7 +32,6 @@ export class DashboardComponent implements OnInit {
   cargandoLista = false;
   error = false;
   mostrarModalCreacion = false;
-  
 
   mensajeError: string | null = null;
 

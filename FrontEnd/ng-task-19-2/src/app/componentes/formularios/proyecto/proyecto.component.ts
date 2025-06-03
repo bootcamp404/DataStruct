@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom, forkJoin, Subscription } from 'rxjs';
 import { ProyectoValidaciones } from '../../../validaciones/proyecto.validaciones';
+import { AuthService } from '../../../auth/data-access/auth.service';
 
 interface ProyectoConDepartamento extends Proyecto {
   nombre_departamento: string; // solo para mostrar en UI
@@ -47,7 +48,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     private proyectoService: ProyectoService,
     private actualizarPag: ActualizarService,
     private departamentoService: DepartamentoService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.formularioEdicion = this.fb.group({
       nombre: ['', Validators.required],
@@ -81,8 +83,40 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: ({ proyectos, departamentos }) => {
         this.departamentos = departamentos;
-        // Mapear cada proyecto para agregar el nombre del departamento basado en id
-        this.proyectos = proyectos.map(proyecto => {
+
+        const rol = this.authService.getRole();
+
+        const filtroPorRol: { [key: number]: string[] } = {
+          7: ['RRHH'],
+          14: ['RRHH'],
+          2: ['D2'],
+          11: ['D2'],
+          3: ['D3'],
+          13: ['D3'],
+          4: ['D1'],
+          12: ['D1'],
+          5: ['DJA'],
+          10: ['DJA'],
+          6: ['MK'],
+          9: ['MK'],
+          8: ['D4'],
+          15: ['D4']
+        };
+
+        let proyectosFiltrados: Proyecto[];
+
+        if (rol === 16) {
+          proyectosFiltrados = [];
+        } else if (rol != null && filtroPorRol.hasOwnProperty(rol)) {
+          const idsPermitidos = filtroPorRol[rol];
+          proyectosFiltrados = proyectos.filter(p =>
+            p.departamento?.id && idsPermitidos.includes(p.departamento.id)
+          );
+        } else {
+          proyectosFiltrados = proyectos;
+        }
+
+        this.proyectos = proyectosFiltrados.map(proyecto => {
           const nombreDepto = proyecto.departamento?.id
             ? this.getNombreDepartamento(proyecto.departamento.id)
             : 'Desconocido';
@@ -93,7 +127,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
           } as ProyectoConDepartamento;
         });
 
-        this.proyectoService.setProyectos(proyectos);
+        this.proyectoService.setProyectos(proyectosFiltrados);
         this.cargandoLista = false;
       },
       error: (error) => {

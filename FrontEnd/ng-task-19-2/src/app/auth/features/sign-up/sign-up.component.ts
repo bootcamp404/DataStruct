@@ -55,18 +55,15 @@ export default class SignUpComponent {
   async submit() {
     try {
       if (this.form.invalid) return;
-
       const { email, contrasenya } = this.form.value;
       if (!email || !contrasenya) return;
 
-      // 1. Registrar usuario
       await this._authService.registrarse({ email, contrasenya });
 
-      // 2. Login automático
+      // Login automático
       await this._authService.iniciarSesion({ email, contrasenya });
 
       toast.success('Usuario creado correctamente');
-      // No es necesario navegar aquí, porque iniciarSesion() ya navega a /mainview
     } catch (error) {
       toast.error('Ha ocurrido un error.');
     }

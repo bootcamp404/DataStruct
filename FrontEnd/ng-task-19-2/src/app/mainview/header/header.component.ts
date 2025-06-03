@@ -21,6 +21,7 @@ export class HeaderComponent {
   isProfileMenuOpen = false;
   showLanguageDropdown = false;
   usuarioActual: Usuario | null = null;
+  isLoggedIn = false;
 
   // Estado del tema
   isDark: boolean = false;
@@ -37,7 +38,28 @@ export class HeaderComponent {
     email: null as string | null,
     displayName: null as string | null,
   }
-  role: string = '';
+  role: number | null = null;
+  get roleName(): string {
+    const map: { [key: number]: string } = {
+      1:	'Administrador total',
+      2:	'Administrador empleo y formación',
+      3:	'Administrador promoción económica',
+      4:	'Administrador económico-financiero',
+      5:	'Administrador jurídico-administrativo',
+      6:	'Administrador marketing y comunicación',
+      7:	'Administrador recursos humanos',
+      8:	'Administrador desarrollo local y estrategico',
+      9:	'Empleado marketing y comunicación',
+      10:	'Empleado jurídico-administrativo',
+      11:	'Empleado empleo y formación',
+      12:	'Empleado económico-financiero',
+      13:	'Empleado promoción económica',
+      14:	'Empleado recursos humanos',
+      15:	'Empleado desarrollo local y estrategico',
+      16:	'Usuario'
+    };
+    return this.role ? map[this.role] || 'Desconocido' : 'Sin rol';
+  }
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -65,12 +87,15 @@ export class HeaderComponent {
     // Usuario
     const currentUser = await this.authService.getCurrentUser();
     if (currentUser) {
-      this.usuarioActual = currentUser; 
+      this.usuarioActual = currentUser;
       this.user.email = currentUser.email;
       const nombre = currentUser.nombre?.trim();
       const apellidos = currentUser.apellidos?.trim();
       this.user.displayName = [nombre, apellidos].filter(Boolean).join(' ') || null;
     }
+
+    this.isLoggedIn = !!currentUser;
+    this.role = this.authService.getRole();
     // Roles
      this.role = this.authService.getRole();
   }
@@ -124,4 +149,9 @@ export class HeaderComponent {
     this.themeService.toggleTheme();
     this.isDark = this.themeService.isDarkMode();
   }
+  languageFlags: Record<string, string> = {
+    es: 'assets/img/banderas/es.png',
+    en: 'assets/img/banderas/en.png',
+    va: 'assets/img/banderas/va.png'
+  };
 }

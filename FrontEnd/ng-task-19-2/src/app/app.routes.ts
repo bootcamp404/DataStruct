@@ -2,7 +2,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { privateGuard, publicGuard } from './core/auth.guard';
 import { PerfilComponent } from './perfil/perfil.component';
-import { FormulariosComponent } from './componentes/formularios/formularios.component';
 import { DashboardComponent } from './auth/dashboard/dashboard.component';
 import { PlantillasComponent } from './componentes/plantillas/plantillas.component';
 import { AdminPanelComponent } from './panel-admin/panel-admin.component';
@@ -21,43 +20,29 @@ export const routes: Routes = [
     component: InicioComponent
   },
   {
-    path: 'test',
-    component: ProyectoComponent
-  },
-  {
     path: 'plantillas',
     component: PlantillasComponent,
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'perfil',
     component: PerfilComponent,
-    //canActivate: [privateGuard()]
-  },
-  {
-    path: 'formularios',
-    component: FormulariosComponent,
-    //canActivate: [privateGuard()]
-  },
-  {
-    path: 'informes',
-    loadComponent: () => import('./informes/informes.component').then(m => m.InformesComponent),
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'informes/resumen',
     loadComponent: () => import('./informes/resumen.component').then(m => m.ResumenComponent),
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    //canActivate: [privateGuard]
+    canActivate: [privateGuard()]
   },
   {
     path: 'panel-admin',
     component: AdminPanelComponent,
-    //canActivate: [privateGuard()]
+    canActivate: [privateGuard()]
   },
     {
     path: "previsualizacion/:year",

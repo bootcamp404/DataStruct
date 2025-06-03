@@ -11,14 +11,14 @@ import { Departamento } from '../../modelos/departamento';
 import { Proyecto } from '../../modelos/proyecto';
 import { Subvencion } from '../../modelos/subvencion';
 import { HeaderComponent } from '../../mainview/header/header.component';
-import { TarjetaComponent } from './tarjeta/tarjeta.component';
-import { BuscadorComponent } from './buscador/buscador.component';
 import { CommonModule } from '@angular/common';
+import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
+import { FooterComponent } from '../../mainview/footer/footer.component';
 
 @Component({
   selector: 'app-plantillas',
   standalone: true,
-  imports: [HeaderComponent, TarjetaComponent, BuscadorComponent, ReactiveFormsModule, CommonModule],   
+  imports: [HeaderComponent, ReactiveFormsModule, CommonModule, AnimatedBackgroundComponent, FooterComponent],   
   templateUrl: './plantillas.component.html',
   styleUrl:  './plantillas.component.css'
 })
@@ -53,6 +53,7 @@ export class PlantillasComponent implements OnInit {
   /* ----------  DATOS AUXILIARES  ---------- */
   departamentos: Departamento[] = [];
   proyectos: Proyecto[] = [];
+  subvenciones: Subvencion[] = [];
   estadosSubvencion: EstadoSubvencion[] = [];
   modalidades: string[] = ['A', 'B', 'C'];
 
@@ -94,7 +95,7 @@ export class PlantillasComponent implements OnInit {
       id_estado_sub: ['', Validators.required],
       id_proyecto: ['', Validators.required],
       fecha_creacion: ['', Validators.required],
-      modalidad: ['', [Validators.required]],
+      modalidad: ['', Validators.required],
     });
   }
 
@@ -121,6 +122,7 @@ export class PlantillasComponent implements OnInit {
     });
   }
 
+  /* ----------  Estados de Subvención (select)  ---------- */
   cargarEstadosSubvencion(): void {
     this.estadoSubvencionService.obtenerEstados().subscribe({
       next: estados => this.estadosSubvencion = estados,
@@ -242,15 +244,13 @@ export class PlantillasComponent implements OnInit {
       this.creando = false;
       return;
     }
-    const timestamp = new Date().getTime();
-    const random = Math.floor(Math.random() * 1000);
-    const id_subvencion = `SUB-${timestamp}-${random}`;
+
     const subvencion: Subvencion = {
-      id_subvencion,
       ...this.formularioSubvencion.value,
       importe: Number(this.formularioSubvencion.value.importe),
       fecha_creacion: new Date(this.formularioSubvencion.value.fecha_creacion).toISOString(),
     };
+
     this.subvencionService.crearSubvencion(subvencion).subscribe({
       next: (response) => {
         if (response.status === 201 || response.status === 200) {

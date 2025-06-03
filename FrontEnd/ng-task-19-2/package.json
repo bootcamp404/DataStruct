@@ -23,6 +23,7 @@
     "@tailwindcss/cli": "^4.1.7",
     "@tailwindcss/postcss": "^4.0.14",
     "chart.js": "^4.4.9",
+    "country-flag-icons": "^1.5.19",
     "ng-task-19": "file:",
     "ng2-charts": "^8.0.0",
     "ngx-sonner": "^3.0.0",

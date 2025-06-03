@@ -7,7 +7,8 @@ import { Departamento } from '../../modelos/departamento';
 import { ActualizarService } from '../../services/actualizar.service';
 import { DepartamentoService } from '../../services/departamento.service';
 import { DepartamentoValidaciones } from '../../validaciones/departamento.validaciones';
-
+import { AuthService } from '../../auth/data-access/auth.service';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-pagina-departamentos',
@@ -19,7 +20,7 @@ import { DepartamentoValidaciones } from '../../validaciones/departamento.valida
     ngSkipHydration: 'true'
   }
 })
-export class DepartamentsComponent implements OnInit { 
+export class DepartamentsComponent implements OnInit {
   formularioEdicion: FormGroup;
   departamentos: Departamento[] = [];
   selectedDepartamento: Departamento | null = null;
@@ -39,6 +40,7 @@ export class DepartamentsComponent implements OnInit {
     private fb: FormBuilder,
     private departamentoService: DepartamentoService,
     private actualizarDepts: ActualizarService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.formularioEdicion = this.fb.group({
@@ -64,11 +66,40 @@ export class DepartamentsComponent implements OnInit {
 
   cargarDepartamentos() {
     this.cargandoLista = true;
+
     this.departamentoService.obtenerDepartamentos().subscribe({
       next: (departamentos) => {
-        this.departamentos = departamentos;
+        const rol = this.authService.getRole();
+
+        const filtroPorRol: { [key: number]: string[] } = {
+          7: ['RRHH'],
+          14: ['RRHH'],
+          2: ['D2'],
+          11: ['D2'],
+          3: ['D3'],
+          13: ['D3'],
+          4: ['D1'],
+          12: ['D1'],
+          5: ['DJA'],
+          10: ['DJA'],
+          6: ['MK'],
+          9: ['MK'],
+          8: ['D4'],
+          15: ['D4']
+        };
+        if (rol != null && filtroPorRol.hasOwnProperty(rol)) {
+          this.departamentos = departamentos.filter(d => filtroPorRol[rol].includes(d.id));
+        }
+        else if (rol === 16)
+        {
+         this.departamentos = [];
+        }
+        else {
+          this.departamentos = departamentos;
+        }
+
         this.cargandoLista = false;
-        this.departamentoService.setDepartamentos(departamentos);
+        this.departamentoService.setDepartamentos(this.departamentos);
       },
       error: (error) => {
         console.error('Error al cargar departamentos:', error);
@@ -105,7 +136,7 @@ export class DepartamentsComponent implements OnInit {
 
     try {
       const departamentoActualizado = this.formularioEdicion.value;
-      
+
       // Validar el formulario excluyendo el departamento actual
       const departamentosSinActual = this.departamentos.filter(d => d.id !== this.selectedDepartamento?.id);
       const resultadoValidacion = DepartamentoValidaciones.validarFormulario(
@@ -127,7 +158,7 @@ export class DepartamentsComponent implements OnInit {
       if (response.status === 200) {
         this.cargarDepartamentos();
         this.cerrarModalEdicion();
-        
+
         // Redirigir a la página principal de listar
         this.router.navigate(['/dashboard']);
       } else {
@@ -149,7 +180,7 @@ export class DepartamentsComponent implements OnInit {
 
   async eliminarDepartamento(id: string) {
     if (this.eliminando) return;
-    
+
     this.eliminando = true;
     try {
       await firstValueFrom(this.departamentoService.eliminarDepartamento(id));
@@ -170,4 +201,4 @@ export class DepartamentsComponent implements OnInit {
   toggleMostrarTodos() {
     this.mostrarTodos = !this.mostrarTodos;
   }
-} 
+}

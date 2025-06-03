@@ -1,5 +1,8 @@
+<!-- <app-animated-background></app-animated-background> -->
+<app-header></app-header>
+
 <!-- Spinner de carga -->
-<div *ngIf="cargandoLista">
+@if (cargandoLista) {
   <div class="text-center py-16 flex flex-col items-center gap-3">
     <div class="w-10 h-10 relative">
       <div class="absolute inset-0 border border-slate-200 rounded-full"></div>
@@ -7,46 +10,56 @@
     </div>
     <p class="mt-3 text-slate-500 font-light tracking-wide">Cargando usuarios...</p>
   </div>
-</div>
+}
+  @if (errorAlCargar) {
+    <div class="text-center py-10 text-red-500">
+      No se pudieron cargar los usuarios. Intenta nuevamente más tarde.
+    </div>
+  } @else {
+    <div class="mb-6 flex items-center gap-4">
+      <input
+        type="text"
+        [(ngModel)]="filtro"
+        placeholder="Buscar por nombre, email o apellidos"
+        class="px-3 py-2 border rounded w-full max-w-md"
+      />
+      <button
+        (click)="guardarTodosLosCambios()"
+        class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded"
+      >
+        Guardar todos los cambios
+      </button>
+    </div>
 
-<!-- Error al cargar -->
-<div *ngIf="!cargandoLista && errorAlCargar" class="text-center py-10 text-red-500">
-  No se pudieron cargar los usuarios. Intenta nuevamente más tarde.
-</div>
+    <table class="min-w-full text-left border border-gray-200 rounded">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-2 px-4">Email</th>
+          <th class="py-2 px-4">Nombre</th>
+          <th class="py-2 px-4">Apellidos</th>
+          <th class="py-2 px-4">Rol</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (usuario of usuariosFiltrados; track usuario.id) {
+          <tr class="border-t hover:bg-gray-50">
+            <td class="py-2 px-4">{{ usuario.email }}</td>
+            <td class="py-2 px-4">{{ usuario.nombre || '—' }}</td>
+            <td class="py-2 px-4">{{ usuario.apellidos || '—' }}</td>
+            <td class="py-2 px-4">
+              <select [(ngModel)]="usuario.rol.id" class="border rounded px-2 py-1">
+                @for (rol of rolesDisponibles; track rol.id) {
+                  <option [value]="rol.id">{{ rol.nombre }}</option>
+                }
+              </select>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  <div *ngIf="usuariosFiltrados.length === 0" class="text-center text-gray-500 mt-6">
+    No se encontraron usuarios con ese criterio.
+  </div>
 
-<!-- Tabla de usuarios -->
-<div *ngIf="!cargandoLista && !errorAlCargar">
-  <h2 class="text-xl font-semibold mb-4">Lista de usuarios</h2>
-
-  <table class="min-w-full text-left border border-gray-200 rounded">
-    <thead class="bg-gray-100">
-      <tr>
-        <th class="py-2 px-4">Email</th>
-        <th class="py-2 px-4">Nombre</th>
-        <th class="py-2 px-4">Rol</th>
-        <th class="py-2 px-4">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let usuario of usuarios" class="border-t hover:bg-gray-50">
-        <td class="py-2 px-4">{{ usuario.email }}</td>
-        <td class="py-2 px-4">{{ usuario.nombre || '—' }}</td>
-        <td class="py-2 px-4">
-          <select [(ngModel)]="usuario.rol" class="border rounded px-2 py-1">
-            <option value="pendiente">Pendiente</option>
-            <option value="usuario">Usuario</option>
-            <option value="admin">Administrador</option>
-          </select>
-        </td>
-        <td class="py-2 px-4">
-          <button
-            (click)="actualizarRol(usuario)"
-            class="bg-emerald-500 hover:bg-emerald-600 text-white text-sm px-3 py-1 rounded"
-          >
-            Guardar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<app-footer></app-footer>

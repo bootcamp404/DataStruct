@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile, User } from '@angular/fire/auth';
+import { Auth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut, updateProfile } from '@angular/fire/auth';
 import { AuthStateService } from '../../compartido/data-access/auth-state.service';
 import { Usuario } from '../../modelos/usuario';
 
@@ -15,20 +15,23 @@ export class AuthService {
   private _auth = inject(Auth);
   private _router = inject(Router);
   private _authStateService = inject(AuthStateService);
-  private _isLoggedIn: boolean | null = null;
-  private userRole: string = '';
+  private userRole: number | null = null;
 
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
   constructor() {}
 
   // Registro usando TU API
-  async registrarse(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
+  async registrarse(usuario: { email: string, contrasenya: string }): Promise<Usuario> {
     try {
       return await firstValueFrom(
         this._http.post<Usuario>(`${this.apiUrl}/usuarios`, {
           email: usuario.email,
-          contrasenya: usuario.contrasenya
+          contrasenya: usuario.contrasenya,
+          rol: { id: 16 },
+          nombre: null,
+          apellidos: null,
+          telefono: null
         })
       );
     } catch (error) {
@@ -36,7 +39,6 @@ export class AuthService {
       throw error;
     }
   }
-
 
   // Login usando TU API
   async iniciarSesion(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
@@ -49,7 +51,7 @@ export class AuthService {
 
     localStorage.setItem('usuario', JSON.stringify(response));
     this._authStateService.setAuthEstado(true);
-    this.userRole = response.rol || '';
+    this.userRole = response.rol?.id || null;
     this._router.navigate(['/inicio']);
 
     return response;
@@ -65,11 +67,13 @@ export class AuthService {
 
       if (user && user.email) {
         const usuario: Usuario = {
+          id: 0,
           nombre: user.displayName?.split(' ')[0] || '',
           apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
           email: user.email,
           telefono: user.phoneNumber || '',
-          contrasenya: '', // Firebase no proporciona contraseña para login social
+          contrasenya: '',
+          rol: { id: 16 }
         };
 
         localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -87,7 +91,6 @@ export class AuthService {
     }
   }
 
-
   // Inicio de sesión con Facebook (Firebase)
   async iniciarSesionFacebook(): Promise<Usuario | null> {
     const facebook = new FacebookAuthProvider();
@@ -98,11 +101,13 @@ export class AuthService {
 
       if (user && user.email) {
         const usuario: Usuario = {
+          id: 0,
           nombre: user.displayName?.split(' ')[0] || '',
           apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
           email: user.email,
           telefono: user.phoneNumber || '',
-          contrasenya: '', // No viene en login social
+          contrasenya: '',
+          rol: { id: 16 }
         };
 
         localStorage.setItem('usuario', JSON.stringify(usuario));
@@ -120,7 +125,6 @@ export class AuthService {
     }
   }
 
-
   // Logout general
   async logout() {
     await signOut(this._auth)
@@ -129,26 +133,13 @@ export class AuthService {
     this._router.navigate(['/auth/sign-in']);
   }
 
-  // // Token, si en el futuro lo necesitas
-  // guardarToken(token: string) {
-  //   localStorage.setItem('token', token);
-  // }
-
-  // obtenerToken(): string | null {
-  //   return localStorage.getItem('token');
-  // }
-
-  // isLoggedIn(): boolean {
-  //   return !!this.obtenerToken();
-  // }
-
-
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<Usuario | null> {
     return new Promise((resolve) => {
       const storedUser = localStorage.getItem('usuario');
       if (!storedUser) {
-        resolve(null); // en lugar de reject
+        console.log('AuthService: No user found in localStorage.');
+        resolve(null);
         return;
       }
 
@@ -156,51 +147,102 @@ export class AuthService {
         const user = JSON.parse(storedUser) as Usuario;
         resolve(user);
       } catch (error) {
-        console.error('Error parseando los datos del usuario', error);
-        resolve(null); // también aquí en lugar de reject
+        console.error('AuthService: Error parseando los datos del usuario:', error);
+        resolve(null);
       }
     });
   }
 
-  // Actualizar datos de usuario por email
-  actualizarUsuario(email: string, usuario: any): Observable<any> {
+  // Actualizar datos de usuario por ID - CORREGIDO
+  actualizarUsuario(id: number, usuario: Partial<Usuario>): Observable<any> {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
+      .set('Content-Type', 'application/json');
 
-    return this._http.put(`${this.apiUrl}/usuarios/${email}`, usuario, {
-      headers: headers,
-      observe: 'response'
+    return this._http.put(`${this.apiUrl}/usuarios/${id}`, usuario, {
+      headers,
+      responseType: 'text' // Esto resuelve el problema de parsing
     });
   }
 
-  // Opcional: actualizar perfil en Firebase si usas Auth de Firebase
-  updateUser(usuario: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const user = this._auth.currentUser;
-      if (user) {
-        updateProfile(user, {
-          displayName: usuario.nombre
-        }).then(() => resolve())
-          .catch((error) => reject(error));
-      } else {
-        reject('Usuario no autenticado');
+  // Método principal para actualizar perfil - SIMPLIFICADO Y CORREGIDO
+  async updateUserProfile(id: number, usuario: Partial<Usuario>): Promise<Usuario> {
+    try {
+      console.log('AuthService: Iniciando actualización de usuario:', { id, usuario });
+
+      // Actualizar en la API
+      const response = await firstValueFrom(this.actualizarUsuario(id, usuario));
+      console.log('AuthService: Usuario actualizado en API correctamente:', response);
+
+      // Obtener usuario actual del localStorage
+      const currentUserData = localStorage.getItem('usuario');
+      if (!currentUserData) {
+        throw new Error('No se encontró usuario en localStorage');
       }
-    });
+
+      const currentUser = JSON.parse(currentUserData) as Usuario;
+
+      // Merge de los datos actualizados
+      const updatedUser = { ...currentUser };
+
+      // Solo actualizar campos que tienen valor
+      Object.keys(usuario).forEach(key => {
+        const value = usuario[key as keyof Usuario];
+        if (value !== undefined && value !== null) {
+          (updatedUser as any)[key] = value;
+        }
+      });
+
+      // Actualizar localStorage
+      localStorage.setItem('usuario', JSON.stringify(updatedUser));
+
+      // Actualizar role en memoria si se modificó
+      if (usuario.rol?.id) {
+        this.userRole = usuario.rol.id;
+      }
+
+      // Si está autenticado con Firebase, actualizar también ahí
+      const firebaseUser = this._auth.currentUser;
+      if (firebaseUser) {
+        await this.updateUser(usuario);
+      }
+
+      return updatedUser;
+
+    } catch (error) {
+      console.error('Error actualizando perfil de usuario:', error);
+      throw error;
+    }
   }
-  getRole(): string {
-  if (this.userRole) return this.userRole;
 
-  const storedUser = localStorage.getItem('usuario');
-  if (!storedUser) return '';
+  // Actualizar perfil en Firebase si está autenticado con Firebase
+  private async updateUser(usuario: Partial<Usuario>): Promise<void> {
+    const user = this._auth.currentUser;
+    if (!user) {
+      throw new Error('Usuario no autenticado');
+    }
 
-  try {
-    const usuario = JSON.parse(storedUser) as Usuario;
-    this.userRole = usuario.rol || '';
-    return this.userRole;
-  } catch {
-    return '';
+    try {
+      await updateProfile(user, {
+        displayName: usuario.nombre || user.displayName || ''
+      });
+
+      console.log('AuthService: Perfil actualizado en Firebase');
+    } catch (error) {
+      console.error('Error actualizando perfil en Firebase:', error);
+      throw error;
+    }
   }
-}
 
+  getRole(): number | null {
+    if (this.userRole) return this.userRole;
+    const storedUser = localStorage.getItem('usuario');
+    if (!storedUser) return null;
+    try {
+      const usuario = JSON.parse(storedUser) as Usuario;
+      this.userRole = usuario.rol?.id || null;
+      return this.userRole;
+    } catch {
+      return null;
+    }
+  }
 }

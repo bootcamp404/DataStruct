@@ -15,11 +15,13 @@ import { Usuario } from '../modelos/usuario';
 })
 export class PerfilComponent implements OnInit {
   usuario: Usuario = {
+    id: 0,
     nombre: '',
     apellidos: '',
     email: '',
     telefono: '',
     contrasenya: '',
+    rol: {id: 0}
     // departamento: '',
     // cargo: ''
   };
@@ -40,15 +42,23 @@ export class PerfilComponent implements OnInit {
 
   cargarDatosUsuario() {
     this.cargando = true;
-    this.authService.getCurrentUser().then(user => {
-      this.usuarioActual = user;
-      this.cargando = false;
-      console.log('Usuario recibido:', user);
-    }).catch(error => {
-      this.errorMsg = 'Error al cargar los datos del usuario';
-      this.cargando = false;
-      console.error('Error obteniendo usuario actual:', error);
-    });
+    this.errorMsg = '';
+        
+    this.authService.getCurrentUser()
+      .then(user => {
+        if (user) {
+          this.usuarioActual = user;
+        } else {
+          console.warn('PerfilComponent: No user found');
+          this.errorMsg = 'No se encontró información del usuario';
+        }
+        this.cargando = false;
+      })
+      .catch(error => {
+        this.errorMsg = 'Error al cargar los datos del usuario';
+        this.cargando = false;
+        console.error('PerfilComponent: Error obteniendo usuario actual:', error);
+      });
   }
 
   volver(): void {
@@ -56,14 +66,15 @@ export class PerfilComponent implements OnInit {
   }
 
   mostrarEditarPerfil() {
-    console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
     this.mostrarFormularioEdicion = true;
     this.usuario = {
+      id: this.usuarioActual?.id || 0,
       nombre: this.usuarioActual?.nombre || '',
       apellidos: this.usuarioActual?.apellidos || '',
       email: this.usuarioActual?.email || '',
       telefono: this.usuarioActual?.telefono || '',
-      contrasenya: this.usuarioActual?.constrasenya || ''
+      contrasenya: this.usuarioActual?.contrasenya || '',
+      rol: this.usuarioActual?.rol || { id: 16 } // Preservar el rol original o usar el rol por defecto
     };
   }
 
@@ -72,18 +83,25 @@ export class PerfilComponent implements OnInit {
   }
 
   guardarCambios() {
-
-    console.log('Usuario a enviar:', this.usuario); // 👈
-    this.authService.actualizarUsuario(this.usuario.email, this.usuario)
-      .subscribe({
-        next: (response) => {
-          this.mostrarFormularioEdicion = false;
-          this.cargarDatosUsuario();
-        },
-        error: (error) => {
-          this.errorMsg = 'Error al guardar los cambios';
-          console.error('Error al guardar datos:', error);
-        }
+    const usuarioParaEnviar: Partial<Usuario> = {
+      nombre: this.usuario.nombre,
+      apellidos: this.usuario.apellidos,
+      email: this.usuario.email,
+      telefono: this.usuario.telefono,
+      contrasenya: this.usuario.contrasenya,
+      rol: this.usuario.rol
+    };
+  
+    // Usar updateUserProfile (Promise) en lugar de actualizarUsuario (Observable)
+    this.authService.updateUserProfile(this.usuario.id, usuarioParaEnviar)
+      .then((usuarioActualizado) => {
+        this.usuarioActual = usuarioActualizado;
+        this.mostrarFormularioEdicion = false;
+        this.errorMsg = '';
+      })
+      .catch((error) => {
+        this.errorMsg = 'Error al guardar los cambios';
+        console.error('Error al guardar datos:', error);
       });
   }
 
