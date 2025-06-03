@@ -1,7 +1,7 @@
 services:
   - type: web
     name: springboot-backend
-    env: java
+    env: docker
     rootDir: backend
     buildCommand: ./mvnw clean install
     startCommand: java -jar target/*.jar
