@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MemoriaService, ResumenMemoriaDTO } from '../services/memoria.service';
+import { MemoriaService } from '../services/memoria.service';
+import { ResumenMemoriaDTO } from '../modelos/resumen-memoria.dto';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -40,4 +41,6 @@ export class ResumenComponent implements OnInit {
       }
     });
   }
+ 
+
 }

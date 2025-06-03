@@ -8,6 +8,7 @@ import { ChatService } from '../../services/chat.service';
 })
 export class ChatComponent {
   respuesta = '';
+  isTyping = false; 
 
   constructor(private chatService: ChatService) {}
 
@@ -35,11 +36,19 @@ export class ChatComponent {
     this.enviar('No está aquí mi duda');
   }
 
-  private enviar(pregunta: string) {
-    // llamamos al servicio para obtener la respuesta
-    this.chatService.chat(pregunta).subscribe({
-      next: resp => this.respuesta = resp.respuesta,
-      error: ()   => this.respuesta = 'Error al conectar con el servicio.'
-    });
-  }
+ private enviar(pregunta: string) {
+  this.isTyping = true;
+  this.respuesta = '';
+
+  this.chatService.chat(pregunta).subscribe({
+    next: resp => setTimeout(() => {
+      this.respuesta = resp.respuesta;
+      this.isTyping = false;
+    }, 800),
+    error: () => {
+      this.respuesta = 'Error al conectar con el servicio.';
+      this.isTyping = false;
+    }
+  });
+}
 }

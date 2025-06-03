@@ -1,22 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface ResumenMemoriaDTO {
-  anio: number;
-  presupuestoTotal: number;
-  presupuestoEjecutado: number;
-  porcentajeEjecucion: number;
-  personasOrientadas: number;
-  actividadesFormacion: number;
-  participantesFormacion: number;
-  contrataciones: number;
-  empresasCreadas: number;
-  asesoramientos: number;
-  ayudasEmpresas: number;
-  importeAyudas: number;
-  resumenDepartamentos: ResumenDepartamentoDTO[];
-}
+import { ResumenMemoriaDTO } from '../modelos/resumen-memoria.dto';
+import { PrevisualizacionDTO } from '../modelos/previsualizacion.dto';
 
 export interface ResumenDepartamentoDTO {
   id: string;
@@ -31,6 +17,8 @@ export interface ResumenDepartamentoDTO {
   nuevasEmpresas: number;
   sesionesAsesoramiento: number;
 }
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +37,16 @@ export class MemoriaService {
       responseType: 'blob'
     });
   }
+
+  getPrevisualizacion(anio: number): Observable<PrevisualizacionDTO> {
+  return this.http.get<PrevisualizacionDTO>(`${this.baseUrl}/previsualizacion/${anio}`);
+}
+
+generarPdfPersonalizado(anio: number, imagenesIds: number[]): Observable<Blob> {
+  return this.http.post(`${this.baseUrl}/pdf/${anio}`, imagenesIds, {
+    responseType: 'blob'
+  });
+}
+
   
 }

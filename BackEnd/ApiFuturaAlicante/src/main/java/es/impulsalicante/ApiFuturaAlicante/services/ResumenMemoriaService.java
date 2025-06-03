@@ -55,13 +55,54 @@
 
         @Autowired
         private DepartamentosRepository departamentoRepository;
-
+        @Autowired
+        private ImagenService imagenService;
 
         private static final SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyyy");
 
+        private static final Map<String, String> DEFAULT_IMAGES = Map.of(
+                "portada_principal", "img/portada_principal.jpg",
+                "portada_dpto_local", "img/portada_dpto_local.jpg",
+                "portada_dpto_promocion", "img/portada_dpto_promocion.jpg",
+                "portada_dpto_empleo", "img/portada_dpto_empleo.jpg",
+                "portada_dpto_desarrollo", "img/portada_dpto_desarrollo.jpg",
+                "portada_dpto_gestion", "img/portada_dpto_gestion.jpg",
+                "portada_dpto_marketing", "img/portada_dpto_marketing.jpg",
+                "anexo20", "img/anexo20.jpg",
+                "anexo21", "img/anexo21.jpg",
+                "anexo45", "img/anexo45.jpg"
+                // Añade aquí todos los placeholders que necesites
+        );
+
+        public byte[] generarPdfPersonalizado(int anio, Map<String, String> imageMapping) throws IOException {
+            ResumenMemoriaDTO datos = getResumenPorAnio(anio);
+            String html = plantillaConDatos(datos, anio, imageMapping);
+
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ITextRenderer renderer = new ITextRenderer();
+                renderer.setDocumentFromString(html);
+                renderer.layout();
+                renderer.createPDF(baos);
+
+                return baos.toByteArray();
+            } catch (Exception e) {
+                System.err.println("❌ Error al generar PDF personalizado: " + e.getMessage());
+                e.printStackTrace();
+                return new byte[0];
+            }
+        }
+
+        // Método para obtener la ruta de imagen (personalizada o por defecto)
+        private String obtenerRutaImagen(String placeholderId, Map<String, String> imageMapping) {
+            if (imageMapping != null && imageMapping.containsKey(placeholderId)) {
+                return imageMapping.get(placeholderId);
+            }
+            return DEFAULT_IMAGES.getOrDefault(placeholderId, "img/default.jpg");
+        }
 
 
-        private String plantillaConDatos(ResumenMemoriaDTO datos, int anio) throws IOException {
+        private String plantillaConDatos(ResumenMemoriaDTO datos, int anio, Map<String, String> imageMapping) throws IOException {
             StringBuilder html = new StringBuilder();
 
             html.append("<!DOCTYPE html>")
@@ -82,7 +123,10 @@
             html.append("<div style='page-break-after: always; text-align: center; margin-top: 200px;'>")
                     .append("<h1 style='font-size: 48px; color: #004080;'>MEMORIA DE ACTIVIDAD</h1>")
                     .append("<h2 style='font-size: 36px;'>").append(anio).append("</h2>")
+                    .append("<img src='").append(obtenerRutaImagen("portada_principal", imageMapping))
+                    .append("' style='width: 300px; height: auto; margin-top: 50px;' />")
                     .append("</div>");
+
 
             // Índice
             html.append("<div style='page-break-after: always;'>")
@@ -124,23 +168,28 @@
 
             //1 Portada
             html.append(String.format("""
-        <div style='page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #2D60FA 50%%, #2D60FA 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #004080; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #004080; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #2D60FA 50%%, #2D60FA 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #004080; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #004080; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "1", // número de sección
                     "AGENCIA LOCAL DE DESARROLLO\n" +
                             " ECONÓMICO Y SOCIAL", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_local", imageMapping)
             ));
 
             // Contenido general
@@ -379,24 +428,29 @@
 
             html.append(generarSeccionCentros());
 
-
+//2 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #7AFACF 50%%, #7AFACF 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #3CBEFA; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #3CBEFA; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style=' page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #7AFACF 50%%, #7AFACF 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #3CBEFA; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #3CBEFA; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "2", // número de sección
                     "DEPARTAMENTO DE EMPLEO Y FORMACIÓN", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_empleo", imageMapping)
             ));
 
 
@@ -571,7 +625,7 @@
             int total = totalA + totalB + totalC;
 
             html.append(String.format("""
-        <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
+        <div style=' page-break-before: always;  background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.6</div>
       <h2 style='color: #00a99d; margin: 15px 0 10px;'>SUBVENCIONES A ENTIDADES</h2>
       <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
     
@@ -629,26 +683,30 @@
             html.append(generarSeccionConveniosNominativos());
 
     //2.7
-            html.append(generarSeccionOtros());
-
-    //3
+            html.append(generarSeccionOtros(imageMapping));
+//3 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #f7931e 50%%, #ffbe78 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #f26522; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #f26522; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style=' page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #f7931e 50%%, #f7931e 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #f26522; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #f26522; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "3", // número de sección
                     "PROMOCIÓN ECONÓMICA", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_promocion", imageMapping)
             ));
     //3.1
             html.append(generarSeccionDatosTotalesPromocionEconomica(anio));
@@ -671,26 +729,29 @@
 
             // 4 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #A71A46 50%%, #A71A46 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #A71A46; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>PROGRAMAS DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #A71A46; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #A71A46 50%%, #A71A46 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #A71A46; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>PROGRAMAS DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #A71A46; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "4", // número de sección
                     "DESARROLLO LOCAL\n" +
                             " ESTRATÉGICO", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_desarrollo", imageMapping)
             ));
-
-
             //4.1
             html.append(generarSeccion41(anio));
 
@@ -719,23 +780,29 @@
 
             // 5 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #8C5BA6 50%%, #8C5BA6 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #8C5BA6; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>ÁREAS DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #8C5BA6; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #8C5BA6 50%%, #8C5BA6 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #8C5BA6; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>ÁREAS DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #8C5BA6; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "5", // número de sección
-                            " GESTIÓN", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    " GESTIÓN", // título del departamento
+                    obtenerRutaImagen("portada_dpto_gestion", imageMapping)
             ));
+
 
 
             //5.1
@@ -744,22 +811,27 @@
 
             //6 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #706052 50%%, #706052 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #706052; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #706052; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #706052 50%%, #706052 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #706052; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #706052; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "6", // número de sección
                     "MARKETING Y COMUNICACIÓN", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_marketing", imageMapping)
             ));
 
             //6.1
@@ -772,7 +844,7 @@
 
         public byte[] generarPdf(int anio) throws IOException {
             ResumenMemoriaDTO datos = getResumenPorAnio(anio);
-            String html = plantillaConDatos(datos, anio);
+            String html = plantillaConDatos(datos, anio, null); // Pasamos null para usar imágenes por defecto
 
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -783,20 +855,18 @@
 
                 return baos.toByteArray();
             } catch (Exception e) {
-                // Loggea el error para saber qué ocurrió
                 System.err.println("❌ Error al generar PDF: " + e.getMessage());
                 e.printStackTrace();
                 return new byte[0];
             }
         }
 
-
         private String safe(Object val) {
             return val != null ? val.toString() : "-";
         }
 
         private String generarSeccionProyectos() {
-            List<Proyecto> proyectos = proyectoRepository.findAll();
+            List<Proyecto> proyectos = proyectoRepository.findByDepartamentoId("D2");
 
             StringBuilder html = new StringBuilder();
             html.append("""
@@ -1005,76 +1075,76 @@
         private String formatDate(Date date) {
             return date != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(date) : "-";
         }
-        private String generarTablaCursos(List<Actividad> actividades) {
-            Map<String, int[]> resumen = new LinkedHashMap<>();
+            private String generarTablaCursos(List<Actividad> actividades) {
+                Map<String, int[]> resumen = new LinkedHashMap<>();
 
-            // Inicializar los tipos de cursos
-            resumen.put("Cursos Programación LABORA", new int[]{0, 0, 0});
-            resumen.put("Cursos propios con certificación", new int[]{0, 0, 0});
-            resumen.put("Cursos propios sin certificación", new int[]{0, 0, 0});
-            resumen.put("Convenios de formación", new int[]{0, 0, 0});
+                // Inicializar los tipos de cursos
+                resumen.put("Cursos Programación LABORA", new int[]{0, 0, 0});
+                resumen.put("Cursos propios con certificación", new int[]{0, 0, 0});
+                resumen.put("Cursos propios sin certificación", new int[]{0, 0, 0});
+                resumen.put("Convenios de formación", new int[]{0, 0, 0});
 
-            for (Actividad a : actividades) {
-                String desc = a.getDescripcion().toLowerCase();
+                for (Actividad a : actividades) {
+                    String desc = a.getDescripcion().toLowerCase();
 
-                if (desc.contains("labora")) {
-                    sumar(resumen.get("Cursos Programación LABORA"), a);
-                } else if (desc.contains("certificación")) {
-                    sumar(resumen.get("Cursos propios con certificación"), a);
-                } else if (desc.contains("competencias") || desc.contains("sin certificación")) {
-                    sumar(resumen.get("Cursos propios sin certificación"), a);
-                } else if (desc.contains("convenio") || desc.contains("convenios")) {
-                    sumar(resumen.get("Convenios de formación"), a);
+                    if (desc.contains("labora")) {
+                        sumar(resumen.get("Cursos Programación LABORA"), a);
+                    } else if (desc.contains("certificación")) {
+                        sumar(resumen.get("Cursos propios con certificación"), a);
+                    } else if (desc.contains("competencias") || desc.contains("sin certificación")) {
+                        sumar(resumen.get("Cursos propios sin certificación"), a);
+                    } else if (desc.contains("convenio") || desc.contains("convenios")) {
+                        sumar(resumen.get("Convenios de formación"), a);
+                    }
                 }
-            }
 
-            // Generar HTML
-            StringBuilder html = new StringBuilder();
-            html.append("""
-            <table style='width: 100%; border-collapse: collapse; margin-top: 30px;'>
-                <thead style='background-color: #47c3c2; color: white;'>
-                    <tr>
-                        <th style='padding: 8px;'>Modalidad</th>
-                        <th style='padding: 8px;'>Nº de Cursos</th>
-                        <th style='padding: 8px;'>Horas</th>
-                        <th style='padding: 8px;'>Participantes</th>
+                // Generar HTML
+                StringBuilder html = new StringBuilder();
+                html.append("""
+                <table style='width: 100%; border-collapse: collapse; margin-top: 30px;'>
+                    <thead style='background-color: #47c3c2; color: white;'>
+                        <tr>
+                            <th style='padding: 8px;'>Modalidad</th>
+                            <th style='padding: 8px;'>Nº de Cursos</th>
+                            <th style='padding: 8px;'>Horas</th>
+                            <th style='padding: 8px;'>Participantes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            """);
+
+                int totalCursos = 0, totalHoras = 0, totalParticipantes = 0;
+
+                for (Map.Entry<String, int[]> entry : resumen.entrySet()) {
+                    int[] valores = entry.getValue();
+                    html.append(String.format("""
+                    <tr style='background-color: #e9f4f3;'>
+                        <td style='padding: 8px;'>%s</td>
+                        <td style='padding: 8px;'>%d</td>
+                        <td style='padding: 8px;'>%d</td>
+                        <td style='padding: 8px;'>%d</td>
                     </tr>
-                </thead>
-                <tbody>
-        """);
+                """, entry.getKey(), valores[0], valores[1], valores[2]));
 
-            int totalCursos = 0, totalHoras = 0, totalParticipantes = 0;
+                    totalCursos += valores[0];
+                    totalHoras += valores[1];
+                    totalParticipantes += valores[2];
+                }
 
-            for (Map.Entry<String, int[]> entry : resumen.entrySet()) {
-                int[] valores = entry.getValue();
+                // Totales
                 html.append(String.format("""
-                <tr style='background-color: #e9f4f3;'>
-                    <td style='padding: 8px;'>%s</td>
+                <tr style='background-color: #009999; color: white; font-weight: bold;'>
+                    <td style='padding: 8px;'>Total</td>
                     <td style='padding: 8px;'>%d</td>
                     <td style='padding: 8px;'>%d</td>
                     <td style='padding: 8px;'>%d</td>
                 </tr>
-            """, entry.getKey(), valores[0], valores[1], valores[2]));
+            """, totalCursos, totalHoras, totalParticipantes));
 
-                totalCursos += valores[0];
-                totalHoras += valores[1];
-                totalParticipantes += valores[2];
+                html.append("</tbody></table>");
+
+                return html.toString();
             }
-
-            // Totales
-            html.append(String.format("""
-            <tr style='background-color: #009999; color: white; font-weight: bold;'>
-                <td style='padding: 8px;'>Total</td>
-                <td style='padding: 8px;'>%d</td>
-                <td style='padding: 8px;'>%d</td>
-                <td style='padding: 8px;'>%d</td>
-            </tr>
-        """, totalCursos, totalHoras, totalParticipantes));
-
-            html.append("</tbody></table>");
-
-            return html.toString();
-        }
         private String generarSeccionColaboracionEventos(int anio) throws IOException {
             // 1) Recupera sólo las actividades de D3 en el año indicado
             List<Actividad> eventos = actividadRepository
@@ -1145,7 +1215,7 @@
         private String generarSeccionCentrosEmpleoYFormacion() {
             List<CentroDTO> centros = centrosRepository.findAll()
                     .stream()
-                    .filter(c -> c.getDepartamento() != null && "Departamento de Empleo y Formación".equalsIgnoreCase(c.getDepartamento().getNombre()))
+                    .filter(c -> c.getDepartamento() != null && "D2".equalsIgnoreCase(c.getDepartamento().getId()))
                     .map(c -> new CentroDTO(c.getNombre(), c.getDireccion()))
                     .toList();
 
@@ -1233,42 +1303,41 @@
         }
 
 
-        private String generarSeccionOtros() {
-            record EventoOtros(String titulo, String descripcion, String imagenPath) {
+        private String generarSeccionOtros(Map<String, String> imageMapping) {
+            record EventoOtros(String titulo, String descripcion, String imagenId) {
             }
 
             List<EventoOtros> eventos = List.of(
                     new EventoOtros(
                             "IV Feria de empleo y formación Zona Norte",
                             "El 29 de marzo de 2023 se celebró la cuarta edición de la feria de empleo y formación, en horario de 9:30 a 13:30 horas. En ella participaron más de 27 organizaciones entre centros educativos, instituciones y servicios públicos. La feria contó con la asistencia de un amplio número de estudiantes de secundaria.",
-                            "img/anexo20.jpg"
+                            "anexo20"
                     ),
                     new EventoOtros(
                             "IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional",
                             "El 24 de noviembre, la plaza del Ayuntamiento y el auditorio de Puerta Ferrisa acogieron el IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional. El evento reunió a 16 empresas y 18 asociaciones para exponer tanto ofertas de trabajo como las diversas propuestas de las entidades participantes.",
-                            "img/anexo21.jpg"
+                            "anexo21"
                     )
             );
 
             StringBuilder html = new StringBuilder();
             html.append("""
-                        <div style='font-family: Arial, sans-serif; padding: 30px;'>
- <div style='background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
-      <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
-      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />                    """);
+                    <div style=' page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                        <div style=' background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
+                        <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
+                        <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                    """);
 
             int index = 1;
             for (EventoOtros e : eventos) {
                 html.append(String.format("""
-                            <div style='margin-bottom: 40px;'>
-                                <h3 style='color:#004080;'>2.7.%d %s</h3>
-                                <p>%s</p>
-                        """, index++, e.titulo(), e.descripcion()));
+                        <div style='margin-bottom: 40px;'>
+                            <h3 style='color:#004080;'>2.7.%d %s</h3>
+                            <p>%s</p>
+                    """, index++, e.titulo(), e.descripcion()));
 
-
-                if (e.imagenPath() != null) {
-                    html.append("<img src='" + e.imagenPath() + "' style='width:100%%; margin-top:10px;' />");
-                }
+                // Usar la imagen personalizada o la predeterminada
+                html.append("<img src='" + obtenerRutaImagen(e.imagenId(), imageMapping) + "' style='width:100%%; margin-top:10px;' />");
 
                 html.append("</div>");
             }
@@ -1841,50 +1910,98 @@
             ResumenMemoriaDTO resumen = new ResumenMemoriaDTO();
             resumen.setAnio(anio);
 
-            // ✅ Cargar datos globales
+            // ✅ Cargar TODOS los datos del año y sumarlos
             List<IndicadorAnual> lista = indicadoresAnualesRepository.findByAnio(anio);
-            IndicadorAnual datos = lista.isEmpty() ? null : lista.get(0);
 
-            if (datos != null) {
+            if (!lista.isEmpty()) {
+                // 🔧 SUMAR todos los valores en lugar de tomar solo el primero
 
-                resumen.setPersonasOrientadas(datos.getPersonasAtendidas());
-                resumen.setActividadesFormacion(datos.getActividadesFormacion());
-                resumen.setParticipantesFormacion(datos.getParticipantesFormacion());
-                resumen.setContrataciones(datos.getContrataciones());
-                resumen.setEmpresasCreadas(empresaRepository.countEmpresasByAnio(anio));
-                resumen.setAsesoramientos(datos.getAsesoramientos());
-                resumen.setImporteAyudas(datos.getAyudasEntidades());
-                resumen.setImporteAyudas(datos.getAyudasEmpresas());
-                resumen.setImporteAyudasEmpresas(indicadoresAnualesRepository.sumAyudasEmpresasByAnio(anio));
-                resumen.setHorasOrientacion(
-                        indicadoresAnualesRepository.sumHorasOrientacionByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumHorasOrientacionByAnio(anio)
-                                : BigDecimal.ZERO
+                // Orientación e Intermediación Laboral
+                resumen.setPersonasOrientadas(
+                        lista.stream().mapToInt(IndicadorAnual::getPersonasAtendidas).sum()
+                );
+
+                resumen.setAltasDemandantes(
+                        lista.stream().mapToInt(i -> i.getAltasDemandantes() != null ? i.getAltasDemandantes() : 0).sum()
+                );
+
+                resumen.setAccionesOrientacion(
+                        lista.stream().mapToInt(i -> i.getAccionesOrientacion() != null ? i.getAccionesOrientacion() : 0).sum()
+                );
+
+                resumen.setOfertasEmpleo(
+                        lista.stream().mapToInt(i -> i.getOfertasEmpleo() != null ? i.getOfertasEmpleo() : 0).sum()
+                );
+
+                // Formación
+                resumen.setActividadesFormacion(
+                        lista.stream().mapToInt(IndicadorAnual::getActividadesFormacion).sum()
+                );
+
+                resumen.setCursos(
+                        lista.stream().mapToInt(IndicadorAnual::getActividadesFormacion).sum() // O un valor específico si tienes cursos separados
+                );
+
+                resumen.setPildorasFormativas(
+                        lista.stream().mapToInt(i -> i.getPildorasFormativas() != null ? i.getPildorasFormativas() : 0).sum()
+                );
+
+                resumen.setParticipantesFormacion(
+                        lista.stream().mapToInt(IndicadorAnual::getParticipantesFormacion).sum()
                 );
 
                 resumen.setHorasFormacion(
-                        indicadoresAnualesRepository.sumHorasFormacionByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumHorasFormacionByAnio(anio)
-                                : BigDecimal.ZERO);
+                        BigDecimal.valueOf(lista.stream().mapToInt(IndicadorAnual::getHorasFormacion).sum())
+                );
 
-                resumen.setOfertasEmpleo(
-                        indicadoresAnualesRepository.sumOfertasEmpleoByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumOfertasEmpleoByAnio(anio)
-                                : 0);
+                // Asesoramiento Empresarial y Autoempleo
+                resumen.setAsesoramientos(
+                        lista.stream().mapToInt(IndicadorAnual::getAsesoramientos).sum()
+                );
+
+                resumen.setEmpresasCreadas(
+                        lista.stream().mapToInt(IndicadorAnual::getEmpresasCreadas).sum()
+                );
+
+                // Otros datos
+                resumen.setContrataciones(
+                        lista.stream().mapToInt(IndicadorAnual::getContrataciones).sum()
+                );
+
+                resumen.setHorasOrientacion(
+                        BigDecimal.valueOf(lista.stream().mapToInt(IndicadorAnual::getHorasOrientacion).sum())
+                );
 
                 resumen.setPuestosTrabajo(
-                        indicadoresAnualesRepository.sumPuestosTrabajoByAnio(anio) != null
-                                ? indicadoresAnualesRepository.sumPuestosTrabajoByAnio(anio)
-                                : 0);
-                resumen.setAyudasObservatorio(
-                        indicadoresAnualesRepository.sumAyudasObservatorioByAnio(anio)
+                        lista.stream().mapToInt(i -> i.getPuestosTrabajo() != null ? i.getPuestosTrabajo() : 0).sum()
                 );
+
+                // Importes (sumar BigDecimal correctamente)
+                resumen.setImporteAyudasEmpresas(
+                        lista.stream()
+                                .map(i -> i.getAyudasEmpresas() != null ? i.getAyudasEmpresas() : BigDecimal.ZERO)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                );
+
+                resumen.setImporteAyudas(
+                        lista.stream()
+                                .map(i -> i.getAyudasEntidades() != null ? i.getAyudasEntidades() : BigDecimal.ZERO)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                );
+
+                resumen.setAyudasObservatorio(
+                        BigDecimal.valueOf(lista.stream().mapToInt(i -> i.getAyudasObservatorio() != null ? i.getAyudasObservatorio() : 0).sum())
+                );
+
+                // Datos específicos del Observatorio (mantener como estaba)
                 resumen.setPersonasObservatorio(
                         actividadRepository.countPersonasContratadasObservatorio(anio)
                 );
+
                 resumen.setDescripcionObservatorio(
                         "Durante el año " + anio + " se ha puesto en marcha el Observatorio de Estrategias del Pacto Territorial..."
                 );
+
                 resumen.setObjetivosObservatorio(List.of(
                         "Gestión del Pacto Territorial",
                         "Laboratorio de Nuevas Estrategias de Futuro",
@@ -1892,13 +2009,7 @@
                         "Relaciones con otros Pactos y Avalem Territori"
                 ));
 
-
-                resumen.setAltasDemandantes(datos.getAltasDemandantes());
-                resumen.setAccionesOrientacion(datos.getAccionesOrientacion());
-                resumen.setCursos(datos.getActividadesFormacion());
-                resumen.setPildorasFormativas(datos.getPildorasFormativas());
-
-
+                // Servicios (mantener como estaba)
                 List<ServicioDTO> servicios = new ArrayList<>();
                 servicios.add(new ServicioDTO("Orientación Laboral", "Acompañamiento personalizado para mejorar la empleabilidad."));
                 servicios.add(new ServicioDTO("Formación Profesional", "Cursos gratuitos de formación adaptados al mercado laboral."));
@@ -1906,34 +2017,52 @@
                 resumen.setServicios(servicios);
 
             } else {
-                // Podrías dejar los valores en cero o loggear un warning
+                // Valores por defecto si no hay datos
                 System.err.println("No se encontraron indicadores para el año " + anio);
+                inicializarValoresPorDefecto(resumen);
             }
 
-            // 🔸 Si tienes datos por departamento, puedes hacer:
+            // Resumen por departamentos (mantener como estaba)
             List<ResumenDepartamentoDTO> departamentos = new ArrayList<>();
-            indicadoresAnualesRepository.findAll().stream()
-                    .filter(i -> i.getAnio() == anio)
-                    .forEach(i -> {
-                        ResumenDepartamentoDTO dto = new ResumenDepartamentoDTO();
-                        dto.setNombre(i.getDepartamento());
-                        dto.setPersonasAtendidas(i.getPersonasAtendidas());
-                        dto.setParticipantes(i.getParticipantesFormacion());
-                        dto.setEmpresasApoyadas(i.getAyudasEmpresas());
-                        dto.setEmpresasCreadas(i.getEmpresasCreadas());
-                        dto.setAsesoramientos(i.getAsesoramientos());
-                        dto.setContrataciones(i.getContrataciones());
-                        dto.setCursos(i.getActividadesFormacion());
-                        dto.setHoras(i.getHorasFormacion());
-                        // Puedes añadir más si lo necesitas
-                        departamentos.add(dto);
-                    });
+            lista.forEach(i -> {
+                ResumenDepartamentoDTO dto = new ResumenDepartamentoDTO();
+                dto.setNombre(i.getDepartamento());
+                dto.setPersonasAtendidas(i.getPersonasAtendidas());
+                dto.setParticipantes(i.getParticipantesFormacion());
+                dto.setEmpresasApoyadas(i.getAyudasEmpresas());
+                dto.setEmpresasCreadas(i.getEmpresasCreadas());
+                dto.setAsesoramientos(i.getAsesoramientos());
+                dto.setContrataciones(i.getContrataciones());
+                dto.setCursos(i.getActividadesFormacion());
+                dto.setHoras(i.getHorasFormacion());
+                departamentos.add(dto);
+            });
 
             resumen.setResumenDepartamentos(departamentos);
-
             return resumen;
         }
 
+        // Método auxiliar para inicializar valores por defecto
+        private void inicializarValoresPorDefecto(ResumenMemoriaDTO resumen) {
+            resumen.setPersonasOrientadas(0);
+            resumen.setAltasDemandantes(0);
+            resumen.setAccionesOrientacion(0);
+            resumen.setOfertasEmpleo(0);
+            resumen.setActividadesFormacion(0);
+            resumen.setCursos(0);
+            resumen.setPildorasFormativas(0);
+            resumen.setParticipantesFormacion(0);
+            resumen.setHorasFormacion(BigDecimal.ZERO);
+            resumen.setAsesoramientos(0);
+            resumen.setEmpresasCreadas(0);
+            resumen.setContrataciones(0);
+            resumen.setHorasOrientacion(BigDecimal.ZERO);
+            resumen.setPuestosTrabajo(0);
+            resumen.setImporteAyudasEmpresas(BigDecimal.ZERO);
+            resumen.setImporteAyudas(BigDecimal.ZERO);
+            resumen.setAyudasObservatorio(BigDecimal.valueOf(0));
+            resumen.setPersonasObservatorio(0);
+        }
 
         private String bloqueDato(String titulo, String valor) {
             return """
