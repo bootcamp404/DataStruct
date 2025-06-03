@@ -76,24 +76,25 @@ export class PerfilComponent implements OnInit {
   }
 
   guardarCambios() {
-    // Crear una copia del usuario con los campos editados, asegurando que el rol solo tenga el id
-    const usuarioActualizado: Partial<Usuario> = {
-      id: this.usuario.id,
-      nombre: this.usuario.nombre,
-      apellidos: this.usuario.apellidos,
-      email: this.usuario.email,
-      telefono: this.usuario.telefono,
-      contrasenya: this.usuario.contrasenya,
-      // Asegurarse de enviar solo el ID del rol
-      rol: this.usuarioActual?.rol ? { id: this.usuarioActual.rol.id } : undefined
+    // Enviar el objeto usuario completo con los campos editados
+    const usuarioParaEnviar: Partial<Usuario> = {
+        id: this.usuario.id,
+        nombre: this.usuario.nombre,
+        apellidos: this.usuario.apellidos,
+        email: this.usuario.email,
+        telefono: this.usuario.telefono,
+        contrasenya: this.usuario.contrasenya,
+        // Enviar el rol tal como está (debería tener al menos el ID)
+        rol: this.usuario.rol
     };
 
-    console.log('Usuario a enviar:', usuarioActualizado);
-    this.authService.actualizarUsuario(this.usuario.id, usuarioActualizado)
+    console.log('Usuario a enviar:', usuarioParaEnviar);
+    this.authService.actualizarUsuario(this.usuario.id, usuarioParaEnviar)
       .subscribe({
         next: (response) => {
+          console.log('Respuesta de actualización:', response);
           this.mostrarFormularioEdicion = false;
-          this.cargarDatosUsuario();
+          this.cargarDatosUsuario(); // Recargar datos del usuario después de la actualización
         },
         error: (error) => {
           this.errorMsg = 'Error al guardar los cambios';

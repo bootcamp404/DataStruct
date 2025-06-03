@@ -166,36 +166,17 @@ export class AuthService {
     });
   }
 
-  // Actualizar datos de usuario por email
-  actualizarUsuario(id: number, usuario: Partial<Usuario>): Observable<Usuario> {
+  // Actualizar datos de usuario por ID
+  actualizarUsuario(id: number, usuario: Partial<Usuario>): Observable<void> {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+      .set('Accept', 'application/json'); // Keep Accept just in case
 
-    // Asegurarse de que el rol se mantiene si no se proporciona uno nuevo
-    const usuarioActualizado = {
-      ...usuario,
-      rol: usuario.rol || { id: 16 } // Rol por defecto si no se proporciona uno
-    };
-
-    return this._http.put<Usuario>(`${this.apiUrl}/usuarios/${id}`, usuarioActualizado, { headers })
+    // Use `put<void>` to indicate no response body is expected
+    return this._http.put<void>(`${this.apiUrl}/usuarios/${id}`, usuario, { headers })
       .pipe(
-        tap(updatedUser => {
-          // Actualizar el usuario en localStorage
-          const currentUser = localStorage.getItem('usuario');
-          if (currentUser) {
-            const parsedUser = JSON.parse(currentUser) as Usuario;
-            // Preservar el rol original si no se actualizó
-            const mergedUser = {
-              ...parsedUser,
-              ...updatedUser,
-              rol: updatedUser.rol || parsedUser.rol
-            };
-            localStorage.setItem('usuario', JSON.stringify(mergedUser));
-            // Actualizar el rol en memoria
-            this.userRole = mergedUser.rol?.id || null;
-          }
-        })
+        // No tap here to update localStorage directly, we'll refetch in the component
+        // Removed previous tap logic as it's no longer suitable if no body is returned
       );
   }
 
@@ -229,14 +210,23 @@ export class AuthService {
   async updateUserProfile(id: number, usuario: Partial<Usuario>): Promise<Usuario> {
     try {
       // Actualizar en la API
-      const updatedUser = await firstValueFrom(this.actualizarUsuario(id, usuario));
+      // Await the void response from the updated actualizarUsuario
+      await firstValueFrom(this.actualizarUsuario(id, usuario));
 
-      // Si el usuario está autenticado con Firebase, actualizar también ahí
+      // After successful API update, refetch the user to update local state
+      const updatedUser = await this.getCurrentUser();
+
+      // If the user is authenticated with Firebase, update also there
       const currentUser = this._auth.currentUser;
-      if (currentUser) {
+      // Only attempt Firebase update if we successfully got an updated user from API/localStorage
+      if (currentUser && updatedUser) {
         await this.updateUser(usuario);
       }
 
+      // Return the refetched user, which is now in localStorage
+      if (!updatedUser) {
+          throw new Error('Failed to refetch user after update');
+      }
       return updatedUser;
     } catch (error) {
       console.error('Error actualizando perfil de usuario:', error);
