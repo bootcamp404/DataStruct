@@ -22,15 +22,15 @@ export class AdminPanelComponent implements OnInit {
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
   rolesDisponibles = [
-    { id: 1, nombre: 'Administrador total' },
-    { id: 2, nombre: 'Administrador empleo y formación' },
-    { id: 3, nombre: 'Administrador promoción económica' },
-    { id: 4, nombre: 'Administrador económico-financiero' },
-    { id: 5, nombre: 'Administrador jurídico-administrativo' },
-    { id: 6, nombre: 'Administrador marketing y comunicación' },
-    { id: 7, nombre: 'Administrador recursos humanos' },
-    { id: 8, nombre: 'Administrador desarrollo local y estratégico' },
-    { id: 9, nombre: 'Empleado marketing y comunicación' },
+    { id: 1,  nombre: 'Administrador total' },
+    { id: 2,  nombre: 'Administrador empleo y formación' },
+    { id: 3,  nombre: 'Administrador promoción económica' },
+    { id: 4,  nombre: 'Administrador económico-financiero' },
+    { id: 5,  nombre: 'Administrador jurídico-administrativo' },
+    { id: 6,  nombre: 'Administrador marketing y comunicación' },
+    { id: 7,  nombre: 'Administrador recursos humanos' },
+    { id: 8,  nombre: 'Administrador desarrollo local y estratégico' },
+    { id: 9,  nombre: 'Empleado marketing y comunicación' },
     { id: 10, nombre: 'Empleado jurídico-administrativo' },
     { id: 11, nombre: 'Empleado empleo y formación' },
     { id: 12, nombre: 'Empleado económico-financiero' },
@@ -96,10 +96,13 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
 
+    const headers = { 'Content-Type': 'application/json' };
+
     const peticiones = cambios.map(usuario =>
       this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
-        rol: { id: usuario.rol.id }
-      }).toPromise()
+        ...usuario,
+        rol: { id: usuario.rol.id } // asegúrate que este formato es el que espera tu API
+      }, { headers }).toPromise()
     );
 
     Promise.all(peticiones)
