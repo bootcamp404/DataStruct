@@ -109,6 +109,7 @@
               </div>
               <span class="ml-2 truncate max-w-[120px] hidden sm:inline">
                 {{ user.displayName || user.email }}
+                <br>
                 <span *ngIf="roleName !== 'Sin rol'" class="ml-2 text-xs text-gray-400">({{ roleName }})</span>
               </span>
               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

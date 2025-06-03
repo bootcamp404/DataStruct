@@ -41,7 +41,6 @@ export class AuthService {
     }
   }
 
-
   // Login usando TU API
   async iniciarSesion(usuario: Pick<Usuario, 'email' | 'contrasenya'>): Promise<Usuario> {
     const response = await firstValueFrom(
@@ -69,6 +68,7 @@ export class AuthService {
 
       if (user && user.email) {
         const usuario: Usuario = {
+          id: 0,
           nombre: user.displayName?.split(' ')[0] || '',
           apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
           email: user.email,
@@ -92,7 +92,6 @@ export class AuthService {
     }
   }
 
-
   // Inicio de sesión con Facebook (Firebase)
   async iniciarSesionFacebook(): Promise<Usuario | null> {
     const facebook = new FacebookAuthProvider();
@@ -103,6 +102,7 @@ export class AuthService {
 
       if (user && user.email) {
         const usuario: Usuario = {
+          id: 0,
           nombre: user.displayName?.split(' ')[0] || '',
           apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
           email: user.email,
@@ -126,7 +126,6 @@ export class AuthService {
     }
   }
 
-
   // Logout general
   async logout() {
     await signOut(this._auth)
@@ -148,7 +147,6 @@ export class AuthService {
   //   return !!this.obtenerToken();
   // }
 
-
   // Obtener usuario actual desde localStorage
   getCurrentUser(): Promise<Usuario | null> {
     return new Promise((resolve) => {
@@ -169,31 +167,83 @@ export class AuthService {
   }
 
   // Actualizar datos de usuario por email
-  actualizarUsuario(email: string, usuario: any): Observable<any> {
+  actualizarUsuario(id: number, usuario: Partial<Usuario>): Observable<Usuario> {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Accept', 'application/json');
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json');
 
-    return this._http.put(`${this.apiUrl}/usuarios/${email}`, usuario, {
-      headers: headers,
-      observe: 'response'
-    });
+    // Asegurarse de que el rol se mantiene si no se proporciona uno nuevo
+    const usuarioActualizado = {
+      ...usuario,
+      rol: usuario.rol || { id: 16 } // Rol por defecto si no se proporciona uno
+    };
+
+    return this._http.put<Usuario>(`${this.apiUrl}/usuarios/${id}`, usuarioActualizado, { headers })
+      .pipe(
+        tap(updatedUser => {
+          // Actualizar el usuario en localStorage
+          const currentUser = localStorage.getItem('usuario');
+          if (currentUser) {
+            const parsedUser = JSON.parse(currentUser) as Usuario;
+            // Preservar el rol original si no se actualizó
+            const mergedUser = {
+              ...parsedUser,
+              ...updatedUser,
+              rol: updatedUser.rol || parsedUser.rol
+            };
+            localStorage.setItem('usuario', JSON.stringify(mergedUser));
+            // Actualizar el rol en memoria
+            this.userRole = mergedUser.rol?.id || null;
+          }
+        })
+      );
   }
 
-  // Opcional: actualizar perfil en Firebase si usas Auth de Firebase
-  updateUser(usuario: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const user = this._auth.currentUser;
-      if (user) {
-        updateProfile(user, {
-          displayName: usuario.nombre
-        }).then(() => resolve())
-          .catch((error) => reject(error));
-      } else {
-        reject('Usuario no autenticado');
+  // Actualizar perfil en Firebase si está autenticado con Firebase
+  async updateUser(usuario: Partial<Usuario>): Promise<void> {
+    const user = this._auth.currentUser;
+    if (!user) {
+      throw new Error('Usuario no autenticado');
+    }
+
+    try {
+      // Actualizar perfil en Firebase
+      await updateProfile(user, {
+        displayName: usuario.nombre || user.displayName || ''
+      });
+
+      // Actualizar el usuario en localStorage
+      const currentUser = localStorage.getItem('usuario');
+      if (currentUser) {
+        const parsedUser = JSON.parse(currentUser) as Usuario;
+        const mergedUser = { ...parsedUser, ...usuario };
+        localStorage.setItem('usuario', JSON.stringify(mergedUser));
       }
-    });
+    } catch (error) {
+      console.error('Error actualizando perfil en Firebase:', error);
+      throw error;
+    }
   }
+
+  // Método combinado para actualizar usuario tanto en API como en Firebase si es necesario
+  async updateUserProfile(id: number, usuario: Partial<Usuario>): Promise<Usuario> {
+    try {
+      // Actualizar en la API
+      const updatedUser = await firstValueFrom(this.actualizarUsuario(id, usuario));
+
+      // Si el usuario está autenticado con Firebase, actualizar también ahí
+      const currentUser = this._auth.currentUser;
+      if (currentUser) {
+        await this.updateUser(usuario);
+      }
+
+      return updatedUser;
+    } catch (error) {
+      console.error('Error actualizando perfil de usuario:', error);
+      throw error;
+    }
+  }
+
   getRole(): number | null {
     if (this.userRole) return this.userRole;
     const storedUser = localStorage.getItem('usuario');
@@ -206,5 +256,4 @@ export class AuthService {
       return null;
     }
   }
-
 }

@@ -15,12 +15,13 @@ import { Usuario } from '../modelos/usuario';
 })
 export class PerfilComponent implements OnInit {
   usuario: Usuario = {
+    id: 0,
     nombre: '',
     apellidos: '',
     email: '',
     telefono: '',
     contrasenya: '',
-    rol: {id: 9}
+    rol: {id: 0}
     // departamento: '',
     // cargo: ''
   };
@@ -60,12 +61,13 @@ export class PerfilComponent implements OnInit {
     console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
     this.mostrarFormularioEdicion = true;
     this.usuario = {
+      id: this.usuarioActual?.id || 0,
       nombre: this.usuarioActual?.nombre || '',
       apellidos: this.usuarioActual?.apellidos || '',
       email: this.usuarioActual?.email || '',
       telefono: this.usuarioActual?.telefono || '',
-      contrasenya: this.usuarioActual?.constrasenya || '',
-      rol: {id: 9}
+      contrasenya: this.usuarioActual?.contrasenya || '',
+      rol: this.usuarioActual?.rol || { id: 16 } // Preservar el rol original o usar el rol por defecto
     };
   }
 
@@ -74,9 +76,20 @@ export class PerfilComponent implements OnInit {
   }
 
   guardarCambios() {
+    // Crear una copia del usuario con los campos editados, asegurando que el rol solo tenga el id
+    const usuarioActualizado: Partial<Usuario> = {
+      id: this.usuario.id,
+      nombre: this.usuario.nombre,
+      apellidos: this.usuario.apellidos,
+      email: this.usuario.email,
+      telefono: this.usuario.telefono,
+      contrasenya: this.usuario.contrasenya,
+      // Asegurarse de enviar solo el ID del rol
+      rol: this.usuarioActual?.rol ? { id: this.usuarioActual.rol.id } : undefined
+    };
 
-    console.log('Usuario a enviar:', this.usuario);
-    this.authService.actualizarUsuario(this.usuario.email, this.usuario)
+    console.log('Usuario a enviar:', usuarioActualizado);
+    this.authService.actualizarUsuario(this.usuario.id, usuarioActualizado)
       .subscribe({
         next: (response) => {
           this.mostrarFormularioEdicion = false;

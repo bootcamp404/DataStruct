@@ -71,8 +71,8 @@ export class DepartamentsComponent implements OnInit {
         const rol = this.authService.getRole();
 
         // Si el rol es 10, mostramos solo el departamento con ID 10
-        if (rol === 10) {
-          this.departamentos = departamentos.filter(d => Number(d.id) === 10);
+        if (rol === 16) {
+          this.departamentos = departamentos.filter(d => d.id === 'RRHH');
         } else {
           this.departamentos = departamentos;
         }
