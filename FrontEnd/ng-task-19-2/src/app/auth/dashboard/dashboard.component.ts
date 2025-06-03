@@ -12,12 +12,16 @@ import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyec
 import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
 import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
+import { FooterComponent } from '../../mainview/footer/footer.component'; 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule,
+    AnimatedBackgroundComponent, FooterComponent
+  ],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;

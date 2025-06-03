@@ -12,11 +12,13 @@ import { Proyecto } from '../../modelos/proyecto';
 import { Subvencion } from '../../modelos/subvencion';
 import { HeaderComponent } from '../../mainview/header/header.component';
 import { CommonModule } from '@angular/common';
+import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
+import { FooterComponent } from '../../mainview/footer/footer.component';
 
 @Component({
   selector: 'app-plantillas',
   standalone: true,
-  imports: [HeaderComponent, ReactiveFormsModule, CommonModule],   
+  imports: [HeaderComponent, ReactiveFormsModule, CommonModule, AnimatedBackgroundComponent, FooterComponent],   
   templateUrl: './plantillas.component.html',
   styleUrl:  './plantillas.component.css'
 })

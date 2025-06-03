@@ -145,7 +145,6 @@ export class AuthService {
 
       try {
         const user = JSON.parse(storedUser) as Usuario;
-        console.log('AuthService: User parsed from localStorage:', user);
         resolve(user);
       } catch (error) {
         console.error('AuthService: Error parseando los datos del usuario:', error);
