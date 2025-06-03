@@ -86,14 +86,32 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
         const rol = this.authService.getRole();
 
-        let proyectosFiltrados: Proyecto[] = [];
+        const filtroPorRol: { [key: number]: string[] } = {
+          7: ['RRHH'],
+          14: ['RRHH'],
+          2: ['D2'],
+          11: ['D2'],
+          3: ['D3'],
+          13: ['D3'],
+          4: ['D1'],
+          12: ['D1'],
+          5: ['DJA'],
+          10: ['DJA'],
+          6: ['MK'],
+          9: ['MK'],
+          8: ['D4'],
+          15: ['D4']
+        };
 
-        if (rol === 1) {
-          proyectosFiltrados = proyectos;
-        } else if (rol != null && rol >= 2 && rol <= 15) {
-          proyectosFiltrados = proyectos.filter(p => p.departamento?.id === rol.toString());
-        } else if (rol === 16) {
+        let proyectosFiltrados: Proyecto[];
+
+        if (rol === 16) {
           proyectosFiltrados = [];
+        } else if (rol != null && filtroPorRol.hasOwnProperty(rol)) {
+          const idsPermitidos = filtroPorRol[rol];
+          proyectosFiltrados = proyectos.filter(p =>
+            p.departamento?.id && idsPermitidos.includes(p.departamento.id)
+          );
         } else {
           proyectosFiltrados = proyectos;
         }
