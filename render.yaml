@@ -3,8 +3,6 @@ services:
     name: springboot-backend
     env: docker
     rootDir: backend
-    buildCommand: ./mvnw clean install
-    startCommand: java -jar target/*.jar
     plan: free
     region: oregon
     envVars:
