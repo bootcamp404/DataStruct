@@ -66,14 +66,35 @@ export class DepartamentsComponent implements OnInit {
 
   cargarDepartamentos() {
     this.cargandoLista = true;
+
     this.departamentoService.obtenerDepartamentos().subscribe({
       next: (departamentos) => {
         const rol = this.authService.getRole();
 
-        // Si el rol es 10, mostramos solo el departamento con ID 10
-        if (rol === 10) {
-          this.departamentos = departamentos.filter(d => Number(d.id) === 10);
-        } else {
+        const filtroPorRol: { [key: number]: string[] } = {
+          7: ['RRHH'],
+          14: ['RRHH'],
+          2: ['D2'],
+          11: ['D2'],
+          3: ['D3'],
+          13: ['D3'],
+          4: ['D1'],
+          12: ['D1'],
+          5: ['DJA'],
+          10: ['DJA'],
+          6: ['MK'],
+          9: ['MK'],
+          8: ['D4'],
+          15: ['D4']
+        };
+        if (rol != null && filtroPorRol.hasOwnProperty(rol)) {
+          this.departamentos = departamentos.filter(d => filtroPorRol[rol].includes(d.id));
+        }
+        else if (rol === 16)
+        {
+         this.departamentos = [];
+        }
+        else {
           this.departamentos = departamentos;
         }
 
@@ -87,7 +108,6 @@ export class DepartamentsComponent implements OnInit {
       }
     });
   }
-
 
   selectDepartamento(departamento: Departamento) {
     this.selectedDepartamento = departamento;
