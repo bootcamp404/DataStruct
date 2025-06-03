@@ -42,15 +42,23 @@ export class PerfilComponent implements OnInit {
 
   cargarDatosUsuario() {
     this.cargando = true;
-    this.authService.getCurrentUser().then(user => {
-      this.usuarioActual = user;
-      this.cargando = false;
-      console.log('Usuario recibido:', user);
-    }).catch(error => {
-      this.errorMsg = 'Error al cargar los datos del usuario';
-      this.cargando = false;
-      console.error('Error obteniendo usuario actual:', error);
-    });
+    this.errorMsg = '';
+        
+    this.authService.getCurrentUser()
+      .then(user => {
+        if (user) {
+          this.usuarioActual = user;
+        } else {
+          console.warn('PerfilComponent: No user found');
+          this.errorMsg = 'No se encontró información del usuario';
+        }
+        this.cargando = false;
+      })
+      .catch(error => {
+        this.errorMsg = 'Error al cargar los datos del usuario';
+        this.cargando = false;
+        console.error('PerfilComponent: Error obteniendo usuario actual:', error);
+      });
   }
 
   volver(): void {
@@ -58,7 +66,6 @@ export class PerfilComponent implements OnInit {
   }
 
   mostrarEditarPerfil() {
-    console.log('Usuario actual:', this.usuarioActual); // Verifica propiedades
     this.mostrarFormularioEdicion = true;
     this.usuario = {
       id: this.usuarioActual?.id || 0,
@@ -76,30 +83,25 @@ export class PerfilComponent implements OnInit {
   }
 
   guardarCambios() {
-    // Enviar el objeto usuario completo con los campos editados
     const usuarioParaEnviar: Partial<Usuario> = {
-        id: this.usuario.id,
-        nombre: this.usuario.nombre,
-        apellidos: this.usuario.apellidos,
-        email: this.usuario.email,
-        telefono: this.usuario.telefono,
-        contrasenya: this.usuario.contrasenya,
-        // Enviar el rol tal como está (debería tener al menos el ID)
-        rol: this.usuario.rol
+      nombre: this.usuario.nombre,
+      apellidos: this.usuario.apellidos,
+      email: this.usuario.email,
+      telefono: this.usuario.telefono,
+      contrasenya: this.usuario.contrasenya,
+      rol: this.usuario.rol
     };
-
-    console.log('Usuario a enviar:', usuarioParaEnviar);
-    this.authService.actualizarUsuario(this.usuario.id, usuarioParaEnviar)
-      .subscribe({
-        next: (response) => {
-          console.log('Respuesta de actualización:', response);
-          this.mostrarFormularioEdicion = false;
-          this.cargarDatosUsuario(); // Recargar datos del usuario después de la actualización
-        },
-        error: (error) => {
-          this.errorMsg = 'Error al guardar los cambios';
-          console.error('Error al guardar datos:', error);
-        }
+  
+    // Usar updateUserProfile (Promise) en lugar de actualizarUsuario (Observable)
+    this.authService.updateUserProfile(this.usuario.id, usuarioParaEnviar)
+      .then((usuarioActualizado) => {
+        this.usuarioActual = usuarioActualizado;
+        this.mostrarFormularioEdicion = false;
+        this.errorMsg = '';
+      })
+      .catch((error) => {
+        this.errorMsg = 'Error al guardar los cambios';
+        console.error('Error al guardar datos:', error);
       });
   }
 
