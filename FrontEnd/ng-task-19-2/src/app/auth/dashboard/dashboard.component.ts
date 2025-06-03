@@ -8,12 +8,12 @@ import { DepartamentoValidaciones } from '../../validaciones/departamento.valida
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
-import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyecto.component';
-import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
+import { ProyectoComponent } from '../../mainview/formularios/proyecto/proyecto.component';
 import { DepartamentsComponent } from '../../mainview/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
 import { FooterComponent } from '../../mainview/footer/footer.component'; 
+import { ActividadComponent } from '../../mainview/formularios/actividad/actividad.component';
 
 @Component({
   selector: 'app-dashboard',
