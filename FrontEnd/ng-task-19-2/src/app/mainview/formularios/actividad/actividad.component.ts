@@ -3,11 +3,9 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription, forkJoin } from 'rxjs';
-
 import { ActividadService } from '../../../services/actividad.service';
 import { DepartamentoService } from '../../../services/departamento.service';
 import { ProyectoService } from '../../../services/proyecto.service';
-
 import { Actividad } from '../../../modelos/actividad';
 import { Departamento } from '../../../modelos/departamento';
 import { Proyecto } from '../../../modelos/proyecto';
