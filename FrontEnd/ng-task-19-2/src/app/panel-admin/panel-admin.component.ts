@@ -85,7 +85,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
   guardarTodosLosCambios() {
-    console.log("funciona")
     const cambios = this.usuarios.filter(usuario => {
       const original = this.usuariosOriginales.find(u => u.id === usuario.id);
       return original && usuario.rol?.id !== original.rol?.id;
@@ -101,20 +100,21 @@ export class AdminPanelComponent implements OnInit {
     const peticiones = cambios.map(usuario =>
       this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
         ...usuario,
-        rol: { id: usuario.rol.id } // asegúrate que este formato es el que espera tu API
+        rol: { id: usuario.rol.id }
       }, { headers }).toPromise()
     );
 
     Promise.all(peticiones)
       .then(() => {
         alert('Roles actualizados correctamente.');
-        this.usuariosOriginales = JSON.parse(JSON.stringify(this.usuarios)); // Actualizar copia
+        this.cargarUsuarios(); // 👈 Aquí está el cambio: recarga los datos reales desde la base de datos
       })
       .catch((error) => {
         console.error('Error al guardar roles', error);
         alert('Ocurrió un error al guardar los cambios.');
       });
   }
+
 
   get usuariosFiltrados(): any[] {
     const texto = this.filtro.toLowerCase();
