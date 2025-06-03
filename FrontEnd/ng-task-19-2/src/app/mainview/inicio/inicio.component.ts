@@ -38,9 +38,9 @@ export class InicioComponent {
     {
       icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12',
       titleKey: 'FEATURES.ITEMS.EXPORT_PDF.TITLE',
-      descriptionKey: 'FEATURES.ITEMS.EXPORT_PDF.DESC',
-      ruta: 'http://localhost:8080/alicanteFutura/api/v1/memoria/pdf/2025',
-      external: true    
+  descriptionKey: 'FEATURES.ITEMS.EXPORT_PDF.DESC',
+  ruta: '/previsualizacion/2025',  
+  external: false  
     }
   ];
 }

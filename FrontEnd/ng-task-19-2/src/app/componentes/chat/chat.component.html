@@ -20,7 +20,20 @@
     </button>
   </div>
 
-  <div class="respuesta-bubble">
+ <!-- chat.component.html -->
+<div class="respuesta-bubble">
+  <!-- Indicador de typing -->
+  <span class="typing-indicator" [hidden]="!isTyping">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </span>
+
+  <!-- Texto de la respuesta -->
+  <span class="respuesta-text" [hidden]="isTyping">
     {{ respuesta }}
-  </div>
+  </span>
+</div>
+
+
 </div>

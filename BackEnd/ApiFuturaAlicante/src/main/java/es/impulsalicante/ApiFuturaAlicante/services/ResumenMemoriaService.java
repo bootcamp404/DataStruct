@@ -55,13 +55,54 @@
 
         @Autowired
         private DepartamentosRepository departamentoRepository;
-
+        @Autowired
+        private ImagenService imagenService;
 
         private static final SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyyy");
 
+        private static final Map<String, String> DEFAULT_IMAGES = Map.of(
+                "portada_principal", "img/portada_principal.jpg",
+                "portada_dpto_local", "img/portada_dpto_local.jpg",
+                "portada_dpto_promocion", "img/portada_dpto_promocion.jpg",
+                "portada_dpto_empleo", "img/portada_dpto_empleo.jpg",
+                "portada_dpto_desarrollo", "img/portada_dpto_desarrollo.jpg",
+                "portada_dpto_gestion", "img/portada_dpto_gestion.jpg",
+                "portada_dpto_marketing", "img/portada_dpto_marketing.jpg",
+                "anexo20", "img/anexo20.jpg",
+                "anexo21", "img/anexo21.jpg",
+                "anexo45", "img/anexo45.jpg"
+                // Añade aquí todos los placeholders que necesites
+        );
+
+        public byte[] generarPdfPersonalizado(int anio, Map<String, String> imageMapping) throws IOException {
+            ResumenMemoriaDTO datos = getResumenPorAnio(anio);
+            String html = plantillaConDatos(datos, anio, imageMapping);
+
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ITextRenderer renderer = new ITextRenderer();
+                renderer.setDocumentFromString(html);
+                renderer.layout();
+                renderer.createPDF(baos);
+
+                return baos.toByteArray();
+            } catch (Exception e) {
+                System.err.println("❌ Error al generar PDF personalizado: " + e.getMessage());
+                e.printStackTrace();
+                return new byte[0];
+            }
+        }
+
+        // Método para obtener la ruta de imagen (personalizada o por defecto)
+        private String obtenerRutaImagen(String placeholderId, Map<String, String> imageMapping) {
+            if (imageMapping != null && imageMapping.containsKey(placeholderId)) {
+                return imageMapping.get(placeholderId);
+            }
+            return DEFAULT_IMAGES.getOrDefault(placeholderId, "img/default.jpg");
+        }
 
 
-        private String plantillaConDatos(ResumenMemoriaDTO datos, int anio) throws IOException {
+        private String plantillaConDatos(ResumenMemoriaDTO datos, int anio, Map<String, String> imageMapping) throws IOException {
             StringBuilder html = new StringBuilder();
 
             html.append("<!DOCTYPE html>")
@@ -82,7 +123,10 @@
             html.append("<div style='page-break-after: always; text-align: center; margin-top: 200px;'>")
                     .append("<h1 style='font-size: 48px; color: #004080;'>MEMORIA DE ACTIVIDAD</h1>")
                     .append("<h2 style='font-size: 36px;'>").append(anio).append("</h2>")
+                    .append("<img src='").append(obtenerRutaImagen("portada_principal", imageMapping))
+                    .append("' style='width: 300px; height: auto; margin-top: 50px;' />")
                     .append("</div>");
+
 
             // Índice
             html.append("<div style='page-break-after: always;'>")
@@ -124,23 +168,28 @@
 
             //1 Portada
             html.append(String.format("""
-        <div style='page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #2D60FA 50%%, #2D60FA 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #004080; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #004080; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #2D60FA 50%%, #2D60FA 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #004080; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #004080; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "1", // número de sección
                     "AGENCIA LOCAL DE DESARROLLO\n" +
                             " ECONÓMICO Y SOCIAL", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_local", imageMapping)
             ));
 
             // Contenido general
@@ -379,24 +428,29 @@
 
             html.append(generarSeccionCentros());
 
-
+//2 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #7AFACF 50%%, #7AFACF 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #3CBEFA; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #3CBEFA; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style=' page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #7AFACF 50%%, #7AFACF 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #3CBEFA; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #3CBEFA; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "2", // número de sección
                     "DEPARTAMENTO DE EMPLEO Y FORMACIÓN", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_empleo", imageMapping)
             ));
 
 
@@ -629,26 +683,30 @@
             html.append(generarSeccionConveniosNominativos());
 
     //2.7
-            html.append(generarSeccionOtros());
-
-    //3
+            html.append(generarSeccionOtros(imageMapping));
+//3 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #f7931e 50%%, #ffbe78 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #f26522; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #f26522; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style=' page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #f7931e 50%%, #f7931e 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #f26522; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #f26522; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "3", // número de sección
                     "PROMOCIÓN ECONÓMICA", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_promocion", imageMapping)
             ));
     //3.1
             html.append(generarSeccionDatosTotalesPromocionEconomica(anio));
@@ -671,26 +729,29 @@
 
             // 4 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #A71A46 50%%, #A71A46 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #A71A46; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>PROGRAMAS DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #A71A46; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #A71A46 50%%, #A71A46 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #A71A46; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>PROGRAMAS DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #A71A46; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "4", // número de sección
                     "DESARROLLO LOCAL\n" +
                             " ESTRATÉGICO", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_desarrollo", imageMapping)
             ));
-
-
             //4.1
             html.append(generarSeccion41(anio));
 
@@ -719,23 +780,29 @@
 
             // 5 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #8C5BA6 50%%, #8C5BA6 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #8C5BA6; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>ÁREAS DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #8C5BA6; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #8C5BA6 50%%, #8C5BA6 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #8C5BA6; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>ÁREAS DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #8C5BA6; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "5", // número de sección
-                            " GESTIÓN", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    " GESTIÓN", // título del departamento
+                    obtenerRutaImagen("portada_dpto_gestion", imageMapping)
             ));
+
 
 
             //5.1
@@ -744,22 +811,27 @@
 
             //6 portada
             html.append(String.format("""
-        <div style='page-break-before: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
-            <div style='background: linear-gradient(to right, #706052 50%%, #706052 50%%); display: flex; align-items: center; height: 100px;'>
-                <div style='background-color: #706052; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
-                <div style='padding-left: 20px;'>
-                    <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
-                    <div style='color: white; font-size: 28px; font-weight: bold; background-color: #706052; padding: 4px 10px; display: inline-block;'>%s</div>
-                </div>
-            </div>
-            <div>
-                <img src='%s' style='width:100%%; height:auto; margin-top:0;' />
+    <div style='page-break-before: always; page-break-after: always; font-family: Arial, sans-serif; padding: 0; margin: 0;'>
+        <!-- Encabezado con título -->
+        <div style='background: linear-gradient(to right, #706052 50%%, #706052 50%%); display: flex; align-items: center; height: 100px;'>
+            <div style='background-color: #706052; color: white; font-size: 40px; font-weight: bold; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;'>%s</div>
+            <div style='padding-left: 20px;'>
+                <div style='color: black; font-size: 24px; font-weight: bold;'>DEPARTAMENTO DE</div>
+                <div style='color: white; font-size: 28px; font-weight: bold; background-color: #706052; padding: 4px 10px; display: inline-block;'>%s</div>
             </div>
         </div>
-        """,
+        
+        <!-- Espacio en blanco y luego la imagen -->
+        <div style='height: 50px;'></div>
+        
+        <div style='text-align: center; margin-top: 150px;'>
+            <img src='%s' style='width: 500px; height: auto;' />
+        </div>
+    </div>
+    """,
                     "6", // número de sección
                     "MARKETING Y COMUNICACIÓN", // título del departamento
-                    "img/portada_dpto_promocion.jpg" // ruta de imagen ajusta según tu proyecto
+                    obtenerRutaImagen("portada_dpto_marketing", imageMapping)
             ));
 
             //6.1
@@ -772,7 +844,7 @@
 
         public byte[] generarPdf(int anio) throws IOException {
             ResumenMemoriaDTO datos = getResumenPorAnio(anio);
-            String html = plantillaConDatos(datos, anio);
+            String html = plantillaConDatos(datos, anio, null); // Pasamos null para usar imágenes por defecto
 
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -783,13 +855,11 @@
 
                 return baos.toByteArray();
             } catch (Exception e) {
-                // Loggea el error para saber qué ocurrió
                 System.err.println("❌ Error al generar PDF: " + e.getMessage());
                 e.printStackTrace();
                 return new byte[0];
             }
         }
-
 
         private String safe(Object val) {
             return val != null ? val.toString() : "-";
@@ -1233,42 +1303,41 @@
         }
 
 
-        private String generarSeccionOtros() {
-            record EventoOtros(String titulo, String descripcion, String imagenPath) {
+        private String generarSeccionOtros(Map<String, String> imageMapping) {
+            record EventoOtros(String titulo, String descripcion, String imagenId) {
             }
 
             List<EventoOtros> eventos = List.of(
                     new EventoOtros(
                             "IV Feria de empleo y formación Zona Norte",
                             "El 29 de marzo de 2023 se celebró la cuarta edición de la feria de empleo y formación, en horario de 9:30 a 13:30 horas. En ella participaron más de 27 organizaciones entre centros educativos, instituciones y servicios públicos. La feria contó con la asistencia de un amplio número de estudiantes de secundaria.",
-                            "img/anexo20.jpg"
+                            "anexo20"
                     ),
                     new EventoOtros(
                             "IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional",
                             "El 24 de noviembre, la plaza del Ayuntamiento y el auditorio de Puerta Ferrisa acogieron el IV Encuentro de Empleo dirigido a Personas con Diversidad Funcional. El evento reunió a 16 empresas y 18 asociaciones para exponer tanto ofertas de trabajo como las diversas propuestas de las entidades participantes.",
-                            "img/anexo21.jpg"
+                            "anexo21"
                     )
             );
 
             StringBuilder html = new StringBuilder();
             html.append("""
-                        <div style=' page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
- <div style=' background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
-      <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
-      <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />                    """);
+                    <div style=' page-break-before: always; font-family: Arial, sans-serif; padding: 30px;'>
+                        <div style=' background-color: #d5f3ef; padding: 6px 12px; font-weight: bold; display: inline-block; border-radius: 4px; font-size: 12px;'>2.7</div>
+                        <h2 style='color: #00a99d; margin: 15px 0 10px;'>OTROS</h2>
+                        <hr style='border: none; border-top: 2px solid #00a99d; margin-bottom: 30px;' />
+                    """);
 
             int index = 1;
             for (EventoOtros e : eventos) {
                 html.append(String.format("""
-                            <div style='margin-bottom: 40px;'>
-                                <h3 style='color:#004080;'>2.7.%d %s</h3>
-                                <p>%s</p>
-                        """, index++, e.titulo(), e.descripcion()));
+                        <div style='margin-bottom: 40px;'>
+                            <h3 style='color:#004080;'>2.7.%d %s</h3>
+                            <p>%s</p>
+                    """, index++, e.titulo(), e.descripcion()));
 
-
-                if (e.imagenPath() != null) {
-                    html.append("<img src='" + e.imagenPath() + "' style='width:100%%; margin-top:10px;' />");
-                }
+                // Usar la imagen personalizada o la predeterminada
+                html.append("<img src='" + obtenerRutaImagen(e.imagenId(), imageMapping) + "' style='width:100%%; margin-top:10px;' />");
 
                 html.append("</div>");
             }

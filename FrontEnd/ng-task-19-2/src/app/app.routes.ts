@@ -8,7 +8,7 @@ import { PlantillasComponent } from './componentes/plantillas/plantillas.compone
 import { AdminPanelComponent } from './panel-admin/panel-admin.component';
 import { InicioComponent } from './mainview/inicio/inicio.component';
 import { ProyectoComponent } from './componentes/formularios/proyecto/proyecto.component';
-
+import { PrevisualizacionComponent } from './componentes/previsualizacion/previsualizacion.component';
 
 export const routes: Routes = [
   {
@@ -58,6 +58,15 @@ export const routes: Routes = [
     path: 'panel-admin',
     component: AdminPanelComponent,
     //canActivate: [privateGuard()]
+  },
+    {
+    path: "previsualizacion/:year",
+    component: PrevisualizacionComponent,
+  },
+  {
+    path: "previsualizacion",
+    redirectTo: "/previsualizacion/2025",
+    pathMatch: "full",
   },
   {
     path: '**',
