@@ -8,16 +8,20 @@ import { DepartamentoValidaciones } from '../../validaciones/departamento.valida
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ActualizarService } from '../../services/actualizar.service';
-import { ProyectoComponent } from '../../componentes/formularios/proyecto/proyecto.component';
-import { ActividadComponent } from '../../componentes/formularios/actividad/actividad.component';
-import { DepartamentsComponent } from '../../componentes/departaments/departaments.component';
+import { ProyectoComponent } from '../../mainview/formularios/proyecto/proyecto.component';
+import { DepartamentsComponent } from '../../mainview/departaments/departaments.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AnimatedBackgroundComponent } from '../../shared/components/animated-background/animated-background.component';
+import { FooterComponent } from '../../mainview/footer/footer.component'; 
+import { ActividadComponent } from '../../mainview/formularios/actividad/actividad.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, ProyectoComponent, DepartamentsComponent, TranslateModule,
+    AnimatedBackgroundComponent, FooterComponent
+  ],
 })
 export class DashboardComponent implements OnInit {
   showDropdown = false;
@@ -37,7 +41,6 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private actualizarDepts: ActualizarService) {
       this.formularioDept = this.fb.group({
-        id: ['', [Validators.required]],
         nombre: ['', [Validators.required]]
       });
     }
