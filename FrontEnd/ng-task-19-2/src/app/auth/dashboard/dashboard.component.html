@@ -28,14 +28,6 @@
         </h2>
 
         <form [formGroup]="formularioDept" (ngSubmit)="guardarNuevo()" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="flex flex-col gap-2">
-            <label for="id" class="font-medium text-gray-700 flex items-center">
-              <i class="fas fa-id-card text-blue-500 mr-2"></i>ID Departamento
-            </label>
-            <input type="text" id="id" formControlName="id"
-                   class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                   [class.border-red-500]="error && mensajeError?.includes('id')">
-          </div>
 
           <div class="flex flex-col gap-2">
             <label for="nombre" class="font-medium text-gray-700 flex items-center">

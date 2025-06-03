@@ -85,6 +85,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   guardarTodosLosCambios() {
+    console.log("funciona")
     const cambios = this.usuarios.filter(usuario => {
       const original = this.usuariosOriginales.find(u => u.id === usuario.id);
       return original && usuario.rol?.id !== original.rol?.id;
@@ -96,7 +97,7 @@ export class AdminPanelComponent implements OnInit {
     }
 
     const peticiones = cambios.map(usuario =>
-      this.http.put(`${this.apiUrl}/usuarios/${usuario.id}/rol`, {
+      this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
         rol: { id: usuario.rol.id }
       }).toPromise()
     );
