@@ -6,6 +6,7 @@ import { FooterComponent } from '../mainview/footer/footer.component';
 import { HeaderComponent } from '../mainview/header/header.component';
 import { AnimatedBackgroundComponent } from '../shared/components/animated-background/animated-background.component';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../auth/data-access/auth.service';
 
 @Component({
   selector: 'app-panel-admin',
@@ -42,8 +43,9 @@ export class AdminPanelComponent implements OnInit {
   ];
 
   usuariosOriginales: any[] = [];
+  authService: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, authService: AuthService) {}
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -69,7 +71,6 @@ export class AdminPanelComponent implements OnInit {
     this.actualizandoRolEmail = usuario.email;
     const headers = { 'Content-Type': 'application/json' };
 
-    // Enviar el objeto completo del usuario con el rol actualizado
     const body = {
       ...usuario,
       rol: { id: usuario.rol.id }
@@ -80,9 +81,13 @@ export class AdminPanelComponent implements OnInit {
         this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, body, { headers })
       );
 
-      // Recargar la lista completa para asegurar sincronización
-      await this.cargarUsuarios();
+      // 🔄 Actualizar usuario en sesión si corresponde
+      const usuarioActual = this.authService.getCurrentUserSync();
+      if (usuarioActual && usuarioActual.id === usuario.id) {
+        await this.authService.updateUserProfile(usuario.id, { rol: usuario.rol });
+      }
 
+      await this.cargarUsuarios();
       alert('Rol actualizado correctamente');
     } catch (error) {
       console.error('Error al actualizar rol:', error);
@@ -123,10 +128,13 @@ export class AdminPanelComponent implements OnInit {
         // Si el status es 200, 201, 202, etc. (códigos de éxito)
         if (response.status >= 200 && response.status < 300) {
           exitosos++;
+
+          const usuarioActual = this.authService.getCurrentUserSync?.();
+          if (usuarioActual && usuarioActual.id === usuario.id) {
+            await this.authService.updateUserProfile(usuario.id, { rol: usuario.rol });
+          }
+
           console.log(`Usuario ${usuario.email} actualizado correctamente`);
-        } else {
-          errores++;
-          console.warn(`Respuesta inesperada para ${usuario.email}:`, response.status);
         }
 
       } catch (error: any) {
