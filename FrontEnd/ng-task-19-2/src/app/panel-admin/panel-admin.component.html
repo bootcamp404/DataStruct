@@ -11,55 +11,57 @@
     <p class="mt-3 text-slate-500 font-light tracking-wide">Cargando usuarios...</p>
   </div>
 }
-  @if (errorAlCargar) {
-    <div class="text-center py-10 text-red-500">
-      No se pudieron cargar los usuarios. Intenta nuevamente más tarde.
-    </div>
-  } @else {
-    <div class="mb-6 flex items-center gap-4">
-      <input
-        type="text"
-        [(ngModel)]="filtro"
-        placeholder="Buscar por nombre, email o apellidos"
-        class="px-3 py-2 border rounded w-full max-w-md"
-      />
-      <button
-        (click)="guardarTodosLosCambios()"
-        class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded"
-      >
-        Guardar todos los cambios
-      </button>
-    </div>
 
-    <table class="min-w-full text-left border border-gray-200 rounded">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="py-2 px-4">Email</th>
-          <th class="py-2 px-4">Nombre</th>
-          <th class="py-2 px-4">Apellidos</th>
-          <th class="py-2 px-4">Rol</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (usuario of usuariosFiltrados; track usuario.id) {
-          <tr class="border-t hover:bg-gray-50">
-            <td class="py-2 px-4">{{ usuario.email }}</td>
-            <td class="py-2 px-4">{{ usuario.nombre || '—' }}</td>
-            <td class="py-2 px-4">{{ usuario.apellidos || '—' }}</td>
-            <td class="py-2 px-4">
-              <select [(ngModel)]="usuario.rol.id" class="border rounded px-2 py-1">
-                @for (rol of rolesDisponibles; track rol.id) {
-                  <option [value]="rol.id">{{ rol.nombre }}</option>
-                }
-              </select>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-  <div *ngIf="usuariosFiltrados.length === 0" class="text-center text-gray-500 mt-6">
-    No se encontraron usuarios con ese criterio.
+@if (errorAlCargar) {
+  <div class="text-center py-10 text-red-500">
+    No se pudieron cargar los usuarios. Intenta nuevamente más tarde.
   </div>
+} @else {
+  <div class="mb-6 flex items-center gap-4">
+    <input
+      type="text"
+      [(ngModel)]="filtro"
+      placeholder="Buscar por nombre, email o apellidos"
+      class="px-3 py-2 border rounded w-full max-w-md"
+    />
+    <button
+      (click)="guardarTodosLosCambios()"
+      class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded"
+    >
+      Guardar todos los cambios
+    </button>
+  </div>
+
+  <table class="min-w-full text-left border border-gray-200 rounded">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="py-2 px-4">Email</th>
+        <th class="py-2 px-4">Nombre</th>
+        <th class="py-2 px-4">Apellidos</th>
+        <th class="py-2 px-4">Rol</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (usuario of usuariosFiltrados; track usuario.id) {
+        <tr class="border-t hover:bg-gray-50">
+          <td class="py-2 px-4">{{ usuario.email }}</td>
+          <td class="py-2 px-4">{{ usuario.nombre || '—' }}</td>
+          <td class="py-2 px-4">{{ usuario.apellidos || '—' }}</td>
+          <td class="py-2 px-4">
+            <select [(ngModel)]="usuario.rol.id" class="border rounded px-2 py-1">
+              @for (rol of rolesDisponibles; track rol.id) {
+                <option [value]="rol.id">{{ rol.nombre }}</option>
+              }
+            </select>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<div *ngIf="usuariosFiltrados.length === 0 && !cargandoLista && !errorAlCargar" class="text-center text-gray-500 mt-6">
+  No se encontraron usuarios con ese criterio.
+</div>
 
 <app-footer></app-footer>
