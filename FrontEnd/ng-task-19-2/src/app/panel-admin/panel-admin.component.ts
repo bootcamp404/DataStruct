@@ -24,7 +24,6 @@ export class AdminPanelComponent implements OnInit {
   private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
 
   rolesDisponibles = [
-    { id: 1,  nombre: 'Administrador total' },
     { id: 2,  nombre: 'Administrador empleo y formación' },
     { id: 3,  nombre: 'Administrador promoción económica' },
     { id: 4,  nombre: 'Administrador económico-financiero' },
