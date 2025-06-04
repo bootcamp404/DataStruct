@@ -57,6 +57,7 @@ export class AdminPanelComponent implements OnInit {
       const data = await firstValueFrom(this.http.get<any[]>(`${this.apiUrl}/usuarios`));
       this.usuarios = data;
       this.usuariosOriginales = JSON.parse(JSON.stringify(data)); // Copia profunda
+      console.log('Usuarios cargados:', this.usuarios); // Debug
     } catch (err) {
       console.error('Error al cargar usuarios', err);
       this.errorAlCargar = true;
@@ -65,22 +66,66 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  actualizarRol(usuario: any) {
+  // SOLUCIÓN 1: Método mejorado con recarga de datos
+  async actualizarRol(usuario: any) {
     this.actualizandoRolEmail = usuario.email;
     const headers = { 'Content-Type': 'application/json' };
     const body = { rol: { id: usuario.rol.id } };
 
-    this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, body, {headers}).subscribe({
-      next: () => {
-        this.actualizandoRolEmail = null;
-        alert('Rol actualizado correctamente');
-      },
-      error: (error) => {
-        console.error('Error al actualizar rol', error);
-        this.actualizandoRolEmail = null;
-        alert('Error al actualizar rol');
+    try {
+      // Usar async/await en lugar de subscribe para mejor manejo de errores
+      await firstValueFrom(
+        this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, body, { headers })
+      );
+
+      console.log('Rol actualizado exitosamente'); // Debug
+
+      // Recargar la lista completa para asegurar sincronización
+      await this.cargarUsuarios();
+
+      alert('Rol actualizado correctamente');
+    } catch (error) {
+      console.error('Error al actualizar rol:', error);
+      alert('Error al actualizar rol');
+    } finally {
+      this.actualizandoRolEmail = null;
+    }
+  }
+
+  // SOLUCIÓN 2: Método alternativo con actualización local
+  async actualizarRolLocal(usuario: any) {
+    this.actualizandoRolEmail = usuario.email;
+    const headers = { 'Content-Type': 'application/json' };
+    const body = { rol: { id: usuario.rol.id } };
+
+    try {
+      const response = await firstValueFrom(
+        this.http.put<any>(`${this.apiUrl}/usuarios/${usuario.id}`, body, { headers })
+      );
+
+      console.log('Respuesta del servidor:', response); // Debug
+
+      // Actualizar el usuario localmente
+      const index = this.usuarios.findIndex(u => u.id === usuario.id);
+      if (index !== -1) {
+        this.usuarios[index] = { ...this.usuarios[index], rol: usuario.rol };
+        // Forzar actualización de la vista
+        this.usuarios = [...this.usuarios];
       }
-    });
+
+      // Actualizar también el array original
+      const originalIndex = this.usuariosOriginales.findIndex(u => u.id === usuario.id);
+      if (originalIndex !== -1) {
+        this.usuariosOriginales[originalIndex] = { ...this.usuariosOriginales[originalIndex], rol: usuario.rol };
+      }
+
+      alert('Rol actualizado correctamente');
+    } catch (error) {
+      console.error('Error al actualizar rol:', error);
+      alert('Error al actualizar rol');
+    } finally {
+      this.actualizandoRolEmail = null;
+    }
   }
 
   async guardarTodosLosCambios() {
@@ -94,28 +139,41 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
 
+    console.log('Cambios a guardar:', cambios); // Debug
+
     const headers = { 'Content-Type': 'application/json' };
 
     try {
       // Ejecutar todas las peticiones en paralelo
-      await Promise.all(
+      const responses = await Promise.all(
         cambios.map(usuario =>
           firstValueFrom(
             this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
-              ...usuario,
-              rol: { id: usuario.rol.id }
+              rol: { id: usuario.rol.id } // Simplificado: solo enviar el rol
             }, { headers })
           )
         )
       );
+
+      console.log('Todas las respuestas:', responses); // Debug
+
       // Refrescar datos tras guardar
       await this.cargarUsuarios();
 
-      alert('Roles actualizados correctamente.');
+      alert(`${cambios.length} roles actualizados correctamente.`);
     } catch (error) {
-      console.error('Error al guardar roles', error);
+      console.error('Error al guardar roles:', error);
       alert('Ocurrió un error al guardar los cambios.');
+
+      // En caso de error, recargar para mostrar el estado real
+      await this.cargarUsuarios();
     }
+  }
+
+  // SOLUCIÓN 3: Método para forzar actualización de la vista
+  forzarActualizacionVista() {
+    // Esto fuerza a Angular a re-renderizar la lista
+    this.usuarios = [...this.usuarios];
   }
 
   get usuariosFiltrados(): any[] {
@@ -125,5 +183,11 @@ export class AdminPanelComponent implements OnInit {
       u.nombre?.toLowerCase().includes(texto) ||
       u.apellidos?.toLowerCase().includes(texto)
     );
+  }
+
+  // MÉTODO ADICIONAL: Para debuggear el estado actual
+  mostrarEstadoActual() {
+    console.log('Estado actual de usuarios:', this.usuarios);
+    console.log('Estado original de usuarios:', this.usuariosOriginales);
   }
 }
