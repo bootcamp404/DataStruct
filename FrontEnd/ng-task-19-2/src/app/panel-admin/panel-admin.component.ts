@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../mainview/footer/footer.component';
 import { HeaderComponent } from '../mainview/header/header.component';
 import { AnimatedBackgroundComponent } from '../shared/components/animated-background/animated-background.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-panel-admin',
@@ -48,22 +49,20 @@ export class AdminPanelComponent implements OnInit {
     this.cargarUsuarios();
   }
 
-  cargarUsuarios() {
+  async cargarUsuarios() {
     this.cargandoLista = true;
     this.errorAlCargar = false;
 
-    this.http.get<any[]>(`${this.apiUrl}/usuarios`).subscribe({
-      next: (data) => {
-        this.usuarios = data;
-        this.usuariosOriginales = JSON.parse(JSON.stringify(data)); // Copia profunda
-        this.cargandoLista = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar usuarios', err);
-        this.errorAlCargar = true;
-        this.cargandoLista = false;
-      }
-    });
+    try {
+      const data = await firstValueFrom(this.http.get<any[]>(`${this.apiUrl}/usuarios`));
+      this.usuarios = data;
+      this.usuariosOriginales = JSON.parse(JSON.stringify(data)); // Copia profunda
+    } catch (err) {
+      console.error('Error al cargar usuarios', err);
+      this.errorAlCargar = true;
+    } finally {
+      this.cargandoLista = false;
+    }
   }
 
   actualizarRol(usuario: any) {
@@ -84,7 +83,7 @@ export class AdminPanelComponent implements OnInit {
     });
   }
 
-  guardarTodosLosCambios() {
+  async guardarTodosLosCambios() {
     const cambios = this.usuarios.filter(usuario => {
       const original = this.usuariosOriginales.find(u => u.id === usuario.id);
       return original && usuario.rol?.id !== original.rol?.id;
@@ -97,22 +96,26 @@ export class AdminPanelComponent implements OnInit {
 
     const headers = { 'Content-Type': 'application/json' };
 
-    const peticiones = cambios.map(usuario =>
-      this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
-        ...usuario,
-        rol: { id: usuario.rol.id }
-      }, { headers }).toPromise()
-    );
+    try {
+      // Ejecutar todas las peticiones en paralelo
+      await Promise.all(
+        cambios.map(usuario =>
+          firstValueFrom(
+            this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
+              ...usuario,
+              rol: { id: usuario.rol.id }
+            }, { headers })
+          )
+        )
+      );
+      // Refrescar datos tras guardar
+      await this.cargarUsuarios();
 
-    Promise.all(peticiones)
-      .then(() => {
-        alert('Roles actualizados correctamente.');
-        this.cargarUsuarios(); // 👈 Aquí está el cambio: recarga los datos reales desde la base de datos
-      })
-      .catch((error) => {
-        console.error('Error al guardar roles', error);
-        alert('Ocurrió un error al guardar los cambios.');
-      });
+      alert('Roles actualizados correctamente.');
+    } catch (error) {
+      console.error('Error al guardar roles', error);
+      alert('Ocurrió un error al guardar los cambios.');
+    }
   }
 
   get usuariosFiltrados(): any[] {
