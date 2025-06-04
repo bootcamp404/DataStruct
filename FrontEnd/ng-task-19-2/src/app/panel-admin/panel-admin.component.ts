@@ -104,30 +104,54 @@ export class AdminPanelComponent implements OnInit {
     }
 
     const headers = { 'Content-Type': 'application/json' };
+    let exitosos = 0;
+    let errores = 0;
 
-    try {
-      // Ejecutar todas las peticiones en paralelo con objetos completos
-      await Promise.all(
-        cambios.map(usuario =>
-          firstValueFrom(
-            this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
-              ...usuario,
-              rol: { id: usuario.rol.id }
-            }, { headers })
-          )
-        )
-      );
+    // Procesar cambios uno por uno para mejor control
+    for (const usuario of cambios) {
+      try {
+        const response = await firstValueFrom(
+          this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, {
+            ...usuario,
+            rol: { id: usuario.rol.id }
+          }, {
+            headers,
+            observe: 'response' // Esto nos da acceso al status code
+          })
+        );
 
-      // Refrescar datos tras guardar
-      await this.cargarUsuarios();
+        // Si el status es 200, 201, 202, etc. (códigos de éxito)
+        if (response.status >= 200 && response.status < 300) {
+          exitosos++;
+          console.log(`Usuario ${usuario.email} actualizado correctamente`);
+        } else {
+          errores++;
+          console.warn(`Respuesta inesperada para ${usuario.email}:`, response.status);
+        }
 
-      alert(`${cambios.length} roles actualizados correctamente.`);
-    } catch (error) {
-      console.error('Error al guardar roles:', error);
-      alert('Ocurrió un error al guardar los cambios.');
+      } catch (error: any) {
+        // Verificar si es realmente un error o solo una respuesta sin body
+        if (error.status >= 200 && error.status < 300) {
+          // No es realmente un error, el servidor respondió OK
+          exitosos++;
+          console.log(`Usuario ${usuario.email} actualizado (sin response body)`);
+        } else {
+          errores++;
+          console.error(`Error al actualizar ${usuario.email}:`, error);
+        }
+      }
+    }
 
-      // En caso de error, recargar para mostrar el estado real
-      await this.cargarUsuarios();
+    // Siempre recargar los datos para mostrar el estado actual
+    await this.cargarUsuarios();
+
+    // Mostrar resultado
+    if (errores === 0) {
+      alert(`${exitosos} roles actualizados correctamente.`);
+    } else if (exitosos > 0) {
+      alert(`${exitosos} roles actualizados correctamente. ${errores} con errores.`);
+    } else {
+      alert('No se pudieron actualizar los roles. Revisa la consola para más detalles.');
     }
   }
 
