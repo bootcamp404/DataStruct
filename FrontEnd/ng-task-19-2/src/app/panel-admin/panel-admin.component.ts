@@ -57,8 +57,11 @@ export class AdminPanelComponent implements OnInit {
 
     try {
       const data = await firstValueFrom(this.http.get<any[]>(`${this.apiUrl}/usuarios`));
-      this.usuarios = data;
-      this.usuariosOriginales = JSON.parse(JSON.stringify(data));
+
+      // Filtrar para excluir usuarios con rol.id === 1
+      this.usuarios = data.filter(usuario => usuario.rol?.id !== 1);
+
+      this.usuariosOriginales = JSON.parse(JSON.stringify(this.usuarios)); // Guarda copia de respaldo
     } catch (err) {
       console.error('Error al cargar usuarios', err);
       this.errorAlCargar = true;
