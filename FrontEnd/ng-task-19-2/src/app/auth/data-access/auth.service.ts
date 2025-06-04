@@ -167,11 +167,8 @@ export class AuthService {
   // Método principal para actualizar perfil - SIMPLIFICADO Y CORREGIDO
   async updateUserProfile(id: number, usuario: Partial<Usuario>): Promise<Usuario> {
     try {
-      console.log('AuthService: Iniciando actualización de usuario:', { id, usuario });
-
       // Actualizar en la API
       const response = await firstValueFrom(this.actualizarUsuario(id, usuario));
-      console.log('AuthService: Usuario actualizado en API correctamente:', response);
 
       // Obtener usuario actual del localStorage
       const currentUserData = localStorage.getItem('usuario');

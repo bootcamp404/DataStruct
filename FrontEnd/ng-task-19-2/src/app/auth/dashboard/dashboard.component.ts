@@ -41,7 +41,6 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private actualizarDepts: ActualizarService) {
       this.formularioDept = this.fb.group({
-        id: ['', [Validators.required]],
         nombre: ['', [Validators.required]]
       });
     }
