@@ -115,7 +115,6 @@ export class AdminPanelComponent implements OnInit {
       });
   }
 
-
   get usuariosFiltrados(): any[] {
     const texto = this.filtro.toLowerCase();
     return this.usuarios.filter(u =>
