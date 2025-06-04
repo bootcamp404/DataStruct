@@ -174,4 +174,21 @@ export class AdminPanelComponent implements OnInit {
       u.apellidos?.toLowerCase().includes(texto)
     );
   }
+  async eliminarUsuario(usuario: any) {
+    const confirmacion = confirm(`¿Estás seguro de que deseas eliminar al usuario ${usuario.email}? Esta acción no se puede deshacer.`);
+
+    if (!confirmacion) return;
+
+    try {
+      await firstValueFrom(this.http.delete(`${this.apiUrl}/usuarios/${usuario.id}`));
+      alert('Usuario eliminado correctamente');
+
+      // Recarga la lista de usuarios actualizada
+      await this.cargarUsuarios();
+
+    } catch (error) {
+      console.error('Error al eliminar usuario:', error);
+      alert('Hubo un error al eliminar el usuario');
+    }
+  }
 }
