@@ -242,4 +242,15 @@ export class AuthService {
       return null;
     }
   }
+  getCurrentUserSync(): Usuario | null {
+    const storedUser = localStorage.getItem('usuario');
+    if (!storedUser) return null;
+
+    try {
+      return JSON.parse(storedUser) as Usuario;
+    } catch {
+      console.error('Error parseando usuario en getCurrentUserSync()');
+      return null;
+    }
+  }
 }
