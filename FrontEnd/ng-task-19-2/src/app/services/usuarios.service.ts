@@ -11,7 +11,7 @@ export interface Usuario {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private baseUrl = 'http://localhost:8080/alicanteFutura/api/v1/usuarios';
+  private baseUrl = 'https://datastruct.onrender.com/alicanteFutura/api/v1/usuarios';
 
   constructor(private http: HttpClient) {}
 

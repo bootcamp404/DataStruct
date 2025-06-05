@@ -17,7 +17,7 @@ export class AuthService {
   private _authStateService = inject(AuthStateService);
   private userRole: number | null = null;
 
-  private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
+  private apiUrl = ' https://datastruct.onrender.com/alicanteFutura/api/v1';
 
   constructor() {}
 

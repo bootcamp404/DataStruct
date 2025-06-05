@@ -86,6 +86,9 @@
                   Rol
                 </th>
               </tr>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                Acciones
+              </th>
             </thead>
             <tbody class="divide-y divide-slate-100">
               @for (usuario of usuariosFiltrados; track usuario.id) {
@@ -107,14 +110,26 @@
                     <span class="text-sm text-slate-700">{{ usuario.apellidos || '—' }}</span>
                   </td>
                   <td class="px-6 py-4">
-                    <select 
-                      [(ngModel)]="usuario.rol.id" 
+                    <select
+                      [(ngModel)]="usuario.rol.id"
                       class="block w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors duration-200">
                       @for (rol of rolesDisponibles; track rol.id) {
                         <option [value]="rol.id">{{ rol.nombre }}</option>
                       }
                     </select>
-                  </td>
+                    <td class="px-6 py-4">
+                      <button
+                        *ngIf="usuario.rol.id !== 1"
+                        (click)="eliminarUsuario(usuario)"
+                        class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-600 text-xs font-medium rounded-lg hover:bg-red-200 transition duration-200"
+                        title="Eliminar usuario"
+                      >
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Eliminar
+                      </button>
+                    </td>
                 </tr>
               }
             </tbody>
@@ -140,8 +155,8 @@
               </div>
               <div>
                 <label class="block text-xs font-medium text-slate-700 mb-2">Rol</label>
-                <select 
-                  [(ngModel)]="usuario.rol.id" 
+                <select
+                  [(ngModel)]="usuario.rol.id"
                   class="block w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                   @for (rol of rolesDisponibles; track rol.id) {
                     <option [value]="rol.id">{{ rol.nombre }}</option>

@@ -21,10 +21,9 @@ export class AdminPanelComponent implements OnInit {
   errorAlCargar: boolean = false;
   filtro: string = '';
   actualizandoRolEmail: string | null = null;
-  private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
+  private apiUrl = 'https://datastruct.onrender.com/alicanteFutura/api/v1';
 
   rolesDisponibles = [
-    { id: 1,  nombre: 'Administrador total' },
     { id: 2,  nombre: 'Administrador empleo y formación' },
     { id: 3,  nombre: 'Administrador promoción económica' },
     { id: 4,  nombre: 'Administrador económico-financiero' },
@@ -57,8 +56,11 @@ export class AdminPanelComponent implements OnInit {
 
     try {
       const data = await firstValueFrom(this.http.get<any[]>(`${this.apiUrl}/usuarios`));
-      this.usuarios = data;
-      this.usuariosOriginales = JSON.parse(JSON.stringify(data));
+
+      // Filtrar para excluir usuarios con rol.id === 1
+      this.usuarios = data.filter(usuario => usuario.rol?.id !== 1);
+
+      this.usuariosOriginales = JSON.parse(JSON.stringify(this.usuarios)); // Guarda copia de respaldo
     } catch (err) {
       console.error('Error al cargar usuarios', err);
       this.errorAlCargar = true;
@@ -170,5 +172,22 @@ export class AdminPanelComponent implements OnInit {
       u.nombre?.toLowerCase().includes(texto) ||
       u.apellidos?.toLowerCase().includes(texto)
     );
+  }
+  async eliminarUsuario(usuario: any) {
+    const confirmacion = confirm(`¿Estás seguro de que deseas eliminar al usuario ${usuario.email}? Esta acción no se puede deshacer.`);
+
+    if (!confirmacion) return;
+
+    try {
+      await firstValueFrom(this.http.delete(`${this.apiUrl}/usuarios/${usuario.id}`));
+      alert('Usuario eliminado correctamente');
+
+      // Recarga la lista de usuarios actualizada
+      await this.cargarUsuarios();
+
+    } catch (error) {
+      console.error('Error al eliminar usuario:', error);
+      alert('Hubo un error al eliminar el usuario');
+    }
   }
 }

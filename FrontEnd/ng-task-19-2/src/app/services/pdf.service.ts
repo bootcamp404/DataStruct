@@ -6,7 +6,7 @@ import type { Observable } from "rxjs"
   providedIn: "root",
 })
 export class PdfService {
-  private baseUrl = "http://localhost:8080/alicanteFutura/api/v1"
+  private baseUrl = "https://datastruct.onrender.com/alicanteFutura/api/v1"
 
   constructor(private http: HttpClient) {}
 
