@@ -21,7 +21,7 @@ export class AdminPanelComponent implements OnInit {
   errorAlCargar: boolean = false;
   filtro: string = '';
   actualizandoRolEmail: string | null = null;
-  private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
+  private apiUrl = 'https://datastruct.onrender.com/alicanteFutura/api/v1';
 
   rolesDisponibles = [
     { id: 2,  nombre: 'Administrador empleo y formación' },

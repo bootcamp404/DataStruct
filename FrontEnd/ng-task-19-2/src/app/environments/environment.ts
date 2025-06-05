@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8080/alicanteFutura/api/v1',
+    apiUrl: ' https://datastruct.onrender.com/alicanteFutura/api/v1',
     apiKey: 'dev_api_key', 
     version: '1.0.0-dev',
     logging: true, // Activar logs detallados en desarrollo
