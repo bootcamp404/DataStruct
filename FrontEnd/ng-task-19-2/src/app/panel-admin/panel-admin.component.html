@@ -1,4 +1,4 @@
-<!-- <app-animated-background></app-animated-background> -->
+<app-animated-background></app-animated-background>
 <app-header></app-header>
 
 <main class="container mx-auto px-4 py-8 max-w-6xl">
@@ -33,8 +33,8 @@
     <div class="space-y-6">
       <!-- Header estilizado -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-slate-800 mb-2">Gestión de Usuarios</h1>
-        <p class="text-slate-600">Administra los roles de los usuarios del sistema</p>
+        <h1 class="text-3xl font-bold text-[#F8F9FA] mb-2">Gestión de Usuarios</h1>
+        <p class="text-[#ECEFF1]">Administra los roles de los usuarios del sistema</p>
       </div>
 
       <!-- Barra de búsqueda y acciones -->
@@ -171,15 +171,17 @@
   }
 
   <!-- Estado sin resultados mejorado -->
-  <div *ngIf="usuariosFiltrados.length === 0 && !cargandoLista && !errorAlCargar" class="text-center py-16">
-    <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
-      <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-      </svg>
+  @if(usuariosFiltrados.length === 0 && !cargandoLista && !errorAlCargar){
+    <div class="text-center py-16">
+      <div class="w-16 h-16 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
+        <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-slate-900 mb-2">No se encontraron usuarios</h3>
+      <p class="text-slate-500">No hay usuarios que coincidan con ese criterio de búsqueda.</p>
     </div>
-    <h3 class="text-lg font-medium text-slate-900 mb-2">No se encontraron usuarios</h3>
-    <p class="text-slate-500">No hay usuarios que coincidan con ese criterio de búsqueda.</p>
-  </div>
+  }
 </main>
 
 <app-footer></app-footer>
