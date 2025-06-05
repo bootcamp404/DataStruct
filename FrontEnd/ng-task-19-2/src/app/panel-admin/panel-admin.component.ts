@@ -179,7 +179,8 @@ export class AdminPanelComponent implements OnInit {
     if (!confirmacion) return;
 
     try {
-      await firstValueFrom(this.http.delete(`${this.apiUrl}/usuarios/${usuario.id}`));
+      await firstValueFrom(
+      this.http.delete(`${this.apiUrl}/usuarios/${usuario.id}`, { responseType: 'text' }));
       alert('Usuario eliminado correctamente');
 
       // Recarga la lista de usuarios actualizada
@@ -190,4 +191,77 @@ export class AdminPanelComponent implements OnInit {
       alert('Hubo un error al eliminar el usuario');
     }
   }
+  // Número de usuarios por página
+pageSize: number = 10;
+
+// Página actual
+currentPage: number = 1;
+
+// Devuelve el índice inicial mostrado
+get indiceInicial(): number {
+  return (this.currentPage - 1) * this.pageSize + 1;
+}
+
+// Devuelve el índice final mostrado (con tope)
+get indiceFinal(): number {
+  return Math.min(this.currentPage * this.pageSize, this.usuariosFiltrados.length);
+}
+
+// Devuelve los usuarios a mostrar en la página actual
+get usuariosPaginados() {
+  const start = (this.currentPage - 1) * this.pageSize;
+  const end = start + this.pageSize;
+  return this.usuariosFiltrados.slice(start, end);
+}
+
+// Total de páginas
+get totalPaginas() {
+  return Math.ceil(this.usuariosFiltrados.length / this.pageSize);
+}
+
+async actualizarEmail(usuario: any) {
+  if (!usuario.email || !usuario.email.includes('@')) {
+    alert('Por favor, introduce un email válido.');
+    return;
+  }
+
+  const headers = { 'Content-Type': 'application/json' };
+  const body = {
+    ...usuario,
+    email: usuario.email,
+    rol: { id: usuario.rol.id }
+  };
+
+  try {
+    const response = await firstValueFrom(
+      this.http.put(`${this.apiUrl}/usuarios/${usuario.id}`, body, {
+        headers,
+        observe: 'response' // Para poder leer el status
+      })
+    );
+
+    // Si status 2xx
+    if (response.status >= 200 && response.status < 300) {
+      alert(`Email actualizado correctamente para ${usuario.email}`);
+      usuario.editandoEmail = false;
+
+      const usuarioActual = this.authService.getCurrentUserSync?.();
+      if (usuarioActual && usuarioActual.id === usuario.id) {
+        await this.authService.updateUserProfile(usuario.id, { email: usuario.email });
+      }
+
+      await this.cargarUsuarios();
+    }
+  } catch (error: any) {
+    // Si el error tiene status 2xx, no es error real
+    if (error.status >= 200 && error.status < 300) {
+      alert(`Email actualizado correctamente para ${usuario.email} (sin respuesta body)`);
+      usuario.editandoEmail = false;
+      await this.cargarUsuarios();
+    } else {
+      console.error('Error al actualizar email:', error);
+      alert('Error al actualizar email.');
+    }
+  }
+}
 }
