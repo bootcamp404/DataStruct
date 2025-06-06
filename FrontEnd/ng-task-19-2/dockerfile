@@ -1,0 +1,16 @@
+# Etapa 1: construir la app
+FROM node:20 AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+ENV NODE_OPTIONS="--max-old-space-size=6144"
+RUN npm run build -- --configuration production
+
+# Etapa 2: servir la app con Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist/ng-task-19-2 /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Comando para iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]
