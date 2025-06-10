@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/data-access/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Usuario } from '../modelos/usuario';
+import { AnimatedBackgroundComponent } from '../shared/components/animated-background/animated-background.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css'],
-  imports: [CommonModule, FormsModule, TranslateModule]
+  imports: [CommonModule, FormsModule, TranslateModule, AnimatedBackgroundComponent]
 })
 export class PerfilComponent implements OnInit {
   usuario: Usuario = {

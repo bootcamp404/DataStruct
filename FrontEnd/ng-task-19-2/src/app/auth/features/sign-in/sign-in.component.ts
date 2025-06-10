@@ -7,6 +7,7 @@ import { errorMail, seRequiere } from '../../validadores/validadores';
 import { GoogleComponent } from '../../ui/google/google.component';
 import { FacebookComponent } from '../../ui/facebook/facebook.component';
 import { Usuario } from '../../../modelos/usuario';
+import { AnimatedBackgroundComponent } from '../../../shared/components/animated-background/animated-background.component';
 
 export interface FormSignIn {
   email: FormControl<string | null>;
@@ -16,7 +17,7 @@ export interface FormSignIn {
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent],
+  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent, AnimatedBackgroundComponent],
   templateUrl: './sign-in.component.html',
   styles: ``
 })
