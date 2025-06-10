@@ -82,8 +82,32 @@
     "VOLVER": "Back",
     "EDITAR": "Edit",
     "GUARDAR": "Save Changes",
+    "CANCELAR": "Cancel"
+  },
+    "PANEL-USUARIOS": {
+    "GUARDAR-CAMBIOS": "Save all changes",
+    "EDITAR": "Edit",
+    "BUSCAR": "Search by name, email or surnames",
+    "GESTION": "User management",
+    "ADMINISTRAR": "Manage system user roles",
+    "EMAIL": "Email",
+    "NOMBRE": "Name",
+    "APELLIDOS": "Surnames",
+    "ROL": "Role",
+    "ACCIONES": "Options",
+    "GUARDAR-EMAIL": "Save",
     "CANCELAR": "Cancel",
-    "MODIFICACION": "The email cannot be changed."
+    "ELIMINAR": "Delete",
+    "ANTERIOR": "Previous",
+    "SIGUIENTE": "Next",
+    "ERRORES": {
+      "TITULO": "Error loading the information",
+      "MENSAJE": "Users could not be loaded. Please try again later."
+    },
+    "CARGAR": {
+      "TITULO": "Loading users",
+      "MENSAJE": "Retrieving information"
+    }
   }
 }
 

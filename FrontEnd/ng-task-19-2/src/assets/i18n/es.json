@@ -87,5 +87,34 @@
       "GUARDAR": "Guardar Cambios",
       "CANCELAR": "Cancelar",
       "MODIFICACION": "El email no puede ser modificado."
+    },
+    "PANEL-USUARIOS":{
+      "GUARDAR-CAMBIOS": "Guardar todos los cambios",
+      "EDITAR": "Editar",
+      "BUSCAR": "Buscar por nombre, email o apellidos",
+      "GESTION": "Gestión de usuarios",
+      "ADMINISTRAR": "Administra los roles de los usuarios del sistema",
+      "EMAIL": "Email",
+      "NOMBRE": "Nombre",
+      "APELLIDOS": "Apellidos",
+      "ROL": "Rol",
+      "ACCIONES": "Acciones",
+      "GUARDAR-EMAIL": "Guardar",
+      "CANCELAR": "Cancelar",
+      "ELIMINAR": "Eliminar",
+      "ANTERIOR": "Anterior",
+      "SIGUIENTE": "Siguiente",
+      "ERRORES":{
+        "TITULO": "Error al cargar",
+        "MENSAJE": "No se pudieron cargar los usuarios. Intenta nuevamente más tarde."
+      },
+      "CARGAR":{
+        "TITULO": "Cargando usuarios",
+        "MENSAJE": "Obteniendo información"
+      },
+      "BUSQUEDA":{
+        "TITULO": "No se encontraron usuarios",
+        "MENSAJE": "No hay usuarios que coincidan con ese criterio de búsqueda."
     }
   }
+}

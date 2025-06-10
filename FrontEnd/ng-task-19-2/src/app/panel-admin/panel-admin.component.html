@@ -33,8 +33,8 @@
     <div class="space-y-6">
       <!-- Header estilizado -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-[#F8F9FA] mb-2">Gestión de Usuarios</h1>
-        <p class="text-[#ECEFF1]">Administra los roles de los usuarios del sistema</p>
+        <h1 class="text-3xl font-bold text-[#F8F9FA] mb-2">{{ 'PANEL-USUARIOS.GESTION' | translate }}</h1>
+        <p class="text-[#ECEFF1]">{{ 'PANEL-USUARIOS.ADMINISTRAR' | translate }}</p>
       </div>
 
       <!-- Barra de búsqueda y acciones -->
@@ -50,7 +50,7 @@
               <input
                 type="text"
                 [(ngModel)]="filtro"
-                placeholder="Buscar por nombre, email o apellidos"
+                placeholder="{{ 'PANEL-USUARIOS.BUSCAR' | translate }}"
                 class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
               />
             </div>
@@ -61,7 +61,7 @@
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
-            Guardar todos los cambios
+            {{ 'PANEL-USUARIOS.GUARDAR-CAMBIOS' | translate }}
           </button>
         </div>
       </div>
@@ -74,19 +74,19 @@
             <thead class="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
               <tr>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                  Email
+                  {{ 'PANEL-USUARIOS.EMAIL' | translate }}
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                  Nombre
+                  {{ 'PANEL-USUARIOS.NOMBRE' | translate }}
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                  Apellidos
+                  {{ 'PANEL-USUARIOS.APELLIDOS' | translate }}
                 </th>
                 <th class="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                  Rol
+                  {{ 'PANEL-USUARIOS.ROL' | translate }}
                 </th>
                  <th class="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                Acciones
+                  {{ 'PANEL-USUARIOS.ACCIONES' | translate }}
               </th>
               </tr>             
             </thead>
@@ -112,7 +112,7 @@
                   <td class="px-6 py-4">
                     <select
                       [(ngModel)]="usuario.rol.id"
-                      class="block w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors duration-200">
+                      class="block w-full px-3 py-2 text-sm border border-slate-300 rounded-lg text-black bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors duration-200">
                       @for (rol of rolesDisponibles; track rol.id) {
                         <option [value]="rol.id">{{ rol.nombre }}</option>
                       }
@@ -128,7 +128,7 @@
                       <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l6.586-6.586a2 2 0 112.828 2.828L11.828 13.828A2 2 0 0110 14H7v-3a2 2 0 012-2z"/>
                       </svg>
-                      Editar
+                      {{ 'PANEL-USUARIOS.EDITAR' | translate }}
                     </button>
 
                     <!-- Input y botones de guardar/cancelar -->
@@ -143,13 +143,13 @@
                           (click)="actualizarEmail(usuario)"
                           class="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded hover:bg-emerald-200"
                         >
-                          Guardar
+                          {{ 'PANEL-USUARIOS.GUARDAR-EMAIL' | translate }}
                         </button>
                         <button
                           (click)="usuario.editandoEmail = false"
                           class="px-2 py-1 text-xs text-gray-600 hover:underline"
                         >
-                          Cancelar
+                          {{ 'PANEL-USUARIOS.CANCELAR' | translate }}
                         </button>
                       </div>
                     </div>
@@ -164,7 +164,7 @@
                       <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                       </svg>
-                      Eliminar
+                      {{ 'PANEL-USUARIOS.ELIMINAR' | translate }}
                     </button>
                   </td>                
                 </tr>
@@ -183,13 +183,13 @@
                 (click)="currentPage = currentPage - 1"
                 [disabled]="currentPage === 1"
                 class="px-3 py-1 border rounded disabled:opacity-50">
-                Anterior
+                {{ 'PANEL-USUARIOS.ANTERIOR' | translate }}
               </button>
               <button
                 (click)="currentPage = currentPage + 1"
                 [disabled]="currentPage * pageSize >= usuariosFiltrados.length"
                 class="px-3 py-1 border rounded disabled:opacity-50">
-                Siguiente
+                {{ 'PANEL-USUARIOS.SIGUIENTE' | translate }}
               </button>
             </div>
           </div>
@@ -200,7 +200,7 @@
           @for (usuario of usuariosFiltrados; track usuario.id) {
             <div class="p-6 space-y-4">
               <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0 h-10 w-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                <div class="flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center">
                   <span class="text-sm font-semibold text-emerald-600">
                     {{ usuario.email.charAt(0).toUpperCase() }}
                   </span>
@@ -237,8 +237,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
         </svg>
       </div>
-      <h3 class="text-lg font-medium text-slate-900 mb-2">No se encontraron usuarios</h3>
-      <p class="text-slate-500">No hay usuarios que coincidan con ese criterio de búsqueda.</p>
+      <h3 class="text-lg font-medium text-slate-900 mb-2">{{ 'PANEL-USUARIOS.BUSQUEDA.TITULO' | translate }}</h3>
+      <p class="text-slate-500">{{ 'PANEL-USUARIOS.BUSQUEDA.MENSAJE' | translate }}</p>
     </div>
   }
 </main>

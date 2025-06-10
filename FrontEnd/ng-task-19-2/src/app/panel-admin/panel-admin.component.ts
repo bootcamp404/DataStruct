@@ -7,11 +7,12 @@ import { HeaderComponent } from '../mainview/header/header.component';
 import { AnimatedBackgroundComponent } from '../shared/components/animated-background/animated-background.component';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../auth/data-access/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-panel-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, AnimatedBackgroundComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, AnimatedBackgroundComponent, TranslateModule],
   templateUrl: './panel-admin.component.html',
   styleUrl: './panel-admin.component.css'
 })
