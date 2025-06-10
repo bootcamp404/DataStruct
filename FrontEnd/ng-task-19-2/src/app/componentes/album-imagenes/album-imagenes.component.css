@@ -1,0 +1,36 @@
+.album-container {
+  padding: 1rem;
+}
+
+/* Animaciones suaves */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transform {
+  transform: translateY(0);
+}
+
+.translate-y-2 {
+  transform: translateY(0.5rem);
+}
+
+.group-hover\:translate-y-0:hover {
+  transform: translateY(0);
+}
+
+/* Estilos para el loading spinner */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

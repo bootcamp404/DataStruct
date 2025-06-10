@@ -1,9 +1,16 @@
 import { Component, type OnInit, ViewChild, type ElementRef } from "@angular/core"
+import { CommonModule } from "@angular/common"
+import { FormsModule } from "@angular/forms"
 import  { PdfService } from "../../services/pdf.service"
+import  { ImagenService } from "../../services/imagen.service"
 import  { ImagePlaceholder, UploadedImage } from "../../modelos/interfaces"
+import  { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser"
+import { AlbumImagenesComponent } from "../album-imagenes/album-imagenes.component"
 
 @Component({
   selector: "app-pdf-customizer",
+  standalone: true,
+  imports: [CommonModule, FormsModule, AlbumImagenesComponent],
   templateUrl: "./pdf-customizer.component.html",
   styleUrls: ["./pdf-customizer.component.css"],
 })
@@ -48,12 +55,38 @@ export class PdfCustomizerComponent implements OnInit {
 
   isGenerating = false
   pdfUrl: string | null = null
+  safePdfUrl: SafeResourceUrl | null = null
   activeTab = "upload"
   activePreviewTab = "pdf"
+  showEditView = false
+  currentYear = 2025
 
-  constructor(private pdfService: PdfService) {}
+  // Nuevo: para el álbum de imágenes
+  showAlbumModal = false
+  selectedPlaceholderId: string | null = null
+  predefinedImages: any[] = []
 
-  ngOnInit(): void {}
+  constructor(
+    private pdfService: PdfService,
+    private imagenService: ImagenService,
+    private sanitizer: DomSanitizer,
+  ) {}
+
+  ngOnInit(): void {
+    // Cargar imágenes predefinidas al iniciar
+    this.loadPredefinedImages()
+  }
+
+  loadPredefinedImages(): void {
+    this.imagenService.obtenerTodas().subscribe({
+      next: (images) => {
+        this.predefinedImages = images
+      },
+      error: (err) => {
+        console.error("Error al cargar imágenes predefinidas:", err)
+      },
+    })
+  }
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement
@@ -130,19 +163,23 @@ export class PdfCustomizerComponent implements OnInit {
           if (uploadedImg) {
             const serverUrl = serverImageUrls.find((url) => url.includes(uploadedImg.name))
             imageMapping[placeholder.id] = serverUrl || placeholder.uploadedImage
+          } else {
+            // Si no es una imagen subida, podría ser una del álbum predefinido
+            imageMapping[placeholder.id] = placeholder.uploadedImage
           }
         }
       })
 
       // Llamar al endpoint de generación de PDF
       const request = {
-        year: 2025,
+        year: this.currentYear,
         imageMapping: imageMapping,
       }
 
       const blob = await this.pdfService.generatePdf(request).toPromise()
       if (blob) {
         this.pdfUrl = URL.createObjectURL(blob)
+        this.safePdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfUrl)
       }
     } catch (error) {
       console.error("Error generating PDF:", error)
@@ -155,7 +192,7 @@ export class PdfCustomizerComponent implements OnInit {
     if (this.pdfUrl) {
       const link = document.createElement("a")
       link.href = this.pdfUrl
-      link.download = "memoria-2025.pdf"
+      link.download = `memoria-${this.currentYear}.pdf`
       link.click()
     }
   }
@@ -170,5 +207,27 @@ export class PdfCustomizerComponent implements OnInit {
 
   setActivePreviewTab(tab: string): void {
     this.activePreviewTab = tab
+  }
+
+  toggleEditView(): void {
+    this.showEditView = !this.showEditView
+  }
+
+  // Nuevos métodos para el álbum de imágenes
+  openAlbumModal(placeholderId: string): void {
+    this.selectedPlaceholderId = placeholderId
+    this.showAlbumModal = true
+  }
+
+  closeAlbumModal(): void {
+    this.showAlbumModal = false
+    this.selectedPlaceholderId = null
+  }
+
+  onAlbumImageSelected(imageData: { url: string; name: string }): void {
+    if (this.selectedPlaceholderId) {
+      this.assignImageToPlaceholder(this.selectedPlaceholderId, imageData.url)
+      this.closeAlbumModal()
+    }
   }
 }

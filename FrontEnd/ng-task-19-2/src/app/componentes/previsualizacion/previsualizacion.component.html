@@ -6,43 +6,153 @@
       <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
         Personalización de Memoria PDF - Año {{ currentYear }}
       </h1>
-      <p class="text-gray-600">Sube imágenes y personaliza tu memoria anual</p>
+      <p class="text-gray-600">Configura tu memoria anual y previsualiza el resultado</p>
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-6">
-      <!-- Panel Izquierdo - Álbum de Imágenes -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Panel Izquierdo - Configuración -->
       <div class="bg-white/80 backdrop-blur-sm border-0 shadow-xl rounded-lg overflow-hidden">
         <!-- Header del panel -->
-        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6">
-          <h2 class="text-xl font-semibold flex items-center gap-2">
+        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4">
+          <h2 class="text-lg font-semibold flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
             </svg>
-            Álbum de Imágenes
+            Configuración
           </h2>
         </div>
 
-        <div class="p-6">
+        <div class="p-4">
           <!-- Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg p-1">
             <button 
-              (click)="setActiveTab('upload')"
+              (click)="setActiveTab('secciones')"
               [class]="'flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ' + 
-                      (activeTab === 'upload' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')"
+                      (activeTab === 'secciones' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')"
             >
-              Subir Imágenes
+              Secciones
             </button>
             <button 
-              (click)="setActiveTab('placeholders')"
+              (click)="setActiveTab('subir')"
               [class]="'flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ' + 
-                      (activeTab === 'placeholders' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')"
+                      (activeTab === 'subir' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')"
             >
-              Placeholders
+              Subir
+            </button>
+            <button 
+              (click)="setActiveTab('album')"
+              [class]="'flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ' + 
+                      (activeTab === 'album' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')"
+            >
+              Álbum
             </button>
           </div>
 
-          <!-- Tab Content: Upload -->
-          <div *ngIf="activeTab === 'upload'" class="space-y-4">
+          <!-- Búsqueda y filtros (solo para el álbum) -->
+          <div *ngIf="activeTab === 'album'" class="mb-4">
+            <div class="flex flex-col gap-2">
+              <div class="relative">
+                <input 
+                  type="text" 
+                  [(ngModel)]="searchTerm"
+                  (input)="onSearch()"
+                  placeholder="Buscar por nombre, descripción o etiquetas" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10"
+                >
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+                <div class="flex flex-wrap gap-2">
+                  <button 
+                    (click)="filterByCategory('todas')" 
+                    [class]="'px-3 py-1 text-sm rounded-full ' + 
+                            (selectedCategory === 'todas' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')"
+                  >
+                    Todas
+                  </button>
+                  <button 
+                    *ngFor="let category of categories" 
+                    (click)="filterByCategory(category)"
+                    [class]="'px-3 py-1 text-sm rounded-full ' + 
+                            (selectedCategory === category ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')"
+                  >
+                    {{ category }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error de carga -->
+          <div *ngIf="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+            {{ error }}
+            <button (click)="loadAlbumImages()" class="ml-2 underline">Reintentar</button>
+          </div>
+
+          <!-- Tab Content: Secciones -->
+          <div *ngIf="activeTab === 'secciones'" class="space-y-4 max-h-96 overflow-y-auto">
+            <div *ngFor="let placeholder of placeholders" class="border rounded-lg p-4 bg-gray-50">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h4 class="font-medium">{{ placeholder.name }}</h4>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    {{ placeholder.section }}
+                  </span>
+                </div>
+                <button 
+                  *ngIf="placeholder.uploadedImage"
+                  (click)="removeImageFromPlaceholder(placeholder.id)"
+                  class="text-gray-400 hover:text-gray-600"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <p class="text-sm text-gray-600 mb-3">{{ placeholder.description }}</p>
+
+              <!-- Assigned Image -->
+              <div *ngIf="placeholder.uploadedImage">
+                <img 
+                  [src]="placeholder.uploadedImage"
+                  [alt]="placeholder.name"
+                  class="w-full h-20 object-cover rounded border"
+                >
+              </div>
+
+              <!-- No Image Assigned -->
+              <div *ngIf="!placeholder.uploadedImage" class="border-2 border-dashed border-gray-200 rounded p-4 text-center">
+                <p class="text-sm text-gray-500 mb-2">Sin imagen asignada</p>
+                <div class="flex flex-wrap gap-2">
+                  <button 
+                    *ngFor="let image of uploadedImages.slice(0, 3)"
+                    (click)="assignImageToPlaceholder(placeholder.id, image.url)"
+                    class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors"
+                  >
+                    {{ image.name.substring(0, 10) }}...
+                  </button>
+                  
+                  <!-- Botón para abrir el álbum -->
+                  <button 
+                    (click)="openAlbumModal(placeholder.id)"
+                    class="text-xs px-2 py-1 bg-purple-100 text-purple-800 rounded hover:bg-purple-200 transition-colors"
+                  >
+                    Usar imagen del álbum
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content: Subir -->
+          <div *ngIf="activeTab === 'subir'" class="space-y-4">
             <!-- Upload Area -->
             <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
               <input 
@@ -86,181 +196,45 @@
             </div>
           </div>
 
-          <!-- Tab Content: Placeholders -->
-          <div *ngIf="activeTab === 'placeholders'" class="space-y-4 max-h-96 overflow-y-auto">
-            <div *ngFor="let placeholder of placeholders" class="border rounded-lg p-4 bg-gray-50">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <h4 class="font-medium">{{ placeholder.name }}</h4>
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    {{ placeholder.section }}
-                  </span>
+          <!-- Tab Content: Album -->
+          <div *ngIf="activeTab === 'album'" class="space-y-4">
+            <!-- Estado de carga -->
+            <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+              <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+
+            <!-- Galería de imágenes -->
+            <div *ngIf="!isLoading && !error" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
+              <div *ngFor="let image of filteredImages" class="group relative">
+                <div class="aspect-square overflow-hidden rounded-lg bg-gray-100 border">
+                  <img 
+                    [src]="image.url" 
+                    [alt]="image.nombre"
+                    class="h-full w-full object-cover object-center transition-opacity group-hover:opacity-75"
+                  >
+                </div>
+                <div class="mt-2">
+                  <h3 class="text-sm font-medium text-gray-900 truncate">{{ image.nombre }}</h3>
+                  <p class="text-xs text-gray-500 truncate">{{ image.categoria }}</p>
                 </div>
                 <button 
-                  *ngIf="placeholder.uploadedImage"
-                  (click)="removeImageFromPlaceholder(placeholder.id)"
-                  class="text-gray-400 hover:text-gray-600"
+                  (click)="selectAlbumImage(image)"
+                  class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all"
                 >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
+                  <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+                    Seleccionar
+                  </span>
                 </button>
               </div>
-
-              <p class="text-sm text-gray-600 mb-3">{{ placeholder.description }}</p>
-
-              <!-- Assigned Image -->
-              <div *ngIf="placeholder.uploadedImage">
-                <img 
-                  [src]="placeholder.uploadedImage"
-                  [alt]="placeholder.name"
-                  class="w-full h-20 object-cover rounded border"
-                >
-              </div>
-
-              <!-- No Image Assigned -->
-              <div *ngIf="!placeholder.uploadedImage" class="border-2 border-dashed border-gray-200 rounded p-4 text-center">
-                <p class="text-sm text-gray-500 mb-2">Sin imagen asignada</p>
-                <div class="flex flex-wrap gap-1">
-                  <button 
-                    *ngFor="let image of uploadedImages"
-                    (click)="assignImageToPlaceholder(placeholder.id, image.url)"
-                    class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors"
-                  >
-                    {{ image.name.substring(0, 10) }}...
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panel Derecho - Previsualización -->
-      <div class="bg-white/80 backdrop-blur-sm border-0 shadow-xl rounded-lg overflow-hidden">
-        <!-- Header del panel -->
-        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6">
-          <h2 class="text-xl font-semibold flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-            </svg>
-            Previsualización de la Memoria PDF
-          </h2>
-        </div>
-
-        <div class="p-6">
-          <!-- Action Buttons -->
-          <div class="flex gap-2 mb-4">
-            <button 
-              (click)="generatePDF()"
-              [disabled]="isGenerating"
-              class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-              </svg>
-              {{ isGenerating ? 'Generando...' : 'Vista PDF' }}
-            </button>
-
-            <button 
-              (click)="toggleEditView()"
-              [class]="'inline-flex items-center px-3 py-2 border shadow-sm text-sm leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ' + 
-                      (showEditView ? 'border-blue-500 text-blue-700 bg-blue-50' : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50')"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-              </svg>
-              {{ showEditView ? 'Vista PDF' : 'Vista de Edición' }}
-            </button>
-
-            <button 
-              *ngIf="pdfUrl"
-              (click)="downloadPDF()"
-              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-              </svg>
-              Descargar PDF
-            </button>
-          </div>
-
-          <!-- Preview Area -->
-          <div class="border rounded-lg bg-gray-50 h-96 overflow-hidden">
-            <!-- Vista PDF -->
-            <div *ngIf="!showEditView" class="w-full h-full flex items-center justify-center">
-              <iframe 
-                *ngIf="safePdfUrl" 
-                [src]="safePdfUrl" 
-                class="w-full h-full rounded-lg" 
-                title="PDF Preview"
-              ></iframe>
-              
-              <div *ngIf="!safePdfUrl" class="text-center text-gray-500">
-                <svg class="w-12 h-12 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                </svg>
-                <p>La previsualización aparecerá aquí</p>
-                <p class="text-sm">Sube imágenes y genera el PDF para ver el resultado</p>
-              </div>
             </div>
 
-            <!-- Vista de Edición -->
-            <div *ngIf="showEditView" class="w-full h-full p-4 overflow-y-auto bg-white">
-              <h3 class="text-lg font-semibold mb-4 text-gray-800">Vista de Edición - Estructura del Documento</h3>
-              
-              <div class="space-y-4">
-                <div *ngFor="let section of getSectionKeys()" class="border rounded-lg p-4 bg-gray-50">
-                  <h4 class="font-medium text-gray-900 mb-3 flex items-center">
-                    <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                    </svg>
-                    {{ section }}
-                  </h4>
-                  
-                  <div class="space-y-2">
-                    <div *ngFor="let placeholder of getPlaceholdersBySection()[section]" 
-                         class="flex items-center justify-between p-3 bg-white rounded border">
-                      <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center overflow-hidden">
-                          <img *ngIf="placeholder.uploadedImage" 
-                               [src]="placeholder.uploadedImage" 
-                               [alt]="placeholder.name"
-                               class="w-full h-full object-cover">
-                          <svg *ngIf="!placeholder.uploadedImage" 
-                               class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                          </svg>
-                        </div>
-                        
-                        <div>
-                          <p class="font-medium text-sm text-gray-900">{{ placeholder.name }}</p>
-                          <p class="text-xs text-gray-500">{{ placeholder.description }}</p>
-                          <span [class]="'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ' + 
-                                        (placeholder.uploadedImage ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800')">
-                            {{ placeholder.uploadedImage ? 'Asignada' : 'Sin asignar' }}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div class="flex space-x-2">
-                        <button *ngIf="placeholder.uploadedImage"
-                                (click)="removeImageFromPlaceholder(placeholder.id)"
-                                class="text-red-600 hover:text-red-800 text-sm">
-                          Quitar
-                        </button>
-                        <button class="text-blue-600 hover:text-blue-800 text-sm"
-                                (click)="setActiveTab('placeholders')">
-                          {{ placeholder.uploadedImage ? 'Cambiar' : 'Asignar' }}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <!-- Mensaje sin resultados -->
+            <div *ngIf="!isLoading && !error && filteredImages.length === 0" class="text-center py-12">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">No se encontraron imágenes</h3>
+              <p class="mt-1 text-sm text-gray-500">Prueba con otros filtros o términos de búsqueda.</p>
             </div>
           </div>
 
@@ -283,6 +257,186 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Panel Derecho - Previsualización -->
+      <div class="bg-white/80 backdrop-blur-sm border-0 shadow-xl rounded-lg overflow-hidden">
+        <!-- Header del panel -->
+        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4">
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              Previsualización
+            </h2>
+            
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+              <!-- Botón Previsualizar PDF (restaurado) -->
+              <button 
+                (click)="previewPDF()"
+                [disabled]="isGenerating"
+                class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                {{ isGenerating ? 'Generando...' : 'Previsualizar PDF' }}
+              </button>
+
+              <!-- Botón Generar PDF -->
+              <button 
+                (click)="generatePDF()"
+                [disabled]="isGenerating"
+                class="inline-flex items-center px-3 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-md text-sm font-medium disabled:opacity-50"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                Generar PDF
+              </button>
+
+              <button 
+                *ngIf="pdfUrl"
+                (click)="downloadPDF()"
+                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Descargar PDF
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4">
+          <!-- Preview Area -->
+          <div class="border rounded-lg bg-gray-50 h-96 overflow-hidden">
+            <!-- Vista PDF -->
+            <iframe 
+              *ngIf="safePdfUrl" 
+              [src]="safePdfUrl" 
+              class="w-full h-full rounded-lg" 
+              title="PDF Preview"
+            ></iframe>
+            
+            <div *ngIf="!safePdfUrl" class="w-full h-full flex items-center justify-center text-center text-gray-500">
+              <div>
+                <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+                <p class="text-lg font-medium">Configura las imágenes y genera tu PDF</p>
+                <p class="text-sm">Asigna imágenes a las secciones y haz clic en "Generar PDF"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para el álbum de imágenes -->
+<div *ngIf="showAlbumModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h3 class="text-lg font-medium">Seleccionar imagen del álbum</h3>
+      <button (click)="closeAlbumModal()" class="text-gray-400 hover:text-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="p-4 overflow-y-auto" style="max-height: calc(90vh - 120px);">
+      <!-- Búsqueda y filtros -->
+      <div class="mb-4">
+        <div class="flex flex-col gap-2">
+          <div class="relative">
+            <input 
+              type="text" 
+              [(ngModel)]="modalSearchTerm"
+              (input)="onModalSearch()"
+              placeholder="Buscar por nombre, descripción o etiquetas" 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10"
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+            <div class="flex flex-wrap gap-2">
+              <button 
+                (click)="filterModalByCategory('todas')" 
+                [class]="'px-3 py-1 text-sm rounded-full ' + 
+                        (modalSelectedCategory === 'todas' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')"
+              >
+                Todas
+              </button>
+              <button 
+                *ngFor="let category of categories" 
+                (click)="filterModalByCategory(category)"
+                [class]="'px-3 py-1 text-sm rounded-full ' + 
+                        (modalSelectedCategory === category ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200')"
+              >
+                {{ category }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado de carga -->
+      <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+
+      <!-- Error de carga -->
+      <div *ngIf="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+        {{ error }}
+        <button (click)="loadAlbumImages()" class="ml-2 underline">Reintentar</button>
+      </div>
+
+      <!-- Galería de imágenes -->
+      <div *ngIf="!isLoading && !error" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div *ngFor="let image of modalFilteredImages" class="group relative">
+          <div class="aspect-square overflow-hidden rounded-lg bg-gray-100 border">
+            <img 
+              [src]="image.url" 
+              [alt]="image.nombre"
+              class="h-full w-full object-cover object-center transition-opacity group-hover:opacity-75"
+            >
+          </div>
+          <div class="mt-2">
+            <h3 class="text-sm font-medium text-gray-900 truncate">{{ image.nombre }}</h3>
+            <p class="text-xs text-gray-500 truncate">{{ image.categoria }}</p>
+          </div>
+          <button 
+            (click)="selectModalImage(image)"
+            class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all"
+          >
+            <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+              Seleccionar
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mensaje sin resultados -->
+      <div *ngIf="!isLoading && !error && modalFilteredImages.length === 0" class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No se encontraron imágenes</h3>
+        <p class="mt-1 text-sm text-gray-500">Prueba con otros filtros o términos de búsqueda.</p>
       </div>
     </div>
   </div>
