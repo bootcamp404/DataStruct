@@ -1,0 +1,139 @@
+/* CSS para la primera tarjeta */
+
+.card-colorful-bg-2 {
+  background: linear-gradient(135deg, #DC2626 0%, #9333EA 50%, #1276E1 100%);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(2deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes particle-float {
+    0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px) translateX(20px) rotate(360deg); opacity: 0; }
+}
+
+.animated-bg {
+    background: linear-gradient(-45deg, #DC2626, #9333EA, #1276E1, #10B981);
+    background-size: 400% 400%;
+    animation: gradient-shift 8s ease infinite;
+}
+
+.floating-circle {
+    animation: float 6s ease-in-out infinite;
+}
+
+.pulse-circle {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.particle {
+    animation: particle-float 8s linear infinite;
+}
+
+.particle:nth-child(2) { animation-delay: 2s; }
+.particle:nth-child(3) { animation-delay: 4s; }
+.particle:nth-child(4) { animation-delay: 6s; }
+
+/* Segunda tarjeta */
+@keyframes float-dashboard {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-12px) rotate(1deg); }
+  66% { transform: translateY(6px) rotate(-1deg); }
+}
+
+@keyframes pulse-glow-dashboard {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.15); }
+}
+
+@keyframes particle-float-dashboard {
+  0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-120px) translateX(15px) rotate(270deg); opacity: 0; }
+}
+
+.dashboard-bg-2 {
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 25%, #10B981 50%, #059669 100%);
+}
+
+.floating-circle-dashboard {
+  animation: float-dashboard 7s ease-in-out infinite;
+}
+
+.pulse-circle-dashboard {
+  animation: pulse-glow-dashboard 4s ease-in-out infinite;
+}
+
+.particle-dashboard {
+  animation: particle-float-dashboard 9s linear infinite;
+}
+
+.particle-dashboard:nth-child(2) { animation-delay: 2.5s; }
+.particle-dashboard:nth-child(3) { animation-delay: 5s; }
+.particle-dashboard:nth-child(4) { animation-delay: 7.5s; }
+
+
+/* Tercera tarjeta */
+@keyframes float-export {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(2deg); }
+  66% { transform: translateY(5px) rotate(-2deg); }
+}
+
+@keyframes pulse-glow-export {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+@keyframes particle-float-export {
+  0% { transform: translateY(0px) translateX(0px) rotate(0deg); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(-110px) translateX(25px) rotate(180deg); opacity: 0; }
+}
+
+@keyframes upload-pulse {
+  0%, 100% { transform: translateY(0px); opacity: 0.6; }
+  50% { transform: translateY(-8px); opacity: 1; }
+}
+
+.export-bg-2 {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 25%, #EA580C 50%, #DC2626 100%);
+}
+
+.floating-circle-export {
+  animation: float-export 5s ease-in-out infinite;
+}
+
+.pulse-circle-export {
+  animation: pulse-glow-export 3.5s ease-in-out infinite;
+}
+
+.particle-export {
+  animation: particle-float-export 7s linear infinite;
+}
+
+.particle-export:nth-child(2) { animation-delay: 1.8s; }
+.particle-export:nth-child(3) { animation-delay: 3.6s; }
+.particle-export:nth-child(4) { animation-delay: 5.4s; }
+
+.upload-icon {
+  animation: upload-pulse 2s ease-in-out infinite;
+}

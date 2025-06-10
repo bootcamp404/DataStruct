@@ -6,7 +6,8 @@ import { toast } from 'ngx-sonner';
 import { Router, RouterLink } from '@angular/router';
 import { GoogleComponent } from '../../ui/google/google.component';
 import { FacebookComponent } from '../../ui/facebook/facebook.component';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { AnimatedBackgroundComponent } from "../../../shared/components/animated-background/animated-background.component"; 
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('contrasenya');
@@ -23,7 +24,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink, GoogleComponent, FacebookComponent, CommonModule, AnimatedBackgroundComponent],
   templateUrl: './sign-up.component.html'
 })
 export default class SignUpComponent {

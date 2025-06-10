@@ -83,5 +83,30 @@
     "GUARDAR": "Guardar Cambis",
     "CANCELAR": "Cancelar",
     "MODIFICACION": "El email no es pot modificar."
+  },
+    "PANEL-USUARIOS": {
+    "GUARDAR-CAMBIOS": "Guardar tots els canvis",
+    "EDITAR": "Editar",
+    "BUSCAR": "Buscar per nom, email o cognoms",
+    "GESTION": "Gestió d'usuaris",
+    "ADMINISTRAR": "Administra els rols dels usuaris del sistema",
+    "EMAIL": "Correu electrònic",
+    "NOMBRE": "Nom",
+    "APELLIDOS": "Cognoms",
+    "ROL": "Rol",
+    "ACCIONES": "Accions",
+    "GUARDAR-EMAIL": "Guardar",
+    "CANCELAR": "Cancel·lar",
+    "ELIMINAR": "Eliminar",
+    "ANTERIOR": "Anterior",
+    "SIGUIENTE": "Següent",
+    "ERRORES": {
+      "TITULO": "Error en carregar",
+      "MENSAJE": "No s'han pogut carregar els usuaris. Torna-ho a intentar més tard."
+    },
+    "CARGAR": {
+      "TITULO": "Carregant usuaris",
+      "MENSAJE": "S'està obtenint la informació"
+    }
   }
 }

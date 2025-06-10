@@ -14,36 +14,46 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       <!-- Primer cuadrado -->
-      <div class="bg-white relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">
+      <div class="card-colorful-bg-2 relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">        <!-- Partículas flotantes -->
+        <div class="absolute inset-0 pointer-events-none z-0">
+          <div class="particle absolute w-2 h-2 bg-gradient-to-r from-red-400 to-purple-400 rounded-full" style="left: 20%; top: 80%;"></div>
+          <div class="particle absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-emerald-400 rounded-full" style="left: 70%; top: 90%;"></div>
+          <div class="particle absolute w-1.5 h-1.5 bg-gradient-to-r from-purple-400 to-red-400 rounded-full" style="left: 40%; top: 85%;"></div>
+          <div class="particle absolute w-1 h-1 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full" style="left: 80%; top: 75%;"></div>
+        </div>
+        
         <a [routerLink]="['/plantillas']" class="block w-full h-full">
-          <!-- Decorative element -->
-          <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 opacity-70 z-0"></div>
-
+          <!-- Elemento decorativo animado -->
+          <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 opacity-70 z-0 floating-circle"></div>
+          
+          <!-- Círculo pulsante adicional -->
+          <div class="absolute -left-4 -bottom-4 w-16 h-16 rounded-full bg-gradient-to-tr from-red-100 to-purple-100 opacity-50 z-0 pulse-circle"></div>
+          
           <!--Icono-->
           <div class="mb-6 relative z-10">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-[#DC2626] to-[#9333EA] shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-8 w-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-[#DC2626] to-[#9333EA] shadow-md group-hover:shadow-lg transition-shadow duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-8 w-8 text-white">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
             </div>
           </div>
-
-          <h3 class="text-2xl font-bold mb-3 relative z-10 group-hover:text-[#1276E1]">
+          
+          <h3 class="text-2xl font-bold mb-3 relative z-10 group-hover:text-[#1276E1] transition-colors duration-300">
             {{ 'FEATURES.ITEMS.CUSTOM_FORMS.TITLE' | translate }}
           </h3>
-
+          
           <p class="leading-relaxed relative z-10">
             {{ 'FEATURES.ITEMS.CUSTOM_FORMS.DESC' | translate }}
           </p>
-
+          
           <!--Barra del hover-->
-          <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#DC2626] to-[#9333EA] w-0 group-hover:w-full"></div>
+          <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#DC2626] to-[#9333EA] w-0 group-hover:w-full transition-all duration-500 ease-out"></div>
         </a>
       </div>
 
       <!-- Segundo cuadrado -->
-      <div class="bg-white relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">
-        <a [routerLink]="['/dashboard']" class="block w-full h-full">
+      <div class="dashboard-bg-2 relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">
+          <a [routerLink]="['/dashboard']" class="block w-full h-full">
           <!-- Decorative element -->
           <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 opacity-70 z-0"></div>
 
@@ -66,12 +76,12 @@
 
           <!--Barra del hover-->
           <div class="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#60A5FA] to-[#1FB26E] w-0 group-hover:w-full"></div>
-        </a>
+          </a>
       </div>
 
       <!-- Tercer cuadrado -->
-      <div class="bg-white relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">
-          <a [routerLink]="['/previsualizacion', 2025]" class="block w-full h-full">
+<div class="export-bg-2 relative overflow-hidden group p-8 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 border">
+  <a [routerLink]="['/previsualizacion', 2025]" class="block w-full h-full">
           <!-- Decorative element -->
           <div class="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-emerald-100 opacity-70 z-0"></div>
 

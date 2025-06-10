@@ -8,7 +8,7 @@ interface ChatResponse {
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  private url = 'http://localhost:8080/alicanteFutura/api/v1/chat';
+  private url = 'https://datastruct.onrender.com/alicanteFutura/api/v1/chat';
 
   constructor(private http: HttpClient) {}
 

@@ -17,7 +17,7 @@ export class AuthService {
   private _authStateService = inject(AuthStateService);
   private userRole: number | null = null;
 
-  private apiUrl = 'http://localhost:8080/alicanteFutura/api/v1';
+  private apiUrl = ' https://datastruct.onrender.com/alicanteFutura/api/v1';
 
   constructor() {}
 
@@ -239,6 +239,17 @@ export class AuthService {
       this.userRole = usuario.rol?.id || null;
       return this.userRole;
     } catch {
+      return null;
+    }
+  }
+  getCurrentUserSync(): Usuario | null {
+    const storedUser = localStorage.getItem('usuario');
+    if (!storedUser) return null;
+
+    try {
+      return JSON.parse(storedUser) as Usuario;
+    } catch {
+      console.error('Error parseando usuario en getCurrentUserSync()');
       return null;
     }
   }
