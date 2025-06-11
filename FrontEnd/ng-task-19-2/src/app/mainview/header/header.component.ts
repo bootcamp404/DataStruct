@@ -24,7 +24,7 @@ export class HeaderComponent {
   isLoggedIn = false;
 
   // Estado del tema
-  isDark: boolean = false;
+  // isDark: boolean = false;
 
   // Idioma
   currentLanguageCode: string = 'es';
@@ -65,7 +65,7 @@ export class HeaderComponent {
     private authService: AuthService,
     private ngZone: NgZone,
     private translate: TranslateService,
-    private themeService: ThemeService
+    // private themeService: ThemeService
   ) {}
 
   async ngOnInit() {
@@ -75,14 +75,14 @@ export class HeaderComponent {
     this.translate.use(savedLang);
 
     // Tema
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      this.isDark = true;
-    } else {
-      document.documentElement.classList.remove('dark');
-      this.isDark = false;
-    }
+    // const savedTheme = localStorage.getItem('theme');
+    // if (savedTheme === 'dark') {
+    //   document.documentElement.classList.add('dark');
+    //   this.isDark = true;
+    // } else {
+    //   document.documentElement.classList.remove('dark');
+    //   this.isDark = false;
+    // }
 
     // Usuario
     const currentUser = await this.authService.getCurrentUser();
@@ -145,10 +145,10 @@ export class HeaderComponent {
     this.authService.logout();
   }
 
-  toggleTheme(): void {
-    this.themeService.toggleTheme();
-    this.isDark = this.themeService.isDarkMode();
-  }
+  // toggleTheme(): void {
+  //   this.themeService.toggleTheme();
+  //   this.isDark = this.themeService.isDarkMode();
+  // }
   languageFlags: Record<string, string> = {
     es: 'assets/img/banderas/es.png',
     en: 'assets/img/banderas/en.png',

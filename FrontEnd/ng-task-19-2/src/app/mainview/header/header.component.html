@@ -1,9 +1,4 @@
-<header
-  class="border-b top-0 z-50 w-full transition-colors "
-  [ngClass]="isDark
-    ? 'bg-gray-800 text-white'
-    : 'bg-white text-black'">
-<header class="border-b top-0 z-50 w-full">
+<header class="border-b top-0 z-50 w-full bg-white">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between">
 
@@ -46,11 +41,11 @@
       <!-- Controles de usuario -->
       <div class="flex items-center gap-3">
         <!-- Botón de modo oscuro -->
-        <button
+        <!-- <button
           (click)="toggleTheme()"
           class="px-4 py-2 rounded-full bg-gradient-to-r from-[#1176E1] to-[#20B26E] shadow hover:shadow-md text-sm font-medium text-white">
           Cambiar tema
-        </button>
+        </button> -->
 
         <!-- Idioma -->
         <div class="relative">
@@ -70,29 +65,25 @@
 
           <!-- Menú desplegable -->
           <div *ngIf="showLanguageDropdown"
-               class="absolute right-0 mt-1 w-36 rounded-lg shadow border z-50 text-base"
-               [ngClass]="isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'">
+               class="absolute right-0 mt-1 w-36 rounded-lg shadow border z-50 text-base">
 
             <!-- Castellano -->
             <a (click)="changeLanguage('es')"
-               class="flex items-center px-4 py-2 cursor-pointer"
-               [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">
+               class="flex items-center px-4 py-2 cursor-pointer">
               <img src="assets/img/banderas/es.png" alt="es" class="w-5 h-4 mr-2 object-contain rounded-sm" />
               Castellano
             </a>
 
             <!-- Valencià -->
             <a (click)="changeLanguage('va')"
-               class="flex items-center px-4 py-2 cursor-pointer"
-               [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">
+               class="flex items-center px-4 py-2 cursor-pointer">
               <img src="assets/img/banderas/va.png" alt="va" class="w-5 h-4 mr-2 object-contain rounded-sm" />
               Valencià
             </a>
 
             <!-- English -->
             <a (click)="changeLanguage('en')"
-               class="flex items-center px-4 py-2 cursor-pointer"
-               [ngClass]="isDark ? 'text-white hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-100'">
+               class="flex items-center px-4 py-2 cursor-pointer">
               <img src="assets/img/banderas/en.png" alt="en" class="w-5 h-4 mr-2 object-contain rounded-sm" />
               English
             </a>
